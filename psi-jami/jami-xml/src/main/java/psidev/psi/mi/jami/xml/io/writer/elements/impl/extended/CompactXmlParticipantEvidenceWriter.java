@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25ParticipantEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
@@ -52,7 +52,7 @@ public class CompactXmlParticipantEvidenceWriter extends AbstractXmlParticipantE
 
     @Override
     protected void writeExperimentalRoles(ParticipantEvidence object) throws XMLStreamException {
-        ExtendedPsi25ParticipantEvidence xmlParticipant = (ExtendedPsi25ParticipantEvidence)object;
+        ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
         getStreamWriter().writeStartElement("experimentalRoleList");
         for (CvTerm expRole : xmlParticipant.getExperimentalRoles()){
             getExperimentalRoleWriter().write(expRole);
@@ -62,7 +62,7 @@ public class CompactXmlParticipantEvidenceWriter extends AbstractXmlParticipantE
 
     @Override
     protected void writeHostOrganisms(ParticipantEvidence object) throws XMLStreamException {
-        ExtendedPsi25ParticipantEvidence xmlParticipant = (ExtendedPsi25ParticipantEvidence)object;
+        ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
         if (!xmlParticipant.getHostOrganisms().isEmpty()){
             getStreamWriter().writeStartElement("hostOrganismList");
             for (Organism host : xmlParticipant.getHostOrganisms()){
@@ -74,7 +74,7 @@ public class CompactXmlParticipantEvidenceWriter extends AbstractXmlParticipantE
 
     @Override
     protected void writeExperimentalInteractor(ParticipantEvidence object) throws XMLStreamException {
-        ExtendedPsi25ParticipantEvidence xmlParticipant = (ExtendedPsi25ParticipantEvidence)object;
+        ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
         if (!xmlParticipant.getExperimentalInteractors().isEmpty()){
             getStreamWriter().writeStartElement("experimentalInteractorList");
             for (ExperimentalInteractor expInt : xmlParticipant.getExperimentalInteractors()){

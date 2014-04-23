@@ -18,7 +18,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for CompactXml25BinaryWriter
+ * Unit tester for CompactXmlBinaryWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -1285,13 +1285,13 @@ public class CompactXml25BinaryWriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter();
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter();
         writer.write(new DefaultNamedBinaryInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter();
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter();
         writer.initialiseContext(null);
     }
 
@@ -1299,7 +1299,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1317,7 +1317,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1341,7 +1341,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1364,7 +1364,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1388,7 +1388,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1415,7 +1415,7 @@ public class CompactXml25BinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
@@ -1436,7 +1436,7 @@ public class CompactXml25BinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
@@ -1456,7 +1456,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1476,7 +1476,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1501,7 +1501,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1525,7 +1525,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_interaction_source() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1553,7 +1553,7 @@ public class CompactXml25BinaryWriterTest {
     public void test_interactions_different_sources() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
 
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1597,7 +1597,7 @@ public class CompactXml25BinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("protein test")));
 
-        CompactXml25BinaryWriter writer = new CompactXml25BinaryWriter(stringWriter);
+        CompactXmlBinaryWriter writer = new CompactXmlBinaryWriter(stringWriter);
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         interaction.setAvailability("copyright");
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex.getParticipants().iterator().next().getInteractor());

@@ -39,7 +39,7 @@ import java.util.List;
  * 
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AbstractXmlSource extends AbstractXmlCvTerm implements ExtendedPsi25Source
+public abstract class AbstractXmlSource extends AbstractXmlCvTerm implements ExtendedPsiXmlSource
 {
     private Publication bibRef;
     private String release;

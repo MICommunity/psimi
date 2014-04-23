@@ -23,7 +23,7 @@ import java.util.List;
  * @since <pre>11/10/13</pre>
  */
 
-public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant> {
+public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
     private AbstractXmlInteractionEvidence interactionEvidence;
     private Organism organism;
     private CvTerm interactorType;

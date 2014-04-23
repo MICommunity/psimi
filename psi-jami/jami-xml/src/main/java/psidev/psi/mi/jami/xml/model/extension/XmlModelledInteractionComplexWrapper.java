@@ -23,7 +23,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledInteractionComplexWrapper implements Complex, FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant>{
+public class XmlModelledInteractionComplexWrapper implements Complex, FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
 
     private AbstractXmlModelledInteraction modelledInteraction;
     private Organism organism;

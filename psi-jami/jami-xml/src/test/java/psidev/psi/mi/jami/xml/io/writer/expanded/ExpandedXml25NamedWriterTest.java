@@ -13,7 +13,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for ExpandedXml25NamedWriter
+ * Unit tester for ExpandedXmlNamedWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -1376,13 +1376,13 @@ public class ExpandedXml25NamedWriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter();
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter();
         writer.write(new DefaultNamedInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter();
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter();
         writer.initialiseContext(null);
     }
 
@@ -1390,7 +1390,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1407,7 +1407,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1430,7 +1430,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1452,7 +1452,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1475,7 +1475,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1501,7 +1501,7 @@ public class ExpandedXml25NamedWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
@@ -1522,7 +1522,7 @@ public class ExpandedXml25NamedWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
@@ -1542,7 +1542,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1561,7 +1561,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1585,7 +1585,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1609,7 +1609,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_interaction_source() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1636,7 +1636,7 @@ public class ExpandedXml25NamedWriterTest {
     public void test_interactions_different_sources() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1680,7 +1680,7 @@ public class ExpandedXml25NamedWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("protein test")));
 
-        ExpandedXml25NamedWriter writer = new ExpandedXml25NamedWriter(stringWriter);
+        ExpandedXmlNamedWriter writer = new ExpandedXmlNamedWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         interaction.setAvailability("copyright");
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex.getParticipants().iterator().next().getInteractor());

@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlXref;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence, ExtendedPsi25InteractionEvidence{
+public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence, ExtendedPsiXmlInteractionEvidence {
     private Xref imexId;
     private String availability;
     private Collection<Parameter> parameters;

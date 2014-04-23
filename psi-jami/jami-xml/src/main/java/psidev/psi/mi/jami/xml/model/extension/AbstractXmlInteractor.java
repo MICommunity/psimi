@@ -26,7 +26,7 @@ import java.util.List;
  * @since <pre>23/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AbstractXmlInteractor implements Interactor, FileSourceContext, Locatable, ExtendedPsi25Interactor{
+public abstract class AbstractXmlInteractor implements Interactor, FileSourceContext, Locatable, ExtendedPsiXmlInteractor {
 
     private Organism organism;
     private CvTerm interactorType;

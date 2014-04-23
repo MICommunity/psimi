@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.model.extension.AbstractXmlBasicInteraction;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interaction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -23,7 +23,7 @@ import java.util.List;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participant>, FileSourceContext, ExtendedPsi25Interaction<Participant>{
+public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participant>, FileSourceContext, ExtendedPsiXmlInteraction<Participant> {
     private AbstractXmlBasicInteraction wrappedInteraction;
     private BinaryInteractionWrapper binaryWrapper;
 

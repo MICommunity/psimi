@@ -12,7 +12,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for LightExpandedXml25Writer
+ * Unit tester for LightExpandedXmlWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -743,13 +743,13 @@ public class LightExpandedXml25WriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer();
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter();
         writer.write(new XmlBasicInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer();
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter();
         writer.initialiseContext(null);
     }
 
@@ -757,7 +757,7 @@ public class LightExpandedXml25WriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
@@ -773,7 +773,7 @@ public class LightExpandedXml25WriterTest {
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
 
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(new XmlProtein("protein test"));
@@ -794,7 +794,7 @@ public class LightExpandedXml25WriterTest {
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
@@ -814,7 +814,7 @@ public class LightExpandedXml25WriterTest {
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
 
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(new XmlProtein("protein test"));
@@ -835,7 +835,7 @@ public class LightExpandedXml25WriterTest {
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
 
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(new XmlProtein("protein test"));
@@ -859,7 +859,7 @@ public class LightExpandedXml25WriterTest {
         Complex complex = new XmlComplex("test complex");
         complex.getParticipants().add(new XmlModelledParticipant(new XmlProtein("test protein")));
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(complex);
         interaction.addParticipant(participant);
@@ -879,7 +879,7 @@ public class LightExpandedXml25WriterTest {
         Complex complex = new XmlComplex("test complex");
         complex.getParticipants().add(new XmlModelledParticipant(new XmlProtein("test protein")));
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         Interaction interaction = new XmlBasicInteraction();
@@ -898,7 +898,7 @@ public class LightExpandedXml25WriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
@@ -916,7 +916,7 @@ public class LightExpandedXml25WriterTest {
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
 
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(new XmlProtein("protein test"));
@@ -938,7 +938,7 @@ public class LightExpandedXml25WriterTest {
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25Writer writer = new LightExpandedXml25Writer(stringWriter);
+        LightExpandedXmlWriter writer = new LightExpandedXmlWriter(stringWriter);
 
         Interaction interaction = new XmlBasicInteraction();
         Participant participant = new XmlParticipant(new XmlProtein("protein test"));

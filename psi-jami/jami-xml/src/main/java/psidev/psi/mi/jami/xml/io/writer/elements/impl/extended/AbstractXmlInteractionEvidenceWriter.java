@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.model.extension.BibRef;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
@@ -72,7 +72,7 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     @Override
     public List<Experiment> extractDefaultExperimentsFrom(I interaction) {
-        List<Experiment> exp = ((ExtendedPsi25InteractionEvidence)interaction).getExperiments();
+        List<Experiment> exp = ((ExtendedPsiXmlInteractionEvidence)interaction).getExperiments();
         return !exp.isEmpty() ? exp : Collections.singletonList(getDefaultExperiment());
     }
 
@@ -84,7 +84,7 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     }
 
     protected void writeExperimentRef(I object) throws XMLStreamException {
-        ExtendedPsi25InteractionEvidence xmlInteraction = (ExtendedPsi25InteractionEvidence)object;
+        ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
         // write experimental evidences
         if (!xmlInteraction.getExperiments().isEmpty()){
             getStreamWriter().writeStartElement("experimentList");
@@ -102,7 +102,7 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     }
 
     protected void writeExperimentDescription(I object) throws XMLStreamException {
-        ExtendedPsi25InteractionEvidence xmlInteraction = (ExtendedPsi25InteractionEvidence)object;
+        ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
         // write experimental evidences
         if (!xmlInteraction.getExperiments().isEmpty()){
             getStreamWriter().writeStartElement("experimentList");
@@ -127,7 +127,7 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     @Override
     protected void writeModelled(I object) throws XMLStreamException {
-        ExtendedPsi25InteractionEvidence xmlInteraction = (ExtendedPsi25InteractionEvidence)object;
+        ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
         if (xmlInteraction.isModelled()){
             getStreamWriter().writeStartElement("modelled");
             getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isModelled()));

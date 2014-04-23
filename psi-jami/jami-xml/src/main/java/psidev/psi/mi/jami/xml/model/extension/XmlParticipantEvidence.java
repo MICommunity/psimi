@@ -24,7 +24,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEvidence, FeatureEvidence> implements ExtendedPsi25ParticipantEvidence{
+public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEvidence, FeatureEvidence> implements ExtendedPsiXmlParticipantEvidence {
 
     @XmlLocation
     @XmlTransient
@@ -84,7 +84,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
 
         if (originalInteraction != null){
 
-            List<ExtendedPsi25Experiment> originalExperiments = originalInteraction.getOriginalExperiments();
+            List<ExtendedPsiXmlExperiment> originalExperiments = originalInteraction.getOriginalExperiments();
             if (originalExperiments != null && !originalExperiments.isEmpty()){
                 // participant identification method overrides the one in the experiment
                 if (originalIdentificationMethods != null && !originalIdentificationMethods.isEmpty()
@@ -102,7 +102,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
                         this.originalIdentificationMethods = null;
                     }
 
-                    for (ExtendedPsi25Experiment exp : originalExperiments){
+                    for (ExtendedPsiXmlExperiment exp : originalExperiments){
                         if (exp.getParticipantIdentificationMethod() != null && !expToIgnore.contains(exp)){
                             this.jaxbParticipantionIdentificationWrapper.identificationMethods.add(exp.getParticipantIdentificationMethod());
                         }

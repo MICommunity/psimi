@@ -26,7 +26,7 @@ import java.util.*;
  * @since <pre>25/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class AbstractXmlExperiment implements ExtendedPsi25Experiment, FileSourceContext, Locatable{
+public class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private ExperimentXrefContainer xrefContainer;

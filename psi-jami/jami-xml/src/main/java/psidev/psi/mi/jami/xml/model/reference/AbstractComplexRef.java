@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.model.reference;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.Entry;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interaction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.XmlComplex;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractComplexRef extends AbstractInteractorRef implements Complex, ExtendedPsi25Interaction<ModelledParticipant>{
+public abstract class AbstractComplexRef extends AbstractInteractorRef implements Complex, ExtendedPsiXmlInteraction<ModelledParticipant> {
     private static final Logger logger = Logger.getLogger("AbstractComplexRef");
 
     public AbstractComplexRef(int ref) {

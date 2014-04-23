@@ -6,8 +6,8 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interaction;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Participant;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipant;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit tester for Xml25EvidenceParser
+ * Unit tester for XmlEvidenceParser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -30,7 +30,7 @@ public class FullXml25InteractionParserTest {
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25Parser(stream);
+        PsiXmlParser<Interaction<? extends Participant>> parser = new FullXmlParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
@@ -63,7 +63,7 @@ public class FullXml25InteractionParserTest {
         Assert.assertEquals("mint", comment.getValue());
 
         // boolean
-        Assert.assertFalse(((ExtendedPsi25Interaction) interaction).isIntraMolecular());
+        Assert.assertFalse(((ExtendedPsiXmlInteraction) interaction).isIntraMolecular());
         // interaction type
         Assert.assertNotNull(interaction.getInteractionType());
         CvTerm method = interaction.getInteractionType();
@@ -78,7 +78,7 @@ public class FullXml25InteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<? extends Participant> partIterator = interaction.getParticipants().iterator();
         Participant p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipant) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -126,7 +126,7 @@ public class FullXml25InteractionParserTest {
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25Parser(stream);
+        PsiXmlParser<Interaction<? extends Participant>> parser = new FullXmlParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
@@ -159,7 +159,7 @@ public class FullXml25InteractionParserTest {
         Assert.assertEquals("mint", comment.getValue());
 
         // boolean
-        Assert.assertFalse(((ExtendedPsi25Interaction) interaction).isIntraMolecular());
+        Assert.assertFalse(((ExtendedPsiXmlInteraction) interaction).isIntraMolecular());
         // interaction type
         Assert.assertNotNull(interaction.getInteractionType());
         CvTerm method = interaction.getInteractionType();
@@ -174,7 +174,7 @@ public class FullXml25InteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<? extends Participant> partIterator = interaction.getParticipants().iterator();
         Participant p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipant) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -222,7 +222,7 @@ public class FullXml25InteractionParserTest {
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25Parser(stream);
+        PsiXmlParser<Interaction<? extends Participant>> parser = new FullXmlParser(stream);
 
         int index = 0;
         while(!parser.hasFinished()){
@@ -253,7 +253,7 @@ public class FullXml25InteractionParserTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25Parser(stream);
+        PsiXmlParser<Interaction<? extends Participant>> parser = new FullXmlParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             Interaction<? extends Participant> interaction = parser.parseNextInteraction();
@@ -272,7 +272,7 @@ public class FullXml25InteractionParserTest {
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25Parser(stream);
+        PsiXmlParser<Interaction<? extends Participant>> parser = new FullXmlParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 
@@ -284,7 +284,7 @@ public class FullXml25InteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<? extends Participant> partIterator = interaction.getParticipants().iterator();
         Participant p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25Participant) p1).getShortName());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipant) p1).getShortName());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
         Feature f = (Feature)p1.getFeatures().iterator().next();
@@ -315,7 +315,7 @@ public class FullXml25InteractionParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         partIterator = interaction.getParticipants().iterator();
         p1 = partIterator.next();
-        Assert.assertEquals("n/a", ((ExtendedPsi25Participant) p1).getShortName());
+        Assert.assertEquals("n/a", ((ExtendedPsiXmlParticipant) p1).getShortName());
         // features
         Assert.assertEquals(2, p1.getFeatures().size());
         f = (Feature)p1.getFeatures().iterator().next();
@@ -341,7 +341,7 @@ public class FullXml25InteractionParserTest {
     @Test(expected = PsiXmlParserException.class)
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
-        PsiXml25Parser<Interaction<? extends Participant>> parser = new FullXml25Parser(stream);
+        PsiXmlParser<Interaction<? extends Participant>> parser = new FullXmlParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();
 

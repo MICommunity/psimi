@@ -13,7 +13,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for LightCompactXml25NamedWriter
+ * Unit tester for LightCompactXmlNamedWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -721,13 +721,13 @@ public class LightCompactXml25NamedWriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter();
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter();
         writer.write(new DefaultNamedInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter();
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter();
         writer.initialiseContext(null);
     }
 
@@ -735,7 +735,7 @@ public class LightCompactXml25NamedWriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -752,7 +752,7 @@ public class LightCompactXml25NamedWriterTest {
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
 
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
@@ -774,7 +774,7 @@ public class LightCompactXml25NamedWriterTest {
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -794,7 +794,7 @@ public class LightCompactXml25NamedWriterTest {
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
 
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
@@ -815,7 +815,7 @@ public class LightCompactXml25NamedWriterTest {
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
 
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
@@ -840,7 +840,7 @@ public class LightCompactXml25NamedWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultNamedParticipant(complex);
         interaction.addParticipant(participant);
@@ -860,7 +860,7 @@ public class LightCompactXml25NamedWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         Interaction interaction = new DefaultNamedInteraction();
@@ -879,7 +879,7 @@ public class LightCompactXml25NamedWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -898,7 +898,7 @@ public class LightCompactXml25NamedWriterTest {
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
 
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
@@ -921,7 +921,7 @@ public class LightCompactXml25NamedWriterTest {
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightCompactXml25NamedWriter writer = new LightCompactXml25NamedWriter(stringWriter);
+        LightCompactXmlNamedWriter writer = new LightCompactXmlNamedWriter(stringWriter);
 
         Interaction interaction = new DefaultNamedInteraction();
         Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));

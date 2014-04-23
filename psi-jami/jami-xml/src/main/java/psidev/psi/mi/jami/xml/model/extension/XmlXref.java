@@ -40,7 +40,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlXref
-    implements ExtendedPsi25Xref, FileSourceContext, Locatable
+    implements ExtendedPsiXmlXref, FileSourceContext, Locatable
 {
 
     private CvTerm database;

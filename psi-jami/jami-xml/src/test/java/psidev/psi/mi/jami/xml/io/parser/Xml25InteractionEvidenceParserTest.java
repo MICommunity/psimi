@@ -7,9 +7,9 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Experiment;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25ParticipantEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
 
 import javax.xml.bind.JAXBException;
@@ -20,7 +20,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit tester for Xml25EvidenceParser
+ * Unit tester for XmlEvidenceParser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -33,7 +33,7 @@ public class Xml25InteractionEvidenceParserTest {
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
-        PsiXml25Parser<InteractionEvidence> parser = new Xml25EvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -43,7 +43,7 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertNull(interaction.getImexId());
         Assert.assertEquals(2, interaction.getIdentifiers().size());
         Assert.assertEquals("copyright", interaction.getAvailability());
-        Assert.assertEquals(100000000, ((ExtendedPsi25InteractionEvidence) interaction).getXmlAvailability().getId());
+        Assert.assertEquals(100000000, ((ExtendedPsiXmlInteractionEvidence) interaction).getXmlAvailability().getId());
 
         // identifiers
         Iterator<Xref> identifierIterator = interaction.getIdentifiers().iterator();
@@ -63,7 +63,7 @@ public class Xml25InteractionEvidenceParserTest {
 
         // experiment
         Assert.assertNotNull(interaction.getExperiment());
-        ExtendedPsi25Experiment exp = (ExtendedPsi25Experiment)interaction.getExperiment();
+        ExtendedPsiXmlExperiment exp = (ExtendedPsiXmlExperiment)interaction.getExperiment();
         Assert.assertEquals("dohrmann-1999-1", exp.getShortName());
         Assert.assertEquals("RAD53 regulates DBF4 independently of checkpoint function in Saccharomyces cerevisiae.", exp.getFullName());
         Assert.assertEquals(3, exp.getXrefs().size());
@@ -133,9 +133,9 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals("mint", comment.getValue());
 
         // boolean
-        Assert.assertTrue(((ExtendedPsi25InteractionEvidence) interaction).isModelled());
+        Assert.assertTrue(((ExtendedPsiXmlInteractionEvidence) interaction).isModelled());
         Assert.assertFalse(interaction.isNegative());
-        Assert.assertFalse(((ExtendedPsi25InteractionEvidence) interaction).isIntraMolecular());
+        Assert.assertFalse(((ExtendedPsiXmlInteractionEvidence) interaction).isIntraMolecular());
         // interaction type
         Assert.assertNotNull(interaction.getInteractionType());
         method = interaction.getInteractionType();
@@ -150,7 +150,7 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<ParticipantEvidence> partIterator = interaction.getParticipants().iterator();
         ParticipantEvidence p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortName());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipantEvidence) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -186,8 +186,8 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals(1, p1.getIdentificationMethods().size());
         Assert.assertNotSame(p1.getIdentificationMethods().iterator().next(), exp.getParticipantIdentificationMethod());
         // experimental interactor
-        Assert.assertEquals(1, ((ExtendedPsi25ParticipantEvidence) p1).getExperimentalInteractors().size());
-        ExperimentalInteractor expInteractor = ((ExtendedPsi25ParticipantEvidence) p1).getExperimentalInteractors().iterator().next();
+        Assert.assertEquals(1, ((ExtendedPsiXmlParticipantEvidence) p1).getExperimentalInteractors().size());
+        ExperimentalInteractor expInteractor = ((ExtendedPsiXmlParticipantEvidence) p1).getExperimentalInteractors().iterator().next();
         Assert.assertNotNull(expInteractor.getInteractor());
         Assert.assertTrue(expInteractor.getExperiments().isEmpty());
         Assert.assertEquals("dbf4_yeast", expInteractor.getInteractor().getShortName());
@@ -246,7 +246,7 @@ public class Xml25InteractionEvidenceParserTest {
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
-        PsiXml25Parser<InteractionEvidence> parser = new Xml25EvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
 
@@ -256,7 +256,7 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertNull(interaction.getImexId());
         Assert.assertEquals(2, interaction.getIdentifiers().size());
         Assert.assertEquals("copyright", interaction.getAvailability());
-        Assert.assertEquals(100000000, ((ExtendedPsi25InteractionEvidence) interaction).getXmlAvailability().getId());
+        Assert.assertEquals(100000000, ((ExtendedPsiXmlInteractionEvidence) interaction).getXmlAvailability().getId());
 
         // identifiers
         Iterator<Xref> identifierIterator = interaction.getIdentifiers().iterator();
@@ -276,7 +276,7 @@ public class Xml25InteractionEvidenceParserTest {
 
         // experiment
         Assert.assertNotNull(interaction.getExperiment());
-        ExtendedPsi25Experiment exp = (ExtendedPsi25Experiment)interaction.getExperiment();
+        ExtendedPsiXmlExperiment exp = (ExtendedPsiXmlExperiment)interaction.getExperiment();
         Assert.assertEquals("dohrmann-1999-1", exp.getShortName());
         Assert.assertEquals("RAD53 regulates DBF4 independently of checkpoint function in Saccharomyces cerevisiae.", exp.getFullName());
         Assert.assertEquals(3, exp.getXrefs().size());
@@ -346,9 +346,9 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals("mint", comment.getValue());
 
         // boolean
-        Assert.assertTrue(((ExtendedPsi25InteractionEvidence) interaction).isModelled());
+        Assert.assertTrue(((ExtendedPsiXmlInteractionEvidence) interaction).isModelled());
         Assert.assertFalse(interaction.isNegative());
-        Assert.assertFalse(((ExtendedPsi25InteractionEvidence) interaction).isIntraMolecular());
+        Assert.assertFalse(((ExtendedPsiXmlInteractionEvidence) interaction).isIntraMolecular());
         // interaction type
         Assert.assertNotNull(interaction.getInteractionType());
         method = interaction.getInteractionType();
@@ -363,7 +363,7 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<ParticipantEvidence> partIterator = interaction.getParticipants().iterator();
         ParticipantEvidence p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortName());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipantEvidence) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
@@ -399,8 +399,8 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals(1, p1.getIdentificationMethods().size());
         Assert.assertNotSame(p1.getIdentificationMethods().iterator().next(), exp.getParticipantIdentificationMethod());
         // experimental interactor
-        Assert.assertEquals(1, ((ExtendedPsi25ParticipantEvidence) p1).getExperimentalInteractors().size());
-        ExperimentalInteractor expInteractor = ((ExtendedPsi25ParticipantEvidence) p1).getExperimentalInteractors().iterator().next();
+        Assert.assertEquals(1, ((ExtendedPsiXmlParticipantEvidence) p1).getExperimentalInteractors().size());
+        ExperimentalInteractor expInteractor = ((ExtendedPsiXmlParticipantEvidence) p1).getExperimentalInteractors().iterator().next();
         Assert.assertNotNull(expInteractor.getInteractor());
         Assert.assertTrue(expInteractor.getExperiments().isEmpty());
         Assert.assertEquals("dbf4_yeast", expInteractor.getInteractor().getShortName());
@@ -459,7 +459,7 @@ public class Xml25InteractionEvidenceParserTest {
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
-        PsiXml25Parser<InteractionEvidence> parser = new Xml25EvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
 
@@ -469,7 +469,7 @@ public class Xml25InteractionEvidenceParserTest {
 
         // experiment
         Assert.assertNotNull(interaction.getExperiment());
-        ExtendedPsi25Experiment exp = (ExtendedPsi25Experiment)interaction.getExperiment();
+        ExtendedPsiXmlExperiment exp = (ExtendedPsiXmlExperiment)interaction.getExperiment();
         Assert.assertEquals("dohrmann-1999-1", exp.getShortName());
         // publication
         Assert.assertNotNull(exp.getPublication());
@@ -491,7 +491,7 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         Iterator<ParticipantEvidence> partIterator = interaction.getParticipants().iterator();
         ParticipantEvidence p1 = partIterator.next();
-        Assert.assertEquals("rad53_yeast", ((ExtendedPsi25ParticipantEvidence) p1).getShortName());
+        Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipantEvidence) p1).getShortName());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
         FeatureEvidence f = p1.getFeatures().iterator().next();
@@ -521,7 +521,7 @@ public class Xml25InteractionEvidenceParserTest {
 
         // experiment
         Assert.assertNotNull(interaction.getExperiment());
-        exp = (ExtendedPsi25Experiment)interaction.getExperiment();
+        exp = (ExtendedPsiXmlExperiment)interaction.getExperiment();
         Assert.assertEquals("liu-2011d-10", exp.getShortName());
         // publication
         Assert.assertNotNull(exp.getPublication());
@@ -544,7 +544,7 @@ public class Xml25InteractionEvidenceParserTest {
         Assert.assertEquals(2, interaction.getParticipants().size());
         partIterator = interaction.getParticipants().iterator();
          p1 = partIterator.next();
-        Assert.assertEquals("n/a", ((ExtendedPsi25ParticipantEvidence) p1).getShortName());
+        Assert.assertEquals("n/a", ((ExtendedPsiXmlParticipantEvidence) p1).getShortName());
         // features
         Assert.assertEquals(2, p1.getFeatures().size());
         f = p1.getFeatures().iterator().next();
@@ -570,7 +570,7 @@ public class Xml25InteractionEvidenceParserTest {
     @Test
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
-        PsiXml25Parser<InteractionEvidence> parser = new Xml25EvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
 
         InteractionEvidence interaction = parser.parseNextInteraction();
 
@@ -583,7 +583,7 @@ public class Xml25InteractionEvidenceParserTest {
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        PsiXml25Parser<InteractionEvidence> parser = new Xml25EvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();
@@ -613,7 +613,7 @@ public class Xml25InteractionEvidenceParserTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXml25Parser<InteractionEvidence> parser = new Xml25EvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();
@@ -634,7 +634,7 @@ public class Xml25InteractionEvidenceParserTest {
         InputStream stream = new FileInputStream("/home/marine/Downloads/BIOGRID-ALL-3.2.97.psi25.xml");
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXml25Parser<InteractionEvidence> parser = new Xml25EvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();

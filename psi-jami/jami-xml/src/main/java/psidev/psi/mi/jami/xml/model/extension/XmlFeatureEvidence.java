@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>24/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, FeatureEvidence> implements ExtendedPsi25FeatureEvidence{
+public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, FeatureEvidence> implements ExtendedPsiXmlFeatureEvidence {
 
     private List<CvTerm> featureDetectionMethods;
     private boolean initialisedMethods = false;
@@ -175,9 +175,9 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
         if (originalParticipant != null){
             AbstractXmlInteractionEvidence interaction = originalParticipant.getOriginalInteraction();
             if (interaction != null){
-                List<ExtendedPsi25Experiment> originalExperiments = interaction.getOriginalExperiments();
+                List<ExtendedPsiXmlExperiment> originalExperiments = interaction.getOriginalExperiments();
                 if (originalExperiments != null && !originalExperiments.isEmpty()){
-                    for (ExtendedPsi25Experiment exp : originalExperiments){
+                    for (ExtendedPsiXmlExperiment exp : originalExperiments){
                         if (exp.getFeatureDetectionMethod() != null){
                             this.featureDetectionMethods.add(exp.getFeatureDetectionMethod());
                         }

@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Unit tester for Xml25EvidenceStreamSource
+ * Unit tester for XmlEvidenceStreamSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -24,22 +24,22 @@ public class Xml25EvidenceStreamSourceTest {
 
     @Test(expected = IllegalStateException.class)
     public void test_validate_fails_not_initialised(){
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource();
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource();
         dataSource.validateSyntax();
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_iterate_fails_not_initialised(){
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource();
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource();
         dataSource.getInteractionsIterator();
     }
 
     @Test
     public void validate_valid_file(){
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource(Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource(Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         Assert.assertTrue(dataSource.validateSyntax());
 
-        dataSource = new Xml25EvidenceStreamSource();
+        dataSource = new XmlEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
@@ -50,10 +50,10 @@ public class Xml25EvidenceStreamSourceTest {
 
     @Test
     public void validate_invalid_file(){
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource(Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/empty.xml"));
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource(Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/empty.xml"));
         Assert.assertFalse(dataSource.validateSyntax());
 
-        dataSource = new Xml25EvidenceStreamSource();
+        dataSource = new XmlEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/empty.xml"));
         dataSource.initialiseContext(options);
@@ -63,7 +63,7 @@ public class Xml25EvidenceStreamSourceTest {
 
     @Test
     public void parse_valid_file() throws IOException {
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource(new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource(new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
@@ -71,7 +71,7 @@ public class Xml25EvidenceStreamSourceTest {
         Assert.assertTrue(dataSource.validateSyntax());
         dataSource.close();
 
-        dataSource = new Xml25EvidenceStreamSource();
+        dataSource = new XmlEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);
@@ -85,13 +85,13 @@ public class Xml25EvidenceStreamSourceTest {
 
     @Test
     public void iterate_invalid_file(){
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource(new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/empty.xml").getFile()));
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource(new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/empty.xml").getFile()));
         Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
 
-        dataSource = new Xml25EvidenceStreamSource();
+        dataSource = new XmlEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/empty.xml").getFile()));
         dataSource.initialiseContext(options);
@@ -103,7 +103,7 @@ public class Xml25EvidenceStreamSourceTest {
 
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit(){
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource(Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource(Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
     }
@@ -111,7 +111,7 @@ public class Xml25EvidenceStreamSourceTest {
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit_2(){
 
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource();
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25EvidenceStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
@@ -121,7 +121,7 @@ public class Xml25EvidenceStreamSourceTest {
 
     @Test
     public void test_validate_datasource_reinit() throws IOException {
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource(new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource(new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<InteractionEvidence> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
@@ -135,7 +135,7 @@ public class Xml25EvidenceStreamSourceTest {
     @Test
     public void test_validate_datasource_reinit_2(){
 
-        Xml25EvidenceStreamSource dataSource = new Xml25EvidenceStreamSource();
+        XmlEvidenceStreamSource dataSource = new XmlEvidenceStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25EvidenceStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);

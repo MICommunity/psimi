@@ -29,7 +29,7 @@ import java.util.List;
  * @since <pre>09/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlInteraction<T extends Participant> implements ExtendedPsi25Interaction<T>, FileSourceContext, Locatable{
+public abstract class AbstractXmlInteraction<T extends Participant> implements ExtendedPsiXmlInteraction<T>, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private InteractionXrefContainer xrefContainer;

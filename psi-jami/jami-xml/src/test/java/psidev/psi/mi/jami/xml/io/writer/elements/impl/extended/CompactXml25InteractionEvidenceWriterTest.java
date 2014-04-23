@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -756,7 +756,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
@@ -770,7 +770,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_participant_complex() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
         ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
@@ -786,7 +786,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_participant_complex_as_interactor() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
         ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
@@ -803,7 +803,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_participant_complex_no_participants() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
         ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
         interaction.addParticipant(participant);
@@ -818,7 +818,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_shortName() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence("interaction test");
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence("interaction test");
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
@@ -863,7 +863,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_identifier() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("intact"), "EBI-xxx"));
@@ -879,7 +879,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_xref() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
@@ -896,7 +896,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
     @Test
     @Ignore
     public void test_write_interaction_inferred() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         ParticipantEvidence participant2 = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         ParticipantEvidence participant3 = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
@@ -937,7 +937,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_type() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
@@ -952,7 +952,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_attributes() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
@@ -968,7 +968,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_registered() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
@@ -984,7 +984,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_negative() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setNegative(true);
@@ -999,7 +999,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_confidences() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getConfidences().add(new DefaultConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
@@ -1014,7 +1014,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_parameters() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getParameters().add(new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
@@ -1029,7 +1029,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_intraMolecular() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setIntraMolecular(true);
@@ -1044,7 +1044,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_modelled() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setModelled(true);
@@ -1059,7 +1059,7 @@ public class CompactXml25InteractionEvidenceWriterTest extends AbstractXml25Writ
 
     @Test
     public void test_write_interaction_availability() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setAvailability("copyright");

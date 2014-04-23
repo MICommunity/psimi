@@ -18,7 +18,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for ExpandedXml25NamedModelledBinaryWriter
+ * Unit tester for ExpandedXmlNamedModelledBinaryWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -1132,13 +1132,13 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter();
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter();
         writer.write(new DefaultNamedModelledBinaryInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter();
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter();
         writer.initialiseContext(null);
     }
 
@@ -1146,7 +1146,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1162,7 +1162,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
 
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
@@ -1183,7 +1183,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1203,7 +1203,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
 
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
@@ -1224,7 +1224,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
 
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
@@ -1248,7 +1248,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(complex);
         interaction.addParticipant(participant);
@@ -1268,7 +1268,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
@@ -1287,7 +1287,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1305,7 +1305,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
 
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
@@ -1327,7 +1327,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
 
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
@@ -1349,7 +1349,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_interaction_source() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1375,7 +1375,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
     public void test_interactions_different_sources() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
 
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
@@ -1417,7 +1417,7 @@ public class ExpandedXml25NamedModelledBinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
 
-        ExpandedXml25NamedModelledBinaryWriter writer = new ExpandedXml25NamedModelledBinaryWriter(stringWriter);
+        ExpandedXmlNamedModelledBinaryWriter writer = new ExpandedXmlNamedModelledBinaryWriter(stringWriter);
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(complex.getParticipants().iterator().next().getInteractor());
         interaction.addParticipant(participant);

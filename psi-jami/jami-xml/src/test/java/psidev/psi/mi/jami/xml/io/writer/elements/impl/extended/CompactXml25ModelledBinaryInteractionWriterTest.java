@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interaction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.binary.XmlModelledBinaryInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -785,7 +785,7 @@ public class CompactXml25ModelledBinaryInteractionWriterTest extends AbstractXml
 
     @Test
     public void test_write_interaction_intraMolecular() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25Interaction interaction = new XmlModelledBinaryInteraction();
+        ExtendedPsiXmlInteraction interaction = new XmlModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setIntraMolecular(true);

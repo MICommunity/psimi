@@ -16,7 +16,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for CompactXml25NamedEvidenceWriter
+ * Unit tester for CompactXmlNamedEvidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -1199,13 +1199,13 @@ public class CompactXml25NamedEvidenceWriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter();
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter();
         writer.write(new DefaultNamedInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter();
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter();
         writer.initialiseContext(null);
     }
 
@@ -1213,7 +1213,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1231,7 +1231,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1255,7 +1255,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1278,7 +1278,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1302,7 +1302,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1329,7 +1329,7 @@ public class CompactXml25NamedEvidenceWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
@@ -1350,7 +1350,7 @@ public class CompactXml25NamedEvidenceWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
@@ -1370,7 +1370,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1390,7 +1390,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1415,7 +1415,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1439,7 +1439,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_interaction_source() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1467,7 +1467,7 @@ public class CompactXml25NamedEvidenceWriterTest {
     public void test_interactions_different_sources() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
@@ -1511,7 +1511,7 @@ public class CompactXml25NamedEvidenceWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("protein test")));
 
-        CompactXml25NamedEvidenceWriter writer = new CompactXml25NamedEvidenceWriter(stringWriter);
+        CompactXmlNamedEvidenceWriter writer = new CompactXmlNamedEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         interaction.setAvailability("copyright");
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex.getParticipants().iterator().next().getInteractor());

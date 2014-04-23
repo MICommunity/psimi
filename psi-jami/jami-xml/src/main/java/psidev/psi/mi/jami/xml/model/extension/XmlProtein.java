@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlProtein extends DefaultProtein implements ExtendedPsi25Interactor, FileSourceContext{
+public class XmlProtein extends DefaultProtein implements ExtendedPsiXmlInteractor, FileSourceContext{
 
     private int id;
     private PsiXmLocator sourceLocator;

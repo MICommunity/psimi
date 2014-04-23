@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Experiment;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
@@ -47,7 +47,7 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
 
     @Override
     protected void writeOtherProperties(Experiment object) throws XMLStreamException {
-        ExtendedPsi25Experiment xmlExperiment = (ExtendedPsi25Experiment)object;
+        ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
         // write participant identification method
         CvTerm identificationMethod = xmlExperiment.getParticipantIdentificationMethod();
         if (identificationMethod != null){
@@ -64,7 +64,7 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
 
     @Override
     protected void writeHostOrganism(Experiment object) throws XMLStreamException {
-        ExtendedPsi25Experiment xmlExperiment = (ExtendedPsi25Experiment)object;
+        ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
         // write hostOrganismList
         List<Organism> hostList = xmlExperiment.getHostOrganisms();
         if (!hostList.isEmpty()){

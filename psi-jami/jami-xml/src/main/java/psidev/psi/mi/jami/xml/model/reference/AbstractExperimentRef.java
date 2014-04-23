@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.model.reference;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Experiment;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 
 import java.util.Collection;
@@ -17,9 +17,9 @@ import java.util.logging.Logger;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractExperimentRef extends AbstractXmlIdReference implements ExtendedPsi25Experiment{
+public abstract class AbstractExperimentRef extends AbstractXmlIdReference implements ExtendedPsiXmlExperiment {
     private static final Logger logger = Logger.getLogger("AbstractFeatureRef");
-    private ExtendedPsi25Experiment delegate;
+    private ExtendedPsiXmlExperiment delegate;
 
     public AbstractExperimentRef(int ref) {
         super(ref);
@@ -298,7 +298,7 @@ public abstract class AbstractExperimentRef extends AbstractXmlIdReference imple
         this.delegate.setId(this.ref);
     }
 
-    protected ExtendedPsi25Experiment getDelegate() {
+    protected ExtendedPsiXmlExperiment getDelegate() {
         return delegate;
     }
 }

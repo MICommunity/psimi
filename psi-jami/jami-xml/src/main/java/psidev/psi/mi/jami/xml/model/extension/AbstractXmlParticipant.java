@@ -31,7 +31,7 @@ import java.util.List;
  * @since <pre>07/10/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlParticipant<I extends Interaction, F extends Feature> implements ExtendedPsi25Participant<I, F>, FileSourceContext, Locatable{
+public abstract class AbstractXmlParticipant<I extends Interaction, F extends Feature> implements ExtendedPsiXmlParticipant<I, F>, FileSourceContext, Locatable{
 
     private I interaction;
     private Interactor interactor;

@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlTransient
-public class XmlComplex extends DefaultComplex implements ExtendedPsi25Interactor,FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant>{
+public class XmlComplex extends DefaultComplex implements ExtendedPsiXmlInteractor,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
 
     private int id;
     private PsiXmLocator sourceLocator;
