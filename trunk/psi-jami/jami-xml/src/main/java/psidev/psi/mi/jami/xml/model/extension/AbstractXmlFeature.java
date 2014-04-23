@@ -25,7 +25,7 @@ import java.util.List;
  */
 @XmlTransient
 public abstract class AbstractXmlFeature<P extends Participant, F extends Feature> implements
-        Feature<P,F>, FileSourceContext, Locatable, ExtendedPsi25Feature<P,F>{
+        Feature<P,F>, FileSourceContext, Locatable, ExtendedPsiXmlFeature<P,F> {
 
     private P participant;
     private Collection<F> linkedFeatures;

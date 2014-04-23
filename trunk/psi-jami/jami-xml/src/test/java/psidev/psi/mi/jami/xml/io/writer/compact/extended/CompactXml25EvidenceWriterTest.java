@@ -16,7 +16,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for CompactXml25EvidenceWriter
+ * Unit tester for CompactXmlEvidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -1199,13 +1199,13 @@ public class CompactXml25EvidenceWriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter();
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter();
         writer.write(new XmlInteractionEvidence());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter();
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter();
         writer.initialiseContext(null);
     }
 
@@ -1213,7 +1213,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1231,7 +1231,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
@@ -1255,7 +1255,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1278,7 +1278,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
@@ -1302,7 +1302,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
@@ -1329,7 +1329,7 @@ public class CompactXml25EvidenceWriterTest {
         Complex complex = new XmlComplex("test complex");
         complex.getParticipants().add(new XmlModelledParticipant(new XmlProtein("test protein")));
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(complex);
         interaction.addParticipant(participant);
@@ -1350,7 +1350,7 @@ public class CompactXml25EvidenceWriterTest {
         Complex complex = new XmlComplex("test complex");
         complex.getParticipants().add(new XmlModelledParticipant(new XmlProtein("test protein")));
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         InteractionEvidence interaction = new XmlInteractionEvidence();
@@ -1370,7 +1370,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1390,7 +1390,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
@@ -1415,7 +1415,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
@@ -1439,7 +1439,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_interaction_source() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
         interaction.addParticipant(participant);
@@ -1467,7 +1467,7 @@ public class CompactXml25EvidenceWriterTest {
     public void test_interactions_different_sources() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
 
         InteractionEvidence interaction = new XmlInteractionEvidence();
         ParticipantEvidence participant = new XmlParticipantEvidence(new XmlProtein("protein test"));
@@ -1511,7 +1511,7 @@ public class CompactXml25EvidenceWriterTest {
         Complex complex = new XmlComplex("test complex");
         complex.getParticipants().add(new XmlModelledParticipant(new XmlProtein("protein test")));
 
-        CompactXml25EvidenceWriter writer = new CompactXml25EvidenceWriter(stringWriter);
+        CompactXmlEvidenceWriter writer = new CompactXmlEvidenceWriter(stringWriter);
         InteractionEvidence interaction = new XmlInteractionEvidence();
         interaction.setAvailability("copyright");
         ParticipantEvidence participant = new XmlParticipantEvidence(complex.getParticipants().iterator().next().getInteractor());

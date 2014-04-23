@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Source;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Source;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
@@ -32,7 +32,7 @@ public class XmlSourceWriter extends psidev.psi.mi.jami.xml.io.writer.elements.i
 
     @Override
     protected void writeReleaseAttributes(Source object) throws XMLStreamException {
-        ExtendedPsi25Source xmlSource = (ExtendedPsi25Source) object;
+        ExtendedPsiXmlSource xmlSource = (ExtendedPsiXmlSource) object;
         if (xmlSource.getRelease() != null){
             getStreamWriter().writeAttribute("release", xmlSource.getRelease());
         }

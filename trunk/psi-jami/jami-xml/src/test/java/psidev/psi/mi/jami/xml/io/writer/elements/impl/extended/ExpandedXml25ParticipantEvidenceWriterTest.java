@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25ParticipantEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -977,7 +977,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXml25Wri
 
     @Test
     public void test_write_participant_experimental_interactor() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ExtendedPsiXmlParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         ExperimentalInteractor interactor = new ExperimentalInteractor();
         interactor.setInteractor(new DefaultProtein("experimental test"));
         participant.getExperimentalInteractors().add(interactor);

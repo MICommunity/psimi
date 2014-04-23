@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.model;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Source;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 @XmlTransient
 public class Entry {
 
-    private ExtendedPsi25Source source;
+    private ExtendedPsiXmlSource source;
     private List<Annotation> annotations;
     private List<AbstractAvailability> availabilities;
     private boolean hasLoadedFullEntry = false;
@@ -27,11 +27,11 @@ public class Entry {
     public Entry(){
     }
 
-    public ExtendedPsi25Source getSource() {
+    public ExtendedPsiXmlSource getSource() {
         return source;
     }
 
-    public void setSource(ExtendedPsi25Source source) {
+    public void setSource(ExtendedPsiXmlSource source) {
         this.source = source;
     }
 

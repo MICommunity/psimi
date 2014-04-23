@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interaction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.XmlBasicInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -1064,7 +1064,7 @@ public class ExpandedXml25BasicInteractionWriterTest extends AbstractXml25Writer
 
     @Test
     public void test_write_interaction_intraMolecular() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25Interaction interaction = new XmlBasicInteraction();
+        ExtendedPsiXmlInteraction interaction = new XmlBasicInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.setIntraMolecular(true);

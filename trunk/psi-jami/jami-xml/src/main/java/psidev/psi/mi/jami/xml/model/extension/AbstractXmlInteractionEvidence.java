@@ -26,7 +26,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEvidence> implements ExtendedPsi25InteractionEvidence{
+public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEvidence> implements ExtendedPsiXmlInteractionEvidence {
 
     private AbstractAvailability availability;
     private boolean isInferred;
@@ -361,7 +361,7 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteract
         return jaxbExperimentWrapper;
     }
 
-    protected List<ExtendedPsi25Experiment> getOriginalExperiments(){
+    protected List<ExtendedPsiXmlExperiment> getOriginalExperiments(){
         return jaxbExperimentWrapper != null ? jaxbExperimentWrapper.jaxbExperiments : Collections.EMPTY_LIST;
     }
 
@@ -568,7 +568,7 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteract
     @XmlType(name = "experimentListType")
     public static class JAXBExperimentWrapper implements Locatable, FileSourceContext{
 
-        private List<ExtendedPsi25Experiment> jaxbExperiments;
+        private List<ExtendedPsiXmlExperiment> jaxbExperiments;
         private PsiXmLocator sourceLocator;
         @XmlLocation
         @XmlTransient
@@ -582,9 +582,9 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteract
         }
 
         @XmlElement(name="experimentDescription", required = true, type = XmlExperiment.class)
-        public List<ExtendedPsi25Experiment> getJAXBExperimentDescriptions() {
+        public List<ExtendedPsiXmlExperiment> getJAXBExperimentDescriptions() {
             if (jaxbExperiments == null){
-                jaxbExperiments = new ArrayList<ExtendedPsi25Experiment>();
+                jaxbExperiments = new ArrayList<ExtendedPsiXmlExperiment>();
             }
             return jaxbExperiments;
         }
@@ -632,7 +632,7 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteract
 
             public JAXBExperimentRefList(){
                 super();
-                jaxbExperiments = new ArrayList<ExtendedPsi25Experiment>();
+                jaxbExperiments = new ArrayList<ExtendedPsiXmlExperiment>();
             }
 
             @Override
@@ -703,8 +703,8 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteract
                 public boolean resolve(PsiXmlIdCache parsedObjects) {
                     if (parsedObjects.contains(this.ref)){
                         Object obj = parsedObjects.get(this.ref);
-                        if (obj instanceof ExtendedPsi25Experiment){
-                            ExtendedPsi25Experiment exp = (ExtendedPsi25Experiment)obj;
+                        if (obj instanceof ExtendedPsiXmlExperiment){
+                            ExtendedPsiXmlExperiment exp = (ExtendedPsiXmlExperiment)obj;
                             experiments.remove(this);
                             experiments.add(exp);
                             jaxbExperiments.add(exp);

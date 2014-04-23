@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.model.Entry;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interaction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 
@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>29/10/13</pre>
  */
 
-public abstract class AbstractXmlBinaryInteraction<P extends Participant> extends AbstractBinaryInteraction<P> implements ExtendedPsi25Interaction<P>, FileSourceContext {
+public abstract class AbstractXmlBinaryInteraction<P extends Participant> extends AbstractBinaryInteraction<P> implements ExtendedPsiXmlInteraction<P>, FileSourceContext {
 
     private PsiXmLocator sourceLocator;
     private String fullName;

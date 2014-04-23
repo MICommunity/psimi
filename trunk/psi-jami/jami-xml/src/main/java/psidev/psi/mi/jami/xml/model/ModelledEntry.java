@@ -35,7 +35,7 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
     }
 
     @XmlElement(name = "source", type = XmlSource.class)
-    public void setJAXBSource(ExtendedPsi25Source source) {
+    public void setJAXBSource(ExtendedPsiXmlSource source) {
         super.setSource(source);
     }
 

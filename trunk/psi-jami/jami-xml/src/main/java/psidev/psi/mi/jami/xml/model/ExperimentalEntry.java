@@ -34,7 +34,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence>{
         return this.experimentsWrapper != null ? this.experimentsWrapper.experiments : Collections.EMPTY_LIST;
     }
     @XmlElement(name = "source", type = XmlSource.class)
-    public void setJAXBSource(ExtendedPsi25Source source) {
+    public void setJAXBSource(ExtendedPsiXmlSource source) {
         super.setSource(source);
     }
 

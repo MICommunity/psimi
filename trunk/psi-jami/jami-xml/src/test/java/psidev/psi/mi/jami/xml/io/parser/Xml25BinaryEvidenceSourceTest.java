@@ -13,7 +13,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Unit tester for Xml25BinaryEvidenceSource
+ * Unit tester for XmlBinaryEvidenceSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -24,22 +24,22 @@ public class Xml25BinaryEvidenceSourceTest {
 
     @Test(expected = IllegalStateException.class)
     public void test_validate_fails_not_initialised(){
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource();
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource();
         dataSource.validateSyntax();
     }
 
     @Test(expected = IllegalStateException.class)
     public void test_iterate_fails_not_initialised(){
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource();
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource();
         dataSource.getInteractionsIterator();
     }
 
     @Test
     public void validate_valid_file(){
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource(Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource(Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         Assert.assertTrue(dataSource.validateSyntax());
 
-        dataSource = new Xml25BinaryEvidenceSource();
+        dataSource = new XmlBinaryEvidenceSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
@@ -50,10 +50,10 @@ public class Xml25BinaryEvidenceSourceTest {
 
     @Test
     public void validate_invalid_file(){
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource(Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/empty.xml"));
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource(Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/empty.xml"));
         Assert.assertFalse(dataSource.validateSyntax());
 
-        dataSource = new Xml25BinaryEvidenceSource();
+        dataSource = new XmlBinaryEvidenceSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/empty.xml"));
         dataSource.initialiseContext(options);
@@ -63,7 +63,7 @@ public class Xml25BinaryEvidenceSourceTest {
 
     @Test
     public void parse_valid_file() throws IOException {
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource(new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource(new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
@@ -71,7 +71,7 @@ public class Xml25BinaryEvidenceSourceTest {
         Assert.assertTrue(dataSource.validateSyntax());
         dataSource.close();
 
-        dataSource = new Xml25BinaryEvidenceSource();
+        dataSource = new XmlBinaryEvidenceSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);
@@ -85,13 +85,13 @@ public class Xml25BinaryEvidenceSourceTest {
 
     @Test
     public void iterate_invalid_file(){
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource(new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/empty.xml").getFile()));
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource(new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/empty.xml").getFile()));
         Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
 
-        dataSource = new Xml25BinaryEvidenceSource();
+        dataSource = new XmlBinaryEvidenceSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/empty.xml").getFile()));
         dataSource.initialiseContext(options);
@@ -103,7 +103,7 @@ public class Xml25BinaryEvidenceSourceTest {
 
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit(){
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource(Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource(Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
     }
@@ -111,7 +111,7 @@ public class Xml25BinaryEvidenceSourceTest {
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit_2(){
 
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource();
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, Xml25BinaryEvidenceSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
@@ -121,7 +121,7 @@ public class Xml25BinaryEvidenceSourceTest {
 
     @Test
     public void test_validate_datasource_reinit() throws IOException {
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource(new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource(new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<BinaryInteractionEvidence> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
@@ -135,7 +135,7 @@ public class Xml25BinaryEvidenceSourceTest {
     @Test
     public void test_validate_datasource_reinit_2(){
 
-        Xml25BinaryEvidenceSource dataSource = new Xml25BinaryEvidenceSource();
+        XmlBinaryEvidenceSource dataSource = new XmlBinaryEvidenceSource();
         Map<String, Object> options = new HashMap<String, Object>();
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(Xml25BinaryEvidenceSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);

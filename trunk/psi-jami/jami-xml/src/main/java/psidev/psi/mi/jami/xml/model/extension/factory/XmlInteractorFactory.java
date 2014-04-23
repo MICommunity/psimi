@@ -66,22 +66,22 @@ public class XmlInteractorFactory extends InteractorFactory{
     }
 
     @Override
-    public ExtendedPsi25Interactor createInteractorFromInteractorType(CvTerm type, String name) {
-        return (ExtendedPsi25Interactor) super.createInteractorFromInteractorType(type, name);
+    public ExtendedPsiXmlInteractor createInteractorFromInteractorType(CvTerm type, String name) {
+        return (ExtendedPsiXmlInteractor) super.createInteractorFromInteractorType(type, name);
     }
 
     @Override
-    public ExtendedPsi25Interactor createInteractorFromDatabase(CvTerm database, String name) {
-        return (ExtendedPsi25Interactor)super.createInteractorFromDatabase(database, name);
+    public ExtendedPsiXmlInteractor createInteractorFromDatabase(CvTerm database, String name) {
+        return (ExtendedPsiXmlInteractor)super.createInteractorFromDatabase(database, name);
     }
 
     @Override
-    public ExtendedPsi25Interactor createInteractorFromIdentityXrefs(Collection<? extends Xref> xrefs, String name) {
-        return (ExtendedPsi25Interactor)super.createInteractorFromIdentityXrefs(xrefs, name);
+    public ExtendedPsiXmlInteractor createInteractorFromIdentityXrefs(Collection<? extends Xref> xrefs, String name) {
+        return (ExtendedPsiXmlInteractor)super.createInteractorFromIdentityXrefs(xrefs, name);
     }
 
     public Interactor createInteractorFromXmlInteractorInstance(AbstractXmlInteractor source){
-        ExtendedPsi25Interactor reloadedInteractorDependingOnType = createInteractorFromInteractorType(source.getInteractorType(), source.getShortName());
+        ExtendedPsiXmlInteractor reloadedInteractorDependingOnType = createInteractorFromInteractorType(source.getInteractorType(), source.getShortName());
         if (reloadedInteractorDependingOnType == null){
             reloadedInteractorDependingOnType = createInteractorFromIdentityXrefs(source.getIdentifiers(), source.getShortName());
         }

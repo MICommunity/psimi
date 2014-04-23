@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.model.extension.BibRef;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interaction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
@@ -51,7 +51,7 @@ public abstract class AbstractXmlInteractionWriter<I extends Interaction, P exte
 
     @Override
     protected void writeIntraMolecular(Interaction object) throws XMLStreamException {
-        ExtendedPsi25Interaction xmlInteraction = (ExtendedPsi25Interaction)object;
+        ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
         if (xmlInteraction.isIntraMolecular()){
             getStreamWriter().writeStartElement("intraMolecular");
             getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));
@@ -62,7 +62,7 @@ public abstract class AbstractXmlInteractionWriter<I extends Interaction, P exte
 
     @Override
     protected void writeInteractionType(Interaction object) throws XMLStreamException {
-        ExtendedPsi25Interaction xmlInteraction = (ExtendedPsi25Interaction)object;
+        ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
         if (!xmlInteraction.getInteractionTypes().isEmpty()){
             for (Object type : xmlInteraction.getInteractionTypes()){
                 getInteractionTypeWriter().write((CvTerm)type);
@@ -72,7 +72,7 @@ public abstract class AbstractXmlInteractionWriter<I extends Interaction, P exte
 
     @Override
     protected void writeInferredInteractions(Interaction object) throws XMLStreamException {
-        ExtendedPsi25Interaction xmlInteraction = (ExtendedPsi25Interaction)object;
+        ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
         if (!xmlInteraction.getInferredInteractions().isEmpty()){
             getStreamWriter().writeStartElement("inferredInteractionList");
             for (Object inferred : xmlInteraction.getInferredInteractions()){

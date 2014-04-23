@@ -26,7 +26,7 @@ import java.util.*;
  * @since <pre>30/10/13</pre>
  */
 
-public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsi25Interaction<ModelledParticipant> {
+public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
 
     private AbstractXmlBasicInteraction interaction;
     private SynchronizedModelledParticipantList modelledParticipants;

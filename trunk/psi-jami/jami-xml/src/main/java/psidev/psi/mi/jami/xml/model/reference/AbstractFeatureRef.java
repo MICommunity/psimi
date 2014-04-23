@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.model.reference;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Feature;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlFeature;
 
 import java.util.Collection;
 import java.util.logging.Level;
@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractFeatureRef<E extends Participant, F extends Feature> extends AbstractXmlIdReference implements ExtendedPsi25Feature<E,F>{
+public abstract class AbstractFeatureRef<E extends Participant, F extends Feature> extends AbstractXmlIdReference implements ExtendedPsiXmlFeature<E,F> {
     private static final Logger logger = Logger.getLogger("AbstractFeatureRef");
-    private ExtendedPsi25Feature<E,F> delegate;
+    private ExtendedPsiXmlFeature<E,F> delegate;
 
     public AbstractFeatureRef(int ref) {
         super(ref);
@@ -196,11 +196,11 @@ public abstract class AbstractFeatureRef<E extends Participant, F extends Featur
     }
     protected abstract void initialiseFeatureDelegate();
 
-    protected ExtendedPsi25Feature<E, F> getDelegate() {
+    protected ExtendedPsiXmlFeature<E, F> getDelegate() {
         return delegate;
     }
 
-    protected void setDelegate(ExtendedPsi25Feature<E, F> delegate) {
+    protected void setDelegate(ExtendedPsiXmlFeature<E, F> delegate) {
         this.delegate = delegate;
     }
 }

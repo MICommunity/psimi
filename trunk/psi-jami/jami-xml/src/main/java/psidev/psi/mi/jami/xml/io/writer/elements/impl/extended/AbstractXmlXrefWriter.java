@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Xref;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlXref;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAnnotationWriter;
 
@@ -33,7 +33,7 @@ public abstract class AbstractXmlXrefWriter extends psidev.psi.mi.jami.xml.io.wr
     @Override
     protected void writeOtherProperties(Xref object) throws XMLStreamException {
         // write secondary and attributes
-        ExtendedPsi25Xref xmlXref = (ExtendedPsi25Xref)object;
+        ExtendedPsiXmlXref xmlXref = (ExtendedPsiXmlXref)object;
         // write secondary
         if (xmlXref.getSecondary() != null){
             getStreamWriter().writeAttribute("secondary", xmlXref.getSecondary());

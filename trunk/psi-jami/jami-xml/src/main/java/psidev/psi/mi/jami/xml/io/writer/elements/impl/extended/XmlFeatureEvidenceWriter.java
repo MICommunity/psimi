@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25FeatureEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlFeatureEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 
@@ -34,7 +34,7 @@ public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.e
     protected void writeOtherProperties(FeatureEvidence object) throws XMLStreamException {
         // write detection method
         super.writeOtherProperties(object);
-        ExtendedPsi25FeatureEvidence extendedFeature = (ExtendedPsi25FeatureEvidence)object;
+        ExtendedPsiXmlFeatureEvidence extendedFeature = (ExtendedPsiXmlFeatureEvidence)object;
         // write experiment refs
         if (!extendedFeature.getExperiments().isEmpty()){
             getStreamWriter().writeStartElement("experimentRefList");

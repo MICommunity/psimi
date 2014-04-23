@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteractionEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlNamedBinaryInteractionEvidenceWriter;
@@ -1025,7 +1025,7 @@ public class CompactXml25BinaryInteractionEvidenceWriterTest extends AbstractXml
 
     @Test
     public void test_write_interaction_intraMolecular() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlBinaryInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setIntraMolecular(true);
@@ -1040,7 +1040,7 @@ public class CompactXml25BinaryInteractionEvidenceWriterTest extends AbstractXml
 
     @Test
     public void test_write_interaction_modelled() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlBinaryInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setModelled(true);
@@ -1055,7 +1055,7 @@ public class CompactXml25BinaryInteractionEvidenceWriterTest extends AbstractXml
 
     @Test
     public void test_write_interaction_availability() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsi25InteractionEvidence interaction = new XmlBinaryInteractionEvidence();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
         ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setAvailability("copyright");

@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.io.parser.Xml25BinaryEvidenceParser;
+import psidev.psi.mi.jami.xml.io.parser.XmlBinaryEvidenceParser;
 import psidev.psi.mi.jami.xml.io.parser.Xml25InteractionEvidenceParserTest;
 
 import javax.xml.bind.JAXBException;
@@ -17,7 +17,7 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit testser for Xml25BinaryInteractionEvidenceIterator
+ * Unit testser for XmlBinaryInteractionEvidenceIterator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -30,7 +30,7 @@ public class Xml25BinaryInteractionEvidenceIteratorTest {
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        Iterator<BinaryInteractionEvidence> iterator = new Xml25BinaryInteractionEvidenceIterator(new Xml25BinaryEvidenceParser(stream));
+        Iterator<BinaryInteractionEvidence> iterator = new XmlBinaryInteractionEvidenceIterator(new XmlBinaryEvidenceParser(stream));
         int index = 0;
         while(iterator.hasNext()){
             BinaryInteractionEvidence interaction = iterator.next();
@@ -46,7 +46,7 @@ public class Xml25BinaryInteractionEvidenceIteratorTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        Iterator<BinaryInteractionEvidence> iterator = new Xml25BinaryInteractionEvidenceIterator(new Xml25BinaryEvidenceParser(stream));
+        Iterator<BinaryInteractionEvidence> iterator = new XmlBinaryInteractionEvidenceIterator(new XmlBinaryEvidenceParser(stream));
         int index = 0;
         while(iterator.hasNext()){
             BinaryInteractionEvidence interaction = iterator.next();
@@ -63,7 +63,7 @@ public class Xml25BinaryInteractionEvidenceIteratorTest {
     public void test_read_valid_xml25_nary() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
 
-        Iterator<BinaryInteractionEvidence> iterator = new Xml25BinaryInteractionEvidenceIterator(new Xml25BinaryEvidenceParser(stream));
+        Iterator<BinaryInteractionEvidence> iterator = new XmlBinaryInteractionEvidenceIterator(new XmlBinaryEvidenceParser(stream));
 
         int index = 0;
         int numberOfExpanded=0;

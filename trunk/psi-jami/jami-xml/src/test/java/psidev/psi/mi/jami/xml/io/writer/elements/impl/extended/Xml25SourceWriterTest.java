@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.impl.*;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Source;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -91,7 +91,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source() throws XMLStreamException, IOException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
         try {
             DatatypeFactory datatypeFactory = null;
             datatypeFactory = DatatypeFactory.newInstance();
@@ -110,7 +110,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source_fullname() throws XMLStreamException, IOException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
         source.setFullName("IntAct");
         try {
             DatatypeFactory datatypeFactory = null;
@@ -130,7 +130,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source_aliases() throws XMLStreamException, IOException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
         source.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"),"intact synonym"));
         source.getSynonyms().add(new DefaultAlias("test alias"));
 
@@ -151,7 +151,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source_bibref() throws XMLStreamException, IOException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
         source.setPublication(new DefaultPublication("xxxxxx"));
         try {
             DatatypeFactory datatypeFactory = null;
@@ -171,7 +171,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source_first_identifier() throws XMLStreamException, IOException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
         source.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"xxxxxx"));
         source.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
 
@@ -192,7 +192,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source_first_xref() throws XMLStreamException, IOException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
         source.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"),"xxxxxx"));
         source.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         try {
@@ -213,7 +213,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source_attributes() throws XMLStreamException, IOException, ParseException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
         source.setUrl("http://www.ebi.ac.uk/intact/");
         source.setPostalAddress("test address");
         source.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
@@ -235,7 +235,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source_no_release() throws XMLStreamException, IOException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
 
         XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);
@@ -246,7 +246,7 @@ public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_source_release() throws XMLStreamException, IOException {
-        ExtendedPsi25Source source = new XmlSource("intact");
+        ExtendedPsiXmlSource source = new XmlSource("intact");
         source.setRelease("release_test");
         XmlSourceWriter writer = new XmlSourceWriter(createStreamWriter());
         writer.write(source);

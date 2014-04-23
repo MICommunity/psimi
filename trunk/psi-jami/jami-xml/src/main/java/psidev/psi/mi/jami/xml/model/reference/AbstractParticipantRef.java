@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.model.reference;
 
 import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Participant;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipant;
 
 import java.util.Collection;
 import java.util.logging.Level;
@@ -16,9 +16,9 @@ import java.util.logging.Logger;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractParticipantRef<I extends Interaction, T extends Feature> extends AbstractXmlIdReference implements ExtendedPsi25Participant<I,T>{
+public abstract class AbstractParticipantRef<I extends Interaction, T extends Feature> extends AbstractXmlIdReference implements ExtendedPsiXmlParticipant<I,T> {
     private static final Logger logger = Logger.getLogger("AbstractParticipantRef");
-    private ExtendedPsi25Participant<I,T> delegate;
+    private ExtendedPsiXmlParticipant<I,T> delegate;
 
     public AbstractParticipantRef(int ref) {
         super(ref);
@@ -252,11 +252,11 @@ public abstract class AbstractParticipantRef<I extends Interaction, T extends Fe
 
     protected abstract void initialiseParticipantDelegate();
 
-    protected ExtendedPsi25Participant<I,T> getDelegate() {
+    protected ExtendedPsiXmlParticipant<I,T> getDelegate() {
         return delegate;
     }
 
-    protected void setDelegate(ExtendedPsi25Participant<I,T> delegate) {
+    protected void setDelegate(ExtendedPsiXmlParticipant<I,T> delegate) {
         this.delegate = delegate;
     }
 }

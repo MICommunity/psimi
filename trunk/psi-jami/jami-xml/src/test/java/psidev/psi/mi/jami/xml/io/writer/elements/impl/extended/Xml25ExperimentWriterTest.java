@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Experiment;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
@@ -347,7 +347,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_experiment_host() throws XMLStreamException, IOException {
-        ExtendedPsi25Experiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
+        ExtendedPsiXmlExperiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
         exp.setHostOrganism(new DefaultOrganism(9606, "human"));
         exp.getHostOrganisms().add(new DefaultOrganism(-1, "in vitro"));
         elementCache.clear();
@@ -449,7 +449,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_experiment_participantIdentificationMethod() throws XMLStreamException, IOException {
-        ExtendedPsi25Experiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
+        ExtendedPsiXmlExperiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
         exp.setParticipantIdentificationMethod(exp.getInteractionDetectionMethod());
         elementCache.clear();
 
@@ -462,7 +462,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_experiment_featureDetectionMethod() throws XMLStreamException, IOException {
-        ExtendedPsi25Experiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
+        ExtendedPsiXmlExperiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
         exp.setFeatureDetectionMethod(exp.getInteractionDetectionMethod());
         elementCache.clear();
 

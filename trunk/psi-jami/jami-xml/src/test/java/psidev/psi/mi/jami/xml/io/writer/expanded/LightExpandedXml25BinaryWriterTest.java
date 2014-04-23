@@ -16,7 +16,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 
 /**
- * Unit tester for LightExpandedXml25BinaryWriter
+ * Unit tester for LightExpandedXmlBinaryWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -747,13 +747,13 @@ public class LightExpandedXml25BinaryWriterTest {
             "</entrySet>";
     @Test(expected = IllegalStateException.class)
     public void test_not_initialised_writer() {
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter();
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter();
         writer.write(new DefaultBinaryInteraction());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void test_not_initialised_no_options() {
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter();
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter();
         writer.initialiseContext(null);
     }
 
@@ -761,7 +761,7 @@ public class LightExpandedXml25BinaryWriterTest {
     public void test_single_interaction() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -777,7 +777,7 @@ public class LightExpandedXml25BinaryWriterTest {
     public void test_several_interactions1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
 
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
@@ -798,7 +798,7 @@ public class LightExpandedXml25BinaryWriterTest {
     public void test_several_interactions2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -818,7 +818,7 @@ public class LightExpandedXml25BinaryWriterTest {
     public void test_interactions_same_interactors1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
 
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
@@ -839,7 +839,7 @@ public class LightExpandedXml25BinaryWriterTest {
     public void test_interactions_same_interactors2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
 
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
@@ -863,7 +863,7 @@ public class LightExpandedXml25BinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(complex);
         interaction.addParticipant(participant);
@@ -883,7 +883,7 @@ public class LightExpandedXml25BinaryWriterTest {
         Complex complex = new DefaultComplex("test complex");
         complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
         writer.setWriteComplexesAsInteractors(true);
 
         BinaryInteraction interaction = new DefaultBinaryInteraction();
@@ -902,7 +902,7 @@ public class LightExpandedXml25BinaryWriterTest {
     public void test_interactions_different_entries1() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
@@ -920,7 +920,7 @@ public class LightExpandedXml25BinaryWriterTest {
     public void test_interactions_different_entries2() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
 
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
@@ -942,7 +942,7 @@ public class LightExpandedXml25BinaryWriterTest {
     public void test_interactions_different_entries3() throws XMLStreamException {
         StringWriter stringWriter = new StringWriter();
 
-        LightExpandedXml25BinaryWriter writer = new LightExpandedXml25BinaryWriter(stringWriter);
+        LightExpandedXmlBinaryWriter writer = new LightExpandedXmlBinaryWriter(stringWriter);
 
         BinaryInteraction interaction = new DefaultBinaryInteraction();
         Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));

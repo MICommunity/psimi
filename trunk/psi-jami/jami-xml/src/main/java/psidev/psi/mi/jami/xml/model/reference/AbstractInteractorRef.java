@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.model.reference;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsi25Interactor;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractor;
 import psidev.psi.mi.jami.xml.model.extension.XmlInteractor;
 
 import java.util.Collection;
@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  * @version $Id$
  * @since <pre>11/10/13</pre>
  */
-public abstract class AbstractInteractorRef extends AbstractXmlIdReference implements ExtendedPsi25Interactor {
+public abstract class AbstractInteractorRef extends AbstractXmlIdReference implements ExtendedPsiXmlInteractor {
     private static final Logger logger = Logger.getLogger("AbstractInteractorRef");
-    private ExtendedPsi25Interactor delegate;
+    private ExtendedPsiXmlInteractor delegate;
 
     public AbstractInteractorRef(int ref) {
         super(ref);
@@ -158,11 +158,11 @@ public abstract class AbstractInteractorRef extends AbstractXmlIdReference imple
         this.delegate.setId(this.ref);
     }
 
-    protected ExtendedPsi25Interactor getDelegate() {
+    protected ExtendedPsiXmlInteractor getDelegate() {
         return delegate;
     }
 
-    protected void setDelegate(ExtendedPsi25Interactor delegate) {
+    protected void setDelegate(ExtendedPsiXmlInteractor delegate) {
         this.delegate = delegate;
     }
 }
