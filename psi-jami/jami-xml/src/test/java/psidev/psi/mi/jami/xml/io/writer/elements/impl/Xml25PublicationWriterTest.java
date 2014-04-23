@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -189,7 +189,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         pub.setTitle("test title");
         pub.setJournal("test journal");
-        pub.setPublicationDate(PsiXml25Utils.YEAR_FORMAT.parse("2006"));
+        pub.setPublicationDate(PsiXmlUtils.YEAR_FORMAT.parse("2006"));
         pub.setCurationDepth(CurationDepth.IMEx);
         pub.getAuthors().add("author1");
         pub.getAuthors().add("author2");

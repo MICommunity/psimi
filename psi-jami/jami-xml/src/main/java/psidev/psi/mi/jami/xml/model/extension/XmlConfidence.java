@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.model.reference.AbstractExperimentRef;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class XmlConfidence implements Confidence, FileSourceContext, Locatable{
      */
     @XmlElement(name = "value", required = true)
     public void setJAXBValue(String value) {
-        this.value = value != null ? value : PsiXml25Utils.UNSPECIFIED;
+        this.value = value != null ? value : PsiXmlUtils.UNSPECIFIED;
         if (value == null){
             PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
             if (listener != null){

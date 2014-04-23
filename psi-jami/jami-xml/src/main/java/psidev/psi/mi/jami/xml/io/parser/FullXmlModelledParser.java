@@ -1,10 +1,9 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
+import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.xml.model.Xml253ModelledEntrySet;
-import psidev.psi.mi.jami.xml.model.Xml254ModelledEntrySet;
+import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
@@ -39,14 +38,8 @@ public class FullXmlModelledParser extends AbstractFullPsiXmlParser<ModelledInte
     }
 
     @Override
-    protected Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(Xml254ModelledEntrySet.class);
-        return ctx.createUnmarshaller();
+    protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
+        return JaxbUnmarshallerFactory.getInstance().createFullUnmarshaller(getVersion(), InteractionObjectCategory.modelled);
     }
 
-    @Override
-    protected Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(Xml253ModelledEntrySet.class);
-        return ctx.createUnmarshaller();
-    }
 }

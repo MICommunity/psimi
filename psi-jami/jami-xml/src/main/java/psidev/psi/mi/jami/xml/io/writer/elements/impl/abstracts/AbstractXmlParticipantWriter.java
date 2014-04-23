@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -167,7 +167,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
         this.streamWriter.writeAttribute("name", Annotation.COMMENT);
         this.streamWriter.writeAttribute("nameAc", Annotation.COMMENT_MI);
         // write description
-        this.streamWriter.writeCharacters(PsiXml25Utils.STOICHIOMETRY_PREFIX);
+        this.streamWriter.writeCharacters(PsiXmlUtils.STOICHIOMETRY_PREFIX);
         this.streamWriter.writeCharacters(Long.toString(stc.getMinValue()));
         // stoichiometry range
         if (stc.getMaxValue() != stc.getMinValue()){

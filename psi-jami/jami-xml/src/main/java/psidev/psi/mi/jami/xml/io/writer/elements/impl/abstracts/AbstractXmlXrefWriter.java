@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -57,7 +57,7 @@ public abstract class AbstractXmlXrefWriter implements PsiXmlXrefWriter {
                     }
                 }
                 else if (this.defaultRefType != null || this.defaultRefTypeAc != null){
-                    this.streamWriter.writeAttribute("refType", this.defaultRefType != null? this.defaultRefType : PsiXml25Utils.UNSPECIFIED );
+                    this.streamWriter.writeAttribute("refType", this.defaultRefType != null? this.defaultRefType : PsiXmlUtils.UNSPECIFIED );
                     if (this.defaultRefTypeAc != null){
                         this.streamWriter.writeAttribute("refTypeAc", this.defaultRefTypeAc);
                     }

@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
@@ -107,7 +107,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         Assert.assertEquals(1, pub.getIdentifiers().size());
         Assert.assertEquals(0, pub.getXrefs().size());
         Assert.assertEquals("Genetics (0016-6731)", pub.getJournal());
-        Assert.assertEquals("1999", PsiXml25Utils.YEAR_FORMAT.format(pub.getPublicationDate()));
+        Assert.assertEquals("1999", PsiXmlUtils.YEAR_FORMAT.format(pub.getPublicationDate()));
         Assert.assertEquals(4, pub.getAuthors().size());
         Assert.assertNotNull(pub.getReleasedDate());
         // source
@@ -319,7 +319,7 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         Assert.assertEquals(1, pub.getIdentifiers().size());
         Assert.assertEquals(0, pub.getXrefs().size());
         Assert.assertEquals("Genetics (0016-6731)", pub.getJournal());
-        Assert.assertEquals("1999", PsiXml25Utils.YEAR_FORMAT.format(pub.getPublicationDate()));
+        Assert.assertEquals("1999", PsiXmlUtils.YEAR_FORMAT.format(pub.getPublicationDate()));
         Assert.assertEquals(4, pub.getAuthors().size());
         Assert.assertNotNull(pub.getReleasedDate());
         // source

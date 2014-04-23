@@ -1,11 +1,10 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
+import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.model.Xml253BasicEntrySet;
-import psidev.psi.mi.jami.xml.model.Xml254BasicEntrySet;
+import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
@@ -39,14 +38,8 @@ public class FullXmlParser extends AbstractFullPsiXmlParser<Interaction<? extend
     }
 
     @Override
-    protected Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(Xml254BasicEntrySet.class);
-        return ctx.createUnmarshaller();
+    protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
+        return JaxbUnmarshallerFactory.getInstance().createFullUnmarshaller(getVersion(), InteractionObjectCategory.basic);
     }
 
-    @Override
-    protected Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(Xml253BasicEntrySet.class);
-        return ctx.createUnmarshaller();
-    }
 }

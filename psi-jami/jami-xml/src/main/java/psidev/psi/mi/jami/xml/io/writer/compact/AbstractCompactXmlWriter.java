@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXmlWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExperimentWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
 import javax.xml.stream.XMLStreamException;
@@ -231,7 +231,7 @@ public abstract class AbstractCompactXmlWriter<T extends Interaction> extends Ab
         // write availability list
         if (!availabilities.isEmpty()){
             // write start availability list
-            getStreamWriter().writeStartElement(PsiXml25Utils.AVAILABILITYLIST_TAG);
+            getStreamWriter().writeStartElement(PsiXmlUtils.AVAILABILITYLIST_TAG);
             for (String availability : this.availabilities){
                 this.availabilityWriter.write(availability);
             }
@@ -241,7 +241,7 @@ public abstract class AbstractCompactXmlWriter<T extends Interaction> extends Ab
         // write experiment list
         if (!experiments.isEmpty()){
             // write start experiment list
-            getStreamWriter().writeStartElement(PsiXml25Utils.EXPERIMENTLIST_TAG);
+            getStreamWriter().writeStartElement(PsiXmlUtils.EXPERIMENTLIST_TAG);
             for (Experiment experiment : this.experiments){
                 this.experimentWriter.write(experiment);
             }
@@ -251,7 +251,7 @@ public abstract class AbstractCompactXmlWriter<T extends Interaction> extends Ab
         // write interactor list
         if (!interactors.isEmpty()){
             // write start interactor list
-            getStreamWriter().writeStartElement(PsiXml25Utils.INTERACTORLIST_TAG);
+            getStreamWriter().writeStartElement(PsiXmlUtils.INTERACTORLIST_TAG);
             for (Interactor interactor : this.interactors){
                 this.interactorWriter.write(interactor);
             }

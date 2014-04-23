@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -326,7 +326,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
         Publication pub = exp.getPublication();
         pub.setTitle("test title");
         pub.setJournal("test journal");
-        pub.setPublicationDate(PsiXml25Utils.YEAR_FORMAT.parse("2006"));
+        pub.setPublicationDate(PsiXmlUtils.YEAR_FORMAT.parse("2006"));
         pub.setCurationDepth(CurationDepth.IMEx);
         pub.getAuthors().add("author1");
         pub.getAuthors().add("author2");

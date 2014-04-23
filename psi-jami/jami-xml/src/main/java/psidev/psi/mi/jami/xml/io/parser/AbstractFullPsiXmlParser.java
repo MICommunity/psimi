@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.model.AbstractEntry;
 import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -51,7 +51,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
         this.originalFile = file;
-        this.reader = new PushbackReader(new FileReader(file), PsiXml25Utils.XML_BUFFER_SIZE);
+        this.reader = new PushbackReader(new FileReader(file), PsiXmlUtils.XML_BUFFER_SIZE);
     }
 
     public AbstractFullPsiXmlParser(InputStream inputStream) throws JAXBException {
@@ -59,7 +59,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
             throw new IllegalArgumentException("The PsiXmlParser needs a non null InputStream");
         }
         this.originalStream = inputStream;
-        this.reader = new PushbackReader(new InputStreamReader(inputStream), PsiXml25Utils.XML_BUFFER_SIZE);
+        this.reader = new PushbackReader(new InputStreamReader(inputStream), PsiXmlUtils.XML_BUFFER_SIZE);
     }
 
     public AbstractFullPsiXmlParser(URL url) throws IOException, JAXBException {
@@ -67,7 +67,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
             throw new IllegalArgumentException("The PsiXmlParser needs a non null URL");
         }
         this.originalURL = url;
-        this.reader = new PushbackReader(new InputStreamReader(url.openStream()), PsiXml25Utils.XML_BUFFER_SIZE);
+        this.reader = new PushbackReader(new InputStreamReader(url.openStream()), PsiXmlUtils.XML_BUFFER_SIZE);
     }
 
     public AbstractFullPsiXmlParser(Reader reader) throws JAXBException {
@@ -75,7 +75,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
             throw new IllegalArgumentException("The PsiXmlParser needs a non null Reader");
         }
         this.originalReader = reader;
-        this.reader = new PushbackReader(reader, PsiXml25Utils.XML_BUFFER_SIZE);
+        this.reader = new PushbackReader(reader, PsiXmlUtils.XML_BUFFER_SIZE);
     }
 
     @Override
@@ -194,7 +194,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
             if (this.originalReader.markSupported()){
                 try {
                     this.originalReader.reset();
-                    this.reader = new PushbackReader(this.originalReader, PsiXml25Utils.XML_BUFFER_SIZE);
+                    this.reader = new PushbackReader(this.originalReader, PsiXmlUtils.XML_BUFFER_SIZE);
                 } catch (IOException e) {
                     throw new MIIOException("We cannot open the reader  ", e);
                 }
@@ -208,7 +208,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
             if (this.originalStream.markSupported()){
                 try {
                     this.originalStream.reset();
-                    this.reader = new PushbackReader(new InputStreamReader(this.originalStream), PsiXml25Utils.XML_BUFFER_SIZE);
+                    this.reader = new PushbackReader(new InputStreamReader(this.originalStream), PsiXmlUtils.XML_BUFFER_SIZE);
                 } catch (IOException e) {
                     throw new MIIOException("We cannot read the inputStream  ", e);
                 }
@@ -220,7 +220,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
         else if (this.originalURL != null){
             try {
                 this.reader.close();
-                this.reader = new PushbackReader(new InputStreamReader(this.originalURL.openStream()), PsiXml25Utils.XML_BUFFER_SIZE);
+                this.reader = new PushbackReader(new InputStreamReader(this.originalURL.openStream()), PsiXmlUtils.XML_BUFFER_SIZE);
             } catch (IOException e) {
                 throw new MIIOException("We cannot read the URL  ", e);
             }
@@ -228,7 +228,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
         else if (this.originalFile != null){
             try {
                 this.reader.close();
-                this.reader = new PushbackReader(new FileReader(this.originalFile), PsiXml25Utils.XML_BUFFER_SIZE);
+                this.reader = new PushbackReader(new FileReader(this.originalFile), PsiXmlUtils.XML_BUFFER_SIZE);
             } catch (IOException e) {
                 throw new MIIOException("We cannot read the URL  ", e);
             }
@@ -258,8 +258,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
         return entrySet;
     }
 
-    protected abstract Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException;
-    protected abstract Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException;
+    protected abstract Unmarshaller createJAXBUnmarshaller() throws JAXBException;
 
     protected AbstractEntrySet<AbstractEntry<T>> parseEntrySet() throws PsiXmlParserException {
         if (this.reader != null){
@@ -287,17 +286,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
     private void initialiseEntryContext(XmlEntryContext entryContext) throws PsiXmlParserException, JAXBException {
         initialiseVersion(this.reader);
         // create unmarshaller knowing the version
-        switch (this.version){
-            case v2_5_4:
-                this.unmarshaller = createXml254JAXBUnmarshaller();
-                break;
-            case v2_5_3:
-                this.unmarshaller = createXml253JAXBUnmarshaller();
-                break;
-            default:
-                this.unmarshaller = createXml254JAXBUnmarshaller();
-                break;
-        }
+        this.unmarshaller = createJAXBUnmarshaller();
 
         entryContext.clear();
         entryContext.setListener(this.listener);
@@ -315,18 +304,18 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
 
     private void initialiseVersion(PushbackReader reader) throws PsiXmlParserException {
 
-        char[] buffer = new char[PsiXml25Utils.XML_BUFFER_SIZE];
+        char[] buffer = new char[PsiXmlUtils.XML_BUFFER_SIZE];
 
         // read BUFFER_SIZE into the buffer
         int c = 0;
         try {
-            c = reader.read( buffer, 0, PsiXml25Utils.XML_BUFFER_SIZE );
+            c = reader.read( buffer, 0, PsiXmlUtils.XML_BUFFER_SIZE );
             // build a string representation for it
             final String sb = String.valueOf( buffer );
 
-            String levelStr = readElementValue(sb, PsiXml25Utils.LEVEL_ATTRIBUTE);
-            String versionStr = readElementValue(sb, PsiXml25Utils.VERSION_ATTRIBUTE);
-            String minorVersionStr = readElementValue(sb, PsiXml25Utils.MINOR_VERSION_ATTRIBUTE);
+            String levelStr = readElementValue(sb, PsiXmlUtils.LEVEL_ATTRIBUTE);
+            String versionStr = readElementValue(sb, PsiXmlUtils.VERSION_ATTRIBUTE);
+            String minorVersionStr = readElementValue(sb, PsiXmlUtils.MINOR_VERSION_ATTRIBUTE);
 
             reader.unread( buffer, 0, c );
 
@@ -339,7 +328,10 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
                 } else {
                     throw new PsiXmlParserException("Version not supported: Level="+levelStr+" Version="+versionStr+" MinorVersion="+minorVersionStr);
                 }
-            } else {
+            }else if ("3".equals(levelStr)){
+               this.version = PsiXmlVersion.v3_0_0;
+            }
+            else {
                 throw new PsiXmlParserException("Version not supported: Level="+levelStr+" Version="+versionStr+" MinorVersion="+minorVersionStr);
             }
         } catch (IOException e) {

@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlSourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.stream.XMLStreamException;
@@ -67,7 +67,7 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
     public void write(Source object) throws MIIOException{
         try {
             // write start
-            this.streamWriter.writeStartElement(PsiXml25Utils.SOURCE_TAG);
+            this.streamWriter.writeStartElement(PsiXmlUtils.SOURCE_TAG);
             // write release/release date
             writeReleaseAttributes(object);
             // write names

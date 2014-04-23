@@ -1,8 +1,9 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
+import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
 
-import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
@@ -37,25 +38,7 @@ public class XmlEvidenceParser extends AbstractPsiXmlParser<InteractionEvidence>
     }
 
     @Override
-    protected Unmarshaller createXml254JAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(
-                psidev.psi.mi.jami.xml.model.extension.xml254.XmlInteractionEvidence.class,
-                psidev.psi.mi.jami.xml.model.extension.xml254.Availability.class,
-                psidev.psi.mi.jami.xml.model.extension.xml254.XmlExperiment.class,
-                psidev.psi.mi.jami.xml.model.extension.xml254.XmlInteractor.class,
-                psidev.psi.mi.jami.xml.model.extension.xml254.XmlSource.class,
-                psidev.psi.mi.jami.xml.model.extension.xml254.XmlAnnotation.class);
-        return ctx.createUnmarshaller();
-    }
-    @Override
-    protected Unmarshaller createXml253JAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(
-                psidev.psi.mi.jami.xml.model.extension.xml253.XmlInteractionEvidence.class,
-                psidev.psi.mi.jami.xml.model.extension.xml253.Availability.class,
-                psidev.psi.mi.jami.xml.model.extension.xml253.XmlExperiment.class,
-                psidev.psi.mi.jami.xml.model.extension.xml253.XmlInteractor.class,
-                psidev.psi.mi.jami.xml.model.extension.xml253.XmlSource.class,
-                psidev.psi.mi.jami.xml.model.extension.xml253.XmlAnnotation.class);
-        return ctx.createUnmarshaller();
+    protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
+        return JaxbUnmarshallerFactory.getInstance().createUnmarshaller(getVersion(), InteractionObjectCategory.evidence);
     }
 }
