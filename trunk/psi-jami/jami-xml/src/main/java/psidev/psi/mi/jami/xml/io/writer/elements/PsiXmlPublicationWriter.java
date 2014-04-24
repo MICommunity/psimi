@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Publication;
 import java.util.Collection;
 
 /**
- * Interface for XmlPublicationWriter.
+ * Interface for Xml25PublicationWriter.
  *
  * It allows to write only the attributes of a publication if required.
  *

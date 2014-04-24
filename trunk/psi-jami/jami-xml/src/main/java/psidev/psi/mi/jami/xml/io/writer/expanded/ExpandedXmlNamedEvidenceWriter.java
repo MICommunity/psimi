@@ -174,7 +174,7 @@ public class ExpandedXmlNamedEvidenceWriter extends AbstractExpandedXmlWriter<In
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
                                                                  PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter,
                                                                  PsiXmlElementWriter<Confidence> confidenceWriter) {
-        XmlNamedExperimentWriter expWriter = new XmlNamedExperimentWriter(getStreamWriter(), getElementCache());
+        Xml25NamedExperimentWriter expWriter = new Xml25NamedExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setXrefWriter(primaryRefWriter);
         expWriter.setAttributeWriter(attributeWriter);
         expWriter.setPublicationWriter(publicationWriter);

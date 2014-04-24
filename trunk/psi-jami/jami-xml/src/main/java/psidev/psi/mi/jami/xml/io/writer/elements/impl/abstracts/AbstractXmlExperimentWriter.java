@@ -1,11 +1,11 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -13,14 +13,14 @@ import java.util.Date;
 import java.util.Iterator;
 
 /**
- * PSI-XML 2.5 experiment writer
+ * Abstract PSI-XML experiment writer
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>12/11/13</pre>
  */
 
-public class XmlExperimentWriter implements PsiXmlExperimentWriter {
+public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWriter {
     private XMLStreamWriter streamWriter;
     private PsiXmlObjectCache objectIndex;
     private PsiXmlPublicationWriter publicationWriter;
@@ -31,20 +31,20 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
     private PsiXmlElementWriter<Confidence> confidenceWriter;
     private Publication defaultPublication;
 
-    public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
+    public AbstractXmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlExperimentWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ExperimentWriter");
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlExperimentWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ExperimentWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }
 
     public PsiXmlPublicationWriter getPublicationWriter() {
         if (this.publicationWriter == null){
-            this.publicationWriter = new XmlPublicationWriter(streamWriter);
+            this.publicationWriter = new Xml25PublicationWriter(streamWriter);
 
         }
         return publicationWriter;
@@ -167,30 +167,18 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
             }
 
             // write publication attributes if not done at the bibref level
-            if (object.getPublication() != null){
-                Publication pub = object.getPublication();
-                // write all attributes from publication if identifiers are not empty.
-                // if the list of identifiers of a publication is not empty, annotations of a publication are not exported
-                // in bibref elements
-                if (!pub.getIdentifiers().isEmpty()){
-                    getPublicationWriter().writeAllPublicationAttributes(pub, object.getAnnotations());
-                }
-            }
+            writeOtherAttributes(object, false);
 
             // write end attributeList
             this.streamWriter.writeEndElement();
         }
         // write annotations from publication
-        else if (object.getPublication() != null){
-            Publication pub = object.getPublication();
-            // write all attributes from publication if identifiers are not empty.
-            // if the list of identifiers of a publication is not empty, annotations of a publication are not exported
-            // in bibref elements
-            if (!pub.getIdentifiers().isEmpty()){
-                getPublicationWriter().writeAllPublicationAttributes(pub);
-            }
+        else{
+            writeOtherAttributes(object, true);
         }
     }
+
+    protected abstract void writeOtherAttributes(Experiment object, boolean needToWriteAttributeList) throws XMLStreamException;
 
     protected void writeInteractiondetectionMethod(Experiment object) throws XMLStreamException {
         CvTerm detectionMethod = object.getInteractionDetectionMethod();
@@ -223,19 +211,10 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
             imexId = getDefaultPublication().getImexId();
         }
         // write xrefs
-        if (!object.getXrefs().isEmpty() || imexId != null){
-            // write start xref
-            this.streamWriter.writeStartElement("xref");
-            if (!object.getXrefs().isEmpty()){
-                writeXrefFromExperimentXrefs(object, imexId);
-            }
-            else{
-                writeImexId("primaryRef", imexId);
-            }
-            // write end xref
-            this.streamWriter.writeEndElement();
-        }
+        writeExperimentXrefs(object, imexId);
     }
+
+    protected abstract void writeExperimentXrefs(Experiment object, String imexId) throws XMLStreamException;
 
     protected void writeXrefFromExperimentXrefs(Experiment object, String imexId) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
@@ -244,7 +223,6 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
         getXrefWriter().setDefaultRefTypeAc(null);
 
         int index = 0;
-        boolean foundImexId = false;
         while (refIterator.hasNext()){
             Xref ref = refIterator.next();
             // write primaryRef
@@ -257,34 +235,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
                 getXrefWriter().write(ref,"secondaryRef");
                 index++;
             }
-
-            // found IMEx id
-            if (imexId != null && imexId.equals(ref.getId())
-                    && XrefUtils.isXrefFromDatabase(ref, Xref.IMEX_MI, Xref.IMEX)
-                    && XrefUtils.doesXrefHaveQualifier(ref, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY)){
-                foundImexId=true;
-            }
         }
-
-        // write imex id
-        if (!foundImexId && imexId != null){
-            writeImexId("secondaryRef", imexId);
-        }
-    }
-
-    protected void writeImexId(String nodeName, String imexId) throws XMLStreamException {
-        // write start
-        this.streamWriter.writeStartElement(nodeName);
-        // write database
-        this.streamWriter.writeAttribute("db", Xref.IMEX);
-        this.streamWriter.writeAttribute("dbAc", Xref.IMEX_MI);
-        // write id
-        this.streamWriter.writeAttribute("id", imexId);
-        // write qualifier
-        this.streamWriter.writeAttribute("refType", Xref.IMEX_PRIMARY);
-        this.streamWriter.writeAttribute("refTypeAc", Xref.IMEX_PRIMARY_MI);
-        // write end db ref
-        this.streamWriter.writeEndElement();
     }
 
     protected void writeNames(Experiment object) throws XMLStreamException {

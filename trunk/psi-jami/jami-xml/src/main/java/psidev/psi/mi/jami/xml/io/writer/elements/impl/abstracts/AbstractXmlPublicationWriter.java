@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import org.apache.commons.lang.StringUtils;
 import psidev.psi.mi.jami.exception.MIIOException;
@@ -11,6 +11,8 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAnnotationWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -19,21 +21,21 @@ import java.util.Collection;
 import java.util.Iterator;
 
 /**
- * Xml25 writer for publications (bibref objects)
+ * Abstract Xml writer for publications (bibref objects)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>11/11/13</pre>
  */
 
-public class XmlPublicationWriter implements PsiXmlPublicationWriter {
+public abstract class AbstractXmlPublicationWriter implements PsiXmlPublicationWriter {
     private XMLStreamWriter streamWriter;
     private PsiXmlXrefWriter xrefWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
 
-    public XmlPublicationWriter(XMLStreamWriter writer){
+    public AbstractXmlPublicationWriter(XMLStreamWriter writer){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlPublicationWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25PublicationWriter");
         }
         this.streamWriter = writer;
     }
@@ -66,37 +68,9 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
         try {
             // write start
             this.streamWriter.writeStartElement("bibref");
+
             // write xref
-            if (!object.getIdentifiers().isEmpty()){
-                writeXrefFromPublicationIdentifiers(object);
-            }
-            else {
-                boolean hasTitle = object.getTitle() != null;
-                boolean hasJournal = object.getJournal() != null;
-                boolean hasPublicationDate = object.getPublicationDate() != null;
-                boolean hasCurationDepth = !CurationDepth.undefined.equals(object.getCurationDepth());
-                boolean hasAuthors = !object.getAuthors().isEmpty();
-                boolean hasAttributes = !object.getAnnotations().isEmpty();
-                // write attributes if no identifiers available
-                if (hasTitle || hasJournal || hasPublicationDate || hasCurationDepth || hasAuthors || hasAttributes){
-                    // write start attribute list
-                    this.streamWriter.writeStartElement("attributeList");
-                    // write publication properties such as title, journal, etc..
-                    writePublicationPropertiesAsAttributes(object, hasTitle, hasJournal, hasPublicationDate, hasCurationDepth, hasAuthors);
-                    // write normal attributes
-                    if (hasAttributes){
-                        for (Annotation ann : object.getAnnotations()){
-                            getAttributeWriter().write(ann);
-                        }
-                    }
-                    // write end attributeList
-                    this.streamWriter.writeEndElement();
-                }
-                // write xref if no identifiers and no attributes available
-                else if (!object.getXrefs().isEmpty()){
-                    writeXrefFromPublicationXrefs(object);
-                }
-            }
+            writeBibrefContent(object);
 
             // write end publication
             this.streamWriter.writeEndElement();
@@ -126,8 +100,6 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
                     while (annotIterator.hasNext()){
                         Annotation ann = annotIterator.next();
                         getAttributeWriter().write(ann);
-                        if (annotIterator.hasNext()){
-                        }
                     }
                 }
                 // write end attributeList
@@ -342,5 +314,11 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
         writer.setDefaultRefType(Xref.PRIMARY);
         writer.setDefaultRefTypeAc(Xref.PRIMARY_MI);
         writer.write(ref, name);
+    }
+
+    protected abstract void writeBibrefContent(Publication object);
+
+    protected XMLStreamWriter getStreamWriter() {
+        return streamWriter;
     }
 }

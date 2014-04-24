@@ -3,12 +3,15 @@ package psidev.psi.mi.jami.xml.utils;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlAllostery;
 import psidev.psi.mi.jami.xml.model.extension.XmlCooperativityEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlPreAssembly;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -296,5 +299,47 @@ public class PsiXmlUtils {
         }
 
         return null;
+    }
+
+    public static void writeCompleteNamesElement(String shortLabel, String fullName, Collection<Alias> aliases, XMLStreamWriter writer,
+                                                 PsiXmlElementWriter<Alias> aliasWriter) throws XMLStreamException {
+        // write names
+        boolean hasShortLabel = shortLabel != null;
+        boolean hasFullLabel = fullName != null;
+        boolean hasAliases = !aliases.isEmpty();
+        if (hasShortLabel || hasFullLabel || hasAliases){
+            writer.writeStartElement("names");
+            // write shortname
+            if (hasShortLabel){
+                writer.writeStartElement("shortLabel");
+                writer.writeCharacters(shortLabel);
+                writer.writeEndElement();
+            }
+            // write fullname
+            if (hasFullLabel){
+                writer.writeStartElement("fullName");
+                writer.writeCharacters(fullName);
+                writer.writeEndElement();
+            }
+
+            // write aliases
+            for (Alias alias : aliases){
+                aliasWriter.write(alias);
+            }
+            // write end names
+            writer.writeEndElement();
+        }
+    }
+
+    public static void writeCompleteNamesForExperiment(NamedExperiment xmlExperiment, XMLStreamWriter writer,
+                                                       PsiXmlElementWriter<Alias> aliasWriter) throws XMLStreamException {
+        boolean hasExperimentFullLabel = xmlExperiment.getFullName() != null;
+        boolean hasPublicationTitle = xmlExperiment.getPublication() != null && xmlExperiment.getPublication().getTitle() != null;
+
+        PsiXmlUtils.writeCompleteNamesElement(xmlExperiment.getShortName(),
+                hasExperimentFullLabel ? xmlExperiment.getFullName() : (hasPublicationTitle ? xmlExperiment.getPublication().getTitle() : null),
+                xmlExperiment.getAliases(),
+                writer,
+                aliasWriter);
     }
 }

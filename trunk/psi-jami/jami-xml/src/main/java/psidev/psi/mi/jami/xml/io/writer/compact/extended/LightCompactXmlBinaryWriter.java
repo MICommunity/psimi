@@ -181,7 +181,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
                                                                  PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter,
                                                                  PsiXmlElementWriter<Confidence> confidenceWriter) {
-        XmlExperimentWriter expWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache());
+        Xml25ExperimentWriter expWriter = new Xml25ExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setXrefWriter(primaryRefWriter);
         expWriter.setAttributeWriter(attributeWriter);
         expWriter.setPublicationWriter(publicationWriter);
