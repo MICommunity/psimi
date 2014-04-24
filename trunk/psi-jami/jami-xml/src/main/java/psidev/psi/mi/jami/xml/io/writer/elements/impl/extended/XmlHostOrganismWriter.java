@@ -29,16 +29,18 @@ public class XmlHostOrganismWriter extends psidev.psi.mi.jami.xml.io.writer.elem
 
     @Override
     protected void writeOtherProperties(Organism object) throws XMLStreamException {
-        HostOrganism extendedOrganism = (HostOrganism)object;
-        // write experiment refs
-        if (!extendedOrganism.getExperiments().isEmpty()){
-            getStreamWriter().writeStartElement("experimentRefList");
-            for (Experiment exp : extendedOrganism.getExperiments()){
-                getStreamWriter().writeStartElement("experimentRef");
-                getStreamWriter().writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(exp)));
+        if (object instanceof HostOrganism){
+            HostOrganism extendedOrganism = (HostOrganism)object;
+            // write experiment refs
+            if (!extendedOrganism.getExperiments().isEmpty()){
+                getStreamWriter().writeStartElement("experimentRefList");
+                for (Experiment exp : extendedOrganism.getExperiments()){
+                    getStreamWriter().writeStartElement("experimentRef");
+                    getStreamWriter().writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(exp)));
+                    getStreamWriter().writeEndElement();
+                }
                 getStreamWriter().writeEndElement();
             }
-            getStreamWriter().writeEndElement();
         }
     }
 }

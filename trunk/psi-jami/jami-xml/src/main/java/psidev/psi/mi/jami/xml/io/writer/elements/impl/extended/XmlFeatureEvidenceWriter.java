@@ -25,16 +25,18 @@ public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.e
     protected void writeOtherProperties(FeatureEvidence object) throws XMLStreamException {
         // write detection method
         super.writeOtherProperties(object);
-        ExtendedPsiXmlFeatureEvidence extendedFeature = (ExtendedPsiXmlFeatureEvidence)object;
-        // write experiment refs
-        if (!extendedFeature.getExperiments().isEmpty()){
-            getStreamWriter().writeStartElement("experimentRefList");
-            for (Experiment exp : extendedFeature.getExperiments()){
-                getStreamWriter().writeStartElement("experimentRef");
-                getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(exp)));
+        if (object instanceof ExtendedPsiXmlFeatureEvidence){
+            ExtendedPsiXmlFeatureEvidence extendedFeature = (ExtendedPsiXmlFeatureEvidence)object;
+            // write experiment refs
+            if (!extendedFeature.getExperiments().isEmpty()){
+                getStreamWriter().writeStartElement("experimentRefList");
+                for (Experiment exp : extendedFeature.getExperiments()){
+                    getStreamWriter().writeStartElement("experimentRef");
+                    getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(exp)));
+                    getStreamWriter().writeEndElement();
+                }
                 getStreamWriter().writeEndElement();
             }
-            getStreamWriter().writeEndElement();
         }
     }
 }

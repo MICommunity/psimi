@@ -48,35 +48,47 @@ public abstract class AbstractXmlInteractionWriter<I extends Interaction, P exte
     }
 
     @Override
-    protected void writeIntraMolecular(Interaction object) throws XMLStreamException {
-        ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
-        if (xmlInteraction.isIntraMolecular()){
-            getStreamWriter().writeStartElement("intraMolecular");
-            getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));
-            // write end intra molecular
-            getStreamWriter().writeEndElement();
-        }
-    }
-
-    @Override
-    protected void writeInteractionType(Interaction object) throws XMLStreamException {
-        ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
-        if (!xmlInteraction.getInteractionTypes().isEmpty()){
-            for (Object type : xmlInteraction.getInteractionTypes()){
-                getInteractionTypeWriter().write((CvTerm)type,"interactionType");
+    protected void writeIntraMolecular(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteraction){
+            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
+            if (xmlInteraction.isIntraMolecular()){
+                getStreamWriter().writeStartElement("intraMolecular");
+                getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));
+                // write end intra molecular
+                getStreamWriter().writeEndElement();
             }
         }
     }
 
     @Override
-    protected void writeInferredInteractions(Interaction object) throws XMLStreamException {
-        ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
-        if (!xmlInteraction.getInferredInteractions().isEmpty()){
-            getStreamWriter().writeStartElement("inferredInteractionList");
-            for (Object inferred : xmlInteraction.getInferredInteractions()){
-                getXmlInferredInteractionWriter().write((InferredInteraction)inferred);
+    protected void writeInteractionType(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteraction){
+            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
+            if (!xmlInteraction.getInteractionTypes().isEmpty()){
+                for (Object type : xmlInteraction.getInteractionTypes()){
+                    getInteractionTypeWriter().write((CvTerm)type,"interactionType");
+                }
             }
-            getStreamWriter().writeEndElement();
+        }
+        else{
+            super.writeInteractionType(object);
+        }
+    }
+
+    @Override
+    protected void writeInferredInteractions(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteraction){
+            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
+            if (!xmlInteraction.getInferredInteractions().isEmpty()){
+                getStreamWriter().writeStartElement("inferredInteractionList");
+                for (Object inferred : xmlInteraction.getInferredInteractions()){
+                    getXmlInferredInteractionWriter().write((InferredInteraction)inferred);
+                }
+                getStreamWriter().writeEndElement();
+            }
+        }
+        else{
+            super.writeInferredInteractions(object);
         }
     }
 

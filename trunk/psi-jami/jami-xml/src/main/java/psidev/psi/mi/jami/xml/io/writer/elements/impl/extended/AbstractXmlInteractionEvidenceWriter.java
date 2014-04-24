@@ -101,17 +101,22 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     }
 
     protected void writeExperimentRef(I object) throws XMLStreamException {
-        ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
-        // write experimental evidences
-        if (!xmlInteraction.getExperiments().isEmpty()){
-            getStreamWriter().writeStartElement("experimentList");
-            for (Experiment evidence : xmlInteraction.getExperiments()){
-                getStreamWriter().writeStartElement("experimentRef");
-                getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(evidence)));
+        if (object instanceof ExtendedPsiXmlInteractionEvidence){
+            ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
+            // write experimental evidences
+            if (!xmlInteraction.getExperiments().isEmpty()){
+                getStreamWriter().writeStartElement("experimentList");
+                for (Experiment evidence : xmlInteraction.getExperiments()){
+                    getStreamWriter().writeStartElement("experimentRef");
+                    getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(evidence)));
+                    getStreamWriter().writeEndElement();
+                }
+                // write end experiment list
                 getStreamWriter().writeEndElement();
             }
-            // write end experiment list
-            getStreamWriter().writeEndElement();
+            else {
+                super.writeExperimentRef();
+            }
         }
         else {
             super.writeExperimentRef();
@@ -119,15 +124,20 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     }
 
     protected void writeExperimentDescription(I object) throws XMLStreamException {
-        ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
-        // write experimental evidences
-        if (!xmlInteraction.getExperiments().isEmpty()){
-            getStreamWriter().writeStartElement("experimentList");
-            for (Experiment evidence : xmlInteraction.getExperiments()){
-                getExperimentWriter().write(evidence);
+        if (object instanceof ExtendedPsiXmlInteractionEvidence){
+            ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
+            // write experimental evidences
+            if (!xmlInteraction.getExperiments().isEmpty()){
+                getStreamWriter().writeStartElement("experimentList");
+                for (Experiment evidence : xmlInteraction.getExperiments()){
+                    getExperimentWriter().write(evidence);
+                }
+                // write end experiment list
+                getStreamWriter().writeEndElement();
             }
-            // write end experiment list
-            getStreamWriter().writeEndElement();
+            else {
+                super.writeExperimentDescription();
+            }
         }
         else {
             super.writeExperimentDescription();
@@ -144,12 +154,14 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     @Override
     protected void writeModelled(I object) throws XMLStreamException {
-        ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
-        if (xmlInteraction.isModelled()){
-            getStreamWriter().writeStartElement("modelled");
-            getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isModelled()));
-            // write end modelled
-            getStreamWriter().writeEndElement();
+        if (object instanceof ExtendedPsiXmlInteractionEvidence){
+            ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
+            if (xmlInteraction.isModelled()){
+                getStreamWriter().writeStartElement("modelled");
+                getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isModelled()));
+                // write end modelled
+                getStreamWriter().writeEndElement();
+            }
         }
     }
 

@@ -21,12 +21,17 @@ public class XmlSourceWriter extends psidev.psi.mi.jami.xml.io.writer.elements.i
 
     @Override
     protected void writeReleaseAttributes(Source object) throws XMLStreamException {
-        ExtendedPsiXmlSource xmlSource = (ExtendedPsiXmlSource) object;
-        if (xmlSource.getRelease() != null){
-            getStreamWriter().writeAttribute("release", xmlSource.getRelease());
-        }
-        if (xmlSource.getReleaseDate() != null){
-            getStreamWriter().writeAttribute("releaseDate", xmlSource.getReleaseDate().toXMLFormat());
+        if (object instanceof ExtendedPsiXmlSource){
+            ExtendedPsiXmlSource xmlSource = (ExtendedPsiXmlSource) object;
+            if (xmlSource.getRelease() != null){
+                getStreamWriter().writeAttribute("release", xmlSource.getRelease());
+            }
+            if (xmlSource.getReleaseDate() != null){
+                getStreamWriter().writeAttribute("releaseDate", xmlSource.getReleaseDate().toXMLFormat());
+            }
+            else{
+                super.writeReleaseAttributes(object);
+            }
         }
         else{
             super.writeReleaseAttributes(object);

@@ -37,22 +37,24 @@ public class XmlDbXrefWriter extends psidev.psi.mi.jami.xml.io.writer.elements.i
 
     @Override
     protected void writeOtherProperties(Xref object) throws XMLStreamException {
-        // write secondary and attributes
-        ExtendedPsiXmlXref xmlXref = (ExtendedPsiXmlXref)object;
-        // write secondary
-        if (xmlXref.getSecondary() != null){
-            getStreamWriter().writeAttribute("secondary", xmlXref.getSecondary());
-        }
-        // write attributes
-        if (!xmlXref.getAnnotations().isEmpty()){
-            getStreamWriter().writeStartElement("attributeList");
-            for (Annotation annot : xmlXref.getAnnotations()){
-                // write annotations
-                getAnnotationWriter().write(annot);
+        if (object instanceof ExtendedPsiXmlXref){
+            // write secondary and attributes
+            ExtendedPsiXmlXref xmlXref = (ExtendedPsiXmlXref)object;
+            // write secondary
+            if (xmlXref.getSecondary() != null){
+                getStreamWriter().writeAttribute("secondary", xmlXref.getSecondary());
             }
+            // write attributes
+            if (!xmlXref.getAnnotations().isEmpty()){
+                getStreamWriter().writeStartElement("attributeList");
+                for (Annotation annot : xmlXref.getAnnotations()){
+                    // write annotations
+                    getAnnotationWriter().write(annot);
+                }
 
-            // write end attributeList
-            getStreamWriter().writeEndElement();
+                // write end attributeList
+                getStreamWriter().writeEndElement();
+            }
         }
     }
 }

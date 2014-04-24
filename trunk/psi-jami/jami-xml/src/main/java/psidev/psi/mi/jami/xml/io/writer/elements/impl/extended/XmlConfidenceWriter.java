@@ -65,16 +65,19 @@ public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
                 this.streamWriter.writeCharacters(object.getValue());
                 this.streamWriter.writeEndElement();
                 // write experiments
-                XmlConfidence xmlConfidence = (XmlConfidence)object;
-                if (!xmlConfidence.getExperiments().isEmpty()){
-                    this.streamWriter.writeStartElement("experimentRefList");
-                    for (Experiment exp : xmlConfidence.getExperiments()){
-                        this.streamWriter.writeStartElement("experimentRef");
-                        this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(exp)));
+                if (object instanceof XmlConfidence){
+                    XmlConfidence xmlConfidence = (XmlConfidence)object;
+                    if (!xmlConfidence.getExperiments().isEmpty()){
+                        this.streamWriter.writeStartElement("experimentRefList");
+                        for (Experiment exp : xmlConfidence.getExperiments()){
+                            this.streamWriter.writeStartElement("experimentRef");
+                            this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(exp)));
+                            this.streamWriter.writeEndElement();
+                        }
                         this.streamWriter.writeEndElement();
                     }
-                    this.streamWriter.writeEndElement();
                 }
+
                 // write end confidence
                 this.streamWriter.writeEndElement();
 
