@@ -4,8 +4,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlNamedExperimentWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml30NamedExperimentWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
@@ -13,7 +12,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.util.List;
 
 /**
- * XML 2.5 writer for extended experiments having participant identification method,
+ * XML 3.0 writer for extended experiments having participant identification method,
  * feature detection method and a list of host organisms
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -21,11 +20,9 @@ import java.util.List;
  * @since <pre>13/11/13</pre>
  */
 
-public class XmlExperimentWriter extends XmlNamedExperimentWriter {
-    private PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter;
-    private PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter;
+public class Xml30ExperimentWriter extends Xml30NamedExperimentWriter {
 
-    public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public Xml30ExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 

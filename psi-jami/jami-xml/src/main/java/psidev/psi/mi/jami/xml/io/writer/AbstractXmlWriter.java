@@ -660,7 +660,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
                                                                  PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter,
                                                                  PsiXmlElementWriter<Confidence> confidenceWriter) {
-        XmlExperimentWriter expWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache());
+        Xml25ExperimentWriter expWriter = new Xml25ExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setXrefWriter(primaryRefWriter);
         expWriter.setAttributeWriter(attributeWriter);
         expWriter.setPublicationWriter(publicationWriter);
@@ -766,7 +766,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
     }
 
     protected PsiXmlPublicationWriter instantiatePublicationWriter(PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter) {
-        XmlPublicationWriter publicationWriter = new XmlPublicationWriter(getStreamWriter());
+        Xml25PublicationWriter publicationWriter = new Xml25PublicationWriter(getStreamWriter());
         publicationWriter.setAttributeWriter(attributeWriter);
         publicationWriter.setXrefWriter(primaryRefWriter);
         return publicationWriter;

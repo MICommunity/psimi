@@ -102,7 +102,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     public PsiXmlElementWriter<Experiment> getExperimentWriter() {
         if (this.experimentWriter == null){
-            this.experimentWriter = new XmlExperimentWriter(streamWriter, objectIndex);
+            this.experimentWriter = new Xml25ExperimentWriter(streamWriter, objectIndex);
         }
         return experimentWriter;
     }

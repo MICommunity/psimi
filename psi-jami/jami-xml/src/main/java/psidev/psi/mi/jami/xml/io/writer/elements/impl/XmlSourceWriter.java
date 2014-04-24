@@ -64,7 +64,7 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
 
     public PsiXmlElementWriter<Publication> getPublicationWriter() {
         if (this.publicationWriter == null){
-            this.publicationWriter = new XmlPublicationWriter(streamWriter);
+            this.publicationWriter = new Xml25PublicationWriter(streamWriter);
         }
         return publicationWriter;
     }
@@ -232,7 +232,7 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
                     getXrefWriter().write(ref,"primaryRef");
                 }
                 else{
-                    getXrefWriter().write(ref,"secondaryRef");
+                    getXrefWriter().write(ref, "secondaryRef");
                 }
             }
         }
