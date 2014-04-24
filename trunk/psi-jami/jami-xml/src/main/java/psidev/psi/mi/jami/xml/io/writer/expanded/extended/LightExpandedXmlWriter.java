@@ -182,7 +182,7 @@ public class LightExpandedXmlWriter extends AbstractExpandedXmlWriter<Interactio
 
     @Override
     protected PsiXmlParameterWriter instantiateParameterWriter() {
-        return new XmlParameterWriter(getStreamWriter(), getElementCache());
+        return new Xml25ParameterWriter(getStreamWriter(), getElementCache());
     }
 
     @Override

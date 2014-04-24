@@ -679,7 +679,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
                                                                                                                PsiXmlElementWriter<Organism> organismWriter);
 
     protected PsiXmlParameterWriter instantiateParameterWriter() {
-        return new XmlParameterWriter(getStreamWriter(), getElementCache());
+        return new Xml25ParameterWriter(getStreamWriter(), getElementCache());
     }
 
     protected abstract <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,

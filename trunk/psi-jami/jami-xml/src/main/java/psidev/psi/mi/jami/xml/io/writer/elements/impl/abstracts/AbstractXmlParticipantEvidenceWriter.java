@@ -63,7 +63,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
 
     public PsiXmlElementWriter<Parameter> getParameterWriter() {
         if (this.parameterWriter == null){
-            this.parameterWriter = new XmlParameterWriter(getStreamWriter(), getObjectIndex());
+            this.parameterWriter = new Xml25ParameterWriter(getStreamWriter(), getObjectIndex());
         }
         return parameterWriter;
     }

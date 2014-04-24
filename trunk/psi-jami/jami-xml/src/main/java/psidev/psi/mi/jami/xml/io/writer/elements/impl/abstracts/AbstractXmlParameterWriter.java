@@ -1,40 +1,36 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.model.ParameterValue;
-import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
-import psidev.psi.mi.jami.xml.model.extension.XmlParameter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.Date;
 
 /**
- * XML 2.5 writer of a parameter
+ * Abstract XML writer of a parameter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>14/11/13</pre>
  */
 
-public class XmlParameterWriter implements PsiXmlParameterWriter {
+public abstract class AbstractXmlParameterWriter implements PsiXmlParameterWriter {
     private XMLStreamWriter streamWriter;
-    private PsiXmlObjectCache objectIndex;
     private Experiment defaultExperiment;
+    private PsiXmlObjectCache objectIndex;
 
-    public XmlParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
+    public AbstractXmlParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlParameterWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ParameterWriter");
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlParameterWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ParameterWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }
@@ -71,27 +67,12 @@ public class XmlParameterWriter implements PsiXmlParameterWriter {
                 if (object.getUncertainty() != null){
                     this.streamWriter.writeAttribute("uncertainty",object.getUncertainty().toString());
                 }
-                // write experiment Ref
-                if (object instanceof XmlParameter){
-                    XmlParameter xmlParameter = (XmlParameter)object;
-                    if (xmlParameter.getExperiment() != null){
-                        this.streamWriter.writeStartElement("experimentRef");
-                        this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(xmlParameter.getExperiment())));
-                        this.streamWriter.writeEndElement();
-                    }
-                    else{
-                        this.streamWriter.writeStartElement("experimentRef");
-                        this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(getDefaultExperiment())));
-                        this.streamWriter.writeEndElement();
-                    }
-                }
-                else{
-                    this.streamWriter.writeStartElement("experimentRef");
-                    this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(getDefaultExperiment())));
-                    this.streamWriter.writeEndElement();
-                }
+
+                // write other properties
+                writeOtherProperties(object);
+
                 // write end parameter
-                this.streamWriter.writeEndElement();
+                getStreamWriter().writeEndElement();
 
             } catch (XMLStreamException e) {
                 throw new MIIOException("Impossible to write the parameter : "+object.toString(), e);
@@ -99,11 +80,10 @@ public class XmlParameterWriter implements PsiXmlParameterWriter {
         }
     }
 
+    protected abstract void writeOtherProperties(Parameter object) throws XMLStreamException;
+
     @Override
     public Experiment getDefaultExperiment() {
-        if (this.defaultExperiment == null){
-            initialiseDefaultExperiment();
-        }
         return this.defaultExperiment;
     }
 
@@ -112,7 +92,11 @@ public class XmlParameterWriter implements PsiXmlParameterWriter {
         this.defaultExperiment = exp;
     }
 
-    protected void initialiseDefaultExperiment(){
-        this.defaultExperiment = new XmlExperiment(new DefaultPublication("Mock publication for modelled interactions that are not interaction evidences.",(String)null,(Date)null));
+    protected XMLStreamWriter getStreamWriter() {
+        return streamWriter;
+    }
+
+    protected PsiXmlObjectCache getObjectIndex() {
+        return objectIndex;
     }
 }

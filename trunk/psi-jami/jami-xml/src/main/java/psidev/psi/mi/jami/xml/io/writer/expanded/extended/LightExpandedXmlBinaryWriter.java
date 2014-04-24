@@ -185,7 +185,7 @@ public class LightExpandedXmlBinaryWriter extends AbstractExpandedXmlWriter<Bina
 
     @Override
     protected PsiXmlParameterWriter instantiateParameterWriter() {
-        return new XmlParameterWriter(getStreamWriter(), getElementCache());
+        return new Xml25ParameterWriter(getStreamWriter(), getElementCache());
     }
 
     @Override

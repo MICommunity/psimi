@@ -184,7 +184,7 @@ public class ExpandedXmlModelledBinaryWriter extends AbstractExpandedXmlWriter<M
 
     @Override
     protected PsiXmlParameterWriter instantiateParameterWriter() {
-        return new XmlParameterWriter(getStreamWriter(), getElementCache());
+        return new Xml25ParameterWriter(getStreamWriter(), getElementCache());
     }
 
     @Override
