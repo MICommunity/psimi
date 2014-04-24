@@ -1,36 +1,34 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlPrimaryXrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlSecondaryXrefWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 /**
- * Abstract class for CvTerm writers
+ * CvTerm writers for cvs without attributes
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>12/11/13</pre>
  */
-public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvTerm> {
+public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
     private XMLStreamWriter streamWriter;
     private PsiXmlElementWriter<Alias> aliasWriter;
     private PsiXmlXrefWriter primaryRefWriter;
     private PsiXmlXrefWriter secondaryRefWriter;
 
-    public AbstractXmlCvTermWriter(XMLStreamWriter writer){
+    public XmlCvTermWriter(XMLStreamWriter writer){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlCvTermWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlCvTermWriter");
         }
         this.streamWriter = writer;
     }
@@ -69,10 +67,10 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
     }
 
     @Override
-    public void write(CvTerm object) throws MIIOException {
+    public void write(CvTerm object, String name) throws MIIOException {
         try {
             // write start
-            writeStartCvTerm();
+            writeStartCvTerm(name);
 
             // write names
             boolean hasShortLabel = object.getShortName() != null;
@@ -119,8 +117,12 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
         }
     }
 
-    protected abstract void writeStartCvTerm() throws XMLStreamException;
-    protected abstract void writeOtherProperties(CvTerm term) throws XMLStreamException;
+    protected void writeStartCvTerm(String name) throws XMLStreamException{
+        getStreamWriter().writeStartElement(name);
+    }
+    protected void writeOtherProperties(CvTerm term) throws XMLStreamException{
+        // nothing to do here
+    }
 
     protected void writeXrefFromCvXrefs(CvTerm object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();

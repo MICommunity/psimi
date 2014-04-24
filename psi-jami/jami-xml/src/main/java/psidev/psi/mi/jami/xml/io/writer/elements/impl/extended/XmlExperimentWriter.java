@@ -29,28 +29,6 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
         super(writer, objectIndex);
     }
 
-    public PsiXmlElementWriter<CvTerm> getParticipantIdentificationMethodWriter() {
-        if (this.participantIdentificationMethodWriter == null){
-            this.participantIdentificationMethodWriter = new XmlParticipantIdentificationMethodWriter(getStreamWriter(), getObjectIndex());
-        }
-        return participantIdentificationMethodWriter;
-    }
-
-    public void setParticipantIdentificationMethodWriter(PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter) {
-        this.participantIdentificationMethodWriter = participantIdentificationMethodWriter;
-    }
-
-    public PsiXmlElementWriter<CvTerm> getFeatureDetectionMethodWriter() {
-        if (this.featureDetectionMethodWriter == null){
-            this.featureDetectionMethodWriter = new XmlFeatureDetectionMethodWriter(getStreamWriter());
-        }
-        return featureDetectionMethodWriter;
-    }
-
-    public void setFeatureDetectionMethodWriter(PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter) {
-        this.featureDetectionMethodWriter = featureDetectionMethodWriter;
-    }
-
     @Override
     protected void writeOtherProperties(Experiment object) throws XMLStreamException {
         ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
@@ -58,13 +36,13 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
         CvTerm identificationMethod = xmlExperiment.getParticipantIdentificationMethod();
         if (identificationMethod != null){
             // write cv
-            getParticipantIdentificationMethodWriter().write(identificationMethod);
+            getDetectionMethodWriter().write(identificationMethod,"participantIdentificationMethod");
         }
         // write feature detection method
         CvTerm featureMethod = xmlExperiment.getFeatureDetectionMethod();
         if (featureMethod != null){
             // write cv
-            getFeatureDetectionMethodWriter().write(featureMethod);
+            getDetectionMethodWriter().write(featureMethod,"featureDetectionMethod");
         }
     }
 

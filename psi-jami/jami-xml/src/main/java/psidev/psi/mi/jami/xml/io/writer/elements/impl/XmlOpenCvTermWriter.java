@@ -1,9 +1,8 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAnnotationWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -16,10 +15,10 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>12/11/13</pre>
  */
 
-public abstract class AbstractXmlOpenCvTermWriter extends AbstractXmlCvTermWriter {
+public class XmlOpenCvTermWriter extends XmlCvTermWriter {
     private PsiXmlElementWriter<Annotation> attributeWriter;
 
-    public AbstractXmlOpenCvTermWriter(XMLStreamWriter writer) {
+    public XmlOpenCvTermWriter(XMLStreamWriter writer) {
         super(writer);
     }
 

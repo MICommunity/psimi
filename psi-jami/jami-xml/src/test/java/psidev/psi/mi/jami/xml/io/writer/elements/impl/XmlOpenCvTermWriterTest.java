@@ -12,34 +12,34 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester of XmlTissueWriter
+ * Unit tester for XmlCelltypeWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
+public class XmlOpenCvTermWriterTest extends AbstractXml25WriterTest {
 
-    private String cv = "<tissue>\n" +
+    private String cv = "<cellType>\n" +
             "  <names>\n" +
             "    <shortLabel>293t</shortLabel>\n"+
             "  </names>\n"+
-            "</tissue>";
-    private String cvFullName = "<tissue>\n" +
+            "</cellType>";
+    private String cvFullName = "<cellType>\n" +
             "  <names>\n" +
             "    <shortLabel>293t</shortLabel>\n"+
             "    <fullName>Human 293t</fullName>\n"+
             "  </names>\n"+
-            "</tissue>";
-    private String cvAliases = "<tissue>\n" +
+            "</cellType>";
+    private String cvAliases = "<cellType>\n" +
             "  <names>\n" +
             "    <shortLabel>293t</shortLabel>\n"+
             "    <alias type=\"synonym\">unspecified</alias>\n"+
             "    <alias type=\"test\">test name</alias>\n"+
             "  </names>\n"+
-            "</tissue>";
-    private String cvFirstIdentifier = "<tissue>\n" +
+            "</cellType>";
+    private String cvFirstIdentifier = "<cellType>\n" +
             "  <names>\n" +
             "    <shortLabel>293t</shortLabel>\n"+
             "  </names>\n"+
@@ -48,8 +48,8 @@ public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
             "    <secondaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+
-            "</tissue>";
-    private String cvFirstXref = "<tissue>\n" +
+            "</cellType>";
+    private String cvFirstXref = "<cellType>\n" +
             "  <names>\n" +
             "    <shortLabel>293t</shortLabel>\n"+
             "  </names>\n"+
@@ -57,8 +57,8 @@ public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
             "    <primaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+
-            "</tissue>";
-    private String cvAttributes = "<tissue>\n" +
+            "</cellType>";
+    private String cvAttributes = "<cellType>\n" +
             "  <names>\n" +
             "    <shortLabel>293t</shortLabel>\n"+
             "  </names>\n"+
@@ -70,14 +70,14 @@ public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
             "    <attribute name=\"test2\"/>\n"+
             "    <attribute name=\"test3\"/>\n"+
             "  </attributeList>\n"+
-            "</tissue>";
+            "</cellType>";
 
     @Test
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
-        CvTerm tissue = new DefaultCvTerm("293t");
+        CvTerm cellType = new DefaultCvTerm("293t");
 
-        XmlTissueWriter writer = new XmlTissueWriter(createStreamWriter());
-        writer.write(tissue);
+        XmlOpenCvTermWriter writer = new XmlOpenCvTermWriter(createStreamWriter());
+        writer.write(cellType,"cellType");
         streamWriter.flush();
 
         Assert.assertEquals(this.cv, output.toString());
@@ -85,11 +85,11 @@ public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_fullName() throws XMLStreamException, IOException {
-        CvTerm tissue = new DefaultCvTerm("293t");
-        tissue.setFullName("Human 293t");
+        CvTerm cellType = new DefaultCvTerm("293t");
+        cellType.setFullName("Human 293t");
 
-        XmlTissueWriter writer = new XmlTissueWriter(createStreamWriter());
-        writer.write(tissue);
+        XmlOpenCvTermWriter writer = new XmlOpenCvTermWriter(createStreamWriter());
+        writer.write(cellType,"cellType");
         streamWriter.flush();
 
         Assert.assertEquals(this.cvFullName, output.toString());
@@ -97,12 +97,12 @@ public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_aliases() throws XMLStreamException, IOException {
-        CvTerm tissue = new DefaultCvTerm("293t");
-        tissue.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
-        tissue.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
+        CvTerm cellType = new DefaultCvTerm("293t");
+        cellType.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
+        cellType.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        XmlTissueWriter writer = new XmlTissueWriter(createStreamWriter());
-        writer.write(tissue);
+        XmlOpenCvTermWriter writer = new XmlOpenCvTermWriter(createStreamWriter());
+        writer.write(cellType,"cellType");
         streamWriter.flush();
 
         Assert.assertEquals(this.cvAliases, output.toString());
@@ -110,13 +110,13 @@ public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_first_identifier() throws XMLStreamException, IOException {
-        CvTerm tissue = new DefaultCvTerm("293t");
-        tissue.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"), "MI:0499"));
-        tissue.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
-        tissue.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
+        CvTerm cellType = new DefaultCvTerm("293t");
+        cellType.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"), "MI:0499"));
+        cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
+        cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        XmlTissueWriter writer = new XmlTissueWriter(createStreamWriter());
-        writer.write(tissue);
+        XmlOpenCvTermWriter writer = new XmlOpenCvTermWriter(createStreamWriter());
+        writer.write(cellType,"cellType");
         streamWriter.flush();
 
         Assert.assertEquals(this.cvFirstIdentifier, output.toString());
@@ -124,12 +124,12 @@ public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_first_xref() throws XMLStreamException, IOException {
-        CvTerm tissue = new DefaultCvTerm("293t");
-        tissue.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
-        tissue.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
+        CvTerm cellType = new DefaultCvTerm("293t");
+        cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
+        cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        XmlTissueWriter writer = new XmlTissueWriter(createStreamWriter());
-        writer.write(tissue);
+        XmlOpenCvTermWriter writer = new XmlOpenCvTermWriter(createStreamWriter());
+        writer.write(cellType,"cellType");
         streamWriter.flush();
 
         Assert.assertEquals(this.cvFirstXref, output.toString());
@@ -137,13 +137,13 @@ public class Xml25TissueWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_attributes() throws XMLStreamException, IOException {
-        CvTerm tissue = new DefaultCvTerm("293t");
-        tissue.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
-        tissue.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
-        tissue.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
-        tissue.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
-        XmlTissueWriter writer = new XmlTissueWriter(createStreamWriter());
-        writer.write(tissue);
+        CvTerm cellType = new DefaultCvTerm("293t");
+        cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
+        cellType.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
+        cellType.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
+        cellType.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
+        XmlOpenCvTermWriter writer = new XmlOpenCvTermWriter(createStreamWriter());
+        writer.write(cellType,"cellType");
         streamWriter.flush();
 
         Assert.assertEquals(this.cvAttributes, output.toString());

@@ -66,7 +66,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
                                                                                     PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                     PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                     PsiXmlParameterWriter parameterWriter,
-                                                                                    PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
                                                                                     PsiXmlExperimentWriter experimentWriter,
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
@@ -95,7 +95,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
                                                                                 PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                 PsiXmlParameterWriter parameterWriter,
                                                                                 PsiXmlParticipantWriter participantWriter,
-                                                                                PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
                                                                                 PsiXmlExperimentWriter experimentWriter,
                                                                                 PsiXmlElementWriter<String> availabilityWriter,
                                                                                 PsiXmlElementWriter inferredInteractionWriter) {
@@ -118,7 +118,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
                                                                                                 PsiXmlXrefWriter primaryRefWriter,
                                                                                                 PsiXmlXrefWriter secondaryRefWriter,
                                                                                                 PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
         CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
@@ -133,28 +133,15 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
     }
 
     @Override
-    protected PsiXmlElementWriter<CvTerm> instantiateParticipantDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-
-        return null;
-    }
-
-    @Override
-    protected PsiXmlElementWriter<CvTerm> instantiateFeatureDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-
-        return null;
-    }
-
-    @Override
     protected <P extends Participant> PsiXmlParticipantWriter<P> instantiateParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                               PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                               PsiXmlXrefWriter primaryRefWriter,
                                                                                               PsiXmlXrefWriter secondaryRefWriter,
                                                                                               PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                               PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                              PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                              PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
                                                                                               PsiXmlElementWriter featureWriter,
                                                                                               PsiXmlParameterWriter parameterWriter,
-                                                                                              PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter,
                                                                                               PsiXmlElementWriter<Organism> organismWriter) {
 
         CompactXmlParticipantWriter writer = new CompactXmlParticipantWriter(getStreamWriter(), getElementCache());
@@ -172,9 +159,8 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
     protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                   PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                   PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                                                  PsiXmlElementWriter<CvTerm> featureTypeWriter,
-                                                                                  PsiXmlElementWriter<Range> rangeWriter,
-                                                                                  PsiXmlElementWriter<CvTerm> featureDetectionWriter) {
+                                                                                  PsiXmlCvTermWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlElementWriter<Range> rangeWriter) {
         XmlFeatureWriter writer = new XmlFeatureWriter(getStreamWriter(), getElementCache());
         writer.setRangeWriter(rangeWriter);
         writer.setPrimaryRefWriter(primaryRefWriter);
@@ -197,7 +183,13 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
     }
 
     @Override
-    protected PsiXmlExperimentWriter instantiateExperimentWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter, PsiXmlPublicationWriter publicationWriter, PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter, PsiXmlElementWriter<CvTerm> detectionMethodWriter, PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter, PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter) {
+    protected PsiXmlExperimentWriter instantiateExperimentWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                 PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                 PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                 PsiXmlPublicationWriter publicationWriter,
+                                                                 PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
+                                                                 PsiXmlCvTermWriter<CvTerm> detectionMethodWriter,
+                                                                 PsiXmlElementWriter<Confidence> confidenceWriter) {
         XmlExperimentWriter expWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setPrimaryRefWriter(primaryRefWriter);
         expWriter.setSecondaryRefWriter(secondaryRefWriter);
@@ -207,8 +199,6 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
         expWriter.setDetectionMethodWriter(detectionMethodWriter);
         expWriter.setConfidenceWriter(confidenceWriter);
         expWriter.setAliasWriter(aliasWriter);
-        expWriter.setParticipantIdentificationMethodWriter(participantIdentificationMethodWriter);
-        expWriter.setFeatureDetectionMethodWriter(featureDetectionMethodWriter);
         return expWriter;
     }
 
@@ -218,7 +208,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
     }
 
     @Override
-    protected PsiXmlElementWriter<Confidence> instantiateConfidenceWriter(PsiXmlElementWriter<CvTerm> confidenceTypeWriter) {
+    protected PsiXmlElementWriter<Confidence> instantiateConfidenceWriter(PsiXmlCvTermWriter<CvTerm> confidenceTypeWriter) {
         XmlConfidenceWriter confWriter = new XmlConfidenceWriter(getStreamWriter(), getElementCache());
         confWriter.setTypeWriter(confidenceTypeWriter);
         return confWriter;

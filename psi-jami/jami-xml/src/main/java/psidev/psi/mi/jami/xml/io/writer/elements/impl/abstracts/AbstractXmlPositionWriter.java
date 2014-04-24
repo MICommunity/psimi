@@ -3,7 +3,9 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -18,7 +20,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 public abstract class AbstractXmlPositionWriter implements PsiXmlElementWriter<Position> {
     private XMLStreamWriter streamWriter;
-    private PsiXmlElementWriter<CvTerm> statusWriter;
+    private PsiXmlCvTermWriter<CvTerm> statusWriter;
 
     public AbstractXmlPositionWriter(XMLStreamWriter writer){
         if (writer == null){
@@ -31,7 +33,7 @@ public abstract class AbstractXmlPositionWriter implements PsiXmlElementWriter<P
     public void write(Position object) throws MIIOException {
         try {
             // write status
-            getStatusWriter().write(object.getStatus());
+            writeStatus(object);
             // write position
             if (!object.isPositionUndetermined()){
                 if (object.getStart() == object.getEnd()){
@@ -60,6 +62,8 @@ public abstract class AbstractXmlPositionWriter implements PsiXmlElementWriter<P
         }
     }
 
+    protected abstract void writeStatus(Position object);
+
     protected abstract void writeStartPositionNode() throws XMLStreamException;
     protected abstract void writeStartIntervalNode() throws XMLStreamException;
 
@@ -67,16 +71,14 @@ public abstract class AbstractXmlPositionWriter implements PsiXmlElementWriter<P
         return streamWriter;
     }
 
-    public PsiXmlElementWriter<CvTerm> getStatusWriter() {
+    public PsiXmlCvTermWriter<CvTerm> getStatusWriter() {
         if (this.statusWriter == null){
-            initialiseStatusWriter();
+            this.statusWriter = new XmlCvTermWriter(this.streamWriter);
         }
         return statusWriter;
     }
 
-    protected abstract void initialiseStatusWriter();
-
-    public void setStatusWriter(PsiXmlElementWriter<CvTerm> statusWriter) {
+    public void setStatusWriter(PsiXmlCvTermWriter<CvTerm> statusWriter) {
         this.statusWriter = statusWriter;
     }
 }

@@ -4,11 +4,9 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCelltypeWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCompartmentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlTissueWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -25,9 +23,7 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
 
     private XMLStreamWriter streamWriter;
     private PsiXmlElementWriter<Alias> aliasWriter;
-    private PsiXmlElementWriter<CvTerm> tissueWriter;
-    private PsiXmlElementWriter<CvTerm> compartmentWriter;
-    private PsiXmlElementWriter<CvTerm> cellTypeWriter;
+    private PsiXmlCvTermWriter<CvTerm> cvWriter;
 
     public AbstractXmlOrganismWriter(XMLStreamWriter writer){
         if (writer == null){
@@ -47,37 +43,15 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
         this.aliasWriter = aliasWriter;
     }
 
-    public PsiXmlElementWriter<CvTerm> getTissueWriter() {
-        if (this.tissueWriter == null){
-            this.tissueWriter = new XmlTissueWriter(streamWriter);
+    public PsiXmlCvTermWriter<CvTerm> getCvWriter() {
+        if (this.cvWriter == null){
+            this.cvWriter = new XmlOpenCvTermWriter(streamWriter);
         }
-        return tissueWriter;
+        return cvWriter;
     }
 
-    public void setTissueWriter(PsiXmlElementWriter<CvTerm> tissueWriter) {
-        this.tissueWriter = tissueWriter;
-    }
-
-    public PsiXmlElementWriter<CvTerm> getCompartmentWriter() {
-        if (this.compartmentWriter == null){
-            this.compartmentWriter = new XmlCompartmentWriter(streamWriter);
-        }
-        return compartmentWriter;
-    }
-
-    public void setCompartmentWriter(PsiXmlElementWriter<CvTerm> compartmentWriter) {
-        this.compartmentWriter = compartmentWriter;
-    }
-
-    public PsiXmlElementWriter<CvTerm> getCellTypeWriter() {
-        if (this.cellTypeWriter == null){
-            this.cellTypeWriter = new XmlCelltypeWriter(streamWriter);
-        }
-        return cellTypeWriter;
-    }
-
-    public void setCellTypeWriter(PsiXmlElementWriter<CvTerm> cellTypeWriter) {
-        this.cellTypeWriter = cellTypeWriter;
+    public void setCvWriter(PsiXmlCvTermWriter<CvTerm> cvWriter) {
+        this.cvWriter = cvWriter;
     }
 
     @Override
@@ -117,15 +91,15 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
 
             // write celltype
             if (object.getCellType() != null){
-                getCellTypeWriter().write(object.getCellType());
+                getCvWriter().write(object.getCellType(), "cellType");
             }
             //write compartment
             if (object.getCompartment() != null){
-                getCompartmentWriter().write(object.getCompartment());
+                getCvWriter().write(object.getCompartment(), "compartment");
             }
             // write tissue
             if (object.getTissue()!= null){
-                getTissueWriter().write(object.getTissue());
+                getCvWriter().write(object.getTissue(), "tissue");
             }
 
             // write other properties

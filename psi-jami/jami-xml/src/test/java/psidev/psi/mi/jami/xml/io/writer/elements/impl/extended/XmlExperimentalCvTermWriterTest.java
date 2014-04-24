@@ -1,12 +1,15 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultAlias;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.ExperimentalCvTerm;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -19,7 +22,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
+public class XmlExperimentalCvTermWriterTest extends AbstractXml25WriterTest {
 
     private String expRole = "<experimentalRole>\n" +
             "  <names>\n" +
@@ -83,13 +86,38 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+
             "</experimentalRole>";
+    private String expRoleExperiments = "<experimentalRole>\n" +
+            "  <names>\n" +
+            "    <shortLabel>unspecified role</shortLabel>\n"+
+            "  </names>\n"+
+            "  <xref>\n" +
+            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "  </xref>\n"+
+            "  <experimentRefList>\n" +
+            "    <experimentRef>1</experimentRef>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
+            "  </experimentRefList>\n"+
+            "</experimentalRole>";
+    private String expRoleExperiments2 = "<experimentalRole>\n" +
+            "  <names>\n" +
+            "    <shortLabel>unspecified role</shortLabel>\n"+
+            "  </names>\n"+
+            "  <xref>\n" +
+            "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "  </xref>\n"+
+            "  <experimentRefList>\n" +
+            "    <experimentRef>2</experimentRef>\n"+
+            "    <experimentRef>3</experimentRef>\n"+
+            "  </experimentRefList>\n"+
+            "</experimentalRole>";
+    private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
-        CvTerm expRole = CvTermUtils.createUnspecifiedRole();
+        CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
 
-        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
-        writer.write(expRole);
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
         streamWriter.flush();
 
         Assert.assertEquals(this.expRole, output.toString());
@@ -97,11 +125,11 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_fullName() throws XMLStreamException, IOException {
-        CvTerm expRole = CvTermUtils.createUnspecifiedRole();
+        CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
         expRole.setFullName("unspecified role");
 
-        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
-        writer.write(expRole);
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
         streamWriter.flush();
 
         Assert.assertEquals(this.expRoleFullName, output.toString());
@@ -109,12 +137,12 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_aliases() throws XMLStreamException, IOException {
-        CvTerm expRole = CvTermUtils.createUnspecifiedRole();
+        CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
         expRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         expRole.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
-        writer.write(expRole);
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
         streamWriter.flush();
 
         Assert.assertEquals(this.expRoleAliases, output.toString());
@@ -122,12 +150,12 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_mod() throws XMLStreamException, IOException {
-        CvTerm expRole = CvTermUtils.createUnspecifiedRole();
+        CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
         expRole.setMODIdentifier(expRole.getMIIdentifier());
         expRole.setMIIdentifier(null);
 
-        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
-        writer.write(expRole);
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
         streamWriter.flush();
 
         Assert.assertEquals(this.expRoleMod, output.toString());
@@ -135,11 +163,11 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_par() throws XMLStreamException, IOException {
-        CvTerm expRole = CvTermUtils.createUnspecifiedRole();
+        CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
         expRole.setPARIdentifier(expRole.getMIIdentifier());
         expRole.setMIIdentifier(null);
-        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
-        writer.write(expRole);
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
         streamWriter.flush();
 
         Assert.assertEquals(this.expRolePar, output.toString());
@@ -147,14 +175,14 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_first_identifier() throws XMLStreamException, IOException {
-        CvTerm expRole = CvTermUtils.createUnspecifiedRole();
+        CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
         expRole.getIdentifiers().iterator().next().getDatabase().setShortName("test");
         expRole.getIdentifiers().iterator().next().getDatabase().setMIIdentifier(null);
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
-        writer.write(expRole);
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
         streamWriter.flush();
 
         Assert.assertEquals(this.expRoleFirstIdentifier, output.toString());
@@ -162,14 +190,47 @@ public class Xml25ExperimentalRoleWriterTest extends AbstractXml25WriterTest {
 
     @Test
     public void test_write_cv_first_xref() throws XMLStreamException, IOException {
-        CvTerm expRole = new DefaultCvTerm("unspecified role");
+        CvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE);
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         expRole.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        XmlExperimentalRoleWriter writer = new XmlExperimentalRoleWriter(createStreamWriter());
-        writer.write(expRole);
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
         streamWriter.flush();
 
         Assert.assertEquals(this.expRoleFirstXref, output.toString());
+    }
+
+    @Test
+    public void test_write_cv_exp_references() throws XMLStreamException, IOException {
+        ExperimentalCvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        expRole.getExperiments().add(new DefaultExperiment(new DefaultPublication("P12345")));
+        expRole.getExperiments().add(new DefaultExperiment(new DefaultPublication("P123456")));
+        this.elementCache.clear();
+
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
+        streamWriter.flush();
+
+        Assert.assertEquals(this.expRoleExperiments, output.toString());
+    }
+
+    @Test
+    public void test_write_cv_exp_references_alreadyRegistered() throws XMLStreamException, IOException {
+        ExperimentalCvTerm expRole = new ExperimentalCvTerm(Participant.UNSPECIFIED_ROLE, Participant.UNSPECIFIED_ROLE_MI);
+        Experiment exp1 = new DefaultExperiment(new DefaultPublication("P12345"));
+        Experiment exp2 = new DefaultExperiment(new DefaultPublication("P123456"));
+        expRole.getExperiments().add(exp1);
+        expRole.getExperiments().add(exp2);
+        this.elementCache.clear();
+        this.elementCache.extractIdForExperiment(new DefaultExperiment(new DefaultPublication("P1234")));
+        this.elementCache.extractIdForExperiment(exp1);
+        this.elementCache.extractIdForExperiment(exp2);
+
+        XmlExperimentalCvTermWriter writer = new XmlExperimentalCvTermWriter(createStreamWriter(), this.elementCache);
+        writer.write(expRole,"experimentalRole");
+        streamWriter.flush();
+
+        Assert.assertEquals(this.expRoleExperiments2, output.toString());
     }
 }

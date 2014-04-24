@@ -5,18 +5,14 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.compact.AbstractCompactXmlWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlExperimentalPreparationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlConfidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlExperimentalRoleWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlFeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlHostOrganismWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlInferredInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlParticipantIdentificationMethodWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlPrimaryXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlSecondaryXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlSourceWriter;
@@ -93,7 +89,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
                                                                                     PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                     PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                     PsiXmlParameterWriter parameterWriter,
-                                                                                    PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
                                                                                     PsiXmlExperimentWriter experimentWriter,
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
@@ -122,7 +118,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
                                                                                               PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                               PsiXmlParameterWriter parameterWriter,
                                                                                               PsiXmlParticipantWriter participantWriter,
-                                                                                              PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                              PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
                                                                                               PsiXmlExperimentWriter experimentWriter,
                                                                                               PsiXmlElementWriter<String> availabilityWriter,
                                                                                               PsiXmlElementWriter inferredInteractionWriter) {
@@ -148,7 +144,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
                                                                                                 PsiXmlXrefWriter primaryRefWriter,
                                                                                                 PsiXmlXrefWriter secondaryRefWriter,
                                                                                                 PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
         CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
@@ -163,52 +159,24 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
     }
 
     @Override
-    protected PsiXmlElementWriter<CvTerm> instantiateParticipantDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-        XmlParticipantIdentificationMethodWriter identificationMethodWriter = new XmlParticipantIdentificationMethodWriter(getStreamWriter(), getElementCache());
-        identificationMethodWriter.setAliasWriter(aliasWriter);
-        identificationMethodWriter.setSecondaryRefWriter(secondaryRefWriter);
-        identificationMethodWriter.setPrimaryRefWriter(primaryRefWriter);
-
-        return identificationMethodWriter;
-    }
-
-    @Override
-    protected PsiXmlElementWriter<CvTerm> instantiateFeatureDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-        XmlFeatureDetectionMethodWriter featureDetectionWriter = new XmlFeatureDetectionMethodWriter(getStreamWriter());
-        featureDetectionWriter.setAliasWriter(aliasWriter);
-        featureDetectionWriter.setSecondaryRefWriter(secondaryRefWriter);
-        featureDetectionWriter.setPrimaryRefWriter(primaryRefWriter);
-
-        return featureDetectionWriter;
-    }
-
-    @Override
     protected <P extends Participant> PsiXmlParticipantWriter<P> instantiateParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                                       PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                                       PsiXmlXrefWriter primaryRefWriter,
                                                                                                       PsiXmlXrefWriter secondaryRefWriter,
                                                                                                       PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                                       PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                      PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                                      PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
                                                                                                       PsiXmlElementWriter featureWriter,
                                                                                                       PsiXmlParameterWriter parameterWriter,
-                                                                                                      PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter,
                                                                                                       PsiXmlElementWriter<Organism> organismWriter) {
-        XmlExperimentalRoleWriter expRoleWriter = new XmlExperimentalRoleWriter(getStreamWriter(), getElementCache());
+        XmlExperimentalCvTermWriter expRoleWriter = new XmlExperimentalCvTermWriter(getStreamWriter(), getElementCache());
         expRoleWriter.setAliasWriter(aliasWriter);
         expRoleWriter.setPrimaryRefWriter(primaryRefWriter);
         expRoleWriter.setSecondaryRefWriter(secondaryRefWriter);
 
-        XmlExperimentalPreparationWriter expPreparationWriter = new XmlExperimentalPreparationWriter(getStreamWriter(), getElementCache());
-        expPreparationWriter.setAliasWriter(aliasWriter);
-        expPreparationWriter.setPrimaryRefWriter(primaryRefWriter);
-        expPreparationWriter.setSecondaryRefWriter(secondaryRefWriter);
-
         XmlHostOrganismWriter hostOrganismWriter = new XmlHostOrganismWriter(getStreamWriter(), getElementCache());
         hostOrganismWriter.setAliasWriter(aliasWriter);
-        hostOrganismWriter.setCellTypeWriter(hostOrganismWriter.getCellTypeWriter());
-        hostOrganismWriter.setCompartmentWriter(hostOrganismWriter.getCompartmentWriter());
-        hostOrganismWriter.setTissueWriter(hostOrganismWriter.getTissueWriter());
+        hostOrganismWriter.setCvWriter(hostOrganismWriter.getCvWriter());
 
         CompactXmlParticipantEvidenceWriter writer = new CompactXmlParticipantEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setPrimaryRefWriter(primaryRefWriter);
@@ -218,12 +186,10 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
         writer.setInteractorWriter(interactorWriter);
         writer.setBiologicalRoleWriter(bioRoleWriter);
         writer.setFeatureWriter(featureWriter);
-        writer.setIdentificationMethodWriter(participantIdentificationMethodWriter);
         writer.setHostOrganismWriter(organismWriter);
         writer.setParameterWriter(parameterWriter);
         writer.setConfidenceWriter(confidenceWriter);
-        writer.setExperimentalPreparationWriter(expPreparationWriter);
-        writer.setExperimentalRoleWriter(expRoleWriter);
+        writer.setCvWriter(expRoleWriter);
         writer.setExperimentalInteractorWriter(new CompactXmlExperimentalInteractorWriter(getStreamWriter(), getElementCache()));
         return (PsiXmlParticipantWriter<P>) writer;
     }
@@ -232,9 +198,8 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
     protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                   PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                   PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                                                  PsiXmlElementWriter<CvTerm> featureTypeWriter,
-                                                                                  PsiXmlElementWriter<Range> rangeWriter,
-                                                                                  PsiXmlElementWriter<CvTerm> featureDetectionWriter) {
+                                                                                  PsiXmlCvTermWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlElementWriter<Range> rangeWriter) {
         XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setRangeWriter(rangeWriter);
         writer.setPrimaryRefWriter(primaryRefWriter);
@@ -242,7 +207,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
         writer.setFeatureTypeWriter(featureTypeWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
-        writer.setDetectionMethodWriter(featureDetectionWriter);
+        writer.setDetectionMethodWriter(featureTypeWriter);
         return (PsiXmlElementWriter<F>) writer;
     }
 
@@ -258,7 +223,13 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
     }
 
     @Override
-    protected PsiXmlExperimentWriter instantiateExperimentWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter, PsiXmlPublicationWriter publicationWriter, PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter, PsiXmlElementWriter<CvTerm> detectionMethodWriter, PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter, PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter) {
+    protected PsiXmlExperimentWriter instantiateExperimentWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                 PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                 PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                 PsiXmlPublicationWriter publicationWriter,
+                                                                 PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
+                                                                 PsiXmlCvTermWriter<CvTerm> detectionMethodWriter,
+                                                                 PsiXmlElementWriter<Confidence> confidenceWriter) {
         XmlExperimentWriter expWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setPrimaryRefWriter(primaryRefWriter);
         expWriter.setSecondaryRefWriter(secondaryRefWriter);
@@ -268,8 +239,6 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
         expWriter.setDetectionMethodWriter(detectionMethodWriter);
         expWriter.setConfidenceWriter(confidenceWriter);
         expWriter.setAliasWriter(aliasWriter);
-        expWriter.setParticipantIdentificationMethodWriter(participantIdentificationMethodWriter);
-        expWriter.setFeatureDetectionMethodWriter(featureDetectionMethodWriter);
         return expWriter;
     }
 
@@ -279,7 +248,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
     }
 
     @Override
-    protected PsiXmlElementWriter<Confidence> instantiateConfidenceWriter(PsiXmlElementWriter<CvTerm> confidenceTypeWriter) {
+    protected PsiXmlElementWriter<Confidence> instantiateConfidenceWriter(PsiXmlCvTermWriter<CvTerm> confidenceTypeWriter) {
         XmlConfidenceWriter confWriter = new XmlConfidenceWriter(getStreamWriter(), getElementCache());
         confWriter.setTypeWriter(confidenceTypeWriter);
         return confWriter;

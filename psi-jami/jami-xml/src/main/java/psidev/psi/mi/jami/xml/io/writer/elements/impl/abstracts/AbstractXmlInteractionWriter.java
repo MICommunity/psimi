@@ -31,7 +31,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     private PsiXmlXrefWriter primaryRefWriter;
     private PsiXmlXrefWriter secondaryRefWriter;
     private PsiXmlParticipantWriter<P> participantWriter;
-    private PsiXmlElementWriter<CvTerm> interactionTypeWriter;
+    private PsiXmlCvTermWriter<CvTerm> interactionTypeWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
     private PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter;
     private Experiment defaultExperiment;
@@ -85,7 +85,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         this.secondaryRefWriter = secondaryRefWriter;
     }
 
-    public void setInteractionTypeWriter(PsiXmlElementWriter<CvTerm> interactionTypeWriter) {
+    public void setInteractionTypeWriter(PsiXmlCvTermWriter<CvTerm> interactionTypeWriter) {
         this.interactionTypeWriter = interactionTypeWriter;
     }
 
@@ -126,9 +126,9 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         return checksumWriter;
     }
 
-    public PsiXmlElementWriter<CvTerm> getInteractionTypeWriter() {
+    public PsiXmlCvTermWriter<CvTerm> getInteractionTypeWriter() {
         if (this.interactionTypeWriter == null){
-            this.interactionTypeWriter = new XmlInteractionTypeWriter(streamWriter);
+            this.interactionTypeWriter = new XmlCvTermWriter(streamWriter);
         }
         return interactionTypeWriter;
     }
@@ -239,7 +239,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     protected void writeInteractionType(T object) throws XMLStreamException {
         if (object.getInteractionType() != null){
-            getInteractionTypeWriter().write(object.getInteractionType());
+            getInteractionTypeWriter().write(object.getInteractionType(),"interactionType");
         }
     }
 
