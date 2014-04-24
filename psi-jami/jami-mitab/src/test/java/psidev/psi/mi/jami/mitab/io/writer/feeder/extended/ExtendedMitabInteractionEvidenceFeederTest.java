@@ -26,7 +26,7 @@ import java.io.StringWriter;
 
 public class ExtendedMitabInteractionEvidenceFeederTest {
 
-    @Test(expected = ClassCastException.class)
+    @Test
     public void write_aliases_no_mitab() throws IOException {
         StringWriter writer = new StringWriter();
         ExtendedMitabInteractionEvidenceFeeder feeder = new ExtendedMitabInteractionEvidenceFeeder(writer);
@@ -69,7 +69,7 @@ public class ExtendedMitabInteractionEvidenceFeederTest {
         Assert.assertEquals("psi-mi:p12345_human(display_short)|psi-mi:\"protein:test\"(display_long)|mint:test gene(gene name)|intact:test name", writer.toString());
     }
 
-    @Test(expected = ClassCastException.class)
+    @Test
     public void write_alias_not_mitab() throws IOException {
         StringWriter writer = new StringWriter();
         ExtendedMitabInteractionEvidenceFeeder feeder = new ExtendedMitabInteractionEvidenceFeeder(writer);
@@ -108,7 +108,7 @@ public class ExtendedMitabInteractionEvidenceFeederTest {
         Assert.assertEquals("intact:\"test:name\"", writer.toString());
     }
 
-    @Test(expected = ClassCastException.class)
+    @Test
     public void write_confidence_not_mitab() throws IOException {
         StringWriter writer = new StringWriter();
         ExtendedMitabInteractionEvidenceFeeder feeder = new ExtendedMitabInteractionEvidenceFeeder(writer);
@@ -133,7 +133,7 @@ public class ExtendedMitabInteractionEvidenceFeederTest {
         Assert.assertEquals("mi-score:0.5(test)|author-score:high", writer.toString());
     }
 
-    @Test(expected = ClassCastException.class)
+    @Test
     public void write_feature_not_mitab() throws IOException {
         StringWriter writer = new StringWriter();
         ExtendedMitabInteractionEvidenceFeeder feeder = new ExtendedMitabInteractionEvidenceFeeder(writer);

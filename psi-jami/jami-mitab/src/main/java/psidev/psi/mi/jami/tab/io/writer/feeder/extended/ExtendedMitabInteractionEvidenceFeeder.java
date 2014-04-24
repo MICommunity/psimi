@@ -44,18 +44,20 @@ public class ExtendedMitabInteractionEvidenceFeeder extends MitabInteractionEvid
             escapeAndWriteString(conf.getValue());
 
             // write text
-            MitabConfidence mitabConf = (MitabConfidence) conf;
-            if (mitabConf.getText() != null){
-                getWriter().write("(");
-                getWriter().write(mitabConf.getText());
-                getWriter().write(")");
+            if (conf instanceof MitabConfidence){
+                MitabConfidence mitabConf = (MitabConfidence) conf;
+                if (mitabConf.getText() != null){
+                    getWriter().write("(");
+                    getWriter().write(mitabConf.getText());
+                    getWriter().write(")");
+                }
             }
         }
     }
 
     @Override
     public void writeAlias(Alias alias) throws IOException {
-        if (alias != null){
+        if (alias instanceof MitabAlias){
             MitabAlias mitabAlias = (MitabAlias) alias;
 
             // write db first
@@ -70,6 +72,9 @@ public class ExtendedMitabInteractionEvidenceFeeder extends MitabInteractionEvid
                 escapeAndWriteString(alias.getType().getShortName());
                 getWriter().write(")");
             }
+        }
+        else{
+            super.writeAlias(alias);
         }
     }
 
@@ -111,11 +116,13 @@ public class ExtendedMitabInteractionEvidenceFeeder extends MitabInteractionEvid
                 }
             }
             // then write text
-            MitabFeature mitabFeature = (MitabFeature) feature;
-            if (mitabFeature.getText() != null){
-                getWriter().write("(");
-                escapeAndWriteString(mitabFeature.getText());
-                getWriter().write(")");
+            if (feature instanceof MitabFeature){
+                MitabFeature mitabFeature = (MitabFeature) feature;
+                if (mitabFeature.getText() != null){
+                    getWriter().write("(");
+                    escapeAndWriteString(mitabFeature.getText());
+                    getWriter().write(")");
+                }
             }
         }
     }
