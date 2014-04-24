@@ -74,6 +74,9 @@ public abstract class AbstractXmlNamedInteractionWriter<I extends Interaction, P
                 super.writeNames(object);
             }
         }
+        else{
+            super.writeNames(object);
+        }
     }
 
     @Override

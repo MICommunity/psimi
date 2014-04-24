@@ -22,7 +22,7 @@ import java.util.Date;
  * @since <pre>18/11/13</pre>
  */
 
-public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInteraction, P extends ModelledParticipant> extends AbstractXmlInteractionWriter<I, P> {
+public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInteraction, P extends ModelledParticipant> extends AbstractXmlNamedInteractionWriter<I, P> {
     private PsiXmlElementWriter<Confidence> confidenceWriter;
     private PsiXmlParameterWriter parameterWriter;
 
