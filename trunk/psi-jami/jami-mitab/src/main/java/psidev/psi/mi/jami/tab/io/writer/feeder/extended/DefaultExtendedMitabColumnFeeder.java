@@ -29,7 +29,7 @@ public class DefaultExtendedMitabColumnFeeder extends DefaultMitabColumnFeeder {
 
     @Override
     public void writeAlias(Alias alias) throws IOException {
-        if (alias != null){
+        if (alias instanceof MitabAlias){
             MitabAlias mitabAlias = (MitabAlias) alias;
 
             // write db first
@@ -44,6 +44,9 @@ public class DefaultExtendedMitabColumnFeeder extends DefaultMitabColumnFeeder {
                 escapeAndWriteString(alias.getType().getShortName());
                 getWriter().write(")");
             }
+        }
+        else {
+            super.writeAlias(alias);
         }
     }
 
@@ -85,11 +88,13 @@ public class DefaultExtendedMitabColumnFeeder extends DefaultMitabColumnFeeder {
                 }
             }
             // then write text
-            MitabFeature mitabFeature = (MitabFeature) feature;
-            if (mitabFeature.getText() != null){
-                getWriter().write("(");
-                escapeAndWriteString(mitabFeature.getText());
-                getWriter().write(")");
+            if (feature instanceof MitabFeature){
+                MitabFeature mitabFeature = (MitabFeature) feature;
+                if (mitabFeature.getText() != null){
+                    getWriter().write("(");
+                    escapeAndWriteString(mitabFeature.getText());
+                    getWriter().write(")");
+                }
             }
         }
     }
