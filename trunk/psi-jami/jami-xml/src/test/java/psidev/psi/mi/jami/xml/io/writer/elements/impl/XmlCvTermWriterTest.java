@@ -11,24 +11,24 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for XmlInteractionTypeWriter
+ * Unit tester for XmlFeatureTypeWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
+public class XmlCvTermWriterTest extends AbstractXml25WriterTest {
 
-    private String type = "<interactionType>\n" +
+    private String type = "<featureType>\n" +
             "  <names>\n" +
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
             "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</interactionType>";
-    private String typeFullName = "<interactionType>\n" +
+            "</featureType>";
+    private String typeFullName = "<featureType>\n" +
             "  <names>\n" +
             "    <shortLabel>inferred</shortLabel>\n"+
             "    <fullName>inference</fullName>\n"+
@@ -36,8 +36,8 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
             "  <xref>\n" +
             "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</interactionType>";
-    private String typeAliases = "<interactionType>\n" +
+            "</featureType>";
+    private String typeAliases = "<featureType>\n" +
             "  <names>\n" +
             "    <shortLabel>inferred</shortLabel>\n"+
             "    <alias type=\"synonym\">unspecified</alias>\n"+
@@ -46,24 +46,24 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
             "  <xref>\n" +
             "    <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</interactionType>";
-    private String typeMod = "<interactionType>\n" +
+            "</featureType>";
+    private String typeMod = "<featureType>\n" +
             "  <names>\n" +
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
             "    <primaryRef db=\"psi-mod\" dbAc=\"MI:0897\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</interactionType>";
-    private String typePar = "<interactionType>\n" +
+            "</featureType>";
+    private String typePar = "<featureType>\n" +
             "  <names>\n" +
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
             "  <xref>\n" +
             "    <primaryRef db=\"psi-par\" id=\"MI:0362\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "  </xref>\n"+
-            "</interactionType>";
-    private String typeFirstIdentifier = "<interactionType>\n" +
+            "</featureType>";
+    private String typeFirstIdentifier = "<featureType>\n" +
             "  <names>\n" +
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
@@ -72,8 +72,8 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
             "    <secondaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+
-            "</interactionType>";
-    private String typeFirstXref = "<interactionType>\n" +
+            "</featureType>";
+    private String typeFirstXref = "<featureType>\n" +
             "  <names>\n" +
             "    <shortLabel>inferred</shortLabel>\n"+
             "  </names>\n"+
@@ -81,14 +81,14 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
             "    <primaryRef db=\"test2\" id=\"xxxxx2\"/>\n"+
             "    <secondaryRef db=\"test3\" id=\"xxxxx3\"/>\n"+
             "  </xref>\n"+
-            "</interactionType>";
+            "</featureType>";
 
     @Test
     public void test_write_cv_no_fullName() throws XMLStreamException, IOException {
         CvTerm type = new DefaultCvTerm("inferred", "MI:0362");
 
-        XmlInteractionTypeWriter writer = new XmlInteractionTypeWriter(createStreamWriter());
-        writer.write(type);
+        XmlCvTermWriter writer = new XmlCvTermWriter(createStreamWriter());
+        writer.write(type, "featureType");
         streamWriter.flush();
 
         Assert.assertEquals(this.type, output.toString());
@@ -99,8 +99,8 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
         CvTerm type = new DefaultCvTerm("inferred", "MI:0362");
         type.setFullName("inference");
 
-        XmlInteractionTypeWriter writer = new XmlInteractionTypeWriter(createStreamWriter());
-        writer.write(type);
+        XmlCvTermWriter writer = new XmlCvTermWriter(createStreamWriter());
+        writer.write(type, "featureType");
         streamWriter.flush();
 
         Assert.assertEquals(this.typeFullName, output.toString());
@@ -112,8 +112,8 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
         type.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("synonym"), "unspecified"));
         type.getSynonyms().add(new DefaultAlias(new DefaultCvTerm("test"), "test name"));
 
-        XmlInteractionTypeWriter writer = new XmlInteractionTypeWriter(createStreamWriter());
-        writer.write(type);
+        XmlCvTermWriter writer = new XmlCvTermWriter(createStreamWriter());
+        writer.write(type, "featureType");
         streamWriter.flush();
 
         Assert.assertEquals(this.typeAliases, output.toString());
@@ -125,8 +125,8 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
         type.setMODIdentifier(type.getMIIdentifier());
         type.setMIIdentifier(null);
 
-        XmlInteractionTypeWriter writer = new XmlInteractionTypeWriter(createStreamWriter());
-        writer.write(type);
+        XmlCvTermWriter writer = new XmlCvTermWriter(createStreamWriter());
+        writer.write(type, "featureType");
         streamWriter.flush();
 
         Assert.assertEquals(this.typeMod, output.toString());
@@ -137,8 +137,8 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
         CvTerm type = new DefaultCvTerm("inferred", "MI:0362");
         type.setPARIdentifier(type.getMIIdentifier());
         type.setMIIdentifier(null);
-        XmlInteractionTypeWriter writer = new XmlInteractionTypeWriter(createStreamWriter());
-        writer.write(type);
+        XmlCvTermWriter writer = new XmlCvTermWriter(createStreamWriter());
+        writer.write(type, "featureType");
         streamWriter.flush();
 
         Assert.assertEquals(this.typePar, output.toString());
@@ -152,8 +152,8 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        XmlInteractionTypeWriter writer = new XmlInteractionTypeWriter(createStreamWriter());
-        writer.write(type);
+        XmlCvTermWriter writer = new XmlCvTermWriter(createStreamWriter());
+        writer.write(type, "featureType");
         streamWriter.flush();
 
         Assert.assertEquals(this.typeFirstIdentifier, output.toString());
@@ -165,8 +165,8 @@ public class Xml25InteractionTypeWriterTest extends AbstractXml25WriterTest {
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxxx2"));
         type.getXrefs().add(new DefaultXref(new DefaultCvTerm("test3"), "xxxxx3"));
 
-        XmlInteractionTypeWriter writer = new XmlInteractionTypeWriter(createStreamWriter());
-        writer.write(type);
+        XmlCvTermWriter writer = new XmlCvTermWriter(createStreamWriter());
+        writer.write(type, "featureType");
         streamWriter.flush();
 
         Assert.assertEquals(this.typeFirstXref, output.toString());

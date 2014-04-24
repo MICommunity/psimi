@@ -63,7 +63,7 @@ public abstract class AbstractXmlInteractionWriter<I extends Interaction, P exte
         ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
         if (!xmlInteraction.getInteractionTypes().isEmpty()){
             for (Object type : xmlInteraction.getInteractionTypes()){
-                getInteractionTypeWriter().write((CvTerm)type);
+                getInteractionTypeWriter().write((CvTerm)type,"interactionType");
             }
         }
     }

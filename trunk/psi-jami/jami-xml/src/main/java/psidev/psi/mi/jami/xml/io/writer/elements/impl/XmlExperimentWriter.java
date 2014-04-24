@@ -5,10 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -30,7 +27,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
     private PsiXmlXrefWriter primaryRefWriter;
     private PsiXmlXrefWriter secondaryRefWriter;
     private PsiXmlElementWriter<Organism> hostOrganismWriter;
-    private PsiXmlElementWriter<CvTerm> detectionMethodWriter;
+    private PsiXmlCvTermWriter<CvTerm> detectionMethodWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
     private PsiXmlElementWriter<Confidence> confidenceWriter;
     private Publication defaultPublication;
@@ -91,14 +88,14 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
         this.hostOrganismWriter = hostOrganismWriter;
     }
 
-    public PsiXmlElementWriter<CvTerm> getDetectionMethodWriter() {
+    public PsiXmlCvTermWriter<CvTerm> getDetectionMethodWriter() {
         if (this.detectionMethodWriter == null){
-            this.detectionMethodWriter = new XmlInteractionDetectionMethodWriter(streamWriter);
+            this.detectionMethodWriter = new XmlCvTermWriter(streamWriter);
         }
         return detectionMethodWriter;
     }
 
-    public void setDetectionMethodWriter(PsiXmlElementWriter<CvTerm> detectionMethodWriter) {
+    public void setDetectionMethodWriter(PsiXmlCvTermWriter<CvTerm> detectionMethodWriter) {
         this.detectionMethodWriter = detectionMethodWriter;
     }
 
@@ -210,7 +207,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
     protected void writeInteractiondetectionMethod(Experiment object) throws XMLStreamException {
         CvTerm detectionMethod = object.getInteractionDetectionMethod();
         // write cv
-        getDetectionMethodWriter().write(detectionMethod);
+        getDetectionMethodWriter().write(detectionMethod, "interactionDetectionMethod");
     }
 
     protected void writeHostOrganism(Experiment object) throws XMLStreamException {

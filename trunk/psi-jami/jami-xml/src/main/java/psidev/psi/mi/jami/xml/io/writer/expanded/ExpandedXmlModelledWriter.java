@@ -57,7 +57,7 @@ public class ExpandedXmlModelledWriter extends AbstractExpandedXmlWriter<Modelle
                                                                                     PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                     PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                     PsiXmlParameterWriter parameterWriter,
-                                                                                    PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
                                                                                     PsiXmlExperimentWriter experimentWriter,
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
@@ -74,7 +74,7 @@ public class ExpandedXmlModelledWriter extends AbstractExpandedXmlWriter<Modelle
                                                                                         PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                         PsiXmlParameterWriter parameterWriter,
                                                                                         PsiXmlParticipantWriter participantWriter,
-                                                                                        PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                        PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
                                                                                         PsiXmlExperimentWriter experimentWriter,
                                                                                         PsiXmlElementWriter<String> availabilityWriter,
                                                                                         PsiXmlElementWriter inferredInteractionWriter) {
@@ -98,22 +98,10 @@ public class ExpandedXmlModelledWriter extends AbstractExpandedXmlWriter<Modelle
                                                                                                 PsiXmlXrefWriter primaryRefWriter,
                                                                                                 PsiXmlXrefWriter secondaryRefWriter,
                                                                                                 PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
         return participantWriter;
-    }
-
-    @Override
-    protected PsiXmlElementWriter<CvTerm> instantiateParticipantDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-
-        return null;
-    }
-
-    @Override
-    protected PsiXmlElementWriter<CvTerm> instantiateFeatureDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-
-        return null;
     }
 
     @Override
@@ -123,10 +111,9 @@ public class ExpandedXmlModelledWriter extends AbstractExpandedXmlWriter<Modelle
                                                                                               PsiXmlXrefWriter secondaryRefWriter,
                                                                                               PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                               PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                              PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                              PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
                                                                                               PsiXmlElementWriter featureWriter,
                                                                                               PsiXmlParameterWriter parameterWriter,
-                                                                                              PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter,
                                                                                               PsiXmlElementWriter<Organism> organismWriter) {
 
         ExpandedXmlModelledParticipantWriter writer = new ExpandedXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
@@ -144,9 +131,8 @@ public class ExpandedXmlModelledWriter extends AbstractExpandedXmlWriter<Modelle
     protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                   PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                   PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                                                  PsiXmlElementWriter<CvTerm> featureTypeWriter,
-                                                                                  PsiXmlElementWriter<Range> rangeWriter,
-                                                                                  PsiXmlElementWriter<CvTerm> featureDetectionWriter) {
+                                                                                  PsiXmlCvTermWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlElementWriter<Range> rangeWriter) {
         XmlModelledFeatureWriter writer = new XmlModelledFeatureWriter(getStreamWriter(), getElementCache());
         writer.setRangeWriter(rangeWriter);
         writer.setPrimaryRefWriter(primaryRefWriter);
@@ -158,7 +144,13 @@ public class ExpandedXmlModelledWriter extends AbstractExpandedXmlWriter<Modelle
     }
 
     @Override
-    protected PsiXmlElementWriter<ModelledFeature> instantiateModelledFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<CvTerm> featureTypeWriter, PsiXmlElementWriter<Range> rangeWriter, PsiXmlElementWriter featureWriter) {
+    protected PsiXmlElementWriter<ModelledFeature> instantiateModelledFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                    PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                    PsiXmlXrefWriter primaryRefWriter,
+                                                                                    PsiXmlXrefWriter secondaryRefWriter,
+                                                                                    PsiXmlCvTermWriter<CvTerm> featureTypeWriter,
+                                                                                    PsiXmlElementWriter<Range> rangeWriter,
+                                                                                    PsiXmlElementWriter featureWriter) {
         return featureWriter;
     }
 }

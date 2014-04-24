@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 
@@ -24,7 +25,7 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
     private PsiXmlElementWriter<Alias> aliasWriter;
     private PsiXmlXrefWriter primaryRefWriter;
     private PsiXmlXrefWriter secondaryRefWriter;
-    private PsiXmlElementWriter<CvTerm> interactorTypeWriter;
+    private PsiXmlCvTermWriter<CvTerm> interactorTypeWriter;
     private PsiXmlElementWriter<Organism> organismWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
     private PsiXmlElementWriter<Checksum> checksumWriter;
@@ -76,15 +77,15 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
         this.secondaryRefWriter = secondaryRefWriter;
     }
 
-    public PsiXmlElementWriter<CvTerm> getInteractorTypeWriter() {
+    public PsiXmlCvTermWriter<CvTerm> getInteractorTypeWriter() {
         if (this.interactorTypeWriter == null){
-            this.interactorTypeWriter = new XmlInteractorTypeWriter(streamWriter);
+            this.interactorTypeWriter = new XmlCvTermWriter(streamWriter);
 
         }
         return interactorTypeWriter;
     }
 
-    public void setInteractorTypeWriter(PsiXmlElementWriter<CvTerm> interactorTypeWriter) {
+    public void setInteractorTypeWriter(PsiXmlCvTermWriter<CvTerm> interactorTypeWriter) {
         this.interactorTypeWriter = interactorTypeWriter;
     }
 
@@ -162,7 +163,7 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             }
 
             // write interactor type
-           getInteractorTypeWriter().write(object.getInteractorType());
+           getInteractorTypeWriter().write(object.getInteractorType(), "interactorType");
 
             // write organism
             if (object.getOrganism() != null){

@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
+import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlPositionWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -29,7 +30,7 @@ public class XmlBeginPositionWriter extends AbstractXmlPositionWriter {
     }
 
     @Override
-    protected void initialiseStatusWriter() {
-        super.setStatusWriter(new XmlStartStatusWriter(getStreamWriter()));
+    protected void writeStatus(Position object) {
+        getStatusWriter().write(object.getStatus(),"startStatus");
     }
 }

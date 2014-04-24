@@ -56,7 +56,7 @@ public class LightExpandedXmlNamedWriter extends AbstractExpandedXmlWriter<Inter
                                                                                     PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                     PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                     PsiXmlParameterWriter parameterWriter,
-                                                                                    PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
                                                                                     PsiXmlExperimentWriter experimentWriter,
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
@@ -85,7 +85,7 @@ public class LightExpandedXmlNamedWriter extends AbstractExpandedXmlWriter<Inter
                                                                                       PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                       PsiXmlParameterWriter parameterWriter,
                                                                                       PsiXmlParticipantWriter participantWriter,
-                                                                                      PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                      PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
                                                                                       PsiXmlExperimentWriter experimentWriter,
                                                                                       PsiXmlElementWriter<String> availabilityWriter,
                                                                                       PsiXmlElementWriter inferredInteractionWriter) {
@@ -108,7 +108,7 @@ public class LightExpandedXmlNamedWriter extends AbstractExpandedXmlWriter<Inter
                                                                                                 PsiXmlXrefWriter primaryRefWriter,
                                                                                                 PsiXmlXrefWriter secondaryRefWriter,
                                                                                                 PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
         ExpandedXmlNamedModelledParticipantWriter writer = new ExpandedXmlNamedModelledParticipantWriter(getStreamWriter(), getElementCache());
@@ -123,28 +123,15 @@ public class LightExpandedXmlNamedWriter extends AbstractExpandedXmlWriter<Inter
     }
 
     @Override
-    protected PsiXmlElementWriter<CvTerm> instantiateParticipantDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-
-        return null;
-    }
-
-    @Override
-    protected PsiXmlElementWriter<CvTerm> instantiateFeatureDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-
-        return null;
-    }
-
-    @Override
     protected <P extends Participant> PsiXmlParticipantWriter<P> instantiateParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                               PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                               PsiXmlXrefWriter primaryRefWriter,
                                                                                               PsiXmlXrefWriter secondaryRefWriter,
                                                                                               PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                               PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                              PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                              PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
                                                                                               PsiXmlElementWriter featureWriter,
                                                                                               PsiXmlParameterWriter parameterWriter,
-                                                                                              PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter,
                                                                                               PsiXmlElementWriter<Organism> organismWriter) {
 
         ExpandedXmlNamedParticipantWriter writer = new ExpandedXmlNamedParticipantWriter(getStreamWriter(), getElementCache());
@@ -162,9 +149,8 @@ public class LightExpandedXmlNamedWriter extends AbstractExpandedXmlWriter<Inter
     protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                   PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                   PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                                                  PsiXmlElementWriter<CvTerm> featureTypeWriter,
-                                                                                  PsiXmlElementWriter<Range> rangeWriter,
-                                                                                  PsiXmlElementWriter<CvTerm> featureDetectionWriter) {
+                                                                                  PsiXmlCvTermWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlElementWriter<Range> rangeWriter) {
         XmlFeatureWriter writer = new XmlFeatureWriter(getStreamWriter(), getElementCache());
         writer.setRangeWriter(rangeWriter);
         writer.setPrimaryRefWriter(primaryRefWriter);
@@ -180,10 +166,8 @@ public class LightExpandedXmlNamedWriter extends AbstractExpandedXmlWriter<Inter
                                                                  PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
                                                                  PsiXmlPublicationWriter publicationWriter,
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
-                                                                 PsiXmlElementWriter<CvTerm> detectionMethodWriter,
-                                                                 PsiXmlElementWriter<Confidence> confidenceWriter,
-                                                                 PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter,
-                                                                 PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter) {
+                                                                 PsiXmlCvTermWriter<CvTerm> detectionMethodWriter,
+                                                                 PsiXmlElementWriter<Confidence> confidenceWriter) {
         XmlNamedExperimentWriter expWriter = new XmlNamedExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setPrimaryRefWriter(primaryRefWriter);
         expWriter.setSecondaryRefWriter(secondaryRefWriter);

@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
@@ -27,7 +28,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     private PsiXmlElementWriter<Alias> aliasWriter;
     private PsiXmlXrefWriter primaryRefWriter;
     private PsiXmlXrefWriter secondaryRefWriter;
-    private PsiXmlElementWriter biologicalRoleWriter;
+    private PsiXmlCvTermWriter<CvTerm> biologicalRoleWriter;
     private PsiXmlElementWriter<F> featureWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
     private PsiXmlElementWriter<Interactor> interactorWriter;
@@ -77,14 +78,14 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
         this.secondaryRefWriter = secondaryRefWriter;
     }
 
-    public PsiXmlElementWriter getBiologicalRoleWriter() {
+    public PsiXmlCvTermWriter<CvTerm> getBiologicalRoleWriter() {
         if (this.biologicalRoleWriter == null){
-            this.biologicalRoleWriter = new XmlBiologicalRoleWriter(streamWriter);
+            this.biologicalRoleWriter = new XmlCvTermWriter(streamWriter);
         }
         return biologicalRoleWriter;
     }
 
-    public void setBiologicalRoleWriter(PsiXmlElementWriter biologicalRoleWriter) {
+    public void setBiologicalRoleWriter(PsiXmlCvTermWriter<CvTerm> biologicalRoleWriter) {
         this.biologicalRoleWriter = biologicalRoleWriter;
     }
 
@@ -226,7 +227,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             // write start feature list
             this.streamWriter.writeStartElement("featureList");
             for (Object feature : object.getFeatures()){
-                getFeatureWriter().write((F)feature);
+                getFeatureWriter().write((F) feature);
             }
             // write end featureList
             getStreamWriter().writeEndElement();
@@ -247,7 +248,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     }
 
     protected void writeBiologicalRole(P object) throws XMLStreamException {
-        getBiologicalRoleWriter().write(object.getBiologicalRole());
+        getBiologicalRoleWriter().write(object.getBiologicalRole(),"biologicalRole");
     }
 
     protected void writeInteractor(P object) throws XMLStreamException {

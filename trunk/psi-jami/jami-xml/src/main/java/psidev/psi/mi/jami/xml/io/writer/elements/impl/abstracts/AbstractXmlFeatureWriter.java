@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
@@ -28,7 +29,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
     private PsiXmlObjectCache objectIndex;
     private PsiXmlXrefWriter primaryRefWriter;
     private PsiXmlXrefWriter secondaryRefWriter;
-    private PsiXmlElementWriter<CvTerm> featureTypeWriter;
+    private PsiXmlCvTermWriter<CvTerm> featureTypeWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
     private PsiXmlElementWriter<Range> rangeWriter;
     private PsiXmlElementWriter<Alias> aliasWriter;
@@ -67,14 +68,14 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
         this.secondaryRefWriter = secondaryRefWriter;
     }
 
-    public PsiXmlElementWriter<CvTerm> getFeatureTypeWriter() {
+    public PsiXmlCvTermWriter<CvTerm> getFeatureTypeWriter() {
         if (this.featureTypeWriter == null){
-           this.featureTypeWriter = new XmlFeatureTypeWriter(streamWriter);
+           this.featureTypeWriter = new XmlCvTermWriter(streamWriter);
         }
         return featureTypeWriter;
     }
 
-    public void setFeatureTypeWriter(PsiXmlElementWriter<CvTerm> featureTypeWriter) {
+    public void setFeatureTypeWriter(PsiXmlCvTermWriter<CvTerm> featureTypeWriter) {
         this.featureTypeWriter = featureTypeWriter;
     }
 
@@ -252,7 +253,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
 
     protected void writeFeatureType(F object) throws XMLStreamException {
         if (object.getType() != null){
-            getFeatureTypeWriter().write(object.getType());
+            getFeatureTypeWriter().write(object.getType(), "featureType");
         }
     }
 

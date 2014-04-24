@@ -1,8 +1,9 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalCvTerm;
 
 import javax.xml.stream.XMLStreamException;
@@ -16,13 +17,13 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>12/11/13</pre>
  */
 
-public abstract class AbstractXmlExperimentalCvTermWriter extends AbstractXmlCvTermWriter {
+public class XmlExperimentalCvTermWriter extends XmlCvTermWriter {
     private PsiXmlObjectCache objectIndex;
 
-    public AbstractXmlExperimentalCvTermWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public XmlExperimentalCvTermWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer);
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlExperimentalCvTermWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlExperimentalCvTermWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }
