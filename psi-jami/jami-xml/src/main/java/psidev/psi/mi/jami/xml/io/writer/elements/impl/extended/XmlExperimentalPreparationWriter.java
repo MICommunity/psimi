@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
-import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlExperimentalCvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -20,12 +17,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class XmlExperimentalPreparationWriter extends AbstractXmlExperimentalCvTermWriter {
     public XmlExperimentalPreparationWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-    }
-
-    public XmlExperimentalPreparationWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                            PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                            PsiXmlXrefWriter secondaryRefWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 
     @Override

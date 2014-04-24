@@ -1,13 +1,13 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlInteractionEvidenceWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.Set;
 
 /**
  * Expanded XML 2.5 writer for an interaction evidence (with full experimental details).
@@ -20,18 +20,12 @@ import java.util.Set;
 public class ExpandedXmlInteractionEvidenceWriter extends AbstractXmlInteractionEvidenceWriter<InteractionEvidence, ParticipantEvidence>
         implements ExpandedPsiXmlElementWriter<InteractionEvidence> {
     public ExpandedXmlInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
-        super(writer, objectIndex, new ExpandedXmlParticipantEvidenceWriter(writer, objectIndex));
+        super(writer, objectIndex);
     }
 
-    public ExpandedXmlInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                                PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                PsiXmlElementWriter<String> availabilityWriter, PsiXmlExperimentWriter experimentWriter,
-                                                PsiXmlParticipantWriter<ParticipantEvidence> participantWriter, PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter,
-                                                PsiXmlElementWriter<CvTerm> interactionTypeWriter, PsiXmlElementWriter<Confidence> confidenceWriter,
-                                                PsiXmlParameterWriter parameterWriter, PsiXmlElementWriter<Annotation> attributeWriter,
-                                                PsiXmlElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, availabilityWriter, experimentWriter,
-                participantWriter != null ? participantWriter : new ExpandedXmlParticipantEvidenceWriter(writer, objectIndex), inferredInteractionWriter, interactionTypeWriter, confidenceWriter, parameterWriter, attributeWriter, checksumWriter);
+    @Override
+    protected void initialiseParticipantWriter() {
+        super.setParticipantWriter(new ExpandedXmlParticipantEvidenceWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override

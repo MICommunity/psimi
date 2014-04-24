@@ -777,12 +777,12 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -793,13 +793,13 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     public void test_write_participant_complex() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        Participant participant = new DefaultParticipant(complex);
+        complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
+        Participant participant = new DefaultNamedParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -810,13 +810,13 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     public void test_write_participant_complex_as_interactor() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        Participant participant = new DefaultParticipant(complex);
+        complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
+        Participant participant = new DefaultNamedParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
         streamWriter.flush();
@@ -828,12 +828,12 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     public void test_write_participant_complex_no_participants() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
         Complex complex = new DefaultComplex("test complex");
-        Participant participant = new DefaultParticipant(complex);
+        Participant participant = new DefaultNamedParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -843,12 +843,12 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     @Test
     public void test_write_interaction_shortName() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction("interaction test");
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -859,12 +859,12 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     public void test_write_interaction_fullName() throws XMLStreamException, IOException, IllegalRangeException {
         NamedInteraction interaction = new DefaultNamedInteraction();
         interaction.setFullName("interaction test");
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -876,12 +876,12 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         NamedInteraction interaction = new DefaultNamedInteraction();
         interaction.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "interaction synonym"));
         interaction.getAliases().add(new DefaultAlias("test"));
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -891,14 +891,14 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     @Test
     public void test_write_interaction_identifier() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("intact"), "EBI-xxx"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -908,14 +908,14 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     @Test
     public void test_write_interaction_xref() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -926,10 +926,10 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     @Ignore
     public void test_write_interaction_inferred() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
-        Participant participant2 = new DefaultParticipant(new DefaultProtein("protein test2"));
-        Participant participant3 = new DefaultParticipant(new DefaultProtein("protein test3"));
-        Participant participant4 = new DefaultParticipant(new DefaultProtein("protein test4"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
+        Participant participant2 = new DefaultNamedParticipant(new DefaultProtein("protein test2"));
+        Participant participant3 = new DefaultNamedParticipant(new DefaultProtein("protein test3"));
+        Participant participant4 = new DefaultNamedParticipant(new DefaultProtein("protein test4"));
         // two inferred interactiosn f1, f2, f3 and f3,f4
         Feature f1 = new DefaultFeature();
         f1.getRanges().add(RangeUtils.createRangeFromString("1-4"));
@@ -958,7 +958,7 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -968,13 +968,13 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     @Test
     public void test_write_interaction_type() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -984,14 +984,14 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     @Test
     public void test_write_interaction_attributes() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1001,14 +1001,14 @@ public class ExpandedXml25NamedInteractionWriterTest extends AbstractXml25Writer
     @Test
     public void test_write_interaction_registered() throws XMLStreamException, IOException, IllegalRangeException {
         Interaction interaction = new DefaultNamedInteraction();
-        Participant participant = new DefaultParticipant(new DefaultProtein("protein test"));
+        Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
         elementCache.extractIdForInteraction(new DefaultInteraction());
         elementCache.extractIdForInteraction(interaction);
 
         ExpandedXmlNamedInteractionWriter writer = new ExpandedXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        writer.setDefaultExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 

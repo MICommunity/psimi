@@ -1225,7 +1225,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
 
         writer.start();
         writer.write(interaction);
@@ -1246,7 +1246,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction2 = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant2 = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test2"));
         interaction2.addParticipant(participant2);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         interaction2.setExperiment(interaction.getExperiment());
 
         writer.start();
@@ -1268,7 +1268,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction2 = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant2 = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test2"));
         interaction2.addParticipant(participant2);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         interaction2.setExperiment(interaction.getExperiment());
 
         writer.start();
@@ -1291,7 +1291,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction2 = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant2 = new DefaultNamedParticipantEvidence(participant.getInteractor());
         interaction2.addParticipant(participant2);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         interaction2.setExperiment(interaction.getExperiment());
 
         writer.start();
@@ -1314,7 +1314,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction2 = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant2 = new DefaultNamedParticipantEvidence(participant.getInteractor());
         interaction2.addParticipant(participant2);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         interaction2.setExperiment(interaction.getExperiment());
 
         writer.start();
@@ -1336,7 +1336,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
 
         writer.start();
         writer.write(interaction);
@@ -1359,7 +1359,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
 
         writer.start();
         writer.write(interaction);
@@ -1377,7 +1377,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
 
         writer.start();
         writer.write(interaction);
@@ -1400,7 +1400,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction2 = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant2 = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test2"));
         interaction2.addParticipant(participant2);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         interaction2.setExperiment(interaction.getExperiment());
 
         writer.start();
@@ -1424,7 +1424,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         InteractionEvidence interaction2 = new DefaultNamedInteractionEvidence();
         ParticipantEvidence participant2 = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test2"));
         interaction2.addParticipant(participant2);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         interaction2.setExperiment(interaction.getExperiment());
 
         writer.start();
@@ -1445,7 +1445,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         Source source = new DefaultSource("intact");
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         interaction.getExperiment().getPublication().setSource(source);
         try {
             DatatypeFactory datatypeFactory = null;
@@ -1476,12 +1476,12 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         ParticipantEvidence participant2 = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test2"));
         interaction2.addParticipant(participant2);
         Source source = new DefaultSource("mint");
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         interaction2.setExperiment(interaction.getExperiment());
         interaction.getExperiment().getPublication().setSource(source);
         InteractionEvidence interaction3 = new DefaultNamedInteractionEvidence();
         interaction3.addParticipant(participant);
-        interaction3.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction3.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
         InteractionEvidence interaction4 = new DefaultNamedInteractionEvidence();
         interaction4.addParticipant(participant2);
         interaction4.setExperiment(interaction3.getExperiment());
@@ -1516,7 +1516,7 @@ public class ExpandedXml25NamedEvidenceWriterTest {
         interaction.setAvailability("copyright");
         ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex.getParticipants().iterator().next().getInteractor());
         interaction.addParticipant(participant);
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
 
         writer.start();
         writer.write(interaction);

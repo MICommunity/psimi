@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlPositionWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -17,11 +15,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class XmlEndPositionWriter extends AbstractXmlPositionWriter {
     public XmlEndPositionWriter(XMLStreamWriter writer) {
-        super(writer, new XmlEndStatusWriter(writer));
-    }
-
-    public XmlEndPositionWriter(XMLStreamWriter writer, PsiXmlElementWriter<CvTerm> statusWriter) {
-        super(writer, statusWriter != null ? statusWriter : new XmlEndStatusWriter(writer));
+        super(writer);
     }
 
     @Override
@@ -32,5 +26,10 @@ public class XmlEndPositionWriter extends AbstractXmlPositionWriter {
     @Override
     protected void writeStartIntervalNode() throws XMLStreamException {
         getStreamWriter().writeStartElement("endInterval");
+    }
+
+    @Override
+    protected void initialiseStatusWriter() {
+        super.setStatusWriter(new XmlEndStatusWriter(getStreamWriter()));
     }
 }

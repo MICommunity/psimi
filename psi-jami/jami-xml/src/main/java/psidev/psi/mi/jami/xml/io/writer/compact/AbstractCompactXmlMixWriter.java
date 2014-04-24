@@ -5,10 +5,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlInteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlSourceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.*;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.stream.XMLStreamException;
@@ -113,7 +110,8 @@ public abstract class AbstractCompactXmlMixWriter<I extends Interaction, M exten
         }
         if (this.lightWriter != null){
             this.lightWriter.setExperimentSet(experiments);
-        }    }
+        }
+    }
 
     @Override
     public void setAvailabilitySet(Set<String> availabilities) {
@@ -377,4 +375,76 @@ public abstract class AbstractCompactXmlMixWriter<I extends Interaction, M exten
     }
 
     protected abstract void initialiseDelegateWriters();
+
+    @Override
+    protected PsiXmlInteractionWriter<ModelledInteraction> instantiateComplexWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                    PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                    PsiXmlXrefWriter primaryRefWriter,
+                                                                                    PsiXmlXrefWriter secondaryRefWriter,
+                                                                                    PsiXmlElementWriter<Confidence> confidenceWriter,
+                                                                                    PsiXmlElementWriter<Checksum> checksumWriter,
+                                                                                    PsiXmlParameterWriter parameterWriter,
+                                                                                    PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlExperimentWriter experimentWriter,
+                                                                                    PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
+                                                                                    PsiXmlElementWriter inferredInteractionWriter,
+                                                                                    PsiXmlInteractionWriter interactionWriter) {
+        return null;
+    }
+
+    @Override
+    protected PsiXmlInteractionWriter<I> instantiateInteractionWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                      PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                      PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                      PsiXmlElementWriter<Confidence> confidenceWriter,
+                                                                      PsiXmlElementWriter<Checksum> checksumWriter, PsiXmlParameterWriter parameterWriter,
+                                                                      PsiXmlParticipantWriter participantWriter,
+                                                                      PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                      PsiXmlExperimentWriter experimentWriter,
+                                                                      PsiXmlElementWriter<String> availabilityWriter,
+                                                                      PsiXmlElementWriter inferredInteractionWriter) {
+        return null;
+    }
+
+    @Override
+    protected PsiXmlParticipantWriter<ModelledParticipant> instantiateModelledParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                                PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                                PsiXmlXrefWriter primaryRefWriter,
+                                                                                                PsiXmlXrefWriter secondaryRefWriter,
+                                                                                                PsiXmlElementWriter<Interactor> interactorWriter,
+                                                                                                PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
+                                                                                                PsiXmlParticipantWriter participantWriter) {
+        return null;
+    }
+
+    @Override
+    protected PsiXmlElementWriter<CvTerm> instantiateParticipantDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                      PsiXmlXrefWriter primaryRefWriter,
+                                                                                      PsiXmlXrefWriter secondaryRefWriter) {
+        return null;
+    }
+
+    @Override
+    protected PsiXmlElementWriter<CvTerm> instantiateFeatureDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                  PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
+        return null;
+    }
+
+    @Override
+    protected <P extends Participant> PsiXmlParticipantWriter<P> instantiateParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                              PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                              PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlElementWriter<Interactor> interactorWriter, PsiXmlElementWriter<CvTerm> bioRoleWriter, PsiXmlElementWriter featureWriter, PsiXmlParameterWriter parameterWriter, PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter, PsiXmlElementWriter<Organism> organismWriter) {
+        return null;
+    }
+
+    @Override
+    protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                  PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                  PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                                  PsiXmlElementWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlElementWriter<Range> rangeWriter,
+                                                                                  PsiXmlElementWriter<CvTerm> featureDetectionWriter) {
+        return null;
+    }
 }

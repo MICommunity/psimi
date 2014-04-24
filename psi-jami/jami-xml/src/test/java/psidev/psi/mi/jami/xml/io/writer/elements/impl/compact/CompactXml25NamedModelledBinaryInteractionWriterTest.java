@@ -465,7 +465,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -480,8 +480,8 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     public void test_write_participant_complex() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -496,8 +496,8 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     public void test_write_participant_complex_as_interactor() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -513,7 +513,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     public void test_write_participant_complex_no_participants() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         Complex complex = new DefaultComplex("test complex");
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -527,7 +527,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_shortName() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction("interaction test");
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -542,7 +542,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     public void test_write_interaction_fullName() throws XMLStreamException, IOException, IllegalRangeException {
         NamedInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         interaction.setFullName("interaction test");
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -558,7 +558,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
         NamedInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         interaction.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "interaction synonym"));
         interaction.getAliases().add(new DefaultAlias("test"));
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -572,7 +572,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_identifier() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("intact"), "EBI-xxx"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
@@ -588,7 +588,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_xref() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
@@ -605,8 +605,8 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Ignore
     public void test_write_interaction_inferred() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
-        ModelledParticipant participant2 = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant2 = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         // two inferred interactiosn f1, f2, f3 and f3,f4
         ModelledFeature f1 = new DefaultModelledFeature();
         f1.getRanges().add(RangeUtils.createRangeFromString("1-4"));
@@ -630,7 +630,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_type() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
@@ -645,7 +645,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_attributes() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
@@ -662,7 +662,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_registered() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
         elementCache.extractIdForInteraction(new DefaultInteraction());
@@ -678,7 +678,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_parameter() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getModelledParameters().add(new DefaultModelledParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
         elementCache.clear();
@@ -693,7 +693,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_confidence() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getModelledConfidences().add(new DefaultModelledConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
         elementCache.clear();
@@ -708,7 +708,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_preassembly() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
         assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
@@ -726,7 +726,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_preassembly_defaultExperiment() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
         assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
@@ -745,7 +745,7 @@ public class CompactXml25NamedModelledBinaryInteractionWriterTest extends Abstra
     @Test
     public void test_write_interaction_allostery() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         Allostery allostery = new DefaultAllostery(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"),
                 participant, new DefaultMoleculeEffector(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor())));

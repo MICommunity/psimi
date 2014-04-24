@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -22,18 +23,12 @@ import javax.xml.stream.XMLStreamWriter;
 public class ExpandedXmlBasicBinaryInteractionWriter extends AbstractXmlInteractionWriter<BinaryInteraction,Participant> implements CompactPsiXmlElementWriter<BinaryInteraction> {
 
     public ExpandedXmlBasicBinaryInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
-        super(writer, objectIndex, new ExpandedXmlParticipantWriter(writer, objectIndex));
+        super(writer, objectIndex);
     }
 
-    public ExpandedXmlBasicBinaryInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                                   PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                                   PsiXmlXrefWriter secondaryRefWriter, PsiXmlExperimentWriter experimentWriter,
-                                                   PsiXmlParticipantWriter<Participant> participantWriter, PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter1,
-                                                   PsiXmlElementWriter<CvTerm> interactionTypeWriter, PsiXmlElementWriter<Annotation> attributeWriter,
-                                                   PsiXmlElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
-                participantWriter != null ? participantWriter : new ExpandedXmlParticipantWriter(writer, objectIndex),
-                inferredInteractionWriter1, interactionTypeWriter, attributeWriter, checksumWriter);
+    @Override
+    protected void initialiseParticipantWriter() {
+        super.setParticipantWriter(new ExpandedXmlParticipantWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override

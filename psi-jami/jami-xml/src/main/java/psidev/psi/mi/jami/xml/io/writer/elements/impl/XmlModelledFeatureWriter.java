@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlFeatureWriter;
 
 import javax.xml.stream.XMLStreamWriter;
@@ -19,14 +17,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class XmlModelledFeatureWriter extends AbstractXmlFeatureWriter<ModelledFeature> {
     public XmlModelledFeatureWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-    }
-
-    public XmlModelledFeatureWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                    PsiXmlElementWriter<Alias> aliasWriter,
-                                    PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                    PsiXmlElementWriter<CvTerm> featureTypeWriter, PsiXmlElementWriter<Range> rangeWriter,
-                                    PsiXmlElementWriter<Annotation> attributeWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, rangeWriter, attributeWriter);
     }
 
     @Override

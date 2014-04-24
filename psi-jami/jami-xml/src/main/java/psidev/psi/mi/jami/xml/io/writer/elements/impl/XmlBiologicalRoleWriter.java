@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlCvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -20,11 +17,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class XmlBiologicalRoleWriter extends AbstractXmlCvTermWriter {
     public XmlBiologicalRoleWriter(XMLStreamWriter writer) {
         super(writer);
-    }
-
-    public XmlBiologicalRoleWriter(XMLStreamWriter writer, PsiXmlElementWriter<Alias> aliasWriter,
-                                   PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
-        super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
     }
 
     @Override

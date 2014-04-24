@@ -700,7 +700,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -715,8 +715,8 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     public void test_write_participant_complex() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
+        complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -731,8 +731,8 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     public void test_write_participant_complex_as_interactor() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
+        complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -748,7 +748,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     public void test_write_participant_complex_no_participants() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -762,7 +762,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_shortName() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence("interaction test");
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -777,7 +777,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     public void test_write_interaction_fullName() throws XMLStreamException, IOException, IllegalRangeException {
         NamedInteraction interaction = new DefaultNamedBinaryInteractionEvidence();
         interaction.setFullName("interaction test");
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -793,7 +793,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
         NamedInteraction interaction = new DefaultNamedBinaryInteractionEvidence();
         interaction.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "interaction synonym"));
         interaction.getAliases().add(new DefaultAlias("test"));
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -807,7 +807,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_identifier() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("intact"), "EBI-xxx"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
@@ -823,7 +823,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_xref() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
@@ -840,10 +840,10 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Ignore
     public void test_write_interaction_inferred() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
-        ParticipantEvidence participant2 = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
-        ParticipantEvidence participant3 = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
-        ParticipantEvidence participant4 = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant2 = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant3 = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant4 = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         // two inferred interactiosn f1, f2, f3 and f3,f4
         FeatureEvidence f1 = new DefaultFeatureEvidence();
         f1.getRanges().add(RangeUtils.createRangeFromString("1-4"));
@@ -873,7 +873,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_type() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
@@ -888,7 +888,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_attributes() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
@@ -905,7 +905,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_registered() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
         elementCache.extractIdForInteraction(new DefaultInteraction());
@@ -921,7 +921,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_negative() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setNegative(true);
         elementCache.clear();
@@ -936,7 +936,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_confidences() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getConfidences().add(new DefaultConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
         elementCache.clear();
@@ -951,7 +951,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_parameters() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getParameters().add(new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
         elementCache.clear();
@@ -966,7 +966,7 @@ public class CompactXml25NamedBinaryInteractionEvidenceWriterTest extends Abstra
     @Test
     public void test_write_interaction_availability() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setAvailability("copyright");
         elementCache.clear();

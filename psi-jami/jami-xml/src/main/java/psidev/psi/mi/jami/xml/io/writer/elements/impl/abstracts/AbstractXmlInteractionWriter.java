@@ -38,8 +38,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     private PsiXmlExperimentWriter experimentWriter;
     private PsiXmlElementWriter<Checksum> checksumWriter;
 
-    public AbstractXmlInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                        PsiXmlParticipantWriter<P> participantWriter){
+    public AbstractXmlInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlInteractionWriter");
         }
@@ -49,44 +48,96 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlInteractionWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
-        if (participantWriter == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 participant writer is mandatory for the AbstractXmlInteractionWriter.");
-        }
-        this.participantWriter = participantWriter;
-        this.primaryRefWriter = new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = new XmlSecondaryXrefWriter(writer);
-        this.interactionTypeWriter = new XmlInteractionTypeWriter(writer);
-        this.attributeWriter = new XmlAnnotationWriter(writer);
-        this.inferredInteractionWriter = new XmlInferredInteractionWriter(writer, objectIndex);
-        this.experimentWriter = new XmlExperimentWriter(writer, objectIndex);
-        this.checksumWriter = new XmlChecksumWriter(writer);
     }
 
-    public AbstractXmlInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                        PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                        PsiXmlExperimentWriter experimentWriter, PsiXmlParticipantWriter<P> participantWriter,
-                                        PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter, PsiXmlElementWriter<CvTerm> interactionTypeWriter,
-                                        PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlElementWriter<Checksum> checksumWriter) {
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlInteractionWriter");
+    public PsiXmlParticipantWriter<P> getParticipantWriter() {
+        if (this.participantWriter == null){
+            initialiseParticipantWriter();
         }
-        this.streamWriter = writer;
+        return participantWriter;
+    }
 
-        if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlInteractionWriter. It is necessary for generating an id to an experimentDescription");
-        }
-        this.objectIndex = objectIndex;
-        if (participantWriter == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 participant writer is mandatory for the AbstractXmlInteractionWriter.");
-        }
+    protected abstract void initialiseParticipantWriter();
+
+    public void setParticipantWriter(PsiXmlParticipantWriter<P> participantWriter) {
         this.participantWriter = participantWriter;
-        this.primaryRefWriter = primaryRefWriter != null ? primaryRefWriter : new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = secondaryRefWriter != null ? secondaryRefWriter : new XmlSecondaryXrefWriter(writer);
-        this.interactionTypeWriter = interactionTypeWriter != null ? interactionTypeWriter : new XmlInteractionTypeWriter(writer);
-        this.attributeWriter = attributeWriter != null ? attributeWriter : new XmlAnnotationWriter(writer);
-        this.inferredInteractionWriter = inferredInteractionWriter != null ? inferredInteractionWriter : new XmlInferredInteractionWriter(writer, objectIndex);
-        this.experimentWriter = experimentWriter != null ? experimentWriter : new XmlExperimentWriter(writer, objectIndex);
-        this.checksumWriter =checksumWriter != null ? checksumWriter : new XmlChecksumWriter(writer);
+    }
+
+    public PsiXmlXrefWriter getPrimaryRefWriter() {
+        if (this.primaryRefWriter == null){
+            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
+        }
+        return primaryRefWriter;
+    }
+
+    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
+        this.primaryRefWriter = primaryRefWriter;
+    }
+
+    public PsiXmlXrefWriter getSecondaryRefWriter() {
+        if (this.secondaryRefWriter == null){
+            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
+        }
+        return secondaryRefWriter;
+    }
+
+    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
+        this.secondaryRefWriter = secondaryRefWriter;
+    }
+
+    public void setInteractionTypeWriter(PsiXmlElementWriter<CvTerm> interactionTypeWriter) {
+        this.interactionTypeWriter = interactionTypeWriter;
+    }
+
+    public void setAttributeWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
+        this.attributeWriter = attributeWriter;
+    }
+
+    public PsiXmlElementWriter<Set<Feature>> getInferredInteractionWriter() {
+        if (this.inferredInteractionWriter == null){
+            this.inferredInteractionWriter = new XmlInferredInteractionWriter(streamWriter, objectIndex);
+        }
+        return inferredInteractionWriter;
+    }
+
+    public void setInferredInteractionWriter(PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter) {
+        this.inferredInteractionWriter = inferredInteractionWriter;
+    }
+
+    public void setExperimentWriter(PsiXmlExperimentWriter experimentWriter) {
+        this.experimentWriter = experimentWriter;
+    }
+
+    public void setChecksumWriter(PsiXmlElementWriter<Checksum> checksumWriter) {
+        this.checksumWriter = checksumWriter;
+    }
+
+    public PsiXmlElementWriter<Experiment> getExperimentWriter() {
+        if (this.experimentWriter == null){
+            this.experimentWriter = new XmlExperimentWriter(streamWriter, objectIndex);
+        }
+        return experimentWriter;
+    }
+
+    public PsiXmlElementWriter<Checksum> getChecksumWriter() {
+        if (this.checksumWriter == null){
+            this.checksumWriter = new XmlChecksumWriter(streamWriter);
+        }
+        return checksumWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getInteractionTypeWriter() {
+        if (this.interactionTypeWriter == null){
+            this.interactionTypeWriter = new XmlInteractionTypeWriter(streamWriter);
+        }
+        return interactionTypeWriter;
+    }
+
+    public PsiXmlElementWriter<Annotation> getAttributeWriter() {
+        if (this.attributeWriter == null){
+            this.attributeWriter = new XmlAnnotationWriter(streamWriter);
+        }
+        return attributeWriter;
     }
 
     @Override
@@ -157,7 +208,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     @Override
     public void setComplexAsInteractor(boolean complexAsInteractor) {
-        this.participantWriter.setComplexAsInteractor(complexAsInteractor);
+        getParticipantWriter().setComplexAsInteractor(complexAsInteractor);
     }
 
     protected void writeAttributes(T object) throws XMLStreamException {
@@ -166,10 +217,10 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             // write start attribute list
             this.streamWriter.writeStartElement("attributeList");
             for (Object ann : object.getAnnotations()){
-                this.attributeWriter.write((Annotation)ann);
+                getAttributeWriter().write((Annotation)ann);
             }
             for (Object c : object.getChecksums()){
-                this.checksumWriter.write((Checksum)c);
+                getChecksumWriter().write((Checksum)c);
             }
             // write end attributeList
             this.streamWriter.writeEndElement();
@@ -179,7 +230,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             // write start attribute list
             this.streamWriter.writeStartElement("attributeList");
             for (Object c : object.getChecksums()){
-                this.checksumWriter.write((Checksum)c);
+                getChecksumWriter().write((Checksum)c);
             }
             // write end attributeList
             this.streamWriter.writeEndElement();
@@ -188,7 +239,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     protected void writeInteractionType(T object) throws XMLStreamException {
         if (object.getInteractionType() != null){
-            this.interactionTypeWriter.write(object.getInteractionType());
+            getInteractionTypeWriter().write(object.getInteractionType());
         }
     }
 
@@ -197,7 +248,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         if (inferredInteractions != null && !inferredInteractions.isEmpty()){
             this.streamWriter.writeStartElement("inferredInteractionList");
             for (Set<Feature> inferred : inferredInteractions){
-                this.inferredInteractionWriter.write(inferred);
+                getInferredInteractionWriter().write(inferred);
             }
             this.streamWriter.writeEndElement();
         }
@@ -207,7 +258,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         if (!object.getParticipants().isEmpty()){
             this.streamWriter.writeStartElement("participantList");
             for (Object participant : object.getParticipants()){
-                this.participantWriter.write((P)participant);
+                getParticipantWriter().write((P)participant);
             }
             this.streamWriter.writeEndElement();
         }
@@ -244,10 +295,10 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     protected void writeXrefFromInteractionXrefs(T object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        this.primaryRefWriter.setDefaultRefType(null);
-        this.primaryRefWriter.setDefaultRefTypeAc(null);
-        this.secondaryRefWriter.setDefaultRefType(null);
-        this.secondaryRefWriter.setDefaultRefTypeAc(null);
+        getPrimaryRefWriter().setDefaultRefType(null);
+        getPrimaryRefWriter().setDefaultRefTypeAc(null);
+        getSecondaryRefWriter().setDefaultRefType(null);
+        getSecondaryRefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -256,12 +307,12 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                this.primaryRefWriter.write(ref);
+                getPrimaryRefWriter().write(ref);
                 index++;
             }
             // write secondaryref
             else{
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
                 index++;
             }
         }
@@ -275,10 +326,10 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         this.streamWriter.writeStartElement("xref");
 
         // all these xrefs are identity
-        this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.primaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
-        this.secondaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.secondaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getPrimaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getPrimaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getSecondaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getSecondaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
 
         // write secondaryRefs and primary ref if not done already)
         Iterator<Xref> refIterator = object.getIdentifiers().iterator();
@@ -287,20 +338,20 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             Xref ref = refIterator.next();
             if (!hasWrittenPrimaryRef){
                 hasWrittenPrimaryRef = true;
-                this.primaryRefWriter.write(ref);
+                getPrimaryRefWriter().write(ref);
             }
             else{
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
             }
         }
 
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
             // default qualifier is null
-            this.secondaryRefWriter.setDefaultRefType(null);
-            this.secondaryRefWriter.setDefaultRefTypeAc(null);
+            getSecondaryRefWriter().setDefaultRefType(null);
+            getSecondaryRefWriter().setDefaultRefTypeAc(null);
             for (Object ref : object.getXrefs()){
-                this.secondaryRefWriter.write((Xref)ref);
+                getSecondaryRefWriter().write((Xref)ref);
             }
         }
 
@@ -322,14 +373,6 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     protected abstract void writeNegative(T object) throws XMLStreamException;
 
-    protected PsiXmlElementWriter<CvTerm> getInteractionTypeWriter() {
-        return interactionTypeWriter;
-    }
-
-    protected PsiXmlElementWriter<Annotation> getAttributeWriter() {
-        return attributeWriter;
-    }
-
     protected void writeExperimentRef() throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentList");
         getStreamWriter().writeStartElement("experimentRef");
@@ -340,20 +383,12 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     protected void writeExperimentDescription() throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentList");
-        this.experimentWriter.write(getDefaultExperiment());
+        getExperimentWriter().write(getDefaultExperiment());
         getStreamWriter().writeEndElement();
     }
 
     protected void initialiseDefaultExperiment(){
         this.defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication for interactions that do not have experimental details.",(String)null,(Date)null));
-    }
-
-    protected PsiXmlElementWriter<Experiment> getExperimentWriter() {
-        return experimentWriter;
-    }
-
-    protected PsiXmlElementWriter<Checksum> getChecksumWriter() {
-        return checksumWriter;
     }
 
     protected void writeAttribute(String name, String nameAc) throws XMLStreamException {

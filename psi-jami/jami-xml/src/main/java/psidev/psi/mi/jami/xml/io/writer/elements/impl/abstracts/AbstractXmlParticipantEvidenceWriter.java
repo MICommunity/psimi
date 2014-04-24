@@ -3,8 +3,6 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 
 import javax.xml.stream.XMLStreamException;
@@ -26,31 +24,77 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
     private PsiXmlElementWriter<Organism> hostOrganismWriter;
     private PsiXmlElementWriter<Parameter> parameterWriter;
 
-    public AbstractXmlParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex, PsiXmlElementWriter<FeatureEvidence> featureWriter) {
-        super(writer, objectIndex, featureWriter);
-        this.experimentalPreparationWriter = new XmlExperimentalPreparationWriter(writer);
-        this.identificationMethodWriter = new XmlParticipantIdentificationMethodWriter(writer);
-        this.confidenceWriter = new XmlConfidenceWriter(writer);
-        this.experimentalRoleWriter = new XmlExperimentalRoleWriter(writer);
-        this.hostOrganismWriter = new XmlHostOrganismWriter(writer);
-        this.parameterWriter = new XmlParameterWriter(writer, objectIndex);
+    public AbstractXmlParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+        super(writer, objectIndex);
     }
 
-    public AbstractXmlParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                                PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                                PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Interactor> interactorWriter,
-                                                PsiXmlElementWriter identificationMethodWriter, PsiXmlElementWriter<CvTerm> biologicalRoleWriter,
-                                                PsiXmlElementWriter experimentalRoleWriter, PsiXmlElementWriter experimentalPreparationWriter,
-                                                PsiXmlElementWriter<FeatureEvidence> featureWriter, PsiXmlElementWriter<Organism> hostOrganismWriter,
-                                                PsiXmlParameterWriter parameterWriter, PsiXmlElementWriter<Confidence> confidenceWriter,
-                                                PsiXmlElementWriter<Annotation> attributeWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter, biologicalRoleWriter, featureWriter, attributeWriter);
-        this.experimentalPreparationWriter = experimentalPreparationWriter != null ? experimentalPreparationWriter : new XmlExperimentalPreparationWriter(writer);
-        this.identificationMethodWriter = identificationMethodWriter != null ? identificationMethodWriter : new XmlParticipantIdentificationMethodWriter(writer);
-        this.confidenceWriter = confidenceWriter != null ? confidenceWriter : new XmlConfidenceWriter(writer);
-        this.experimentalRoleWriter = experimentalRoleWriter != null ? experimentalRoleWriter : new XmlExperimentalRoleWriter(writer);
-        this.hostOrganismWriter = hostOrganismWriter != null ? hostOrganismWriter : new XmlHostOrganismWriter(writer);
-        this.parameterWriter = parameterWriter != null ? parameterWriter : new XmlParameterWriter(writer, objectIndex);
+    public PsiXmlElementWriter getExperimentalPreparationWriter() {
+        if (this.experimentalPreparationWriter == null){
+            this.experimentalPreparationWriter = new XmlExperimentalPreparationWriter(getStreamWriter());
+        }
+        return experimentalPreparationWriter;
+    }
+
+    public void setExperimentalPreparationWriter(PsiXmlElementWriter experimentalPreparationWriter) {
+        this.experimentalPreparationWriter = experimentalPreparationWriter;
+    }
+
+    public PsiXmlElementWriter getIdentificationMethodWriter() {
+        if (this.identificationMethodWriter == null){
+            this.identificationMethodWriter = new XmlParticipantIdentificationMethodWriter(getStreamWriter());
+        }
+        return identificationMethodWriter;
+    }
+
+    public void setIdentificationMethodWriter(PsiXmlElementWriter identificationMethodWriter) {
+        this.identificationMethodWriter = identificationMethodWriter;
+    }
+
+    public PsiXmlElementWriter<Confidence> getConfidenceWriter() {
+        if (this.confidenceWriter == null){
+            this.confidenceWriter = new XmlConfidenceWriter(getStreamWriter());
+        }
+        return confidenceWriter;
+    }
+
+    public void setConfidenceWriter(PsiXmlElementWriter<Confidence> confidenceWriter) {
+        this.confidenceWriter = confidenceWriter;
+    }
+
+    public void setExperimentalRoleWriter(PsiXmlElementWriter experimentalRoleWriter) {
+
+        this.experimentalRoleWriter = experimentalRoleWriter;
+    }
+
+    public void setHostOrganismWriter(PsiXmlElementWriter<Organism> hostOrganismWriter) {
+
+        this.hostOrganismWriter = hostOrganismWriter;
+    }
+
+
+    public PsiXmlElementWriter<CvTerm> getExperimentalRoleWriter() {
+        if (this.experimentalRoleWriter == null){
+            this.experimentalRoleWriter = new XmlExperimentalRoleWriter(getStreamWriter());
+        }
+        return experimentalRoleWriter;
+    }
+
+    public PsiXmlElementWriter<Organism> getHostOrganismWriter() {
+        if (this.hostOrganismWriter == null){
+            this.hostOrganismWriter = new XmlHostOrganismWriter(getStreamWriter());
+        }
+        return hostOrganismWriter;
+    }
+
+    public PsiXmlElementWriter<Parameter> getParameterWriter() {
+        if (this.parameterWriter == null){
+            this.parameterWriter = new XmlParameterWriter(getStreamWriter(), getObjectIndex());
+        }
+        return parameterWriter;
+    }
+
+    public void setParameterWriter(PsiXmlElementWriter<Parameter> parameterWriter) {
+        this.parameterWriter = parameterWriter;
     }
 
     @Override
@@ -58,7 +102,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
         if (!object.getExperimentalPreparations().isEmpty()){
             getStreamWriter().writeStartElement("experimentalPreparationList");
             for (CvTerm prep : object.getExperimentalPreparations()){
-                this.experimentalPreparationWriter.write(prep);
+                getExperimentalPreparationWriter().write(prep);
             }
             getStreamWriter().writeEndElement();
         }
@@ -67,7 +111,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
     @Override
     protected void writeExperimentalRoles(ParticipantEvidence object) throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentalRoleList");
-        this.experimentalRoleWriter.write(object.getExperimentalRole());
+        getExperimentalRoleWriter().write(object.getExperimentalRole());
         getStreamWriter().writeEndElement();
     }
 
@@ -76,7 +120,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
         if (!object.getIdentificationMethods().isEmpty()){
             getStreamWriter().writeStartElement("participantIdentificationMethodList");
             for (CvTerm method : object.getIdentificationMethods()){
-                this.identificationMethodWriter.write(method);
+                getIdentificationMethodWriter().write(method);
             }
             getStreamWriter().writeEndElement();
         }
@@ -91,7 +135,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
     protected void writeHostOrganisms(ParticipantEvidence object) throws XMLStreamException {
         if (object.getExpressedInOrganism() != null){
             getStreamWriter().writeStartElement("hostOrganismList");
-            this.hostOrganismWriter.write(object.getExpressedInOrganism());
+            getHostOrganismWriter().write(object.getExpressedInOrganism());
             getStreamWriter().writeEndElement();
         }
     }
@@ -101,7 +145,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
         if (!object.getConfidences().isEmpty()){
             getStreamWriter().writeStartElement("confidenceList");
             for (Confidence conf : object.getConfidences()){
-                this.confidenceWriter.write(conf);
+                getConfidenceWriter().write(conf);
             }
             getStreamWriter().writeEndElement();
         }
@@ -112,17 +156,9 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
         if (!object.getParameters().isEmpty()){
             getStreamWriter().writeStartElement("parameterList");
             for (Parameter param : object.getParameters()){
-                this.parameterWriter.write(param);
+                getParameterWriter().write(param);
             }
             getStreamWriter().writeEndElement();
         }
-    }
-
-    protected PsiXmlElementWriter<CvTerm> getExperimentalRoleWriter() {
-        return experimentalRoleWriter;
-    }
-
-    protected PsiXmlElementWriter<Organism> getHostOrganismWriter() {
-        return hostOrganismWriter;
     }
 }

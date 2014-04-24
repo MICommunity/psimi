@@ -38,35 +38,89 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlInteractorWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
-        this.aliasWriter = new XmlAliasWriter(writer);
-        this.primaryRefWriter = new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = new XmlSecondaryXrefWriter(writer);
-        this.interactorTypeWriter = new XmlInteractorTypeWriter(writer);
-        this.organismWriter = new XmlOrganismWriter(writer);
-        this.attributeWriter = new XmlAnnotationWriter(writer);
-        this.checksumWriter = new XmlChecksumWriter(writer);
     }
 
-    public XmlInteractorWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                               PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                               PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<CvTerm> interactorTypeWriter,
-                               PsiXmlElementWriter<Organism> organismWriter, PsiXmlElementWriter<Annotation> attributeWriter,
-                               PsiXmlElementWriter<Checksum> checksumWriter) {
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlInteractorWriter");
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter = new XmlAliasWriter(streamWriter);
+
         }
-        this.streamWriter = writer;
-        if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlExperimentWriter. It is necessary for generating an id to an experimentDescription");
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
+    }
+
+    public PsiXmlXrefWriter getPrimaryRefWriter() {
+        if (this.primaryRefWriter == null){
+            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
+
         }
-        this.objectIndex = objectIndex;
-        this.aliasWriter = aliasWriter != null ? aliasWriter : new XmlAliasWriter(writer);
-        this.primaryRefWriter = primaryRefWriter != null ? primaryRefWriter : new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = secondaryRefWriter != null ? secondaryRefWriter : new XmlSecondaryXrefWriter(writer);
-        this.interactorTypeWriter = interactorTypeWriter != null ? interactorTypeWriter : new XmlInteractorTypeWriter(writer);
-        this.organismWriter = organismWriter != null ? organismWriter : new XmlOrganismWriter(writer);
-        this.attributeWriter = attributeWriter != null ? attributeWriter : new XmlAnnotationWriter(writer);
-        this.checksumWriter = checksumWriter != null ? checksumWriter : new XmlChecksumWriter(writer);
+        return primaryRefWriter;
+    }
+
+    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
+        this.primaryRefWriter = primaryRefWriter;
+    }
+
+    public PsiXmlXrefWriter getSecondaryRefWriter() {
+        if (this.secondaryRefWriter == null){
+            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
+
+        }
+        return secondaryRefWriter;
+    }
+
+    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
+        this.secondaryRefWriter = secondaryRefWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getInteractorTypeWriter() {
+        if (this.interactorTypeWriter == null){
+            this.interactorTypeWriter = new XmlInteractorTypeWriter(streamWriter);
+
+        }
+        return interactorTypeWriter;
+    }
+
+    public void setInteractorTypeWriter(PsiXmlElementWriter<CvTerm> interactorTypeWriter) {
+        this.interactorTypeWriter = interactorTypeWriter;
+    }
+
+    public PsiXmlElementWriter<Organism> getOrganismWriter() {
+        if (this.organismWriter == null){
+            this.organismWriter = new XmlOrganismWriter(streamWriter);
+
+        }
+        return organismWriter;
+    }
+
+    public void setOrganismWriter(PsiXmlElementWriter<Organism> organismWriter) {
+        this.organismWriter = organismWriter;
+    }
+
+    public PsiXmlElementWriter<Annotation> getAttributeWriter() {
+        if (this.attributeWriter == null){
+            this.attributeWriter = new XmlAnnotationWriter(streamWriter);
+
+        }
+        return attributeWriter;
+    }
+
+    public void setAttributeWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
+        this.attributeWriter = attributeWriter;
+    }
+
+    public PsiXmlElementWriter<Checksum> getChecksumWriter() {
+        if (this.checksumWriter == null){
+            this.checksumWriter = new XmlChecksumWriter(streamWriter);
+        }
+        return checksumWriter;
+    }
+
+    public void setChecksumWriter(PsiXmlElementWriter<Checksum> checksumWriter) {
+        this.checksumWriter = checksumWriter;
     }
 
     @Override
@@ -94,7 +148,7 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             }
             // write aliases
             for (Alias alias : object.getAliases()){
-                this.aliasWriter.write(alias);
+                getAliasWriter().write(alias);
             }
             // write end names
             this.streamWriter.writeEndElement();
@@ -108,11 +162,11 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             }
 
             // write interactor type
-            this.interactorTypeWriter.write(object.getInteractorType());
+           getInteractorTypeWriter().write(object.getInteractorType());
 
             // write organism
             if (object.getOrganism() != null){
-                this.organismWriter.write(object.getOrganism());
+                getOrganismWriter().write(object.getOrganism());
             }
 
             // write sequence
@@ -130,10 +184,10 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
                 // write start attribute list
                 this.streamWriter.writeStartElement("attributeList");
                 for (Annotation ann : object.getAnnotations()){
-                    this.attributeWriter.write(ann);
+                    getAttributeWriter().write(ann);
                 }
                 for (Checksum c : object.getChecksums()){
-                    this.checksumWriter.write(c);
+                    getChecksumWriter().write(c);
                 }
                 // write end attributeList
                 this.streamWriter.writeEndElement();
@@ -143,7 +197,7 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
                 // write start attribute list
                 this.streamWriter.writeStartElement("attributeList");
                 for (Checksum c : object.getChecksums()){
-                    this.checksumWriter.write(c);
+                    getChecksumWriter().write(c);
                 }
                 // write end attributeList
                 this.streamWriter.writeEndElement();
@@ -160,10 +214,10 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
     protected void writeXrefFromInteractorXrefs(Interactor object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        this.primaryRefWriter.setDefaultRefType(null);
-        this.primaryRefWriter.setDefaultRefTypeAc(null);
-        this.secondaryRefWriter.setDefaultRefType(null);
-        this.secondaryRefWriter.setDefaultRefTypeAc(null);
+        getPrimaryRefWriter().setDefaultRefType(null);
+        getPrimaryRefWriter().setDefaultRefTypeAc(null);
+        getSecondaryRefWriter().setDefaultRefType(null);
+        getSecondaryRefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -172,12 +226,12 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                this.primaryRefWriter.write(ref);
+                getPrimaryRefWriter().write(ref);
                 index++;
             }
             // write secondaryref
             else{
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
                 index++;
             }
         }
@@ -191,16 +245,16 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
         this.streamWriter.writeStartElement("xref");
 
         // all these xrefs are identity
-        this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.primaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
-        this.secondaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.secondaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getPrimaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getPrimaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getSecondaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getSecondaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
 
         Xref primaryRef = object.getPreferredIdentifier();
         boolean hasWrittenPrimaryRef = false;
         // write primaryRef
         if (primaryRef != null){
-            this.primaryRefWriter.write(primaryRef);
+            getPrimaryRefWriter().write(primaryRef);
             hasWrittenPrimaryRef = true;
         }
 
@@ -212,10 +266,10 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             if (ref != primaryRef){
                 if (!hasWrittenPrimaryRef){
                     hasWrittenPrimaryRef = true;
-                    this.primaryRefWriter.write(ref);
+                    getPrimaryRefWriter().write(ref);
                 }
                 else{
-                    this.secondaryRefWriter.write(ref);
+                    getSecondaryRefWriter().write(ref);
                 }
             }
         }
@@ -223,10 +277,10 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
             // default qualifier is null
-            this.secondaryRefWriter.setDefaultRefType(null);
-            this.secondaryRefWriter.setDefaultRefTypeAc(null);
+            getSecondaryRefWriter().setDefaultRefType(null);
+            getSecondaryRefWriter().setDefaultRefTypeAc(null);
             for (Xref ref : object.getXrefs()){
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
             }
         }
 

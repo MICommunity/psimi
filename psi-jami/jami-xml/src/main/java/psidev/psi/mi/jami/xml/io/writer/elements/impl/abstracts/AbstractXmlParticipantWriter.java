@@ -33,8 +33,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     private PsiXmlElementWriter<Interactor> interactorWriter;
     private boolean writeComplexAsInteractor=false;
 
-    public AbstractXmlParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                        PsiXmlElementWriter<F> featureWriter){
+    public AbstractXmlParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlParticipantWriter");
         }
@@ -43,41 +42,85 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlParticipantWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
-        if (featureWriter == null){
-            throw new IllegalArgumentException("The PsiXml feature writer is mandatory for the AbstractXmlParticipantWriter. It is necessary for generating an id to an experimentDescription");
-        }
-        this.featureWriter = featureWriter;
-        this.aliasWriter = new XmlAliasWriter(writer);
-        this.primaryRefWriter = new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = new XmlSecondaryXrefWriter(writer);
-        this.biologicalRoleWriter = new XmlBiologicalRoleWriter(writer);
-        this.attributeWriter = new XmlAnnotationWriter(writer);
-        this.interactorWriter = new XmlInteractorWriter(writer, objectIndex);
     }
 
-    public AbstractXmlParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                        PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                        PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Interactor> interactorWriter,
-                                        PsiXmlElementWriter biologicalRoleWriter, PsiXmlElementWriter<F> featureWriter,
-                                        PsiXmlElementWriter<Annotation> attributeWriter) {
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlParticipantWriter");
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter =  new XmlAliasWriter(streamWriter);
         }
-        this.streamWriter = writer;
-        if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlParticipantWriter. It is necessary for generating an id to an experimentDescription");
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
+    }
+
+    public PsiXmlXrefWriter getPrimaryRefWriter() {
+        if (this.primaryRefWriter == null){
+            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
         }
-        this.objectIndex = objectIndex;
+        return primaryRefWriter;
+    }
+
+    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
+        this.primaryRefWriter = primaryRefWriter;
+    }
+
+    public PsiXmlXrefWriter getSecondaryRefWriter() {
+        if (this.secondaryRefWriter == null){
+            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
+        }
+        return secondaryRefWriter;
+    }
+
+    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
+        this.secondaryRefWriter = secondaryRefWriter;
+    }
+
+    public PsiXmlElementWriter getBiologicalRoleWriter() {
+        if (this.biologicalRoleWriter == null){
+            this.biologicalRoleWriter = new XmlBiologicalRoleWriter(streamWriter);
+        }
+        return biologicalRoleWriter;
+    }
+
+    public void setBiologicalRoleWriter(PsiXmlElementWriter biologicalRoleWriter) {
+        this.biologicalRoleWriter = biologicalRoleWriter;
+    }
+
+    public PsiXmlElementWriter<Annotation> getAttributeWriter() {
+        if (this.attributeWriter == null){
+            this.attributeWriter = new XmlAnnotationWriter(streamWriter);
+        }
+        return attributeWriter;
+    }
+
+    public void setAttributeWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
+        this.attributeWriter = attributeWriter;
+    }
+
+    public PsiXmlElementWriter<Interactor> getInteractorWriter() {
+        if (this.interactorWriter == null){
+            this.interactorWriter = new XmlInteractorWriter(streamWriter, objectIndex);
+        }
+        return interactorWriter;
+    }
+
+    public void setInteractorWriter(PsiXmlElementWriter<Interactor> interactorWriter) {
+        this.interactorWriter = interactorWriter;
+    }
+
+    public PsiXmlElementWriter<F> getFeatureWriter() {
         if (featureWriter == null){
-            throw new IllegalArgumentException("The PsiXml feature writer is mandatory for the AbstractXmlParticipantWriter. It is necessary for generating an id to an experimentDescription");
+            initialiseFeatureWriter();
         }
+        return featureWriter;
+    }
+
+    protected abstract void initialiseFeatureWriter();
+
+    public void setFeatureWriter(PsiXmlElementWriter<F> featureWriter) {
         this.featureWriter = featureWriter;
-        this.aliasWriter = aliasWriter != null ? aliasWriter : new XmlAliasWriter(writer);
-        this.primaryRefWriter = primaryRefWriter != null ? primaryRefWriter : new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = secondaryRefWriter != null ? secondaryRefWriter : new XmlSecondaryXrefWriter(writer);
-        this.biologicalRoleWriter = biologicalRoleWriter != null ? biologicalRoleWriter : new XmlBiologicalRoleWriter(writer);
-        this.attributeWriter = attributeWriter != null ? attributeWriter : new XmlAnnotationWriter(writer);
-        this.interactorWriter = interactorWriter != null ? interactorWriter : new XmlInteractorWriter(writer, objectIndex);
     }
 
     @Override
@@ -139,7 +182,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
             for (Object ann : object.getAnnotations()){
-                this.attributeWriter.write((Annotation)ann);
+                getAttributeWriter().write((Annotation)ann);
             }
             // write stoichiometry attribute if not null
             if (stc != null){
@@ -183,7 +226,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             // write start feature list
             this.streamWriter.writeStartElement("featureList");
             for (Object feature : object.getFeatures()){
-                this.featureWriter.write((F)feature);
+                getFeatureWriter().write((F)feature);
             }
             // write end featureList
             getStreamWriter().writeEndElement();
@@ -196,7 +239,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             this.streamWriter.writeStartElement("names");
             // write aliases
             for (Object alias : object.getAliases()){
-                this.aliasWriter.write((Alias)alias);
+                getAliasWriter().write((Alias)alias);
             }
             // write end names
             this.streamWriter.writeEndElement();
@@ -204,7 +247,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     }
 
     protected void writeBiologicalRole(P object) throws XMLStreamException {
-        this.biologicalRoleWriter.write(object.getBiologicalRole());
+        getBiologicalRoleWriter().write(object.getBiologicalRole());
     }
 
     protected void writeInteractor(P object) throws XMLStreamException {
@@ -250,10 +293,10 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     protected void writeXrefFromParticipantXrefs(P object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        this.primaryRefWriter.setDefaultRefType(null);
-        this.primaryRefWriter.setDefaultRefTypeAc(null);
-        this.secondaryRefWriter.setDefaultRefType(null);
-        this.secondaryRefWriter.setDefaultRefTypeAc(null);
+        getPrimaryRefWriter().setDefaultRefType(null);
+        getPrimaryRefWriter().setDefaultRefTypeAc(null);
+        getSecondaryRefWriter().setDefaultRefType(null);
+        getSecondaryRefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -262,12 +305,12 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                this.primaryRefWriter.write(ref);
+                getPrimaryRefWriter().write(ref);
                 index++;
             }
             // write secondaryref
             else{
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
                 index++;
             }
         }
@@ -283,7 +326,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     }
 
     protected void writeMoleculeDescription(Interactor interactor) throws XMLStreamException {
-        this.interactorWriter.write(interactor);
+        getInteractorWriter().write(interactor);
     }
 
     protected XMLStreamWriter getStreamWriter() {
@@ -292,9 +335,5 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
 
     protected PsiXmlObjectCache getObjectIndex() {
         return objectIndex;
-    }
-
-    protected PsiXmlElementWriter<Alias> getAliasWriter() {
-        return aliasWriter;
     }
 }

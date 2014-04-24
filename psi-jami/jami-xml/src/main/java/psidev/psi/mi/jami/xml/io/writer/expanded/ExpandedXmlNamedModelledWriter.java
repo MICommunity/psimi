@@ -3,7 +3,8 @@ package psidev.psi.mi.jami.xml.io.writer.expanded;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlModelledFeatureWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlNamedExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlNamedModelledInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlNamedModelledParticipantWriter;
 
@@ -13,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
-import java.util.Set;
 
 /**
  * Expanded PSI-XML 2.5 writer for named modelled interactions (no experimental evidences).
@@ -53,61 +53,137 @@ public class ExpandedXmlNamedModelledWriter extends AbstractExpandedXmlWriter<Mo
     }
 
     @Override
-    protected void initialiseSubWriters() {
-        // basic sub writers
-        PsiXmlElementWriter<Alias> aliasWriter = new XmlAliasWriter(getStreamWriter());
-        PsiXmlElementWriter<Annotation> attributeWriter = new XmlAnnotationWriter(getStreamWriter());
-        PsiXmlXrefWriter primaryRefWriter = new XmlPrimaryXrefWriter(getStreamWriter());
-        PsiXmlXrefWriter secondaryRefWriter = new XmlSecondaryXrefWriter(getStreamWriter());
-        PsiXmlPublicationWriter publicationWriter = new XmlPublicationWriter(getStreamWriter(), primaryRefWriter, secondaryRefWriter, attributeWriter);
-        PsiXmlElementWriter<CvTerm> cellTypeWriter = new XmlCelltypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter,
-                attributeWriter);
-        PsiXmlElementWriter<CvTerm> tissueWriter = new XmlTissueWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter,
-                attributeWriter);
-        PsiXmlElementWriter<CvTerm> compartmentWriter = new XmlCompartmentWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter,
-                attributeWriter);
-        PsiXmlElementWriter<Organism> hostOrganismWriter = new XmlHostOrganismWriter(getStreamWriter(), aliasWriter, cellTypeWriter,
-                compartmentWriter, tissueWriter);
-        PsiXmlElementWriter<CvTerm> detectionMethodWriter = new XmlInteractionDetectionMethodWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlElementWriter<CvTerm> confidenceTypeWriter = new XmlConfidenceTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter, attributeWriter);
-        PsiXmlElementWriter<Confidence> confidenceWriter = new XmlConfidenceWriter(getStreamWriter(), confidenceTypeWriter);
-        PsiXmlElementWriter<CvTerm> interactorTypeWriter = new XmlInteractorTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlElementWriter<Organism> organismWriter = new XmlOrganismWriter(getStreamWriter(), aliasWriter, cellTypeWriter,
-                compartmentWriter, tissueWriter);
-        PsiXmlElementWriter<Checksum> checksumWriter = new XmlChecksumWriter(getStreamWriter());
-        PsiXmlElementWriter<Interactor> interactorWriter = new XmlInteractorWriter(getStreamWriter(), getElementCache(),
-                aliasWriter, primaryRefWriter, secondaryRefWriter, interactorTypeWriter, organismWriter, attributeWriter,
-                checksumWriter);
-        PsiXmlElementWriter<CvTerm> bioRoleWriter = new XmlBiologicalRoleWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlElementWriter<CvTerm> featureTypeWriter = new XmlFeatureTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlElementWriter<CvTerm> startStatusWriter = new XmlStartStatusWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlElementWriter<CvTerm> endStatusWriter = new XmlEndStatusWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlElementWriter<Position> beginWriter = new XmlBeginPositionWriter(getStreamWriter(), startStatusWriter);
-        PsiXmlElementWriter<Position> endWriter = new XmlEndPositionWriter(getStreamWriter(), endStatusWriter);
-        PsiXmlElementWriter<Range> rangeWriter = new XmlRangeWriter(getStreamWriter(), beginWriter, endWriter);
-        PsiXmlElementWriter<CvTerm> interactionTypeWriter = new XmlInteractionTypeWriter(getStreamWriter(), aliasWriter, primaryRefWriter, secondaryRefWriter);
-        PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter = new XmlInferredInteractionWriter(getStreamWriter(), getElementCache());
-        PsiXmlExperimentWriter experimentWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache(), publicationWriter,
-                primaryRefWriter, secondaryRefWriter, hostOrganismWriter, detectionMethodWriter,
-                confidenceWriter, attributeWriter);
-        PsiXmlParameterWriter parameterWriter = new XmlParameterWriter(getStreamWriter(), getElementCache());
-        PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter = new XmlModelledFeatureWriter(getStreamWriter(), getElementCache(),
-                aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter,rangeWriter, attributeWriter);
-        PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter = new ExpandedXmlNamedModelledParticipantWriter(getStreamWriter(), getElementCache(),
-                aliasWriter, primaryRefWriter, secondaryRefWriter,
-                interactorWriter, bioRoleWriter, modelledFeatureWriter, attributeWriter);
+    protected PsiXmlInteractionWriter<ModelledInteraction> instantiateComplexWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                    PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                    PsiXmlXrefWriter primaryRefWriter,
+                                                                                    PsiXmlXrefWriter secondaryRefWriter,
+                                                                                    PsiXmlElementWriter<Confidence> confidenceWriter,
+                                                                                    PsiXmlElementWriter<Checksum> checksumWriter,
+                                                                                    PsiXmlParameterWriter parameterWriter,
+                                                                                    PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlExperimentWriter experimentWriter,
+                                                                                    PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
+                                                                                    PsiXmlElementWriter inferredInteractionWriter,
+                                                                                    PsiXmlInteractionWriter interactionWriter) {
+        return interactionWriter;
+    }
 
-        // initialise source
-        setSourceWriter(new XmlSourceWriter(getStreamWriter(), aliasWriter, publicationWriter,
-                primaryRefWriter, secondaryRefWriter, attributeWriter));
-        // initialise complex
-        setComplexWriter(new ExpandedXmlNamedModelledInteractionWriter(getStreamWriter(), getElementCache(),
-                aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
-                modelledParticipantWriter, inferredInteractionWriter, interactionTypeWriter,
-                confidenceWriter, parameterWriter, attributeWriter,
-                checksumWriter));
-        // initialise interaction
-        setInteractionWriter(getComplexWriter());
-        setAnnotationsWriter(attributeWriter);
+    @Override
+    protected PsiXmlInteractionWriter<ModelledInteraction> instantiateInteractionWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                        PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                        PsiXmlXrefWriter primaryRefWriter,
+                                                                                        PsiXmlXrefWriter secondaryRefWriter,
+                                                                                        PsiXmlElementWriter<Confidence> confidenceWriter,
+                                                                                        PsiXmlElementWriter<Checksum> checksumWriter,
+                                                                                        PsiXmlParameterWriter parameterWriter,
+                                                                                        PsiXmlParticipantWriter participantWriter,
+                                                                                        PsiXmlElementWriter<CvTerm> interactionTypeWriter,
+                                                                                        PsiXmlExperimentWriter experimentWriter,
+                                                                                        PsiXmlElementWriter<String> availabilityWriter,
+                                                                                        PsiXmlElementWriter inferredInteractionWriter) {
+        ExpandedXmlNamedModelledInteractionWriter writer = new ExpandedXmlNamedModelledInteractionWriter(getStreamWriter(), getElementCache());
+        writer.setAttributeWriter(attributeWriter);
+        writer.setPrimaryRefWriter(primaryRefWriter);
+        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setConfidenceWriter(confidenceWriter);
+        writer.setChecksumWriter(checksumWriter);
+        writer.setParameterWriter(parameterWriter);
+        writer.setInteractionTypeWriter(interactionTypeWriter);
+        writer.setExperimentWriter(experimentWriter);
+        writer.setParticipantWriter(participantWriter);
+        writer.setInferredInteractionWriter(inferredInteractionWriter);
+        writer.setAliasWriter(aliasWriter);
+        return writer;
+    }
+
+    @Override
+    protected PsiXmlParticipantWriter<ModelledParticipant> instantiateModelledParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                                PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                                PsiXmlXrefWriter primaryRefWriter,
+                                                                                                PsiXmlXrefWriter secondaryRefWriter,
+                                                                                                PsiXmlElementWriter<Interactor> interactorWriter,
+                                                                                                PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
+                                                                                                PsiXmlParticipantWriter participantWriter) {
+        return participantWriter;
+    }
+
+    @Override
+    protected PsiXmlElementWriter<CvTerm> instantiateParticipantDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
+
+        return null;
+    }
+
+    @Override
+    protected PsiXmlElementWriter<CvTerm> instantiateFeatureDetectionMethodWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter) {
+
+        return null;
+    }
+
+    @Override
+    protected <P extends Participant> PsiXmlParticipantWriter<P> instantiateParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                              PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                              PsiXmlXrefWriter primaryRefWriter,
+                                                                                              PsiXmlXrefWriter secondaryRefWriter,
+                                                                                              PsiXmlElementWriter<Confidence> confidenceWriter,
+                                                                                              PsiXmlElementWriter<Interactor> interactorWriter,
+                                                                                              PsiXmlElementWriter<CvTerm> bioRoleWriter,
+                                                                                              PsiXmlElementWriter featureWriter,
+                                                                                              PsiXmlParameterWriter parameterWriter,
+                                                                                              PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter,
+                                                                                              PsiXmlElementWriter<Organism> organismWriter) {
+
+        ExpandedXmlNamedModelledParticipantWriter writer = new ExpandedXmlNamedModelledParticipantWriter(getStreamWriter(), getElementCache());
+        writer.setPrimaryRefWriter(primaryRefWriter);
+        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setAliasWriter(aliasWriter);
+        writer.setAttributeWriter(attributeWriter);
+        writer.setInteractorWriter(interactorWriter);
+        writer.setBiologicalRoleWriter(bioRoleWriter);
+        writer.setFeatureWriter(featureWriter);
+        return (PsiXmlParticipantWriter<P>) writer;
+    }
+
+    @Override
+    protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                  PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                  PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                                  PsiXmlElementWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlElementWriter<Range> rangeWriter,
+                                                                                  PsiXmlElementWriter<CvTerm> featureDetectionWriter) {
+        XmlModelledFeatureWriter writer = new XmlModelledFeatureWriter(getStreamWriter(), getElementCache());
+        writer.setRangeWriter(rangeWriter);
+        writer.setPrimaryRefWriter(primaryRefWriter);
+        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setFeatureTypeWriter(featureTypeWriter);
+        writer.setAliasWriter(aliasWriter);
+        writer.setAttributeWriter(attributeWriter);
+        return (PsiXmlElementWriter<F>) writer;
+    }
+
+    @Override
+    protected PsiXmlElementWriter<ModelledFeature> instantiateModelledFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<CvTerm> featureTypeWriter, PsiXmlElementWriter<Range> rangeWriter, PsiXmlElementWriter featureWriter) {
+        return featureWriter;
+    }
+
+    @Override
+    protected PsiXmlExperimentWriter instantiateExperimentWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                 PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                 PsiXmlPublicationWriter publicationWriter,
+                                                                 PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
+                                                                 PsiXmlElementWriter<CvTerm> detectionMethodWriter,
+                                                                 PsiXmlElementWriter<Confidence> confidenceWriter,
+                                                                 PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter,
+                                                                 PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter) {
+        XmlNamedExperimentWriter expWriter = new XmlNamedExperimentWriter(getStreamWriter(), getElementCache());
+        expWriter.setPrimaryRefWriter(primaryRefWriter);
+        expWriter.setSecondaryRefWriter(secondaryRefWriter);
+        expWriter.setAttributeWriter(attributeWriter);
+        expWriter.setPublicationWriter(publicationWriter);
+        expWriter.setHostOrganismWriter(nonExperimentalHostOrganismWriter);
+        expWriter.setDetectionMethodWriter(detectionMethodWriter);
+        expWriter.setConfidenceWriter(confidenceWriter);
+        expWriter.setAliasWriter(aliasWriter);
+        return expWriter;
     }
 }

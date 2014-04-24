@@ -1022,7 +1022,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -1038,8 +1038,8 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     public void test_write_participant_complex() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -1055,8 +1055,8 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     public void test_write_participant_complex_as_interactor() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        complex.getParticipants().add(new DefaultNamedModelledParticipant(new DefaultProtein("test protein")));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -1073,7 +1073,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     public void test_write_participant_complex_no_participants() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
         Complex complex = new DefaultComplex("test complex");
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -1088,7 +1088,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_shortName() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction("interaction test");
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -1104,7 +1104,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     public void test_write_interaction_fullName() throws XMLStreamException, IOException, IllegalRangeException {
         NamedInteraction interaction = new DefaultNamedModelledInteraction();
         interaction.setFullName("interaction test");
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -1121,7 +1121,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
         NamedInteraction interaction = new DefaultNamedModelledInteraction();
         interaction.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "interaction synonym"));
         interaction.getAliases().add(new DefaultAlias("test"));
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
@@ -1136,7 +1136,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_identifier() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("intact"), "EBI-xxx"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
@@ -1153,7 +1153,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_xref() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
@@ -1171,10 +1171,10 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Ignore
     public void test_write_interaction_inferred() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
-        ModelledParticipant participant2 = new DefaultModelledParticipant(new DefaultProtein("protein test2"));
-        ModelledParticipant participant3 = new DefaultModelledParticipant(new DefaultProtein("protein test3"));
-        ModelledParticipant participant4 = new DefaultModelledParticipant(new DefaultProtein("protein test4"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant2 = new DefaultNamedModelledParticipant(new DefaultProtein("protein test2"));
+        ModelledParticipant participant3 = new DefaultNamedModelledParticipant(new DefaultProtein("protein test3"));
+        ModelledParticipant participant4 = new DefaultNamedModelledParticipant(new DefaultProtein("protein test4"));
         // two inferred interactiosn f1, f2, f3 and f3,f4
         ModelledFeature f1 = new DefaultModelledFeature();
         f1.getRanges().add(RangeUtils.createRangeFromString("1-4"));
@@ -1213,7 +1213,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_type() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
@@ -1229,7 +1229,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_attributes() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
@@ -1246,7 +1246,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_registered() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
         elementCache.extractIdForInteraction(new DefaultInteraction());
@@ -1263,7 +1263,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_parameter() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getModelledParameters().add(new DefaultModelledParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
         elementCache.clear();
@@ -1279,7 +1279,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_confidence() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getModelledConfidences().add(new DefaultModelledConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
         elementCache.clear();
@@ -1295,7 +1295,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_preassembly() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
         assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
@@ -1314,7 +1314,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_preassembly_defaultExperiment() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
         assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
@@ -1334,7 +1334,7 @@ public class ExpandedXml25NamedModelledInteractionWriterTest extends AbstractXml
     @Test
     public void test_write_interaction_allostery() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledInteraction interaction = new DefaultNamedModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         Allostery allostery = new DefaultAllostery(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"),
                 participant, new DefaultMoleculeEffector(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor())));

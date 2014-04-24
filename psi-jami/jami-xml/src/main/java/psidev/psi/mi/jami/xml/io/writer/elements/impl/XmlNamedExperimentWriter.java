@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.NamedExperiment;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -22,17 +22,17 @@ public class XmlNamedExperimentWriter extends XmlExperimentWriter {
 
     public XmlNamedExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-        this.aliasWriter = new XmlAliasWriter(writer);
     }
 
-    public XmlNamedExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                    PsiXmlElementWriter<Alias> aliasWriter, PsiXmlPublicationWriter publicationWriter,
-                                    PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                    PsiXmlElementWriter<Organism> hostOrganismWriter, PsiXmlElementWriter<CvTerm> detectionMethodWriter,
-                                    PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlElementWriter<Annotation> attributeWriter) {
-        super(writer, objectIndex, publicationWriter, primaryRefWriter, secondaryRefWriter, hostOrganismWriter, detectionMethodWriter,
-                confidenceWriter, attributeWriter);
-        this.aliasWriter = aliasWriter != null ? aliasWriter : new XmlAliasWriter(writer);
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter = new XmlAliasWriter(getStreamWriter());
+        }
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class XmlNamedExperimentWriter extends XmlExperimentWriter {
             }
             // write aliases
             for (Alias alias : xmlExperiment.getAliases()){
-                this.aliasWriter.write(alias);
+                getAliasWriter().write(alias);
             }
             // write end names
             getStreamWriter().writeEndElement();

@@ -1,12 +1,9 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalCvTerm;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -24,16 +21,6 @@ public abstract class AbstractXmlExperimentalCvTermWriter extends AbstractXmlCvT
 
     public AbstractXmlExperimentalCvTermWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer);
-        if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlExperimentalCvTermWriter. It is necessary for generating an id to an experimentDescription");
-        }
-        this.objectIndex = objectIndex;
-    }
-
-    public AbstractXmlExperimentalCvTermWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                               PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                               PsiXmlXrefWriter secondaryRefWriter) {
-        super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter);
         if (objectIndex == null){
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlExperimentalCvTermWriter. It is necessary for generating an id to an experimentDescription");
         }

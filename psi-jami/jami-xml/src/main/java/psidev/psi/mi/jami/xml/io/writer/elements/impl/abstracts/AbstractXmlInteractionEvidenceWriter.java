@@ -2,14 +2,14 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAvailabilityWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.Set;
 
 /**
  * Abstract class for interaction evidence writers
@@ -24,36 +24,53 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     private PsiXmlElementWriter<Confidence> confidenceWriter;
     private PsiXmlParameterWriter parameterWriter;
 
-    public AbstractXmlInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex, PsiXmlParticipantWriter<P> participantWriter) {
-        super(writer, objectIndex, participantWriter);
-        this.availabilityWriter = new XmlAvailabilityWriter(writer, objectIndex);
-        this.confidenceWriter = new XmlConfidenceWriter(writer);
-        this.parameterWriter = new XmlParameterWriter(writer, objectIndex);
+    public AbstractXmlInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+        super(writer, objectIndex);
     }
 
-    public AbstractXmlInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                                PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                PsiXmlElementWriter<String> availabilityWriter, PsiXmlExperimentWriter experimentWriter,
-                                                PsiXmlParticipantWriter<P> participantWriter, PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter,
-                                                PsiXmlElementWriter<CvTerm> interactionTypeWriter, PsiXmlElementWriter<Confidence> confidenceWriter,
-                                                PsiXmlParameterWriter parameterWriter, PsiXmlElementWriter<Annotation> attributeWriter,
-                                                PsiXmlElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, experimentWriter, participantWriter, inferredInteractionWriter, interactionTypeWriter, attributeWriter, checksumWriter);
-        this.availabilityWriter = availabilityWriter != null ? availabilityWriter : new XmlAvailabilityWriter(writer, objectIndex);
-        this.confidenceWriter = confidenceWriter != null ? confidenceWriter : new XmlConfidenceWriter(writer);
-        this.parameterWriter = parameterWriter != null ? parameterWriter : new XmlParameterWriter(writer, objectIndex);
+    public PsiXmlElementWriter<String> getAvailabilityWriter() {
+        if (this.availabilityWriter == null){
+            this.availabilityWriter =  new XmlAvailabilityWriter(getStreamWriter(), getObjectIndex());
+        }
+        return availabilityWriter;
+    }
+
+    public void setAvailabilityWriter(PsiXmlElementWriter<String> availabilityWriter) {
+        this.availabilityWriter = availabilityWriter;
+    }
+
+    public PsiXmlElementWriter<Confidence> getConfidenceWriter() {
+        if (this.confidenceWriter == null){
+            this.confidenceWriter = new XmlConfidenceWriter(getStreamWriter());
+        }
+        return confidenceWriter;
+    }
+
+    public void setConfidenceWriter(PsiXmlElementWriter<Confidence> confidenceWriter) {
+        this.confidenceWriter = confidenceWriter;
+    }
+
+    public PsiXmlParameterWriter getParameterWriter() {
+        if (this.parameterWriter == null){
+            this.parameterWriter = new XmlParameterWriter(getStreamWriter(), getObjectIndex());
+        }
+        return parameterWriter;
+    }
+
+    public void setParameterWriter(PsiXmlParameterWriter parameterWriter) {
+        this.parameterWriter = parameterWriter;
     }
 
     @Override
     protected void initialiseDefaultExperiment() {
         super.initialiseDefaultExperiment();
-        this.parameterWriter.setDefaultExperiment(getDefaultExperiment());
+        getParameterWriter().setDefaultExperiment(getDefaultExperiment());
     }
 
     @Override
     public void setDefaultExperiment(Experiment defaultExperiment) {
         super.setDefaultExperiment(defaultExperiment);
-        this.parameterWriter.setDefaultExperiment(defaultExperiment);
+        getParameterWriter().setDefaultExperiment(defaultExperiment);
     }
 
     @Override
@@ -100,7 +117,7 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
             // write start parameter list
             getStreamWriter().writeStartElement("parameterList");
             for (Object ann : object.getParameters()){
-                this.parameterWriter.write((Parameter)ann);
+                getParameterWriter().write((Parameter)ann);
             }
             // write end parameterList
             getStreamWriter().writeEndElement();
@@ -114,7 +131,7 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
             // write start confidence list
             getStreamWriter().writeStartElement("confidenceList");
             for (Object ann : object.getConfidences()){
-                this.confidenceWriter.write((Confidence)ann);
+                getConfidenceWriter().write((Confidence)ann);
             }
             // write end confidenceList
             getStreamWriter().writeEndElement();
@@ -138,6 +155,6 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     }
 
     protected void writeAvailabilityDescription(String availability) throws XMLStreamException {
-        this.availabilityWriter.write(availability);
+        getAvailabilityWriter().write(availability);
     }
 }

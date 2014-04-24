@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlNamedParticipantWriter;
 
@@ -21,16 +21,12 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class ExpandedXmlNamedParticipantWriter extends AbstractXmlNamedParticipantWriter<Participant, Feature> implements ExpandedPsiXmlElementWriter<Participant> {
     public ExpandedXmlNamedParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
-        super(writer, objectIndex, new XmlFeatureWriter(writer, objectIndex));
+        super(writer, objectIndex);
     }
 
-    public ExpandedXmlNamedParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                             PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                             PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Interactor> interactorWriter,
-                                             PsiXmlElementWriter<CvTerm> biologicalRoleWriter, PsiXmlElementWriter<Feature> featureWriter,
-                                             PsiXmlElementWriter<Annotation> attributeWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter, biologicalRoleWriter,
-                featureWriter != null ? featureWriter : new XmlFeatureWriter(writer, objectIndex), attributeWriter);
+    @Override
+    protected void initialiseFeatureWriter() {
+        super.setFeatureWriter(new XmlFeatureWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override

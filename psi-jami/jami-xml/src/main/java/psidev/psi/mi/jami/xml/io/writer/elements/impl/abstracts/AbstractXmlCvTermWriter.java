@@ -33,20 +33,39 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlCvTermWriter");
         }
         this.streamWriter = writer;
-        this.aliasWriter = new XmlAliasWriter(writer);
-        this.primaryRefWriter = new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = new XmlSecondaryXrefWriter(writer);
     }
 
-    public AbstractXmlCvTermWriter(XMLStreamWriter writer, PsiXmlElementWriter<Alias> aliasWriter,
-                                   PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter){
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlCvTermWriter");
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (aliasWriter == null){
+            aliasWriter = new XmlAliasWriter(streamWriter);
         }
-        this.streamWriter = writer;
-        this.aliasWriter = aliasWriter != null? aliasWriter : new XmlAliasWriter(writer);
-        this.primaryRefWriter = primaryRefWriter != null ? primaryRefWriter : new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = secondaryRefWriter != null ? secondaryRefWriter : new XmlSecondaryXrefWriter(writer);
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
+    }
+
+    public PsiXmlXrefWriter getPrimaryRefWriter() {
+        if (this.primaryRefWriter == null){
+           this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
+        }
+        return primaryRefWriter;
+    }
+
+    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
+        this.primaryRefWriter = primaryRefWriter;
+    }
+
+    public PsiXmlXrefWriter getSecondaryRefWriter() {
+        if (this.secondaryRefWriter == null){
+            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
+        }
+        return secondaryRefWriter;
+    }
+
+    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
+        this.secondaryRefWriter = secondaryRefWriter;
     }
 
     @Override
@@ -75,7 +94,7 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
                 }
                 // write aliases
                 for (Alias alias : object.getSynonyms()){
-                    this.aliasWriter.write(alias);
+                    getAliasWriter().write(alias);
                 }
                 // write end names
                 this.streamWriter.writeEndElement();
@@ -106,10 +125,10 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
     protected void writeXrefFromCvXrefs(CvTerm object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        this.primaryRefWriter.setDefaultRefType(null);
-        this.primaryRefWriter.setDefaultRefTypeAc(null);
-        this.secondaryRefWriter.setDefaultRefType(null);
-        this.secondaryRefWriter.setDefaultRefTypeAc(null);
+        getPrimaryRefWriter().setDefaultRefType(null);
+        getPrimaryRefWriter().setDefaultRefTypeAc(null);
+        getSecondaryRefWriter().setDefaultRefType(null);
+        getSecondaryRefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -118,12 +137,12 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                this.primaryRefWriter.write(ref);
+                getPrimaryRefWriter().write(ref);
                 index++;
             }
             // write secondaryref
             else{
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
                 index++;
             }
         }
@@ -137,10 +156,10 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
         this.streamWriter.writeStartElement("xref");
 
         // all these xrefs are identity
-        this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.primaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
-        this.secondaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.secondaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getPrimaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getPrimaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getSecondaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getSecondaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
 
         String mi = object.getMIIdentifier();
         String mod = object.getMODIdentifier();
@@ -174,24 +193,24 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
         boolean hasWrittenPrimaryRef = false;
         // write primaryRef
         if (miXref != null){
-            this.primaryRefWriter.write(miXref);
+            getPrimaryRefWriter().write(miXref);
             hasWrittenPrimaryRef = true;
             if (modXref != null){
-                this.secondaryRefWriter.write(modXref);
+                getSecondaryRefWriter().write(modXref);
             }
             if (parXref != null){
-                this.secondaryRefWriter.write(parXref);
+                getSecondaryRefWriter().write(parXref);
             }
         }
         else if (modXref != null){
-            this.primaryRefWriter.write(modXref);
+            getPrimaryRefWriter().write(modXref);
             hasWrittenPrimaryRef = true;
             if (parXref != null){
-                this.secondaryRefWriter.write(parXref);
+                getSecondaryRefWriter().write(parXref);
             }
         }
         else if (parXref != null){
-            this.primaryRefWriter.write(parXref);
+            getPrimaryRefWriter().write(parXref);
             hasWrittenPrimaryRef = true;
         }
 
@@ -205,10 +224,10 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
             if (ref != miXref && ref != modXref && ref != parXref){
                 if (!hasWrittenPrimaryRef){
                     hasWrittenPrimaryRef = true;
-                    this.primaryRefWriter.write(ref);
+                    getPrimaryRefWriter().write(ref);
                 }
                 else{
-                    this.secondaryRefWriter.write(ref);
+                    getSecondaryRefWriter().write(ref);
                 }
             }
         }
@@ -216,10 +235,10 @@ public abstract class AbstractXmlCvTermWriter implements PsiXmlElementWriter<CvT
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
             // default qualifier is null
-            this.secondaryRefWriter.setDefaultRefType(null);
-            this.secondaryRefWriter.setDefaultRefTypeAc(null);
+            getSecondaryRefWriter().setDefaultRefType(null);
+            getSecondaryRefWriter().setDefaultRefTypeAc(null);
             for (Xref ref : object.getXrefs()){
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
             }
         }
 

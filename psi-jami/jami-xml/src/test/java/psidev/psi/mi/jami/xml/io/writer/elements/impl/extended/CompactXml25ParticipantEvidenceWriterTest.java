@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
+import psidev.psi.mi.jami.xml.model.extension.XmlFeatureEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -607,7 +608,7 @@ public class CompactXml25ParticipantEvidenceWriterTest extends AbstractXml25Writ
     @Test
     public void test_write_participant_feature() throws XMLStreamException, IOException, IllegalRangeException {
         ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
-        FeatureEvidence feature = new DefaultFeatureEvidence();
+        FeatureEvidence feature = new XmlFeatureEvidence();
         feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
         participant.addFeature(feature);
         elementCache.clear();

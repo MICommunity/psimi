@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -21,18 +21,12 @@ import javax.xml.stream.XMLStreamWriter;
 public class CompactXmlBasicInteractionWriter extends AbstractXmlInteractionWriter<Interaction,Participant> implements CompactPsiXmlElementWriter<Interaction> {
 
     public CompactXmlBasicInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
-        super(writer, objectIndex, new CompactXmlParticipantWriter(writer, objectIndex));
+        super(writer, objectIndex);
     }
 
-    public CompactXmlBasicInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                            PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                            PsiXmlXrefWriter secondaryRefWriter, PsiXmlExperimentWriter experimentWriter,
-                                            PsiXmlParticipantWriter<Participant> participantWriter, PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter1,
-                                            PsiXmlElementWriter<CvTerm> interactionTypeWriter, PsiXmlElementWriter<Annotation> attributeWriter,
-                                            PsiXmlElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, experimentWriter,
-                participantWriter != null ? participantWriter : new CompactXmlParticipantWriter(writer, objectIndex),
-                inferredInteractionWriter1, interactionTypeWriter, attributeWriter, checksumWriter);
+    @Override
+    protected void initialiseParticipantWriter() {
+        super.setParticipantWriter(new CompactXmlParticipantWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override

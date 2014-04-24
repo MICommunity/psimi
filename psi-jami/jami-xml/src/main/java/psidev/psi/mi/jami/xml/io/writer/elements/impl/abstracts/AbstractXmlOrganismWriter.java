@@ -34,23 +34,50 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlOrganismWriter");
         }
         this.streamWriter = writer;
-        this.aliasWriter = new XmlAliasWriter(writer);
-        this.tissueWriter = new XmlTissueWriter(writer);
-        this.compartmentWriter = new XmlCompartmentWriter(writer);
-        this.cellTypeWriter = new XmlCelltypeWriter(writer);
     }
 
-    public AbstractXmlOrganismWriter(XMLStreamWriter writer, PsiXmlElementWriter<Alias> aliasWriter,
-                                     PsiXmlElementWriter<CvTerm> cellTypeWriter, PsiXmlElementWriter<CvTerm> compartmentWriter,
-                                     PsiXmlElementWriter<CvTerm> tissueWriter){
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlOrganismWriter");
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter = new XmlAliasWriter(streamWriter);
         }
-        this.streamWriter = writer;
-        this.aliasWriter = aliasWriter != null ? aliasWriter : new XmlAliasWriter(writer);
-        this.tissueWriter = tissueWriter != null ? tissueWriter : new XmlTissueWriter(writer);
-        this.compartmentWriter = compartmentWriter != null ? compartmentWriter : new XmlCompartmentWriter(writer);
-        this.cellTypeWriter = cellTypeWriter != null ? cellTypeWriter : new XmlCelltypeWriter(writer);
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getTissueWriter() {
+        if (this.tissueWriter == null){
+            this.tissueWriter = new XmlTissueWriter(streamWriter);
+        }
+        return tissueWriter;
+    }
+
+    public void setTissueWriter(PsiXmlElementWriter<CvTerm> tissueWriter) {
+        this.tissueWriter = tissueWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getCompartmentWriter() {
+        if (this.compartmentWriter == null){
+            this.compartmentWriter = new XmlCompartmentWriter(streamWriter);
+        }
+        return compartmentWriter;
+    }
+
+    public void setCompartmentWriter(PsiXmlElementWriter<CvTerm> compartmentWriter) {
+        this.compartmentWriter = compartmentWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getCellTypeWriter() {
+        if (this.cellTypeWriter == null){
+            this.cellTypeWriter = new XmlCelltypeWriter(streamWriter);
+        }
+        return cellTypeWriter;
+    }
+
+    public void setCellTypeWriter(PsiXmlElementWriter<CvTerm> cellTypeWriter) {
+        this.cellTypeWriter = cellTypeWriter;
     }
 
     @Override
@@ -82,7 +109,7 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
                 }
                 // write aliases
                 for (Alias alias : object.getAliases()){
-                    this.aliasWriter.write(alias);
+                    getAliasWriter().write(alias);
                 }
                 // write end names
                 this.streamWriter.writeEndElement();
@@ -90,15 +117,15 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
 
             // write celltype
             if (object.getCellType() != null){
-                this.cellTypeWriter.write(object.getCellType());
+                getCellTypeWriter().write(object.getCellType());
             }
             //write compartment
             if (object.getCompartment() != null){
-                this.compartmentWriter.write(object.getCompartment());
+                getCompartmentWriter().write(object.getCompartment());
             }
             // write tissue
             if (object.getTissue()!= null){
-                this.tissueWriter.write(object.getTissue());
+                getTissueWriter().write(object.getTissue());
             }
 
             // write other properties

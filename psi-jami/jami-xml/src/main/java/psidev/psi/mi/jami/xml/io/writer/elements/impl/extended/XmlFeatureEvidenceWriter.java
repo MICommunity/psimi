@@ -1,10 +1,9 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlFeatureEvidence;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -20,14 +19,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureEvidenceWriter {
     public XmlFeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-    }
-
-    public XmlFeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                    PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                    PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<CvTerm> featureTypeWriter,
-                                    PsiXmlElementWriter<CvTerm> detectionMethodWriter, PsiXmlElementWriter<Range> rangeWriter,
-                                    PsiXmlElementWriter<Annotation> attributeWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, featureTypeWriter, detectionMethodWriter, rangeWriter, attributeWriter);
     }
 
     @Override

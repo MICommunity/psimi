@@ -37,20 +37,41 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
             throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlPublicationWriter");
         }
         this.streamWriter = writer;
-        this.primaryRefWriter = new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = new XmlSecondaryXrefWriter(writer);
-        this.attributeWriter = new XmlAnnotationWriter(writer);
     }
 
-    public XmlPublicationWriter(XMLStreamWriter writer, PsiXmlXrefWriter primaryRefWriter,
-                                PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Annotation> attributeWriter){
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlPublicationWriter");
+    public PsiXmlXrefWriter getPrimaryRefWriter() {
+        if (this.primaryRefWriter == null){
+            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
         }
-        this.streamWriter = writer;
-        this.primaryRefWriter = primaryRefWriter!=null ? primaryRefWriter :new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = secondaryRefWriter!=null ? secondaryRefWriter : new XmlSecondaryXrefWriter(writer);
-        this.attributeWriter = attributeWriter!=null ? attributeWriter : new XmlAnnotationWriter(writer);
+        return primaryRefWriter;
+    }
+
+    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
+        this.primaryRefWriter = primaryRefWriter;
+    }
+
+    public PsiXmlXrefWriter getSecondaryRefWriter() {
+        if (this.secondaryRefWriter == null){
+            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
+
+        }
+        return secondaryRefWriter;
+    }
+
+    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
+        this.secondaryRefWriter = secondaryRefWriter;
+    }
+
+    public PsiXmlElementWriter<Annotation> getAttributeWriter() {
+        if (this.attributeWriter == null){
+            this.attributeWriter = new XmlAnnotationWriter(streamWriter);
+
+        }
+        return attributeWriter;
+    }
+
+    public void setAttributeWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
+        this.attributeWriter = attributeWriter;
     }
 
     @Override
@@ -78,7 +99,7 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
                     // write normal attributes
                     if (hasAttributes){
                         for (Annotation ann : object.getAnnotations()){
-                            this.attributeWriter.write(ann);
+                            getAttributeWriter().write(ann);
                         }
                     }
                     // write end attributeList
@@ -117,7 +138,7 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
                     Iterator<Annotation> annotIterator = object.getAnnotations().iterator();
                     while (annotIterator.hasNext()){
                         Annotation ann = annotIterator.next();
-                        this.attributeWriter.write(ann);
+                        getAttributeWriter().write(ann);
                         if (annotIterator.hasNext()){
                         }
                     }
@@ -170,7 +191,7 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
                     while (annotIterator.hasNext()){
                         Annotation ann = annotIterator.next();
                         if (!attributesToFilter.contains(ann)){
-                            this.attributeWriter.write(ann);
+                            getAttributeWriter().write(ann);
                         }
                     }
                 }
@@ -233,10 +254,10 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
     protected void writeXrefFromPublicationXrefs(Publication object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        this.primaryRefWriter.setDefaultRefType(null);
-        this.primaryRefWriter.setDefaultRefTypeAc(null);
-        this.secondaryRefWriter.setDefaultRefType(null);
-        this.secondaryRefWriter.setDefaultRefTypeAc(null);
+        getPrimaryRefWriter().setDefaultRefType(null);
+        getPrimaryRefWriter().setDefaultRefTypeAc(null);
+        getSecondaryRefWriter().setDefaultRefType(null);
+        getSecondaryRefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -245,12 +266,12 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                this.primaryRefWriter.write(ref);
+                getPrimaryRefWriter().write(ref);
                 index++;
             }
             // write secondaryref
             else{
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
                 index++;
             }
         }
@@ -287,24 +308,24 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
         boolean hasWrittenPrimaryRef = false;
         // write primaryRef
         if (pubmedXref != null){
-            writePrimaryRef(this.primaryRefWriter, pubmedXref);
+            writePrimaryRef(getPrimaryRefWriter(), pubmedXref);
             hasWrittenPrimaryRef = true;
             if (doiXref != null){
-                writePrimaryRef(this.secondaryRefWriter, doiXref);
+                writePrimaryRef(getSecondaryRefWriter(), doiXref);
             }
         }
         else if (doiXref != null){
-            writePrimaryRef(this.primaryRefWriter, doiXref);
+            writePrimaryRef(getPrimaryRefWriter(), doiXref);
             hasWrittenPrimaryRef = true;
         }
 
         // write secondaryRefs (and primary ref if not done already)
         Iterator<Xref> refIterator = object.getIdentifiers().iterator();
         // default qualifier is identity
-        this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.primaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
-        this.secondaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.secondaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getPrimaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getPrimaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getSecondaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getSecondaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
         while (refIterator.hasNext()){
             Xref ref = refIterator.next();
             // ignore pubmed that is already written
@@ -312,10 +333,10 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
             if (ref != pubmedXref && ref != doiXref){
                 if (!hasWrittenPrimaryRef){
                     hasWrittenPrimaryRef = true;
-                    this.primaryRefWriter.write(ref);
+                    getPrimaryRefWriter().write(ref);
                 }
                 else{
-                    this.secondaryRefWriter.write(ref);
+                    getSecondaryRefWriter().write(ref);
                 }
             }
         }
@@ -323,10 +344,10 @@ public class XmlPublicationWriter implements PsiXmlPublicationWriter {
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
             // default qualifier is null
-            this.secondaryRefWriter.setDefaultRefType(null);
-            this.secondaryRefWriter.setDefaultRefTypeAc(null);
+            getSecondaryRefWriter().setDefaultRefType(null);
+            getSecondaryRefWriter().setDefaultRefTypeAc(null);
             for (Xref ref : object.getXrefs()){
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
             }
         }
 
