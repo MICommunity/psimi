@@ -108,4 +108,8 @@ public class Xml25ExperimentWriter extends AbstractXmlExperimentWriter {
         // write end db ref
         getStreamWriter().writeEndElement();
     }
+
+    protected void initialisePublicationWriter() {
+        super.setPublicationWriter(new Xml25PublicationWriter(getStreamWriter()));
+    }
 }

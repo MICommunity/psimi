@@ -44,11 +44,13 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
 
     public PsiXmlPublicationWriter getPublicationWriter() {
         if (this.publicationWriter == null){
-            this.publicationWriter = new Xml25PublicationWriter(streamWriter);
+            initialisePublicationWriter();
 
         }
         return publicationWriter;
     }
+
+    protected abstract void initialisePublicationWriter();
 
     public void setPublicationWriter(PsiXmlPublicationWriter publicationWriter) {
         this.publicationWriter = publicationWriter;

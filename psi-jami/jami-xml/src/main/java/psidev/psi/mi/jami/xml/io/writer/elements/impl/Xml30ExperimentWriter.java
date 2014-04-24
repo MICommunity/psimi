@@ -41,4 +41,8 @@ public class Xml30ExperimentWriter extends AbstractXmlExperimentWriter {
             getStreamWriter().writeEndElement();
         }
     }
+
+    protected void initialisePublicationWriter() {
+        super.setPublicationWriter(new Xml30PublicationWriter(getStreamWriter()));
+    }
 }
