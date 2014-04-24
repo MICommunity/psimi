@@ -28,8 +28,7 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
     private XMLGregorianCalendar calendar;
     private static final Logger logger = Logger.getLogger("XmlSourceWriter");
     private PsiXmlElementWriter<Alias> aliasWriter;
-    private PsiXmlXrefWriter primaryRefWriter;
-    private PsiXmlXrefWriter secondaryRefWriter;
+    private PsiXmlXrefWriter xrefWriter;
     private PsiXmlElementWriter<Publication> publicationWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
 
@@ -52,27 +51,15 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
         this.aliasWriter = aliasWriter;
     }
 
-    public PsiXmlXrefWriter getPrimaryRefWriter() {
-        if (this.primaryRefWriter == null){
-            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
+    public PsiXmlXrefWriter getXrefWriter() {
+        if (this.xrefWriter == null){
+            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
         }
-        return primaryRefWriter;
+        return xrefWriter;
     }
 
-    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
-        this.primaryRefWriter = primaryRefWriter;
-    }
-
-    public PsiXmlXrefWriter getSecondaryRefWriter() {
-        if (this.secondaryRefWriter == null){
-            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
-
-        }
-        return secondaryRefWriter;
-    }
-
-    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
-        this.secondaryRefWriter = secondaryRefWriter;
+    public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
+        this.xrefWriter = xrefWriter;
     }
 
     public PsiXmlElementWriter<Publication> getPublicationWriter() {
@@ -167,10 +154,8 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
     protected void writeXrefFromSourceXrefs(Source object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        getPrimaryRefWriter().setDefaultRefType(null);
-        getPrimaryRefWriter().setDefaultRefTypeAc(null);
-        getSecondaryRefWriter().setDefaultRefType(null);
-        getSecondaryRefWriter().setDefaultRefTypeAc(null);
+        getXrefWriter().setDefaultRefType(null);
+        getXrefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -179,12 +164,12 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                getPrimaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"primaryRef");
                 index++;
             }
             // write secondaryref
             else{
-                getSecondaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"secondaryRef");
                 index++;
             }
         }
@@ -198,10 +183,8 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
         this.streamWriter.writeStartElement("xref");
 
         // default qualifier is identity
-        getPrimaryRefWriter().setDefaultRefType(Xref.IDENTITY);
-        getPrimaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
-        getSecondaryRefWriter().setDefaultRefType(Xref.IDENTITY);
-        getSecondaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getXrefWriter().setDefaultRefType(Xref.IDENTITY);
+        getXrefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
         String mi = object.getMIIdentifier();
         String par = object.getPARIdentifier();
         Xref miXref = null;
@@ -226,14 +209,14 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
         boolean hasWrittenPrimaryRef = false;
         // write primaryRef
         if (miXref != null){
-            getPrimaryRefWriter().write(miXref);
+            getXrefWriter().write(miXref,"primaryRef");
             hasWrittenPrimaryRef = true;
             if (parXref != null){
-                getSecondaryRefWriter().write(parXref);
+                getXrefWriter().write(parXref,"secondaryRef");
             }
         }
         else if (parXref != null){
-            getPrimaryRefWriter().write(parXref);
+            getXrefWriter().write(parXref,"primaryRef");
             hasWrittenPrimaryRef = true;
         }
 
@@ -246,10 +229,10 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
             if (ref != miXref && ref != parXref){
                 if (!hasWrittenPrimaryRef){
                     hasWrittenPrimaryRef = true;
-                    getPrimaryRefWriter().write(ref);
+                    getXrefWriter().write(ref,"primaryRef");
                 }
                 else{
-                    getSecondaryRefWriter().write(ref);
+                    getXrefWriter().write(ref,"secondaryRef");
                 }
             }
         }
@@ -257,10 +240,10 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
             // default qualifier is null
-            getSecondaryRefWriter().setDefaultRefType(null);
-            getSecondaryRefWriter().setDefaultRefTypeAc(null);
+            getXrefWriter().setDefaultRefType(null);
+            getXrefWriter().setDefaultRefTypeAc(null);
             for (Xref ref : object.getXrefs()){
-                getSecondaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"secondaryRef");
             }
         }
 

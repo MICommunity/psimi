@@ -18,7 +18,7 @@ import java.io.IOException;
  * @since <pre>20/11/13</pre>
  */
 
-public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
+public class XmlDbXrefWriterTest extends AbstractXml25WriterTest{
 
     private String xref_no_database_ac ="<primaryRef db=\"uniprotkb\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>";
     private String xref_no_reftype ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\"/>";
@@ -29,8 +29,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
     @Test
     public void test_write_xref_null() throws XMLStreamException, IOException {
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(null);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(null,"primaryRef");
         streamWriter.flush();
 
         Assert.assertEquals("", output.toString());
@@ -40,8 +40,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
     public void test_write_xref_do_database_ac() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB), "P12345", CvTermUtils.createIdentityQualifier());
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(ref);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(ref,"primaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref_no_database_ac, output.toString());
@@ -51,8 +51,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
     public void test_write_xref_no_reftype() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345");
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(ref);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(ref,"primaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref_no_reftype, output.toString());
@@ -62,8 +62,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
     public void test_write_xref_no_reftype_ac() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", new DefaultCvTerm(Xref.IDENTITY));
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(ref);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(ref,"primaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref_no_reftype_ac, output.toString());
@@ -73,8 +73,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
     public void test_write_xref() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", CvTermUtils.createIdentityQualifier());
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(ref);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(ref,"primaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref, output.toString());
@@ -84,8 +84,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
     public void test_write_xref_version() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", "2.4", CvTermUtils.createIdentityQualifier());
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(ref);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(ref,"primaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref_version, output.toString());
@@ -95,10 +95,10 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest{
     public void test_write_xref_default_qualifier() throws XMLStreamException, IOException {
         Xref ref = new DefaultXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345");
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
         writer.setDefaultRefType("identity");
         writer.setDefaultRefTypeAc("MI:0356");
-        writer.write(ref);
+        writer.write(ref,"primaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref, output.toString());

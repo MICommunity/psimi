@@ -12,8 +12,6 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlFeatureEvidenc
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlHostOrganismWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlInferredInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlPrimaryXrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlSecondaryXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlSourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXmlWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
@@ -68,19 +66,17 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
     protected PsiXmlInteractionWriter<ModelledInteraction> instantiateComplexWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                     PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                     PsiXmlXrefWriter primaryRefWriter,
-                                                                                    PsiXmlXrefWriter secondaryRefWriter,
                                                                                     PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                     PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                     PsiXmlParameterWriter parameterWriter,
-                                                                                    PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                                     PsiXmlExperimentWriter experimentWriter,
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
                                                                                     PsiXmlInteractionWriter interactionWriter) {
         ExpandedXmlModelledInteractionWriter complexWriter = new ExpandedXmlModelledInteractionWriter(getStreamWriter(), getElementCache());
         complexWriter.setAttributeWriter(attributeWriter);
-        complexWriter.setPrimaryRefWriter(primaryRefWriter);
-        complexWriter.setSecondaryRefWriter(secondaryRefWriter);
+        complexWriter.setXrefWriter(primaryRefWriter);
         complexWriter.setConfidenceWriter(confidenceWriter);
         complexWriter.setChecksumWriter(checksumWriter);
         complexWriter.setParameterWriter(parameterWriter);
@@ -96,19 +92,17 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
     protected PsiXmlInteractionWriter<BinaryInteractionEvidence> instantiateInteractionWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                         PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                         PsiXmlXrefWriter primaryRefWriter,
-                                                                                        PsiXmlXrefWriter secondaryRefWriter,
                                                                                         PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                         PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                         PsiXmlParameterWriter parameterWriter,
                                                                                         PsiXmlParticipantWriter participantWriter,
-                                                                                        PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
+                                                                                        PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                                         PsiXmlExperimentWriter experimentWriter,
                                                                                         PsiXmlElementWriter<String> availabilityWriter,
                                                                                         PsiXmlElementWriter inferredInteractionWriter) {
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setAttributeWriter(attributeWriter);
-        writer.setPrimaryRefWriter(primaryRefWriter);
-        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setXrefWriter(primaryRefWriter);
         writer.setConfidenceWriter(confidenceWriter);
         writer.setChecksumWriter(checksumWriter);
         writer.setParameterWriter(parameterWriter);
@@ -125,14 +119,12 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
     protected PsiXmlParticipantWriter<ModelledParticipant> instantiateModelledParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                                 PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                                 PsiXmlXrefWriter primaryRefWriter,
-                                                                                                PsiXmlXrefWriter secondaryRefWriter,
                                                                                                 PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
         ExpandedXmlModelledParticipantWriter writer = new ExpandedXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
-        writer.setPrimaryRefWriter(primaryRefWriter);
-        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
         writer.setInteractorWriter(interactorWriter);
@@ -145,25 +137,22 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
     protected <P extends Participant> PsiXmlParticipantWriter<P> instantiateParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                                       PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                                       PsiXmlXrefWriter primaryRefWriter,
-                                                                                                      PsiXmlXrefWriter secondaryRefWriter,
                                                                                                       PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                                       PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                      PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
+                                                                                                      PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                                       PsiXmlElementWriter featureWriter,
                                                                                                       PsiXmlParameterWriter parameterWriter,
                                                                                                       PsiXmlElementWriter<Organism> organismWriter) {
         XmlExperimentalCvTermWriter expRoleWriter = new XmlExperimentalCvTermWriter(getStreamWriter(), getElementCache());
         expRoleWriter.setAliasWriter(aliasWriter);
-        expRoleWriter.setPrimaryRefWriter(primaryRefWriter);
-        expRoleWriter.setSecondaryRefWriter(secondaryRefWriter);
+        expRoleWriter.setXrefWriter(primaryRefWriter);
 
         XmlHostOrganismWriter hostOrganismWriter = new XmlHostOrganismWriter(getStreamWriter(), getElementCache());
         hostOrganismWriter.setAliasWriter(aliasWriter);
         hostOrganismWriter.setCvWriter(hostOrganismWriter.getCvWriter());
 
         ExpandedXmlParticipantEvidenceWriter writer = new ExpandedXmlParticipantEvidenceWriter(getStreamWriter(), getElementCache());
-        writer.setPrimaryRefWriter(primaryRefWriter);
-        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
         writer.setInteractorWriter(interactorWriter);
@@ -180,13 +169,12 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
     @Override
     protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                   PsiXmlElementWriter<Annotation> attributeWriter,
-                                                                                  PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                                                  PsiXmlCvTermWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlXrefWriter primaryRefWriter,
+                                                                                  PsiXmlVariableNameWriter<CvTerm> featureTypeWriter,
                                                                                   PsiXmlElementWriter<Range> rangeWriter) {
         XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setRangeWriter(rangeWriter);
-        writer.setPrimaryRefWriter(primaryRefWriter);
-        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setXrefWriter(primaryRefWriter);
         writer.setFeatureTypeWriter(featureTypeWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
@@ -194,10 +182,10 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
     }
 
     @Override
-    protected PsiXmlSourceWriter instantiateSourceWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter, PsiXmlPublicationWriter publicationWriter) {
+    protected PsiXmlSourceWriter instantiateSourceWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter,
+                                                         PsiXmlXrefWriter primaryRefWriter, PsiXmlPublicationWriter publicationWriter) {
         XmlSourceWriter sourceWriter = new XmlSourceWriter(getStreamWriter());
-        sourceWriter.setPrimaryRefWriter(primaryRefWriter);
-        sourceWriter.setSecondaryRefWriter(secondaryRefWriter);
+        sourceWriter.setXrefWriter(primaryRefWriter);
         sourceWriter.setAttributeWriter(attributeWriter);
         sourceWriter.setAliasWriter(aliasWriter);
         sourceWriter.setPublicationWriter(publicationWriter);
@@ -207,14 +195,13 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
     @Override
     protected PsiXmlExperimentWriter instantiateExperimentWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                  PsiXmlElementWriter<Annotation> attributeWriter,
-                                                                 PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                 PsiXmlXrefWriter primaryRefWriter,
                                                                  PsiXmlPublicationWriter publicationWriter,
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
-                                                                 PsiXmlCvTermWriter<CvTerm> detectionMethodWriter,
+                                                                 PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter,
                                                                  PsiXmlElementWriter<Confidence> confidenceWriter) {
         XmlExperimentWriter expWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache());
-        expWriter.setPrimaryRefWriter(primaryRefWriter);
-        expWriter.setSecondaryRefWriter(secondaryRefWriter);
+        expWriter.setXrefWriter(primaryRefWriter);
         expWriter.setAttributeWriter(attributeWriter);
         expWriter.setPublicationWriter(publicationWriter);
         expWriter.setHostOrganismWriter(nonExperimentalHostOrganismWriter);
@@ -230,22 +217,15 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
     }
 
     @Override
-    protected PsiXmlElementWriter<Confidence> instantiateConfidenceWriter(PsiXmlCvTermWriter<CvTerm> confidenceTypeWriter) {
+    protected PsiXmlElementWriter<Confidence> instantiateConfidenceWriter(PsiXmlVariableNameWriter<CvTerm> confidenceTypeWriter) {
         XmlConfidenceWriter confWriter = new XmlConfidenceWriter(getStreamWriter(), getElementCache());
         confWriter.setTypeWriter(confidenceTypeWriter);
         return confWriter;
     }
 
     @Override
-    protected PsiXmlXrefWriter instantiateSecondaryRefWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
-        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(getStreamWriter());
-        writer.setAnnotationWriter(attributeWriter);
-        return writer;
-    }
-
-    @Override
-    protected PsiXmlXrefWriter instantiatePrimaryRefWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(getStreamWriter());
+    protected PsiXmlXrefWriter instantiateXrefWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(getStreamWriter());
         writer.setAnnotationWriter(attributeWriter);
         return writer;
     }

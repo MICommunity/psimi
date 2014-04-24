@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Xref;
  * @since <pre>12/11/13</pre>
  */
 
-public interface PsiXmlXrefWriter extends PsiXmlElementWriter<Xref> {
+public interface PsiXmlXrefWriter extends PsiXmlVariableNameWriter<Xref> {
 
     /**
      * Sets the default refType that will be used when a Xref object does not have a qualifier

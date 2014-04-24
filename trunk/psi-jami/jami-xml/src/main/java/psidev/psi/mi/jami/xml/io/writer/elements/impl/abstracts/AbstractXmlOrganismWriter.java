@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 
@@ -23,7 +23,7 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
 
     private XMLStreamWriter streamWriter;
     private PsiXmlElementWriter<Alias> aliasWriter;
-    private PsiXmlCvTermWriter<CvTerm> cvWriter;
+    private PsiXmlVariableNameWriter<CvTerm> cvWriter;
 
     public AbstractXmlOrganismWriter(XMLStreamWriter writer){
         if (writer == null){
@@ -43,14 +43,14 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
         this.aliasWriter = aliasWriter;
     }
 
-    public PsiXmlCvTermWriter<CvTerm> getCvWriter() {
+    public PsiXmlVariableNameWriter<CvTerm> getCvWriter() {
         if (this.cvWriter == null){
             this.cvWriter = new XmlOpenCvTermWriter(streamWriter);
         }
         return cvWriter;
     }
 
-    public void setCvWriter(PsiXmlCvTermWriter<CvTerm> cvWriter) {
+    public void setCvWriter(PsiXmlVariableNameWriter<CvTerm> cvWriter) {
         this.cvWriter = cvWriter;
     }
 

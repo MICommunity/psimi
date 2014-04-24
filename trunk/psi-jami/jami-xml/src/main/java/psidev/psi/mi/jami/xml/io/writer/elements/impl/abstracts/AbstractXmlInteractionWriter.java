@@ -28,10 +28,9 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     private XMLStreamWriter streamWriter;
     private PsiXmlObjectCache objectIndex;
-    private PsiXmlXrefWriter primaryRefWriter;
-    private PsiXmlXrefWriter secondaryRefWriter;
+    private PsiXmlXrefWriter xrefWriter;
     private PsiXmlParticipantWriter<P> participantWriter;
-    private PsiXmlCvTermWriter<CvTerm> interactionTypeWriter;
+    private PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
     private PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter;
     private Experiment defaultExperiment;
@@ -63,29 +62,18 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         this.participantWriter = participantWriter;
     }
 
-    public PsiXmlXrefWriter getPrimaryRefWriter() {
-        if (this.primaryRefWriter == null){
-            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
+    public PsiXmlXrefWriter getXrefWriter() {
+        if (this.xrefWriter == null){
+            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
         }
-        return primaryRefWriter;
+        return xrefWriter;
     }
 
-    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
-        this.primaryRefWriter = primaryRefWriter;
+    public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
+        this.xrefWriter = xrefWriter;
     }
 
-    public PsiXmlXrefWriter getSecondaryRefWriter() {
-        if (this.secondaryRefWriter == null){
-            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
-        }
-        return secondaryRefWriter;
-    }
-
-    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
-        this.secondaryRefWriter = secondaryRefWriter;
-    }
-
-    public void setInteractionTypeWriter(PsiXmlCvTermWriter<CvTerm> interactionTypeWriter) {
+    public void setInteractionTypeWriter(PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter) {
         this.interactionTypeWriter = interactionTypeWriter;
     }
 
@@ -126,7 +114,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         return checksumWriter;
     }
 
-    public PsiXmlCvTermWriter<CvTerm> getInteractionTypeWriter() {
+    public PsiXmlVariableNameWriter<CvTerm> getInteractionTypeWriter() {
         if (this.interactionTypeWriter == null){
             this.interactionTypeWriter = new XmlCvTermWriter(streamWriter);
         }
@@ -295,10 +283,8 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     protected void writeXrefFromInteractionXrefs(T object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        getPrimaryRefWriter().setDefaultRefType(null);
-        getPrimaryRefWriter().setDefaultRefTypeAc(null);
-        getSecondaryRefWriter().setDefaultRefType(null);
-        getSecondaryRefWriter().setDefaultRefTypeAc(null);
+        getXrefWriter().setDefaultRefType(null);
+        getXrefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -307,12 +293,12 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                getPrimaryRefWriter().write(ref);
+                getXrefWriter().write(ref, "primaryRef");
                 index++;
             }
             // write secondaryref
             else{
-                getSecondaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"secondaryRef");
                 index++;
             }
         }
@@ -326,10 +312,8 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         this.streamWriter.writeStartElement("xref");
 
         // all these xrefs are identity
-        getPrimaryRefWriter().setDefaultRefType(Xref.IDENTITY);
-        getPrimaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
-        getSecondaryRefWriter().setDefaultRefType(Xref.IDENTITY);
-        getSecondaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getXrefWriter().setDefaultRefType(Xref.IDENTITY);
+        getXrefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
 
         // write secondaryRefs and primary ref if not done already)
         Iterator<Xref> refIterator = object.getIdentifiers().iterator();
@@ -338,20 +322,20 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             Xref ref = refIterator.next();
             if (!hasWrittenPrimaryRef){
                 hasWrittenPrimaryRef = true;
-                getPrimaryRefWriter().write(ref);
+                getXrefWriter().write(ref, "primaryRef");
             }
             else{
-                getSecondaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"secondaryRef");
             }
         }
 
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
             // default qualifier is null
-            getSecondaryRefWriter().setDefaultRefType(null);
-            getSecondaryRefWriter().setDefaultRefTypeAc(null);
+            getXrefWriter().setDefaultRefType(null);
+            getXrefWriter().setDefaultRefTypeAc(null);
             for (Object ref : object.getXrefs()){
-                getSecondaryRefWriter().write((Xref)ref);
+                getXrefWriter().write((Xref)ref,"secondaryRef");
             }
         }
 
