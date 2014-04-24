@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -19,7 +19,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
     private XMLStreamWriter streamWriter;
-    private PsiXmlCvTermWriter<CvTerm> typeWriter;
+    private PsiXmlVariableNameWriter<CvTerm> typeWriter;
 
     public XmlConfidenceWriter(XMLStreamWriter writer){
         if (writer == null){
@@ -28,7 +28,7 @@ public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
         this.streamWriter = writer;
     }
 
-    public PsiXmlCvTermWriter<CvTerm> getTypeWriter() {
+    public PsiXmlVariableNameWriter<CvTerm> getTypeWriter() {
         if (this.typeWriter == null){
             this.typeWriter = new XmlOpenCvTermWriter(streamWriter);
 
@@ -36,7 +36,7 @@ public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
         return typeWriter;
     }
 
-    public void setTypeWriter(PsiXmlCvTermWriter<CvTerm> typeWriter) {
+    public void setTypeWriter(PsiXmlVariableNameWriter<CvTerm> typeWriter) {
         this.typeWriter = typeWriter;
     }
 

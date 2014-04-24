@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 
@@ -18,7 +18,7 @@ import javax.xml.stream.XMLStreamWriter;
  */
 
 public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlParticipantWriter<ParticipantEvidence, FeatureEvidence> {
-    private PsiXmlCvTermWriter<CvTerm> cvWriter;
+    private PsiXmlVariableNameWriter<CvTerm> cvWriter;
     private PsiXmlElementWriter<Confidence> confidenceWriter;
     private PsiXmlElementWriter<Organism> hostOrganismWriter;
     private PsiXmlElementWriter<Parameter> parameterWriter;
@@ -27,14 +27,14 @@ public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlPa
         super(writer, objectIndex);
     }
 
-    public PsiXmlCvTermWriter<CvTerm> getCvWriter() {
+    public PsiXmlVariableNameWriter<CvTerm> getCvWriter() {
         if (this.cvWriter == null){
             this.cvWriter = new XmlCvTermWriter(getStreamWriter());
         }
         return cvWriter;
     }
 
-    public void setCvWriter(PsiXmlCvTermWriter<CvTerm> cvWriter) {
+    public void setCvWriter(PsiXmlVariableNameWriter<CvTerm> cvWriter) {
         this.cvWriter = cvWriter;
     }
 

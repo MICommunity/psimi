@@ -380,11 +380,10 @@ public abstract class AbstractCompactXmlMixWriter<I extends Interaction, M exten
     protected PsiXmlInteractionWriter<ModelledInteraction> instantiateComplexWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                     PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                     PsiXmlXrefWriter primaryRefWriter,
-                                                                                    PsiXmlXrefWriter secondaryRefWriter,
                                                                                     PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                     PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                     PsiXmlParameterWriter parameterWriter,
-                                                                                    PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                                     PsiXmlExperimentWriter experimentWriter,
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
@@ -395,11 +394,11 @@ public abstract class AbstractCompactXmlMixWriter<I extends Interaction, M exten
     @Override
     protected PsiXmlInteractionWriter<I> instantiateInteractionWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                       PsiXmlElementWriter<Annotation> attributeWriter,
-                                                                      PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                      PsiXmlXrefWriter primaryRefWriter,
                                                                       PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                       PsiXmlElementWriter<Checksum> checksumWriter, PsiXmlParameterWriter parameterWriter,
                                                                       PsiXmlParticipantWriter participantWriter,
-                                                                      PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
+                                                                      PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                       PsiXmlExperimentWriter experimentWriter,
                                                                       PsiXmlElementWriter<String> availabilityWriter,
                                                                       PsiXmlElementWriter inferredInteractionWriter) {
@@ -410,9 +409,8 @@ public abstract class AbstractCompactXmlMixWriter<I extends Interaction, M exten
     protected PsiXmlParticipantWriter<ModelledParticipant> instantiateModelledParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                                 PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                                 PsiXmlXrefWriter primaryRefWriter,
-                                                                                                PsiXmlXrefWriter secondaryRefWriter,
                                                                                                 PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
         return null;
@@ -421,9 +419,9 @@ public abstract class AbstractCompactXmlMixWriter<I extends Interaction, M exten
     @Override
     protected <P extends Participant> PsiXmlParticipantWriter<P> instantiateParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                               PsiXmlElementWriter<Annotation> attributeWriter,
-                                                                                              PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                                              PsiXmlXrefWriter primaryRefWriter,
                                                                                               PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                              PsiXmlCvTermWriter<CvTerm> bioRoleWriter, PsiXmlElementWriter featureWriter, PsiXmlParameterWriter parameterWriter,
+                                                                                              PsiXmlVariableNameWriter<CvTerm> bioRoleWriter, PsiXmlElementWriter featureWriter, PsiXmlParameterWriter parameterWriter,
                                                                                               PsiXmlElementWriter<Organism> organismWriter) {
         return null;
     }
@@ -431,8 +429,8 @@ public abstract class AbstractCompactXmlMixWriter<I extends Interaction, M exten
     @Override
     protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                   PsiXmlElementWriter<Annotation> attributeWriter,
-                                                                                  PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                                                  PsiXmlCvTermWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlXrefWriter primaryRefWriter,
+                                                                                  PsiXmlVariableNameWriter<CvTerm> featureTypeWriter,
                                                                                   PsiXmlElementWriter<Range> rangeWriter) {
         return null;
     }

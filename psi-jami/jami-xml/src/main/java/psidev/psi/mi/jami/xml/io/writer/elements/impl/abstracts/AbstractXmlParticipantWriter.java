@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
@@ -26,9 +26,8 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     private XMLStreamWriter streamWriter;
     private PsiXmlObjectCache objectIndex;
     private PsiXmlElementWriter<Alias> aliasWriter;
-    private PsiXmlXrefWriter primaryRefWriter;
-    private PsiXmlXrefWriter secondaryRefWriter;
-    private PsiXmlCvTermWriter<CvTerm> biologicalRoleWriter;
+    private PsiXmlXrefWriter xrefWriter;
+    private PsiXmlVariableNameWriter<CvTerm> biologicalRoleWriter;
     private PsiXmlElementWriter<F> featureWriter;
     private PsiXmlElementWriter<Annotation> attributeWriter;
     private PsiXmlElementWriter<Interactor> interactorWriter;
@@ -56,36 +55,25 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
         this.aliasWriter = aliasWriter;
     }
 
-    public PsiXmlXrefWriter getPrimaryRefWriter() {
-        if (this.primaryRefWriter == null){
-            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
+    public PsiXmlXrefWriter getXrefWriter() {
+        if (this.xrefWriter == null){
+            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
         }
-        return primaryRefWriter;
+        return xrefWriter;
     }
 
-    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
-        this.primaryRefWriter = primaryRefWriter;
+    public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
+        this.xrefWriter = xrefWriter;
     }
 
-    public PsiXmlXrefWriter getSecondaryRefWriter() {
-        if (this.secondaryRefWriter == null){
-            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
-        }
-        return secondaryRefWriter;
-    }
-
-    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
-        this.secondaryRefWriter = secondaryRefWriter;
-    }
-
-    public PsiXmlCvTermWriter<CvTerm> getBiologicalRoleWriter() {
+    public PsiXmlVariableNameWriter<CvTerm> getBiologicalRoleWriter() {
         if (this.biologicalRoleWriter == null){
             this.biologicalRoleWriter = new XmlCvTermWriter(streamWriter);
         }
         return biologicalRoleWriter;
     }
 
-    public void setBiologicalRoleWriter(PsiXmlCvTermWriter<CvTerm> biologicalRoleWriter) {
+    public void setBiologicalRoleWriter(PsiXmlVariableNameWriter<CvTerm> biologicalRoleWriter) {
         this.biologicalRoleWriter = biologicalRoleWriter;
     }
 
@@ -294,10 +282,8 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     protected void writeXrefFromParticipantXrefs(P object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        getPrimaryRefWriter().setDefaultRefType(null);
-        getPrimaryRefWriter().setDefaultRefTypeAc(null);
-        getSecondaryRefWriter().setDefaultRefType(null);
-        getSecondaryRefWriter().setDefaultRefTypeAc(null);
+        getXrefWriter().setDefaultRefType(null);
+        getXrefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -306,12 +292,12 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                getPrimaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"primaryRef");
                 index++;
             }
             // write secondaryref
             else{
-                getSecondaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"secondaryRef");
                 index++;
             }
         }

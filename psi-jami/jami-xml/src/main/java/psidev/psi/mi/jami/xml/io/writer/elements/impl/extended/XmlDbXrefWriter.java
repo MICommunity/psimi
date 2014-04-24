@@ -17,10 +17,10 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public abstract class AbstractXmlXrefWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlXrefWriter {
+public class XmlDbXrefWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter {
     private PsiXmlElementWriter<Annotation> annotationWriter;
 
-    protected AbstractXmlXrefWriter(XMLStreamWriter writer) {
+    public XmlDbXrefWriter(XMLStreamWriter writer) {
         super(writer);
     }
 

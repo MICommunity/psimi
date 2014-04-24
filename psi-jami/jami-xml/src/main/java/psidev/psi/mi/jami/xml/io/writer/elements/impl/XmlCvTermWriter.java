@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 
@@ -20,11 +20,10 @@ import java.util.Iterator;
  * @version $Id$
  * @since <pre>12/11/13</pre>
  */
-public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
+public class XmlCvTermWriter implements PsiXmlVariableNameWriter<CvTerm> {
     private XMLStreamWriter streamWriter;
     private PsiXmlElementWriter<Alias> aliasWriter;
-    private PsiXmlXrefWriter primaryRefWriter;
-    private PsiXmlXrefWriter secondaryRefWriter;
+    private PsiXmlXrefWriter xrefWriter;
 
     public XmlCvTermWriter(XMLStreamWriter writer){
         if (writer == null){
@@ -44,26 +43,15 @@ public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
         this.aliasWriter = aliasWriter;
     }
 
-    public PsiXmlXrefWriter getPrimaryRefWriter() {
-        if (this.primaryRefWriter == null){
-           this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
+    public PsiXmlXrefWriter getXrefWriter() {
+        if (this.xrefWriter == null){
+           this.xrefWriter = new XmlDbXrefWriter(streamWriter);
         }
-        return primaryRefWriter;
+        return xrefWriter;
     }
 
-    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
-        this.primaryRefWriter = primaryRefWriter;
-    }
-
-    public PsiXmlXrefWriter getSecondaryRefWriter() {
-        if (this.secondaryRefWriter == null){
-            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
-        }
-        return secondaryRefWriter;
-    }
-
-    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
-        this.secondaryRefWriter = secondaryRefWriter;
+    public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
+        this.xrefWriter = xrefWriter;
     }
 
     @Override
@@ -127,10 +115,8 @@ public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
     protected void writeXrefFromCvXrefs(CvTerm object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        getPrimaryRefWriter().setDefaultRefType(null);
-        getPrimaryRefWriter().setDefaultRefTypeAc(null);
-        getSecondaryRefWriter().setDefaultRefType(null);
-        getSecondaryRefWriter().setDefaultRefTypeAc(null);
+        getXrefWriter().setDefaultRefType(null);
+        getXrefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -139,12 +125,12 @@ public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                getPrimaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"primaryRef");
                 index++;
             }
             // write secondaryref
             else{
-                getSecondaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"secondaryRef");
                 index++;
             }
         }
@@ -158,10 +144,8 @@ public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
         this.streamWriter.writeStartElement("xref");
 
         // all these xrefs are identity
-        getPrimaryRefWriter().setDefaultRefType(Xref.IDENTITY);
-        getPrimaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
-        getSecondaryRefWriter().setDefaultRefType(Xref.IDENTITY);
-        getSecondaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getXrefWriter().setDefaultRefType(Xref.IDENTITY);
+        getXrefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
 
         String mi = object.getMIIdentifier();
         String mod = object.getMODIdentifier();
@@ -195,24 +179,24 @@ public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
         boolean hasWrittenPrimaryRef = false;
         // write primaryRef
         if (miXref != null){
-            getPrimaryRefWriter().write(miXref);
+            getXrefWriter().write(miXref,"primaryRef");
             hasWrittenPrimaryRef = true;
             if (modXref != null){
-                getSecondaryRefWriter().write(modXref);
+                getXrefWriter().write(modXref,"secondaryRef");
             }
             if (parXref != null){
-                getSecondaryRefWriter().write(parXref);
+                getXrefWriter().write(parXref,"secondaryRef");
             }
         }
         else if (modXref != null){
-            getPrimaryRefWriter().write(modXref);
+            getXrefWriter().write(modXref,"primaryRef");
             hasWrittenPrimaryRef = true;
             if (parXref != null){
-                getSecondaryRefWriter().write(parXref);
+                getXrefWriter().write(parXref,"secondaryRef");
             }
         }
         else if (parXref != null){
-            getPrimaryRefWriter().write(parXref);
+            getXrefWriter().write(parXref,"primaryRef");
             hasWrittenPrimaryRef = true;
         }
 
@@ -226,10 +210,10 @@ public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
             if (ref != miXref && ref != modXref && ref != parXref){
                 if (!hasWrittenPrimaryRef){
                     hasWrittenPrimaryRef = true;
-                    getPrimaryRefWriter().write(ref);
+                    getXrefWriter().write(ref,"primaryRef");
                 }
                 else{
-                    getSecondaryRefWriter().write(ref);
+                    getXrefWriter().write(ref,"secondaryRef");
                 }
             }
         }
@@ -237,10 +221,10 @@ public class XmlCvTermWriter implements PsiXmlCvTermWriter<CvTerm> {
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
             // default qualifier is null
-            getSecondaryRefWriter().setDefaultRefType(null);
-            getSecondaryRefWriter().setDefaultRefTypeAc(null);
+            getXrefWriter().setDefaultRefType(null);
+            getXrefWriter().setDefaultRefTypeAc(null);
             for (Xref ref : object.getXrefs()){
-                getSecondaryRefWriter().write(ref);
+                getXrefWriter().write(ref,"secondaryRef");
             }
         }
 

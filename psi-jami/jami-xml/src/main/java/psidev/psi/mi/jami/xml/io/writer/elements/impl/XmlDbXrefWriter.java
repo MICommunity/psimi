@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
@@ -10,32 +10,32 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * abstract Xml 25 Writer for Xref object
+ * Xml 25 Writer for Xref object
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>11/11/13</pre>
  */
 
-public abstract class AbstractXmlXrefWriter implements PsiXmlXrefWriter {
+public class XmlDbXrefWriter implements PsiXmlXrefWriter {
 
     private XMLStreamWriter streamWriter;
     private String defaultRefTypeAc = null;
     private String defaultRefType=null;
 
-    public AbstractXmlXrefWriter(XMLStreamWriter writer){
+    public XmlDbXrefWriter(XMLStreamWriter writer){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlXrefWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlDbXrefWriter");
         }
         this.streamWriter = writer;
     }
 
     @Override
-    public void write(Xref object) throws MIIOException {
+    public void write(Xref object, String nodeName) throws MIIOException {
         if (object != null){
             try {
                 // write start
-                writeStartDbRef();
+                writeStartDbRef(nodeName);
                 // write database
                 CvTerm db = object.getDatabase();
                 this.streamWriter.writeAttribute("db", db.getShortName());
@@ -75,7 +75,9 @@ public abstract class AbstractXmlXrefWriter implements PsiXmlXrefWriter {
         }
     }
 
-    protected abstract void writeOtherProperties(Xref object) throws XMLStreamException;
+    protected void writeOtherProperties(Xref object) throws XMLStreamException{
+        // nothing to write by default
+    }
 
     protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
@@ -91,5 +93,6 @@ public abstract class AbstractXmlXrefWriter implements PsiXmlXrefWriter {
         this.defaultRefTypeAc = defaultTypeAc;
     }
 
-    protected abstract void writeStartDbRef() throws XMLStreamException;
-}
+    protected void writeStartDbRef(String nodeName) throws XMLStreamException{
+        getStreamWriter().writeStartElement(nodeName);
+    }}

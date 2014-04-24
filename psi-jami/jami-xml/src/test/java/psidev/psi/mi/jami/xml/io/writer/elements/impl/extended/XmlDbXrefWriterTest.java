@@ -6,34 +6,34 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.model.extension.XmlXref;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for Xml25PrimaryRefWriter
+ * Unit tester for XmlSecondaryXrefWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>20/11/13</pre>
  */
 
-public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest {
+public class XmlDbXrefWriterTest extends AbstractXml25WriterTest {
 
-    private String xref ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>";
-    private String xref_secondary ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\" secondary=\"P12346\"/>";
-    private String xref_attributes ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\" secondary=\"P12346\">\n" +
+    private String xref ="<secondaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>";
+    private String xref_secondary ="<secondaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\" secondary=\"P12346\"/>";
+    private String xref_attributes ="<secondaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\" secondary=\"P12346\">\n" +
             "  <attributeList>\n" +
             "    <attribute name=\"caution\">test caution</attribute>\n" +
             "  </attributeList>\n" +
-            "</primaryRef>";
+            "</secondaryRef>";
     @Test
     public void test_write_xref_null() throws XMLStreamException, IOException {
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(null);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(null,"secondaryRef");
         streamWriter.flush();
 
         Assert.assertEquals("", output.toString());
@@ -43,8 +43,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref() throws XMLStreamException, IOException {
         XmlXref ref = new XmlXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", CvTermUtils.createIdentityQualifier());
 
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(ref);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(ref,"secondaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref, output.toString());
@@ -54,8 +54,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest {
     public void test_write_xref_secondary() throws XMLStreamException, IOException {
         XmlXref ref = new XmlXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", CvTermUtils.createIdentityQualifier());
         ref.setSecondary("P12346");
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(ref);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(ref,"secondaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref_secondary, output.toString());
@@ -66,8 +66,8 @@ public class Xml25PrimaryXrefWriterTest extends AbstractXml25WriterTest {
         XmlXref ref = new XmlXref(new DefaultCvTerm(Xref.UNIPROTKB, Xref.UNIPROTKB_MI), "P12345", CvTermUtils.createIdentityQualifier());
         ref.setSecondary("P12346");
         ref.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("caution"), "test caution"));
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(createStreamWriter());
-        writer.write(ref);
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(createStreamWriter());
+        writer.write(ref,"secondaryRef");
         streamWriter.flush();
 
         Assert.assertEquals(xref_attributes, output.toString());

@@ -61,19 +61,17 @@ public class LightCompactXmlWriter extends AbstractCompactXmlWriter<Interaction>
     protected PsiXmlInteractionWriter<ModelledInteraction> instantiateComplexWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                     PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                     PsiXmlXrefWriter primaryRefWriter,
-                                                                                    PsiXmlXrefWriter secondaryRefWriter,
                                                                                     PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                     PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                     PsiXmlParameterWriter parameterWriter,
-                                                                                    PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
+                                                                                    PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                                     PsiXmlExperimentWriter experimentWriter,
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
                                                                                     PsiXmlInteractionWriter interactionWriter) {
         CompactXmlModelledInteractionWriter complexWriter = new CompactXmlModelledInteractionWriter(getStreamWriter(), getElementCache());
         complexWriter.setAttributeWriter(attributeWriter);
-        complexWriter.setPrimaryRefWriter(primaryRefWriter);
-        complexWriter.setSecondaryRefWriter(secondaryRefWriter);
+        complexWriter.setXrefWriter(primaryRefWriter);
         complexWriter.setConfidenceWriter(confidenceWriter);
         complexWriter.setChecksumWriter(checksumWriter);
         complexWriter.setParameterWriter(parameterWriter);
@@ -89,19 +87,17 @@ public class LightCompactXmlWriter extends AbstractCompactXmlWriter<Interaction>
     protected PsiXmlInteractionWriter<Interaction> instantiateInteractionWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                         PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                         PsiXmlXrefWriter primaryRefWriter,
-                                                                                        PsiXmlXrefWriter secondaryRefWriter,
                                                                                         PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                         PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                         PsiXmlParameterWriter parameterWriter,
                                                                                         PsiXmlParticipantWriter participantWriter,
-                                                                                        PsiXmlCvTermWriter<CvTerm> interactionTypeWriter,
+                                                                                        PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                                         PsiXmlExperimentWriter experimentWriter,
                                                                                         PsiXmlElementWriter<String> availabilityWriter,
                                                                                         PsiXmlElementWriter inferredInteractionWriter) {
         CompactXmlBasicInteractionWriter writer = new CompactXmlBasicInteractionWriter(getStreamWriter(), getElementCache());
         writer.setAttributeWriter(attributeWriter);
-        writer.setPrimaryRefWriter(primaryRefWriter);
-        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setXrefWriter(primaryRefWriter);
         writer.setChecksumWriter(checksumWriter);
         writer.setInteractionTypeWriter(interactionTypeWriter);
         writer.setExperimentWriter(experimentWriter);
@@ -115,14 +111,12 @@ public class LightCompactXmlWriter extends AbstractCompactXmlWriter<Interaction>
     protected PsiXmlParticipantWriter<ModelledParticipant> instantiateModelledParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                                 PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                                 PsiXmlXrefWriter primaryRefWriter,
-                                                                                                PsiXmlXrefWriter secondaryRefWriter,
                                                                                                 PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                                PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
+                                                                                                PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
         CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
-        writer.setPrimaryRefWriter(primaryRefWriter);
-        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
         writer.setInteractorWriter(interactorWriter);
@@ -135,17 +129,15 @@ public class LightCompactXmlWriter extends AbstractCompactXmlWriter<Interaction>
     protected <P extends Participant> PsiXmlParticipantWriter<P> instantiateParticipantWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                               PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                               PsiXmlXrefWriter primaryRefWriter,
-                                                                                              PsiXmlXrefWriter secondaryRefWriter,
                                                                                               PsiXmlElementWriter<Confidence> confidenceWriter,
                                                                                               PsiXmlElementWriter<Interactor> interactorWriter,
-                                                                                              PsiXmlCvTermWriter<CvTerm> bioRoleWriter,
+                                                                                              PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                               PsiXmlElementWriter featureWriter,
                                                                                               PsiXmlParameterWriter parameterWriter,
                                                                                               PsiXmlElementWriter<Organism> organismWriter) {
 
         CompactXmlParticipantWriter writer = new CompactXmlParticipantWriter(getStreamWriter(), getElementCache());
-        writer.setPrimaryRefWriter(primaryRefWriter);
-        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
         writer.setInteractorWriter(interactorWriter);
@@ -157,13 +149,12 @@ public class LightCompactXmlWriter extends AbstractCompactXmlWriter<Interaction>
     @Override
     protected <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
                                                                                   PsiXmlElementWriter<Annotation> attributeWriter,
-                                                                                  PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                                                                  PsiXmlCvTermWriter<CvTerm> featureTypeWriter,
+                                                                                  PsiXmlXrefWriter primaryRefWriter,
+                                                                                  PsiXmlVariableNameWriter<CvTerm> featureTypeWriter,
                                                                                   PsiXmlElementWriter<Range> rangeWriter) {
         XmlFeatureWriter writer = new XmlFeatureWriter(getStreamWriter(), getElementCache());
         writer.setRangeWriter(rangeWriter);
-        writer.setPrimaryRefWriter(primaryRefWriter);
-        writer.setSecondaryRefWriter(secondaryRefWriter);
+        writer.setXrefWriter(primaryRefWriter);
         writer.setFeatureTypeWriter(featureTypeWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
@@ -171,10 +162,10 @@ public class LightCompactXmlWriter extends AbstractCompactXmlWriter<Interaction>
     }
 
     @Override
-    protected PsiXmlSourceWriter instantiateSourceWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter, PsiXmlPublicationWriter publicationWriter) {
+    protected PsiXmlSourceWriter instantiateSourceWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter,
+                                                         PsiXmlXrefWriter primaryRefWriter, PsiXmlPublicationWriter publicationWriter) {
         XmlSourceWriter sourceWriter = new XmlSourceWriter(getStreamWriter());
-        sourceWriter.setPrimaryRefWriter(primaryRefWriter);
-        sourceWriter.setSecondaryRefWriter(secondaryRefWriter);
+        sourceWriter.setXrefWriter(primaryRefWriter);
         sourceWriter.setAttributeWriter(attributeWriter);
         sourceWriter.setAliasWriter(aliasWriter);
         sourceWriter.setPublicationWriter(publicationWriter);
@@ -183,14 +174,13 @@ public class LightCompactXmlWriter extends AbstractCompactXmlWriter<Interaction>
 
     @Override
     protected PsiXmlExperimentWriter instantiateExperimentWriter(PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter,
-                                                                 PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
+                                                                 PsiXmlXrefWriter primaryRefWriter,
                                                                  PsiXmlPublicationWriter publicationWriter,
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
-                                                                 PsiXmlCvTermWriter<CvTerm> detectionMethodWriter,
+                                                                 PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter,
                                                                  PsiXmlElementWriter<Confidence> confidenceWriter) {
         XmlExperimentWriter expWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache());
-        expWriter.setPrimaryRefWriter(primaryRefWriter);
-        expWriter.setSecondaryRefWriter(secondaryRefWriter);
+        expWriter.setXrefWriter(primaryRefWriter);
         expWriter.setAttributeWriter(attributeWriter);
         expWriter.setPublicationWriter(publicationWriter);
         expWriter.setHostOrganismWriter(nonExperimentalHostOrganismWriter);
@@ -206,22 +196,15 @@ public class LightCompactXmlWriter extends AbstractCompactXmlWriter<Interaction>
     }
 
     @Override
-    protected PsiXmlElementWriter<Confidence> instantiateConfidenceWriter(PsiXmlCvTermWriter<CvTerm> confidenceTypeWriter) {
+    protected PsiXmlElementWriter<Confidence> instantiateConfidenceWriter(PsiXmlVariableNameWriter<CvTerm> confidenceTypeWriter) {
         XmlConfidenceWriter confWriter = new XmlConfidenceWriter(getStreamWriter(), getElementCache());
         confWriter.setTypeWriter(confidenceTypeWriter);
         return confWriter;
     }
 
     @Override
-    protected PsiXmlXrefWriter instantiateSecondaryRefWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
-        XmlSecondaryXrefWriter writer = new XmlSecondaryXrefWriter(getStreamWriter());
-        writer.setAnnotationWriter(attributeWriter);
-        return writer;
-    }
-
-    @Override
-    protected PsiXmlXrefWriter instantiatePrimaryRefWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
-        XmlPrimaryXrefWriter writer = new XmlPrimaryXrefWriter(getStreamWriter());
+    protected PsiXmlXrefWriter instantiateXrefWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
+        XmlDbXrefWriter writer = new XmlDbXrefWriter(getStreamWriter());
         writer.setAnnotationWriter(attributeWriter);
         return writer;
     }
