@@ -183,7 +183,6 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
         writer.setFeatureTypeWriter(featureTypeWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
-        writer.setDetectionMethodWriter(featureTypeWriter);
         return (PsiXmlElementWriter<F>) writer;
     }
 }

@@ -171,7 +171,6 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
         writer.setFeatureTypeWriter(featureTypeWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
-        writer.setDetectionMethodWriter(featureTypeWriter);
         return (PsiXmlElementWriter<F>) writer;
     }
 }

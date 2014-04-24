@@ -1,10 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCvTermWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -18,21 +15,9 @@ import javax.xml.stream.XMLStreamWriter;
  */
 
 public class AbstractXmlFeatureEvidenceWriter extends AbstractXmlFeatureWriter<FeatureEvidence> {
-    private PsiXmlCvTermWriter<CvTerm> detectionMethodWriter;
 
     public AbstractXmlFeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-    }
-
-    public PsiXmlCvTermWriter<CvTerm> getDetectionMethodWriter() {
-        if (this.detectionMethodWriter == null){
-            this.detectionMethodWriter = new XmlCvTermWriter(getStreamWriter());
-        }
-        return detectionMethodWriter;
-    }
-
-    public void setDetectionMethodWriter(PsiXmlCvTermWriter<CvTerm> detectionMethodWriter) {
-        this.detectionMethodWriter = detectionMethodWriter;
     }
 
     @Override
@@ -44,7 +29,7 @@ public class AbstractXmlFeatureEvidenceWriter extends AbstractXmlFeatureWriter<F
     protected void writeFeatureDetectionMethod(FeatureEvidence object) throws XMLStreamException {
         if (!object.getDetectionMethods().isEmpty()){
             // only write the first one
-            getDetectionMethodWriter().write(object.getDetectionMethods().iterator().next(), "featureDetectionMethod");
+            getFeatureTypeWriter().write(object.getDetectionMethods().iterator().next(), "featureDetectionMethod");
         }
     }
 }

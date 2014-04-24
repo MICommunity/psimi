@@ -185,7 +185,6 @@ public class CompactXmlNamedEvidenceWriter extends AbstractCompactXmlWriter<Inte
         writer.setFeatureTypeWriter(featureTypeWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
-        writer.setDetectionMethodWriter(featureTypeWriter);
         return (PsiXmlElementWriter<F>) writer;
     }
 
