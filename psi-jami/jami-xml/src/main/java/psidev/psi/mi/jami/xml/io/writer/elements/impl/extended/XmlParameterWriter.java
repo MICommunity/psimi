@@ -72,11 +72,18 @@ public class XmlParameterWriter implements PsiXmlParameterWriter {
                     this.streamWriter.writeAttribute("uncertainty",object.getUncertainty().toString());
                 }
                 // write experiment Ref
-                XmlParameter xmlParameter = (XmlParameter)object;
-                if (xmlParameter.getExperiment() != null){
-                    this.streamWriter.writeStartElement("experimentRef");
-                    this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(xmlParameter.getExperiment())));
-                    this.streamWriter.writeEndElement();
+                if (object instanceof XmlParameter){
+                    XmlParameter xmlParameter = (XmlParameter)object;
+                    if (xmlParameter.getExperiment() != null){
+                        this.streamWriter.writeStartElement("experimentRef");
+                        this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(xmlParameter.getExperiment())));
+                        this.streamWriter.writeEndElement();
+                    }
+                    else{
+                        this.streamWriter.writeStartElement("experimentRef");
+                        this.streamWriter.writeCharacters(Integer.toString(this.objectIndex.extractIdForExperiment(getDefaultExperiment())));
+                        this.streamWriter.writeEndElement();
+                    }
                 }
                 else{
                     this.streamWriter.writeStartElement("experimentRef");

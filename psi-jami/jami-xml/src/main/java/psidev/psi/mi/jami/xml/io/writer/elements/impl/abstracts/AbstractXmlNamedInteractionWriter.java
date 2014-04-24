@@ -42,32 +42,37 @@ public abstract class AbstractXmlNamedInteractionWriter<I extends Interaction, P
     }
 
     @Override
-    protected void writeNames(Interaction object) throws XMLStreamException {
-        NamedInteraction xmlInteraction = (NamedInteraction) object;
-        // write names
-        boolean hasShortLabel = xmlInteraction.getShortName() != null;
-        boolean hasInteractionFullLabel = xmlInteraction.getFullName() != null;
-        boolean hasAliases = !xmlInteraction.getAliases().isEmpty();
-        if (hasShortLabel || hasInteractionFullLabel || hasAliases){
-            getStreamWriter().writeStartElement("names");
-            // write shortname
-            if (hasShortLabel){
-                getStreamWriter().writeStartElement("shortLabel");
-                getStreamWriter().writeCharacters(xmlInteraction.getShortName());
+    protected void writeNames(I object) throws XMLStreamException {
+        if (object instanceof NamedInteraction){
+            NamedInteraction xmlInteraction = (NamedInteraction) object;
+            // write names
+            boolean hasShortLabel = xmlInteraction.getShortName() != null;
+            boolean hasInteractionFullLabel = xmlInteraction.getFullName() != null;
+            boolean hasAliases = !xmlInteraction.getAliases().isEmpty();
+            if (hasShortLabel || hasInteractionFullLabel || hasAliases){
+                getStreamWriter().writeStartElement("names");
+                // write shortname
+                if (hasShortLabel){
+                    getStreamWriter().writeStartElement("shortLabel");
+                    getStreamWriter().writeCharacters(xmlInteraction.getShortName());
+                    getStreamWriter().writeEndElement();
+                }
+                // write fullname
+                if (hasInteractionFullLabel){
+                    getStreamWriter().writeStartElement("fullName");
+                    getStreamWriter().writeCharacters(xmlInteraction.getFullName());
+                    getStreamWriter().writeEndElement();
+                }
+                // write aliases
+                for (Object alias : xmlInteraction.getAliases()){
+                    getAliasWriter().write((Alias)alias);
+                }
+                // write end names
                 getStreamWriter().writeEndElement();
             }
-            // write fullname
-            if (hasInteractionFullLabel){
-                getStreamWriter().writeStartElement("fullName");
-                getStreamWriter().writeCharacters(xmlInteraction.getFullName());
-                getStreamWriter().writeEndElement();
+            else{
+                super.writeNames(object);
             }
-            // write aliases
-            for (Object alias : xmlInteraction.getAliases()){
-                getAliasWriter().write((Alias)alias);
-            }
-            // write end names
-            getStreamWriter().writeEndElement();
         }
     }
 

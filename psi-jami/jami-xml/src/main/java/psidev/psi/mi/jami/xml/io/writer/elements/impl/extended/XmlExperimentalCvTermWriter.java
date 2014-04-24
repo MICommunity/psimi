@@ -30,15 +30,17 @@ public class XmlExperimentalCvTermWriter extends XmlCvTermWriter {
 
     @Override
     protected void writeOtherProperties(CvTerm object) throws XMLStreamException {
-        ExperimentalCvTerm term = (ExperimentalCvTerm) object;
-        if (!term.getExperiments().isEmpty()){
-            getStreamWriter().writeStartElement("experimentRefList");
-            for (Experiment exp : term.getExperiments()){
-                getStreamWriter().writeStartElement("experimentRef");
-                getStreamWriter().writeCharacters(Integer.toString(objectIndex.extractIdForExperiment(exp)));
+        if (object instanceof ExperimentalCvTerm){
+            ExperimentalCvTerm term = (ExperimentalCvTerm) object;
+            if (!term.getExperiments().isEmpty()){
+                getStreamWriter().writeStartElement("experimentRefList");
+                for (Experiment exp : term.getExperiments()){
+                    getStreamWriter().writeStartElement("experimentRef");
+                    getStreamWriter().writeCharacters(Integer.toString(objectIndex.extractIdForExperiment(exp)));
+                    getStreamWriter().writeEndElement();
+                }
                 getStreamWriter().writeEndElement();
             }
-            getStreamWriter().writeEndElement();
         }
     }
 }

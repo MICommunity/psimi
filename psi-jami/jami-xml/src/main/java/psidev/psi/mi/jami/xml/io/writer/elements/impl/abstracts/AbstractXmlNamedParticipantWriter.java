@@ -24,31 +24,36 @@ public abstract class AbstractXmlNamedParticipantWriter<P extends Participant, F
 
     @Override
     protected void writeNames(P object) throws XMLStreamException {
-        NamedParticipant xmlParticipant = (NamedParticipant) object;
-        // write names
-        boolean hasShortLabel = xmlParticipant.getShortName() != null;
-        boolean hasFullLabel = xmlParticipant.getFullName() != null;
-        boolean hasAliases = !xmlParticipant.getAliases().isEmpty();
-        if (hasShortLabel || hasFullLabel | hasAliases){
-            getStreamWriter().writeStartElement("names");
-            // write shortname
-            if (hasShortLabel){
-                getStreamWriter().writeStartElement("shortLabel");
-                getStreamWriter().writeCharacters(xmlParticipant.getShortName());
+        if (object instanceof NamedParticipant){
+            NamedParticipant xmlParticipant = (NamedParticipant) object;
+            // write names
+            boolean hasShortLabel = xmlParticipant.getShortName() != null;
+            boolean hasFullLabel = xmlParticipant.getFullName() != null;
+            boolean hasAliases = !xmlParticipant.getAliases().isEmpty();
+            if (hasShortLabel || hasFullLabel | hasAliases){
+                getStreamWriter().writeStartElement("names");
+                // write shortname
+                if (hasShortLabel){
+                    getStreamWriter().writeStartElement("shortLabel");
+                    getStreamWriter().writeCharacters(xmlParticipant.getShortName());
+                    getStreamWriter().writeEndElement();
+                }
+                // write fullname
+                if (hasFullLabel){
+                    getStreamWriter().writeStartElement("fullName");
+                    getStreamWriter().writeCharacters(xmlParticipant.getFullName());
+                    getStreamWriter().writeEndElement();
+                }
+                // write aliases
+                for (Object alias : xmlParticipant.getAliases()){
+                    getAliasWriter().write((Alias)alias);
+                }
+                // write end names
                 getStreamWriter().writeEndElement();
             }
-            // write fullname
-            if (hasFullLabel){
-                getStreamWriter().writeStartElement("fullName");
-                getStreamWriter().writeCharacters(xmlParticipant.getFullName());
-                getStreamWriter().writeEndElement();
-            }
-            // write aliases
-            for (Object alias : xmlParticipant.getAliases()){
-                getAliasWriter().write((Alias)alias);
-            }
-            // write end names
-            getStreamWriter().writeEndElement();
+        }
+        else{
+            super.writeNames(object);
         }
     }
 }

@@ -49,65 +49,82 @@ public class CompactXmlParticipantEvidenceWriter extends AbstractXmlParticipantE
 
     @Override
     protected void writeExperimentalRoles(ParticipantEvidence object) throws XMLStreamException {
-        ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
-        getStreamWriter().writeStartElement("experimentalRoleList");
-        for (CvTerm expRole : xmlParticipant.getExperimentalRoles()){
-            getCvWriter().write(expRole, "experimentalRole");
+        if (object instanceof ExtendedPsiXmlParticipantEvidence){
+            ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
+            getStreamWriter().writeStartElement("experimentalRoleList");
+            for (CvTerm expRole : xmlParticipant.getExperimentalRoles()){
+                getCvWriter().write(expRole, "experimentalRole");
+            }
+            getStreamWriter().writeEndElement();
         }
-        getStreamWriter().writeEndElement();
+        else{
+            super.writeExperimentalRoles(object);
+        }
     }
 
     @Override
     protected void writeHostOrganisms(ParticipantEvidence object) throws XMLStreamException {
-        ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
-        if (!xmlParticipant.getHostOrganisms().isEmpty()){
-            getStreamWriter().writeStartElement("hostOrganismList");
-            for (Organism host : xmlParticipant.getHostOrganisms()){
-                getHostOrganismWriter().write(host);
+        if (object instanceof ExtendedPsiXmlParticipantEvidence){
+            ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
+            if (!xmlParticipant.getHostOrganisms().isEmpty()){
+                getStreamWriter().writeStartElement("hostOrganismList");
+                for (Organism host : xmlParticipant.getHostOrganisms()){
+                    getHostOrganismWriter().write(host);
+                }
+                getStreamWriter().writeEndElement();
             }
-            getStreamWriter().writeEndElement();
+        }
+        else{
+            super.writeHostOrganisms(object);
         }
     }
 
     @Override
     protected void writeExperimentalInteractor(ParticipantEvidence object) throws XMLStreamException {
-        ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
-        if (!xmlParticipant.getExperimentalInteractors().isEmpty()){
-            getStreamWriter().writeStartElement("experimentalInteractorList");
-            for (ExperimentalInteractor expInt : xmlParticipant.getExperimentalInteractors()){
-                getExperimentalInteractorWriter().write(expInt);
+        if (object instanceof ExtendedPsiXmlParticipantEvidence){
+            ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
+            if (!xmlParticipant.getExperimentalInteractors().isEmpty()){
+                getStreamWriter().writeStartElement("experimentalInteractorList");
+                for (ExperimentalInteractor expInt : xmlParticipant.getExperimentalInteractors()){
+                    getExperimentalInteractorWriter().write(expInt);
+                }
+                getStreamWriter().writeEndElement();
             }
-            getStreamWriter().writeEndElement();
         }
     }
 
     @Override
     protected void writeNames(ParticipantEvidence object) throws XMLStreamException {
-        NamedParticipant xmlParticipant = (NamedParticipant) object;
-        // write names
-        boolean hasShortLabel = xmlParticipant.getShortName() != null;
-        boolean hasFullLabel = xmlParticipant.getFullName() != null;
-        boolean hasAliases = !xmlParticipant.getAliases().isEmpty();
-        if (hasShortLabel || hasFullLabel | hasAliases){
-            getStreamWriter().writeStartElement("names");
-            // write shortname
-            if (hasShortLabel){
-                getStreamWriter().writeStartElement("shortLabel");
-                getStreamWriter().writeCharacters(xmlParticipant.getShortName());
+        if (object instanceof NamedParticipant){
+            NamedParticipant xmlParticipant = (NamedParticipant) object;
+            // write names
+            boolean hasShortLabel = xmlParticipant.getShortName() != null;
+            boolean hasFullLabel = xmlParticipant.getFullName() != null;
+            boolean hasAliases = !xmlParticipant.getAliases().isEmpty();
+            if (hasShortLabel || hasFullLabel | hasAliases){
+                getStreamWriter().writeStartElement("names");
+                // write shortname
+                if (hasShortLabel){
+                    getStreamWriter().writeStartElement("shortLabel");
+                    getStreamWriter().writeCharacters(xmlParticipant.getShortName());
+                    getStreamWriter().writeEndElement();
+                }
+                // write fullname
+                if (hasFullLabel){
+                    getStreamWriter().writeStartElement("fullName");
+                    getStreamWriter().writeCharacters(xmlParticipant.getFullName());
+                    getStreamWriter().writeEndElement();
+                }
+                // write aliases
+                for (Object alias : xmlParticipant.getAliases()){
+                    getAliasWriter().write((Alias)alias);
+                }
+                // write end names
                 getStreamWriter().writeEndElement();
             }
-            // write fullname
-            if (hasFullLabel){
-                getStreamWriter().writeStartElement("fullName");
-                getStreamWriter().writeCharacters(xmlParticipant.getFullName());
-                getStreamWriter().writeEndElement();
-            }
-            // write aliases
-            for (Object alias : xmlParticipant.getAliases()){
-                getAliasWriter().write((Alias)alias);
-            }
-            // write end names
-            getStreamWriter().writeEndElement();
+        }
+        else{
+            super.writeNames(object);
         }
     }
 }

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlNamedExperimentWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
@@ -31,37 +31,44 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
 
     @Override
     protected void writeOtherProperties(Experiment object) throws XMLStreamException {
-        ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
-        // write participant identification method
-        CvTerm identificationMethod = xmlExperiment.getParticipantIdentificationMethod();
-        if (identificationMethod != null){
-            // write cv
-            getDetectionMethodWriter().write(identificationMethod,"participantIdentificationMethod");
-        }
-        // write feature detection method
-        CvTerm featureMethod = xmlExperiment.getFeatureDetectionMethod();
-        if (featureMethod != null){
-            // write cv
-            getDetectionMethodWriter().write(featureMethod,"featureDetectionMethod");
+        if (object instanceof ExtendedPsiXmlExperiment){
+            ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
+            // write participant identification method
+            CvTerm identificationMethod = xmlExperiment.getParticipantIdentificationMethod();
+            if (identificationMethod != null){
+                // write cv
+                getDetectionMethodWriter().write(identificationMethod,"participantIdentificationMethod");
+            }
+            // write feature detection method
+            CvTerm featureMethod = xmlExperiment.getFeatureDetectionMethod();
+            if (featureMethod != null){
+                // write cv
+                getDetectionMethodWriter().write(featureMethod,"featureDetectionMethod");
+            }
         }
     }
 
     @Override
     protected void writeHostOrganism(Experiment object) throws XMLStreamException {
-        ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
-        // write hostOrganismList
-        List<Organism> hostList = xmlExperiment.getHostOrganisms();
-        if (!hostList.isEmpty()){
-            // write start host organism list
-            getStreamWriter().writeStartElement("hostOrganismList");
-            // write host
-            for (Organism host : hostList){
-                if (host != null){
-                    getHostOrganismWriter().write(host);
+        if (object instanceof ExtendedPsiXmlExperiment){
+            ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
+            // write hostOrganismList
+            List<Organism> hostList = xmlExperiment.getHostOrganisms();
+            if (!hostList.isEmpty()){
+                // write start host organism list
+                getStreamWriter().writeStartElement("hostOrganismList");
+                // write host
+                for (Organism host : hostList){
+                    if (host != null){
+                        getHostOrganismWriter().write(host);
+                    }
                 }
+                // write end host organism list
+                getStreamWriter().writeEndElement();
             }
-            // write end host organism list
-            getStreamWriter().writeEndElement();
+        }
+        else{
+            super.writeHostOrganism(object);
         }
     }
 }
