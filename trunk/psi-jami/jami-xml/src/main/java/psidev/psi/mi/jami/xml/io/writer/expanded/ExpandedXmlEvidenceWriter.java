@@ -167,7 +167,6 @@ public class ExpandedXmlEvidenceWriter extends AbstractExpandedXmlWriter<Interac
         writer.setFeatureTypeWriter(featureTypeWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
-        writer.setDetectionMethodWriter(featureTypeWriter);
         return (PsiXmlElementWriter<F>) writer;
     }
 }
