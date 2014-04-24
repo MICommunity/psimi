@@ -42,34 +42,73 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlFeatureWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
-        this.primaryRefWriter = new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = new XmlSecondaryXrefWriter(writer);
-        this.featureTypeWriter = new XmlFeatureTypeWriter(writer);
-        this.attributeWriter = new XmlAnnotationWriter(writer);
-        this.rangeWriter = new XmlRangeWriter(writer);
-        this.aliasWriter = new XmlAliasWriter(writer);
 
     }
 
-    protected AbstractXmlFeatureWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                       PsiXmlElementWriter<Alias> aliasWriter,
-                                       PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                                       PsiXmlElementWriter<CvTerm> featureTypeWriter, PsiXmlElementWriter<Range> rangeWriter,
-                                       PsiXmlElementWriter<Annotation> attributeWriter) {
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlFeatureWriter");
+    public PsiXmlXrefWriter getPrimaryRefWriter() {
+        if (this.primaryRefWriter == null){
+            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
         }
-        this.streamWriter = writer;
-        if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the AbstractXmlFeatureWriter. It is necessary for generating an id to an experimentDescription");
+        return primaryRefWriter;
+    }
+
+    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
+        this.primaryRefWriter = primaryRefWriter;
+    }
+
+    public PsiXmlXrefWriter getSecondaryRefWriter() {
+        if (this.secondaryRefWriter == null){
+            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
         }
-        this.objectIndex = objectIndex;
-        this.primaryRefWriter = primaryRefWriter != null ? primaryRefWriter : new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = secondaryRefWriter != null ? secondaryRefWriter : new XmlSecondaryXrefWriter(writer);
-        this.featureTypeWriter = featureTypeWriter != null ? featureTypeWriter : new XmlFeatureTypeWriter(writer);
-        this.attributeWriter = attributeWriter != null ? attributeWriter : new XmlAnnotationWriter(writer);
-        this.rangeWriter = rangeWriter != null ? rangeWriter : new XmlRangeWriter(writer);
-        this.aliasWriter = aliasWriter != null ? aliasWriter : new XmlAliasWriter(writer);
+        return secondaryRefWriter;
+    }
+
+    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
+        this.secondaryRefWriter = secondaryRefWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getFeatureTypeWriter() {
+        if (this.featureTypeWriter == null){
+           this.featureTypeWriter = new XmlFeatureTypeWriter(streamWriter);
+        }
+        return featureTypeWriter;
+    }
+
+    public void setFeatureTypeWriter(PsiXmlElementWriter<CvTerm> featureTypeWriter) {
+        this.featureTypeWriter = featureTypeWriter;
+    }
+
+    public PsiXmlElementWriter<Annotation> getAttributeWriter() {
+        if (this.attributeWriter == null){
+            this.attributeWriter = new XmlAnnotationWriter(streamWriter);
+        }
+        return attributeWriter;
+    }
+
+    public void setAttributeWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
+        this.attributeWriter = attributeWriter;
+    }
+
+    public PsiXmlElementWriter<Range> getRangeWriter() {
+        if (this.rangeWriter == null){
+            this.rangeWriter = new XmlRangeWriter(streamWriter);
+        }
+        return rangeWriter;
+    }
+
+    public void setRangeWriter(PsiXmlElementWriter<Range> rangeWriter) {
+        this.rangeWriter = rangeWriter;
+    }
+
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter = new XmlAliasWriter(streamWriter);
+        }
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
     }
 
     @Override
@@ -108,7 +147,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
             // write start attribute list
             getStreamWriter().writeStartElement("attributeList");
             for (Object ann : object.getAnnotations()){
-                this.attributeWriter.write((Annotation)ann);
+                getAttributeWriter().write((Annotation)ann);
             }
             // write interaction dependency
             if (object.getRole() != null && AnnotationUtils.collectFirstAnnotationWithTopic(object.getAnnotations(),
@@ -202,7 +241,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
             // write start range list
             getStreamWriter().writeStartElement("featureRangeList");
             for (Object range : object.getRanges()){
-                this.rangeWriter.write((Range)range);
+                getRangeWriter().write((Range)range);
             }
             // write end rangeList
             getStreamWriter().writeEndElement();
@@ -213,7 +252,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
 
     protected void writeFeatureType(F object) throws XMLStreamException {
         if (object.getType() != null){
-            this.featureTypeWriter.write(object.getType());
+            getFeatureTypeWriter().write(object.getType());
         }
     }
 
@@ -229,10 +268,10 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
     protected void writeXrefFromFeatureXrefs(F object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        this.primaryRefWriter.setDefaultRefType(null);
-        this.primaryRefWriter.setDefaultRefTypeAc(null);
-        this.secondaryRefWriter.setDefaultRefType(null);
-        this.secondaryRefWriter.setDefaultRefTypeAc(null);
+        getPrimaryRefWriter().setDefaultRefType(null);
+        getPrimaryRefWriter().setDefaultRefTypeAc(null);
+        getSecondaryRefWriter().setDefaultRefType(null);
+        getSecondaryRefWriter().setDefaultRefTypeAc(null);
         // write start xref
         this.streamWriter.writeStartElement("xref");
 
@@ -241,12 +280,12 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                this.primaryRefWriter.write(ref);
+                getPrimaryRefWriter().write(ref);
                 index++;
             }
             // write secondaryref
             else{
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
                 index++;
             }
         }
@@ -260,10 +299,10 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
         this.streamWriter.writeStartElement("xref");
 
         // all these xrefs are identity
-        this.primaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.primaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
-        this.secondaryRefWriter.setDefaultRefType(Xref.IDENTITY);
-        this.secondaryRefWriter.setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getPrimaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getPrimaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
+        getSecondaryRefWriter().setDefaultRefType(Xref.IDENTITY);
+        getSecondaryRefWriter().setDefaultRefTypeAc(Xref.IDENTITY_MI);
 
         String interpro = object.getInterpro();
         Xref interproXref = null;
@@ -282,7 +321,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
         boolean hasWrittenPrimaryRef = false;
         // write primaryRef
         if (interproXref != null){
-            this.primaryRefWriter.write(interproXref);
+            getPrimaryRefWriter().write(interproXref);
             hasWrittenPrimaryRef = true;
         }
 
@@ -294,10 +333,10 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
             if (ref != interproXref){
                 if (!hasWrittenPrimaryRef){
                     hasWrittenPrimaryRef = true;
-                    this.primaryRefWriter.write(ref);
+                    getPrimaryRefWriter().write(ref);
                 }
                 else{
-                    this.secondaryRefWriter.write(ref);
+                    getSecondaryRefWriter().write(ref);
                 }
             }
         }
@@ -305,11 +344,11 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
         // write other xrefs
         if (!object.getXrefs().isEmpty()){
             // default qualifier is null
-            this.secondaryRefWriter.setDefaultRefType(null);
-            this.secondaryRefWriter.setDefaultRefTypeAc(null);
+            getSecondaryRefWriter().setDefaultRefType(null);
+            getSecondaryRefWriter().setDefaultRefTypeAc(null);
             for (Object o : object.getXrefs()){
                 Xref ref = (Xref)o;
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
             }
         }
 
@@ -337,7 +376,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
             }
             // write aliases
             for (Object alias : object.getAliases()){
-                this.aliasWriter.write((Alias)alias);
+                getAliasWriter().write((Alias)alias);
             }
             // write end names
             getStreamWriter().writeEndElement();

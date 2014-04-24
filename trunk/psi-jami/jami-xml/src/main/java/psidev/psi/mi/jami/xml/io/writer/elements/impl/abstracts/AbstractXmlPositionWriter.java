@@ -20,22 +20,18 @@ public abstract class AbstractXmlPositionWriter implements PsiXmlElementWriter<P
     private XMLStreamWriter streamWriter;
     private PsiXmlElementWriter<CvTerm> statusWriter;
 
-    public AbstractXmlPositionWriter(XMLStreamWriter writer, PsiXmlElementWriter<CvTerm> statusWriter){
+    public AbstractXmlPositionWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlPositionWriter");
         }
         this.streamWriter = writer;
-        if (statusWriter == null){
-            throw new IllegalArgumentException("The XML range status writer is mandatory for the AbstractXmlPositionWriter");
-        }
-        this.statusWriter = statusWriter;
     }
 
     @Override
     public void write(Position object) throws MIIOException {
         try {
             // write status
-            this.statusWriter.write(object.getStatus());
+            getStatusWriter().write(object.getStatus());
             // write position
             if (!object.isPositionUndetermined()){
                 if (object.getStart() == object.getEnd()){
@@ -69,5 +65,18 @@ public abstract class AbstractXmlPositionWriter implements PsiXmlElementWriter<P
 
     protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getStatusWriter() {
+        if (this.statusWriter == null){
+            initialiseStatusWriter();
+        }
+        return statusWriter;
+    }
+
+    protected abstract void initialiseStatusWriter();
+
+    public void setStatusWriter(PsiXmlElementWriter<CvTerm> statusWriter) {
+        this.statusWriter = statusWriter;
     }
 }

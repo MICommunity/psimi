@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlOrganismWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -20,12 +17,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class XmlOrganismWriter extends AbstractXmlOrganismWriter {
     public XmlOrganismWriter(XMLStreamWriter writer) {
         super(writer);
-    }
-
-    public XmlOrganismWriter(XMLStreamWriter writer, PsiXmlElementWriter<Alias> aliasWriter,
-                             PsiXmlElementWriter<CvTerm> cellTypeWriter, PsiXmlElementWriter<CvTerm> compartmentWriter,
-                             PsiXmlElementWriter<CvTerm> tissueWriter) {
-        super(writer, aliasWriter, cellTypeWriter, compartmentWriter, tissueWriter);
     }
 
     @Override

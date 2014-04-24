@@ -26,18 +26,30 @@ public class XmlRangeWriter implements PsiXmlElementWriter<Range> {
             throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlRangeWriter");
         }
         this.streamWriter = writer;
-        this.startPositionWriter = new XmlBeginPositionWriter(writer);
-        this.endPositionWriter = new XmlEndPositionWriter(writer);
     }
 
-    public XmlRangeWriter(XMLStreamWriter writer, PsiXmlElementWriter<Position> startPositionWriter,
-                          PsiXmlElementWriter<Position> endPositionWriter) {
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlRangeWriter");
+    public PsiXmlElementWriter<Position> getStartPositionWriter() {
+        if (this.startPositionWriter == null){
+            this.startPositionWriter = new XmlBeginPositionWriter(streamWriter);
+
         }
-        this.streamWriter = writer;
-        this.startPositionWriter = startPositionWriter != null ? startPositionWriter : new XmlBeginPositionWriter(writer);
-        this.endPositionWriter = endPositionWriter != null ? endPositionWriter : new XmlEndPositionWriter(writer);
+        return startPositionWriter;
+    }
+
+    public void setStartPositionWriter(PsiXmlElementWriter<Position> startPositionWriter) {
+        this.startPositionWriter = startPositionWriter;
+    }
+
+    public PsiXmlElementWriter<Position> getEndPositionWriter() {
+        if (this.endPositionWriter == null){
+            this.endPositionWriter = new XmlEndPositionWriter(streamWriter);
+
+        }
+        return endPositionWriter;
+    }
+
+    public void setEndPositionWriter(PsiXmlElementWriter<Position> endPositionWriter) {
+        this.endPositionWriter = endPositionWriter;
     }
 
     @Override
@@ -47,9 +59,9 @@ public class XmlRangeWriter implements PsiXmlElementWriter<Range> {
                 // write start
                 this.streamWriter.writeStartElement("featureRange");
                 // write start position
-                this.startPositionWriter.write(object.getStart());
+                getStartPositionWriter().write(object.getStart());
                 // write end position
-                this.endPositionWriter.write(object.getEnd());
+                getEndPositionWriter().write(object.getEnd());
                 // write isLink
                 if (object.isLink()){
                     this.streamWriter.writeStartElement("isLink");

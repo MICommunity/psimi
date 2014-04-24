@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlXref;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAnnotationWriter;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlXref;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -22,12 +22,17 @@ public abstract class AbstractXmlXrefWriter extends psidev.psi.mi.jami.xml.io.wr
 
     protected AbstractXmlXrefWriter(XMLStreamWriter writer) {
         super(writer);
-        this.annotationWriter = new XmlAnnotationWriter(writer);
     }
 
-    protected AbstractXmlXrefWriter(XMLStreamWriter writer, PsiXmlElementWriter<Annotation> annotationWriter) {
-        super(writer);
-        this.annotationWriter = annotationWriter != null ? annotationWriter : new XmlAnnotationWriter(writer);
+    public PsiXmlElementWriter<Annotation> getAnnotationWriter() {
+        if (this.annotationWriter == null){
+            this.annotationWriter = new XmlAnnotationWriter(getStreamWriter());
+        }
+        return annotationWriter;
+    }
+
+    public void setAnnotationWriter(PsiXmlElementWriter<Annotation> annotationWriter) {
+        this.annotationWriter = annotationWriter;
     }
 
     @Override
@@ -43,7 +48,7 @@ public abstract class AbstractXmlXrefWriter extends psidev.psi.mi.jami.xml.io.wr
             getStreamWriter().writeStartElement("attributeList");
             for (Annotation annot : xmlXref.getAnnotations()){
                 // write annotations
-                this.annotationWriter.write(annot);
+                getAnnotationWriter().write(annot);
             }
 
             // write end attributeList

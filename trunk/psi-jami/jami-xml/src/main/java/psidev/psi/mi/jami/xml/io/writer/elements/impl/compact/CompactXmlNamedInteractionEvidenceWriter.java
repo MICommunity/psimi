@@ -1,14 +1,20 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.NamedInteraction;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlInteractionEvidenceWriter;
+import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.Set;
+import java.util.Date;
 
 /**
  * Compact XML 2.5 writer for a named interaction evidence (with full experimental details).
@@ -23,20 +29,23 @@ public class CompactXmlNamedInteractionEvidenceWriter extends AbstractXmlInterac
                                                    implements CompactPsiXmlElementWriter<InteractionEvidence> {
     private PsiXmlElementWriter<Alias> aliasWriter;
     public CompactXmlNamedInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
-        super(writer, objectIndex, new CompactXmlParticipantEvidenceWriter(writer, objectIndex));
-        this.aliasWriter = new XmlAliasWriter(writer);
+        super(writer, objectIndex);
     }
 
-    public CompactXmlNamedInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                                    PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                                    PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<String> availabilityWriter,
-                                                    PsiXmlExperimentWriter experimentWriter, PsiXmlParticipantWriter<ParticipantEvidence> participantWriter,
-                                                    PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter, PsiXmlElementWriter<CvTerm> interactionTypeWriter,
-                                                    PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlParameterWriter parameterWriter,
-                                                    PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, availabilityWriter, experimentWriter,
-                participantWriter != null ? participantWriter : new CompactXmlParticipantEvidenceWriter(writer, objectIndex), inferredInteractionWriter, interactionTypeWriter, confidenceWriter, parameterWriter, attributeWriter, checksumWriter);
-        this.aliasWriter = aliasWriter != null ? aliasWriter : new XmlAliasWriter(writer);
+    @Override
+    protected void initialiseParticipantWriter() {
+        super.setParticipantWriter(new CompactXmlNamedParticipantEvidenceWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter = new XmlAliasWriter(getStreamWriter());
+        }
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
     }
 
     @Override
@@ -75,10 +84,15 @@ public class CompactXmlNamedInteractionEvidenceWriter extends AbstractXmlInterac
             }
             // write aliases
             for (Object alias : xmlInteraction.getAliases()){
-                this.aliasWriter.write((Alias)alias);
+                getAliasWriter().write((Alias)alias);
             }
             // write end names
             getStreamWriter().writeEndElement();
         }
+    }
+
+    @Override
+    protected void initialiseDefaultExperiment(){
+        setDefaultExperiment(new XmlExperiment(new DefaultPublication("Mock publication for interactions that do not have experimental details.",(String)null,(Date)null)));
     }
 }

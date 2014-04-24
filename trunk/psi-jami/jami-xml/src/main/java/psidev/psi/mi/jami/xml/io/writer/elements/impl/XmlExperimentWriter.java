@@ -44,35 +44,84 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
             throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlExperimentWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
-        this.publicationWriter = new XmlPublicationWriter(writer);
-        this.primaryRefWriter = new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = new XmlSecondaryXrefWriter(writer);
-        this.hostOrganismWriter = new XmlHostOrganismWriter(writer);
-        this.detectionMethodWriter = new XmlInteractionDetectionMethodWriter(writer);
-        this.attributeWriter = new XmlAnnotationWriter(writer);
-        this.confidenceWriter = new XmlConfidenceWriter(writer);
     }
 
-    public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                               PsiXmlPublicationWriter publicationWriter,
-                               PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                               PsiXmlElementWriter<Organism> hostOrganismWriter, PsiXmlElementWriter<CvTerm> detectionMethodWriter,
-                               PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlElementWriter<Annotation> attributeWriter) {
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlExperimentWriter");
+    public PsiXmlPublicationWriter getPublicationWriter() {
+        if (this.publicationWriter == null){
+            this.publicationWriter = new XmlPublicationWriter(streamWriter);
+
         }
-        this.streamWriter = writer;
-        if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlExperimentWriter. It is necessary for generating an id to an experimentDescription");
+        return publicationWriter;
+    }
+
+    public void setPublicationWriter(PsiXmlPublicationWriter publicationWriter) {
+        this.publicationWriter = publicationWriter;
+    }
+
+    public PsiXmlXrefWriter getPrimaryRefWriter() {
+        if (this.primaryRefWriter == null){
+            this.primaryRefWriter = new XmlPrimaryXrefWriter(streamWriter);
         }
-        this.objectIndex = objectIndex;
-        this.publicationWriter = publicationWriter != null ? publicationWriter : new XmlPublicationWriter(writer);
-        this.primaryRefWriter = primaryRefWriter != null ? primaryRefWriter : new XmlPrimaryXrefWriter(writer);
-        this.secondaryRefWriter = secondaryRefWriter != null ? secondaryRefWriter : new XmlSecondaryXrefWriter(writer);
-        this.hostOrganismWriter = hostOrganismWriter != null ? hostOrganismWriter : new XmlHostOrganismWriter(writer);
-        this.detectionMethodWriter = detectionMethodWriter != null ? detectionMethodWriter : new XmlInteractionDetectionMethodWriter(writer);
-        this.attributeWriter = attributeWriter != null ? attributeWriter : new XmlAnnotationWriter(writer);
-        this.confidenceWriter = confidenceWriter != null ? confidenceWriter : new XmlConfidenceWriter(writer);
+        return primaryRefWriter;
+    }
+
+    public void setPrimaryRefWriter(PsiXmlXrefWriter primaryRefWriter) {
+        this.primaryRefWriter = primaryRefWriter;
+    }
+
+    public PsiXmlXrefWriter getSecondaryRefWriter() {
+        if (this.secondaryRefWriter == null){
+            this.secondaryRefWriter = new XmlSecondaryXrefWriter(streamWriter);
+        }
+        return secondaryRefWriter;
+    }
+
+    public void setSecondaryRefWriter(PsiXmlXrefWriter secondaryRefWriter) {
+        this.secondaryRefWriter = secondaryRefWriter;
+    }
+
+    public PsiXmlElementWriter<Organism> getHostOrganismWriter() {
+        if (this.hostOrganismWriter == null){
+            this.hostOrganismWriter = new XmlHostOrganismWriter(streamWriter);
+        }
+        return hostOrganismWriter;
+    }
+
+    public void setHostOrganismWriter(PsiXmlElementWriter<Organism> hostOrganismWriter) {
+        this.hostOrganismWriter = hostOrganismWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getDetectionMethodWriter() {
+        if (this.detectionMethodWriter == null){
+            this.detectionMethodWriter = new XmlInteractionDetectionMethodWriter(streamWriter);
+        }
+        return detectionMethodWriter;
+    }
+
+    public void setDetectionMethodWriter(PsiXmlElementWriter<CvTerm> detectionMethodWriter) {
+        this.detectionMethodWriter = detectionMethodWriter;
+    }
+
+    public PsiXmlElementWriter<Annotation> getAttributeWriter() {
+        if (this.attributeWriter == null){
+            this.attributeWriter = new XmlAnnotationWriter(streamWriter);
+        }
+        return attributeWriter;
+    }
+
+    public void setAttributeWriter(PsiXmlElementWriter<Annotation> attributeWriter) {
+        this.attributeWriter = attributeWriter;
+    }
+
+    public PsiXmlElementWriter<Confidence> getConfidenceWriter() {
+        if (this.confidenceWriter == null){
+            this.confidenceWriter = new XmlConfidenceWriter(streamWriter);
+        }
+        return confidenceWriter;
+    }
+
+    public void setConfidenceWriter(PsiXmlElementWriter<Confidence> confidenceWriter) {
+        this.confidenceWriter = confidenceWriter;
     }
 
     @Override
@@ -116,7 +165,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
            // write start confidence list
            this.streamWriter.writeStartElement("confidenceList");
            for (Confidence conf : object.getConfidences()){
-               this.confidenceWriter.write(conf);
+               getConfidenceWriter().write(conf);
            }
            // write end confidence
            this.streamWriter.writeEndElement();
@@ -129,7 +178,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
             // write start attribute list
             this.streamWriter.writeStartElement("attributeList");
             for (Annotation ann : object.getAnnotations()){
-                this.attributeWriter.write(ann);
+                getAttributeWriter().write(ann);
             }
 
             // write publication attributes if not done at the bibref level
@@ -139,7 +188,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
                 // if the list of identifiers of a publication is not empty, annotations of a publication are not exported
                 // in bibref elements
                 if (!pub.getIdentifiers().isEmpty()){
-                    this.publicationWriter.writeAllPublicationAttributes(pub, object.getAnnotations());
+                    getPublicationWriter().writeAllPublicationAttributes(pub, object.getAnnotations());
                 }
             }
 
@@ -153,7 +202,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
             // if the list of identifiers of a publication is not empty, annotations of a publication are not exported
             // in bibref elements
             if (!pub.getIdentifiers().isEmpty()){
-                this.publicationWriter.writeAllPublicationAttributes(pub);
+                getPublicationWriter().writeAllPublicationAttributes(pub);
             }
         }
     }
@@ -161,7 +210,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
     protected void writeInteractiondetectionMethod(Experiment object) throws XMLStreamException {
         CvTerm detectionMethod = object.getInteractionDetectionMethod();
         // write cv
-        this.detectionMethodWriter.write(detectionMethod);
+        getDetectionMethodWriter().write(detectionMethod);
     }
 
     protected void writeHostOrganism(Experiment object) throws XMLStreamException {
@@ -170,7 +219,7 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
             // write start host organism list
             this.streamWriter.writeStartElement("hostOrganismList");
             // write host
-            this.hostOrganismWriter.write(host);
+            getHostOrganismWriter().write(host);
             // write end host organism list
             this.streamWriter.writeEndElement();
         }
@@ -181,11 +230,11 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
         // write publication
         Publication publication = object.getPublication();
         if (publication != null){
-            this.publicationWriter.write(publication);
+            getPublicationWriter().write(publication);
             imexId = publication.getImexId();
         }
         else{
-            this.publicationWriter.write(getDefaultPublication());
+            getPublicationWriter().write(getDefaultPublication());
             imexId = getDefaultPublication().getImexId();
         }
         // write xrefs
@@ -206,10 +255,10 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
     protected void writeXrefFromExperimentXrefs(Experiment object, String imexId) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
-        this.primaryRefWriter.setDefaultRefType(null);
-        this.primaryRefWriter.setDefaultRefTypeAc(null);
-        this.secondaryRefWriter.setDefaultRefType(null);
-        this.secondaryRefWriter.setDefaultRefTypeAc(null);
+        getPrimaryRefWriter().setDefaultRefType(null);
+        getPrimaryRefWriter().setDefaultRefTypeAc(null);
+        getSecondaryRefWriter().setDefaultRefType(null);
+        getSecondaryRefWriter().setDefaultRefTypeAc(null);
 
         int index = 0;
         boolean foundImexId = false;
@@ -217,12 +266,12 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
             Xref ref = refIterator.next();
             // write primaryRef
             if (index == 0){
-                this.primaryRefWriter.write(ref);
+                getPrimaryRefWriter().write(ref);
                 index++;
             }
             // write secondaryref
             else{
-                this.secondaryRefWriter.write(ref);
+                getSecondaryRefWriter().write(ref);
                 index++;
             }
 
@@ -275,8 +324,8 @@ public class XmlExperimentWriter implements PsiXmlExperimentWriter {
         return streamWriter;
     }
 
-    protected PsiXmlElementWriter<Organism> getHostOrganismWriter() {
-        return hostOrganismWriter;
+    protected PsiXmlObjectCache getObjectIndex() {
+        return objectIndex;
     }
 
     @Override

@@ -1,9 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 
-import psidev.psi.mi.jami.model.Alias;
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlOpenCvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -20,12 +16,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class XmlCompartmentWriter extends AbstractXmlOpenCvTermWriter {
     public XmlCompartmentWriter(XMLStreamWriter writer) {
         super(writer);
-    }
-
-    public XmlCompartmentWriter(XMLStreamWriter writer, PsiXmlElementWriter<Alias> aliasWriter,
-                                PsiXmlXrefWriter primaryRefWriter,
-                                PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Annotation> attributeWriter) {
-        super(writer, aliasWriter, primaryRefWriter, secondaryRefWriter, attributeWriter);
     }
 
     @Override

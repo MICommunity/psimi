@@ -25,15 +25,18 @@ public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
             throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlConfidenceWriter");
         }
         this.streamWriter = writer;
-        this.typeWriter = new XmlConfidenceTypeWriter(writer);
     }
 
-    public XmlConfidenceWriter(XMLStreamWriter writer, PsiXmlElementWriter<CvTerm> typeWriter){
-        if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlConfidenceWriter");
+    public PsiXmlElementWriter<CvTerm> getTypeWriter() {
+        if (this.typeWriter == null){
+            this.typeWriter = new XmlConfidenceTypeWriter(streamWriter);
+
         }
-        this.streamWriter = writer;
-        this.typeWriter = typeWriter != null ? typeWriter : new XmlConfidenceTypeWriter(writer);
+        return typeWriter;
+    }
+
+    public void setTypeWriter(PsiXmlElementWriter<CvTerm> typeWriter) {
+        this.typeWriter = typeWriter;
     }
 
     @Override
@@ -44,7 +47,7 @@ public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
                 this.streamWriter.writeStartElement("confidence");
                 // write confidence type
                 CvTerm type = object.getType();
-                this.typeWriter.write(type);
+                getTypeWriter().write(type);
                 // write value
                 this.streamWriter.writeStartElement("value");
                 this.streamWriter.writeCharacters(object.getValue());

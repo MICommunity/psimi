@@ -126,6 +126,13 @@ public abstract class AbstractCompactXmlWriter<T extends Interaction> extends Ab
         this.interactors = interactors;
     }
 
+    @Override
+    protected void initialiseOptionalWriters(PsiXmlExperimentWriter experimentWriter, PsiXmlElementWriter<String> availabilityWriter, PsiXmlElementWriter<Interactor> interactorWriter) {
+        setExperimentWriter(experimentWriter);
+        setInteractorWriter(interactorWriter);
+        setAvailabilityWriter(availabilityWriter);
+    }
+
     protected void registerAllInteractionsProperties() {
         // clear and initialise sets if not done yet
         getInteractors().clear();

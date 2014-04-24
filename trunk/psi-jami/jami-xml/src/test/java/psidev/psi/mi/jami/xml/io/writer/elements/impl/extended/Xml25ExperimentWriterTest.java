@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.ExperimentalCvTerm;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
@@ -450,7 +451,7 @@ public class Xml25ExperimentWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_experiment_participantIdentificationMethod() throws XMLStreamException, IOException {
         ExtendedPsiXmlExperiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
-        exp.setParticipantIdentificationMethod(exp.getInteractionDetectionMethod());
+        exp.setParticipantIdentificationMethod(new ExperimentalCvTerm(exp.getInteractionDetectionMethod().getShortName(), exp.getInteractionDetectionMethod().getMIIdentifier()));
         elementCache.clear();
 
         XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);

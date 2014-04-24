@@ -1,14 +1,12 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureDetectionMethodWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlNamedExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlParticipantIdentificationMethodWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -29,20 +27,28 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
 
     public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-        this.participantIdentificationMethodWriter = new XmlParticipantIdentificationMethodWriter(writer);
-        this.featureDetectionMethodWriter = new XmlFeatureDetectionMethodWriter(writer);
     }
 
-    public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                               PsiXmlElementWriter<Alias> aliasWriter, PsiXmlPublicationWriter publicationWriter,
-                               PsiXmlXrefWriter primaryRefWriter, PsiXmlXrefWriter secondaryRefWriter,
-                               PsiXmlElementWriter<Organism> hostOrganismWriter, PsiXmlElementWriter<CvTerm> detectionMethodWriter,
-                               PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter, PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter,
-                               PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlElementWriter<Annotation> attributeWriter) {
-        super(writer, objectIndex, aliasWriter, publicationWriter, primaryRefWriter, secondaryRefWriter, hostOrganismWriter,
-                detectionMethodWriter, confidenceWriter, attributeWriter);
-        this.participantIdentificationMethodWriter = participantIdentificationMethodWriter != null ? participantIdentificationMethodWriter : new XmlParticipantIdentificationMethodWriter(writer);
-        this.featureDetectionMethodWriter = featureDetectionMethodWriter != null ? featureDetectionMethodWriter : new XmlFeatureDetectionMethodWriter(writer);
+    public PsiXmlElementWriter<CvTerm> getParticipantIdentificationMethodWriter() {
+        if (this.participantIdentificationMethodWriter == null){
+            this.participantIdentificationMethodWriter = new XmlParticipantIdentificationMethodWriter(getStreamWriter(), getObjectIndex());
+        }
+        return participantIdentificationMethodWriter;
+    }
+
+    public void setParticipantIdentificationMethodWriter(PsiXmlElementWriter<CvTerm> participantIdentificationMethodWriter) {
+        this.participantIdentificationMethodWriter = participantIdentificationMethodWriter;
+    }
+
+    public PsiXmlElementWriter<CvTerm> getFeatureDetectionMethodWriter() {
+        if (this.featureDetectionMethodWriter == null){
+            this.featureDetectionMethodWriter = new XmlFeatureDetectionMethodWriter(getStreamWriter());
+        }
+        return featureDetectionMethodWriter;
+    }
+
+    public void setFeatureDetectionMethodWriter(PsiXmlElementWriter<CvTerm> featureDetectionMethodWriter) {
+        this.featureDetectionMethodWriter = featureDetectionMethodWriter;
     }
 
     @Override
@@ -52,13 +58,13 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
         CvTerm identificationMethod = xmlExperiment.getParticipantIdentificationMethod();
         if (identificationMethod != null){
             // write cv
-            this.participantIdentificationMethodWriter.write(identificationMethod);
+            getParticipantIdentificationMethodWriter().write(identificationMethod);
         }
         // write feature detection method
         CvTerm featureMethod = xmlExperiment.getFeatureDetectionMethod();
         if (featureMethod != null){
             // write cv
-            this.featureDetectionMethodWriter.write(featureMethod);
+            getFeatureDetectionMethodWriter().write(featureMethod);
         }
     }
 

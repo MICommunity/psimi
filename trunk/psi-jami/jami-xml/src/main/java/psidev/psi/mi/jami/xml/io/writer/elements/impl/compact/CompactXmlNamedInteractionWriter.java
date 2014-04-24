@@ -1,14 +1,20 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.NamedInteraction;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlInteractionWriter;
+import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.Set;
+import java.util.Date;
 
 /**
  * Compact XML 2.5 writer for a basic interaction (ignore experimental details) which has a fullname
@@ -23,19 +29,23 @@ public class CompactXmlNamedInteractionWriter extends AbstractXmlInteractionWrit
     private PsiXmlElementWriter<Alias> aliasWriter;
 
     public CompactXmlNamedInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
-        super(writer, objectIndex, new CompactXmlParticipantWriter(writer, objectIndex));
-        this.aliasWriter = new XmlAliasWriter(writer);
+        super(writer, objectIndex);
     }
 
-    public CompactXmlNamedInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                            PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                            PsiXmlXrefWriter secondaryRefWriter, PsiXmlExperimentWriter experimentWriter,
-                                            PsiXmlParticipantWriter<Participant> participantWriter, PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter,
-                                            PsiXmlElementWriter<CvTerm> interactionTypeWriter, PsiXmlElementWriter<Annotation> attributeWriter,
-                                            PsiXmlElementWriter<Checksum> checksumWriter) {
-        super(writer, objectIndex, primaryRefWriter, secondaryRefWriter, experimentWriter,
-                participantWriter != null ? participantWriter : new CompactXmlParticipantWriter(writer, objectIndex), inferredInteractionWriter, interactionTypeWriter, attributeWriter, checksumWriter);
-        this.aliasWriter = aliasWriter != null ? aliasWriter : new XmlAliasWriter(writer);
+    @Override
+    protected void initialiseParticipantWriter() {
+        super.setParticipantWriter(new CompactXmlNamedParticipantWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter = new XmlAliasWriter(getStreamWriter());
+        }
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
     }
 
     @Override
@@ -101,10 +111,15 @@ public class CompactXmlNamedInteractionWriter extends AbstractXmlInteractionWrit
             }
             // write aliases
             for (Object alias : xmlInteraction.getAliases()){
-                this.aliasWriter.write((Alias)alias);
+                getAliasWriter().write((Alias)alias);
             }
             // write end names
             getStreamWriter().writeEndElement();
         }
+    }
+
+    @Override
+    protected void initialiseDefaultExperiment(){
+        setDefaultExperiment(new XmlExperiment(new DefaultPublication("Mock publication for interactions that do not have experimental details.",(String)null,(Date)null)));
     }
 }

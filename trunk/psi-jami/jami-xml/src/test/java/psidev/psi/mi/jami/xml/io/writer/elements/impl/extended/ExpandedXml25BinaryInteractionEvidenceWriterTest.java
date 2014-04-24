@@ -12,6 +12,9 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
+import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
+import psidev.psi.mi.jami.xml.model.extension.XmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteractionEvidence;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
@@ -1255,11 +1258,11 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1271,12 +1274,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     public void test_write_participant_complex() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
+        complex.getParticipants().add(new XmlModelledParticipant(new DefaultProtein("test protein")));
+        ParticipantEvidence participant = new XmlParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1288,12 +1291,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     public void test_write_participant_complex_as_interactor() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
+        complex.getParticipants().add(new XmlModelledParticipant(new DefaultProtein("test protein")));
+        ParticipantEvidence participant = new XmlParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
@@ -1306,11 +1309,11 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     public void test_write_participant_complex_no_participants() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        ParticipantEvidence participant = new DefaultParticipantEvidence(complex);
+        ParticipantEvidence participant = new XmlParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1321,11 +1324,11 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_shortName() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence("interaction test");
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1337,11 +1340,11 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     public void test_write_interaction_fullName() throws XMLStreamException, IOException, IllegalRangeException {
         NamedInteraction interaction = new XmlBinaryInteractionEvidence();
         interaction.setFullName("interaction test");
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ((InteractionEvidence)interaction).setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        ((InteractionEvidence)interaction).setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
@@ -1354,11 +1357,11 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         NamedInteraction interaction = new XmlBinaryInteractionEvidence();
         interaction.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "interaction synonym"));
         interaction.getAliases().add(new DefaultAlias("test"));
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        ((InteractionEvidence)interaction).setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        ((InteractionEvidence)interaction).setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
@@ -1369,13 +1372,13 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_identifier() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("intact"), "EBI-xxx"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1386,13 +1389,13 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_xref() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1404,8 +1407,8 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Ignore
     public void test_write_interaction_inferred() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
-        ParticipantEvidence participant2 = new DefaultParticipantEvidence(new DefaultProtein("protein test2"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant2 = new XmlParticipantEvidence(new DefaultProtein("protein test2"));
         // two inferred interactiosn f1, f2, f3 and f3,f4
         FeatureEvidence f1 = new DefaultFeatureEvidence();
         f1.getRanges().add(RangeUtils.createRangeFromString("1-4"));
@@ -1419,7 +1422,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         interaction.addParticipant(participant2);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1430,12 +1433,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_type() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1446,14 +1449,14 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_attributes() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         interaction.setComplexExpansion(CvTermUtils.createMICvTerm("spoke expansion", "MI:1060"));
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1464,13 +1467,13 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_registered() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         elementCache.clear();
         elementCache.extractIdForInteraction(new DefaultInteraction());
         elementCache.extractIdForInteraction(interaction);
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1481,12 +1484,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_negative() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.setNegative(true);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1497,12 +1500,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_confidences() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getConfidences().add(new DefaultConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1513,12 +1516,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_parameters() throws XMLStreamException, IOException, IllegalRangeException {
         BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.getParameters().add(new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
@@ -1529,12 +1532,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_intraMolecular() throws XMLStreamException, IOException, IllegalRangeException {
         ExtendedPsiXmlInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.setIntraMolecular(true);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
@@ -1545,12 +1548,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_modelled() throws XMLStreamException, IOException, IllegalRangeException {
         ExtendedPsiXmlInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.setModelled(true);
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
@@ -1561,12 +1564,12 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_availability() throws XMLStreamException, IOException, IllegalRangeException {
         ExtendedPsiXmlInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
-        ParticipantEvidence participant = new DefaultParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
         interaction.setAvailability("copyright");
         elementCache.clear();
 
-        interaction.setExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
+        interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
         ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();

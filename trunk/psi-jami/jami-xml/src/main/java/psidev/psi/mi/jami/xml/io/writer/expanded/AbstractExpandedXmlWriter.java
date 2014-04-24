@@ -1,10 +1,13 @@
 package psidev.psi.mi.jami.xml.io.writer.expanded;
 
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.cache.InMemoryLightIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXmlWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExperimentWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -43,6 +46,12 @@ public abstract class AbstractExpandedXmlWriter<T extends Interaction> extends A
     public AbstractExpandedXmlWriter(Class<T> type, Writer writer) throws XMLStreamException {
         super(writer);
         this.type = type;
+    }
+
+    @Override
+    protected void initialiseOptionalWriters(PsiXmlExperimentWriter experimentWriter, PsiXmlElementWriter<String> availabilityWriter,
+                                             PsiXmlElementWriter<Interactor> interactorWriter) {
+        // no optional writers for experiments, interactors and availability
     }
 
     protected AbstractExpandedXmlWriter(Class<T> type, XMLStreamWriter streamWriter, PsiXmlObjectCache elementCache) {

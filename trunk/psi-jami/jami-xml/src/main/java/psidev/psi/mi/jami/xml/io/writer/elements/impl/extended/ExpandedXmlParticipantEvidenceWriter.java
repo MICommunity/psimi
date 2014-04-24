@@ -2,14 +2,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
-import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureEvidenceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlParticipantEvidenceWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -26,23 +22,24 @@ public class ExpandedXmlParticipantEvidenceWriter extends AbstractXmlParticipant
     private ExpandedPsiXmlElementWriter<ExperimentalInteractor> experimentalInteractorWriter;
 
     public ExpandedXmlParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
-        super(writer, objectIndex, new XmlFeatureEvidenceWriter(writer, objectIndex));
-        this.experimentalInteractorWriter = new ExpandedXmlExperimentalInteractorWriter(writer, objectIndex);
+        super(writer, objectIndex);
     }
 
-    public ExpandedXmlParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex,
-                                                PsiXmlElementWriter<Alias> aliasWriter, PsiXmlXrefWriter primaryRefWriter,
-                                                PsiXmlXrefWriter secondaryRefWriter, PsiXmlElementWriter<Interactor> interactorWriter,
-                                                PsiXmlElementWriter identificationMethodWriter, PsiXmlElementWriter<CvTerm> biologicalRoleWriter,
-                                                PsiXmlElementWriter experimentalRoleWriter, PsiXmlElementWriter experimentalPreparationWriter,
-                                                ExpandedPsiXmlElementWriter<ExperimentalInteractor> experimentalInteractorWriter, PsiXmlElementWriter<FeatureEvidence> featureWriter,
-                                                PsiXmlElementWriter<Organism> hostOrganismWriter,
-                                                PsiXmlElementWriter<Confidence> confidenceWriter, PsiXmlParameterWriter parameterWriter, PsiXmlElementWriter<Annotation> attributeWriter) {
-        super(writer, objectIndex, aliasWriter, primaryRefWriter, secondaryRefWriter, interactorWriter, identificationMethodWriter, biologicalRoleWriter, experimentalRoleWriter, experimentalPreparationWriter,
-                featureWriter != null ? featureWriter : new XmlFeatureEvidenceWriter(writer, objectIndex),
-                hostOrganismWriter, parameterWriter, confidenceWriter, attributeWriter);
-        this.experimentalInteractorWriter = experimentalInteractorWriter != null ? experimentalInteractorWriter : new ExpandedXmlExperimentalInteractorWriter(writer, objectIndex);
+    @Override
+    protected void initialiseFeatureWriter() {
+        super.setFeatureWriter(new XmlFeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
+    }
 
+    public ExpandedPsiXmlElementWriter<ExperimentalInteractor> getExperimentalInteractorWriter() {
+        if (this.experimentalInteractorWriter == null){
+            this.experimentalInteractorWriter = new ExpandedXmlExperimentalInteractorWriter(getStreamWriter(), getObjectIndex());
+
+        }
+        return experimentalInteractorWriter;
+    }
+
+    public void setExperimentalInteractorWriter(ExpandedPsiXmlElementWriter<ExperimentalInteractor> experimentalInteractorWriter) {
+        this.experimentalInteractorWriter = experimentalInteractorWriter;
     }
 
     @Override
@@ -78,7 +75,7 @@ public class ExpandedXmlParticipantEvidenceWriter extends AbstractXmlParticipant
         if (!xmlParticipant.getExperimentalInteractors().isEmpty()){
             getStreamWriter().writeStartElement("experimentalInteractorList");
             for (ExperimentalInteractor expInt : xmlParticipant.getExperimentalInteractors()){
-                this.experimentalInteractorWriter.write(expInt);
+                getExperimentalInteractorWriter().write(expInt);
             }
             getStreamWriter().writeEndElement();
         }

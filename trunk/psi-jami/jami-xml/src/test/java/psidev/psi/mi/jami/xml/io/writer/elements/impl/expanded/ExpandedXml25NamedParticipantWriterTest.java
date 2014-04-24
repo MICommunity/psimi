@@ -524,7 +524,7 @@ public class ExpandedXml25NamedParticipantWriterTest extends AbstractXml25Writer
     public void test_write_participant_registered() throws XMLStreamException, IOException, IllegalRangeException {
         Participant participant = new DefaultNamedParticipant(new DefaultProtein("protein test"));
         elementCache.clear();
-        elementCache.extractIdForParticipant(new DefaultParticipant(new DefaultProtein("protein test")));
+        elementCache.extractIdForParticipant(new DefaultNamedParticipant(new DefaultProtein("protein test")));
         elementCache.extractIdForParticipant(participant);
 
         ExpandedXmlNamedParticipantWriter writer = new ExpandedXmlNamedParticipantWriter(createStreamWriter(), this.elementCache);
