@@ -11,7 +11,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ExperimentWr
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlFeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlHostOrganismWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlInferredInteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.Xml25ParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlSourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXmlWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
@@ -213,7 +213,7 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
 
     @Override
     protected PsiXmlParameterWriter instantiateParameterWriter() {
-        return new XmlParameterWriter(getStreamWriter(), getElementCache());
+        return new Xml25ParameterWriter(getStreamWriter(), getElementCache());
     }
 
     @Override

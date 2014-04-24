@@ -217,7 +217,7 @@ public class CompactXmlEvidenceWriter extends AbstractCompactXmlWriter<Interacti
 
     @Override
     protected PsiXmlParameterWriter instantiateParameterWriter() {
-        return new XmlParameterWriter(getStreamWriter(), getElementCache());
+        return new Xml25ParameterWriter(getStreamWriter(), getElementCache());
     }
 
     @Override

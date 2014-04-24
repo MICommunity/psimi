@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * Unit tester for XmlParameterWriter
+ * Unit tester for Xml25ParameterWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -59,7 +59,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_parameter_null() throws XMLStreamException, IOException {
 
-        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
+        Xml25ParameterWriter writer = new Xml25ParameterWriter(createStreamWriter(), elementCache);
         writer.write(null);
         streamWriter.flush();
 
@@ -71,7 +71,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
         XmlParameter param = new XmlParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5)), null, null);
         this.elementCache.clear();
 
-        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
+        Xml25ParameterWriter writer = new Xml25ParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -83,7 +83,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
         XmlParameter param = new XmlParameter(new DefaultCvTerm("kd", "MI:xxxx"), new ParameterValue(new BigDecimal(5)), null, null);
         this.elementCache.clear();
 
-        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
+        Xml25ParameterWriter writer = new Xml25ParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -96,7 +96,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
                 null, new DefaultCvTerm("molar"));
         this.elementCache.clear();
 
-        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
+        Xml25ParameterWriter writer = new Xml25ParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -109,7 +109,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
                 null, new DefaultCvTerm("molar","MI:xxxx"));
         this.elementCache.clear();
 
-        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
+        Xml25ParameterWriter writer = new Xml25ParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -121,7 +121,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
         XmlParameter param = new XmlParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5),(short)10,(short)3), null, null);
         this.elementCache.clear();
 
-        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
+        Xml25ParameterWriter writer = new Xml25ParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -137,7 +137,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
         this.elementCache.extractIdForExperiment(exp);
         param.setExperiment(exp);
 
-        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
+        Xml25ParameterWriter writer = new Xml25ParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -152,7 +152,7 @@ public class Xml25ParameterWriterTest extends AbstractXml25WriterTest {
         this.elementCache.extractIdForExperiment(new DefaultExperiment(new DefaultPublication("123")));
         this.elementCache.extractIdForExperiment(exp);
 
-        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
+        Xml25ParameterWriter writer = new Xml25ParameterWriter(createStreamWriter(), elementCache);
         writer.setDefaultExperiment(exp);
         writer.write(param);
         streamWriter.flush();
