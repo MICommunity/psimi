@@ -78,10 +78,10 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     public Position getStart() {
         if (start == null){
             if (startStatus != null){
-                start = new XmlPosition(startStatus, null, true);
+                start = new XmlPosition(startStatus, 0, true);
             }
             else{
-                start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, true);
+                start = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), 0, true);
             }
         }
         return start;
@@ -90,10 +90,10 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     public Position getEnd() {
         if (end == null){
             if (endStatus != null){
-                end = new XmlPosition(endStatus, null, true);
+                end = new XmlPosition(endStatus, 0, true);
             }
             else{
-                end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), null, true);
+                end = new XmlPosition(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI), 0, true);
             }
         }
         return this.end;
