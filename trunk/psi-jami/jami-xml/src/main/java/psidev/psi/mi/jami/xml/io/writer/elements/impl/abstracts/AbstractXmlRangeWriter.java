@@ -1,29 +1,31 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlBeginPositionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlEndPositionWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Xml 2.5 writer for a feature range
+ * Abstract Xml writer for a feature range
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>13/11/13</pre>
  */
 
-public class XmlRangeWriter implements PsiXmlElementWriter<Range> {
+public abstract class AbstractXmlRangeWriter implements PsiXmlElementWriter<Range> {
     private XMLStreamWriter streamWriter;
     private PsiXmlElementWriter<Position> startPositionWriter;
     private PsiXmlElementWriter<Position> endPositionWriter;
 
-    public XmlRangeWriter(XMLStreamWriter writer){
+    public AbstractXmlRangeWriter(XMLStreamWriter writer){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlRangeWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25RangeWriter");
         }
         this.streamWriter = writer;
     }
@@ -68,6 +70,10 @@ public class XmlRangeWriter implements PsiXmlElementWriter<Range> {
                     this.streamWriter.writeCharacters(Boolean.toString(object.isLink()));
                     this.streamWriter.writeEndElement();
                 }
+
+                // write additional information
+                writeOtherProperties(object);
+
                 // write end feature range
                 this.streamWriter.writeEndElement();
 
@@ -75,5 +81,11 @@ public class XmlRangeWriter implements PsiXmlElementWriter<Range> {
                 throw new MIIOException("Impossible to write the range : "+object.toString(), e);
             }
         }
+    }
+
+    protected abstract void writeOtherProperties(Range object);
+
+    protected XMLStreamWriter getStreamWriter() {
+        return streamWriter;
     }
 }

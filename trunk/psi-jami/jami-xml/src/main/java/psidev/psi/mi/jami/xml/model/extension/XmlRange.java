@@ -6,11 +6,11 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlResultingSequence;
 import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -262,6 +262,11 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
         this.resultingSequence = resultingSequence;
     }
 
+    @XmlElement(name = "resultingSequence", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBResultingSequence(XmlResultingSequence resultingSequence){
+         setResultingSequence(resultingSequence);
+    }
+
     public Participant getParticipant() {
         return this.participant;
     }
@@ -316,16 +321,6 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     @Override
     public String toString() {
         return "Feature range: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
-    }
-
-    protected AbstractXmlPosition createXmlPositionWithStatus(Position pos, XmlCvTerm status){
-        if (pos.getEnd() != pos.getStart() || CvTermUtils.isCvTerm(status, Position.RANGE_MI, Position.RANGE)){
-            return new XmlInterval(status, pos.getStart(), pos.getEnd(), pos.isPositionUndetermined());
-        }
-        // we have xml position
-        else{
-            return  new XmlPosition(status, pos.getStart(), pos.isPositionUndetermined());
-        }
     }
 
     ////// inner classes
