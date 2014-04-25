@@ -4,9 +4,6 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -25,7 +22,7 @@ import java.math.BigInteger;
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlPosition extends AbstractXmlPosition{
 
-    private BigInteger pos;
+    private long pos;
     @XmlLocation
     @XmlTransient
     private Locator locator;
@@ -37,14 +34,9 @@ public class XmlPosition extends AbstractXmlPosition{
         super(status, positionUndetermined);
     }
 
-    public XmlPosition(CvTerm status, BigInteger pos, boolean positionUndetermined) {
-        super(status, positionUndetermined);
-        this.pos = pos;
-    }
-
     public XmlPosition(CvTerm status, long pos, boolean positionUndetermined) {
         super(status, positionUndetermined);
-        this.pos = new BigInteger(Long.toString(pos));
+        this.pos = pos;
     }
 
     @Override
@@ -53,11 +45,11 @@ public class XmlPosition extends AbstractXmlPosition{
     }
 
     public long getStart() {
-        return pos != null ? pos.longValue() : 0;
+        return pos;
     }
 
     public long getEnd() {
-        return pos != null ? pos.longValue() : 0;
+        return pos;
     }
 
     @Override
@@ -74,16 +66,8 @@ public class XmlPosition extends AbstractXmlPosition{
      *
      */
     @XmlAttribute(name = "position", required = true)
-    public void setJAXBPosition(BigInteger value) {
+    public void setJAXBPosition(long value) {
         this.pos = value;
-        if (this.pos == null){
-            this.pos = new BigInteger(String.valueOf(0));
-            this.setJAXBStatus(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI));
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-            if (listener != null){
-                listener.onInvalidPosition("The Xml Position is not provided. It will be loaded as undetermined position", this);
-            }
-        }
     }
 
     @Override

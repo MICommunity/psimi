@@ -4,9 +4,6 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -23,8 +20,8 @@ import java.math.BigInteger;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlInterval extends AbstractXmlPosition{
-    private BigInteger start;
-    private BigInteger end;
+    private long start;
+    private long end;
     @XmlLocation
     @XmlTransient
     private Locator locator;
@@ -36,16 +33,10 @@ public class XmlInterval extends AbstractXmlPosition{
         super(status, positionUndetermined);
     }
 
-    public XmlInterval(CvTerm status, BigInteger start, BigInteger end, boolean positionUndetermined) {
+    public XmlInterval(CvTerm status, long start, long end, boolean positionUndetermined) {
         super(status, positionUndetermined);
         this.start = start;
         this.end = end;
-    }
-
-    public XmlInterval(CvTerm status, long start, long end, boolean positionUndetermined) {
-        super(status, positionUndetermined);
-        this.start = new BigInteger(Long.toString(start));
-        this.end = new BigInteger(Long.toString(end));
     }
 
     @Override
@@ -54,11 +45,11 @@ public class XmlInterval extends AbstractXmlPosition{
     }
 
     public long getStart() {
-        return start != null ? start.longValue() : 0;
+        return start;
     }
 
     public long getEnd() {
-        return end != null ? end.longValue() : 0;
+        return end;
     }
 
     @Override
@@ -75,25 +66,8 @@ public class XmlInterval extends AbstractXmlPosition{
      *
      */
     @XmlAttribute(name = "begin", required = true)
-    public void setJAXBBeginPosition(BigInteger value) {
+    public void setJAXBBeginPosition(long value) {
         this.start = value;
-        if (this.start == null){
-            this.start = new BigInteger(String.valueOf(0));
-            this.setJAXBStatus(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI));
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-            if (listener != null){
-                listener.onInvalidPosition("The Xml start position is not provided. It will be loaded as undetermined position", this);
-            }
-        }
-        else if (end != null && end.intValue() > start.intValue()){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-            if (listener != null){
-                listener.onInvalidPosition("The Xml Interval is invalid as the start position "+start+" is after the end position "+end, this);
-            }
-            this.start = new BigInteger(String.valueOf(0));
-            this.end = new BigInteger(String.valueOf(0));
-            this.setJAXBStatus(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI));
-        }
     }
 
     /**
@@ -105,25 +79,8 @@ public class XmlInterval extends AbstractXmlPosition{
      *
      */
     @XmlAttribute(name = "end", required = true)
-    public void setJAXBEndPosition(BigInteger value) {
+    public void setJAXBEndPosition(long value) {
         this.end = value;
-        if (this.end == null){
-            this.end = new BigInteger(String.valueOf(0));
-            this.setJAXBStatus(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI));
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-            if (listener != null){
-                listener.onInvalidPosition("The Xml end Position is not provided. It will be loaded as undetermined position", this);
-            }
-        }
-        else if (start != null && end.intValue() > start.intValue()){
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-            if (listener != null){
-                listener.onInvalidPosition("The Xml Interval is invalid as the start position "+start+" is after the end position "+end, this);
-            }
-            this.start = new BigInteger(String.valueOf(0));
-            this.end = new BigInteger(String.valueOf(0));
-            this.setJAXBStatus(new XmlCvTerm(Position.UNDETERMINED, Position.UNDETERMINED_MI));
-        }
     }
 
     @Override
