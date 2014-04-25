@@ -350,7 +350,9 @@ public class RangeUtils {
 
             // both the start position and the end position have a status
             // if both positions are undetermined, or of type 'n-?','n-n', 'c-c' or '?-c', no feature sequence can be extracted
-            if (pos1.isPositionUndetermined() && pos2.isPositionUndetermined()){
+            // if the start position is negative, it means we cannot extract a sequence for this range
+            if ((pos1.isPositionUndetermined() && pos2.isPositionUndetermined())
+                    || pos1.getStart() < 0){
                 return null;
             }
             // a feature sequence can be extracted
