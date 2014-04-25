@@ -80,7 +80,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
 
     public PsiXmlElementWriter<Range> getRangeWriter() {
         if (this.rangeWriter == null){
-            this.rangeWriter = new XmlRangeWriter(streamWriter);
+            this.rangeWriter = new Xml25RangeWriter(streamWriter);
         }
         return rangeWriter;
     }

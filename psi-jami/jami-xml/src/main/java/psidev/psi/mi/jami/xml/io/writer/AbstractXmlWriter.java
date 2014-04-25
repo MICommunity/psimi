@@ -689,7 +689,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
                                                                             PsiXmlElementWriter<Range> rangeWriter);
 
     protected PsiXmlElementWriter<Range> instantiateRangeWriter(PsiXmlElementWriter<Position> beginWriter, PsiXmlElementWriter<Position> endWriter) {
-        XmlRangeWriter rangeWriter = new XmlRangeWriter(getStreamWriter());
+        Xml25RangeWriter rangeWriter = new Xml25RangeWriter(getStreamWriter());
         rangeWriter.setStartPositionWriter(beginWriter);
         rangeWriter.setEndPositionWriter(endWriter);
         return rangeWriter;

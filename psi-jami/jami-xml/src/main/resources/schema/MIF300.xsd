@@ -764,9 +764,9 @@
                     <xs:documentation>True if the described feature is a linking feature connecting two amino acids rather than extending along the sequence. 'begin' references the first amino acid, 'end' the second. Standard example is a disulfide bridge. Does not reference another feature, therefore is only suitable for linking features on the same amino acid chain. </xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="resultingSequence" type="mif:resultingSequenceType1" minOccurs="0">
+            <xs:element name="resultingSequence" type="mif:resultingSequenceType" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>The resultingSequence gives some information about the mutated sequence.</xs:documentation>
+                    <xs:documentation>The resultingSequence gives some information about the sequence changes.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="participantRef" type="xs:int" minOccurs="0">
@@ -776,44 +776,38 @@
             </xs:element>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="resultingSequenceType1">
-        <xs:annotation>
-            <xs:documentation>Description of the mutated or transformed interactor sequence portion.</xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element name="sequence" minOccurs="1" maxOccurs="1">
-                <xs:annotation>
-                    <xs:documentation>The mutated or transformed sequence portion.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="xref" type="mif:xref" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>External cross reference to a genetic variation database such as dbSNP.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="resultingSequenceType2">
+    <xs:complexType name="resultingSequenceType">
         <xs:annotation>
             <xs:documentation>Description of the mutated or transformed interactor sequence portion</xs:documentation>
         </xs:annotation>
-        <xs:sequence>
-            <xs:element name="originalSequence" minOccurs="1" maxOccurs="1">
-                <xs:annotation>
-                    <xs:documentation>The original sequence portion.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="newSequence" minOccurs="1" maxOccurs="1">
-                <xs:annotation>
-                    <xs:documentation>The mutated or transformed sequence portion.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="xref" type="mif:xref" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>External cross reference to a genetic variation database such as dbSNP.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xs:sequence>
+        <xs:choice minOccurs="1" maxOccurs="1">
+            <xs:sequence>
+                <xs:sequence>
+                    <xs:element name="originalSequence" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The original sequence portion.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="newSequence" minOccurs="1" maxOccurs="1">
+                        <xs:annotation>
+                            <xs:documentation>The mutated or transformed sequence portion.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="xref" type="mif:xref" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>External cross reference to a genetic variation database such as dbSNP.</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:sequence>
+            </xs:sequence>
+            <xs:sequence>
+                <xs:element name="xref" type="mif:xref" minOccurs="1" maxOccurs="1">
+                    <xs:annotation>
+                        <xs:documentation>External cross reference to a genetic variation database such as dbSNP.</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+            </xs:sequence>
+        </xs:choice>
     </xs:complexType>
     <xs:complexType name="position">
         <xs:attribute name="position" type="xs:long" use="required"/>
