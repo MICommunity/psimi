@@ -262,11 +262,6 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
         this.resultingSequence = resultingSequence;
     }
 
-    @XmlElement(name = "resultingSequence", namespace = "http://psi.hupo.org/mi/mif300")
-    public void setJAXBResultingSequence(XmlResultingSequence resultingSequence){
-         setResultingSequence(resultingSequence);
-    }
-
     public Participant getParticipant() {
         return this.participant;
     }
@@ -275,8 +270,18 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
         this.participant = participant;
     }
 
+    @XmlElement(name = "resultingSequence", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBResultingSequence(XmlResultingSequence resultingSequence){
+         setResultingSequence(resultingSequence);
+    }
+
     public void setJAXBParticipantRef(int id, PsiXmLocator locator){
         this.participant = new ParticipantRef(id, locator);
+    }
+
+    @XmlElement(name = "participantRef" , namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBParticipantRef(int id){
+        this.participant = new ParticipantRef(id, this.sourceLocator);
     }
 
     @Override

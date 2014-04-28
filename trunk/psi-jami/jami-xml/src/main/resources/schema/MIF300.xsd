@@ -748,7 +748,7 @@
                     <xs:documentation>The resultingSequence gives some information about the sequence changes.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="participantRef" type="xs:int" minOccurs="0">
+            <xs:element name="participantRef" type="xs:int" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>References a participant described in the entry</xs:documentation>
                 </xs:annotation>
