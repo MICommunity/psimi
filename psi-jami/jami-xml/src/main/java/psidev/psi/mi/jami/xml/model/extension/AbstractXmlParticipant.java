@@ -7,13 +7,12 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
-import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
 import psidev.psi.mi.jami.xml.model.reference.AbstractInteractorRef;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -46,6 +45,8 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
 
     private JAXBAttributeWrapper jaxbAttributeWrapper;
     private JAXBFeatureWrapper<F> jaxbFeatureWrapper;
+
+    private Stoichiometry stoichiometry;
 
     public AbstractXmlParticipant(){
         this.interactorFactory = new XmlInteractorFactory();
@@ -175,34 +176,33 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
     }
 
     public Stoichiometry getStoichiometry() {
-        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.stoichiometry : null;
+        if (this.stoichiometry == null){
+            initialiseStoichiometry();
+        }
+        return this.stoichiometry;
     }
 
     public void setStoichiometry(Integer stoichiometry) {
         if (stoichiometry == null){
-            if (this.jaxbAttributeWrapper == null){
+            this.stoichiometry = null;
+            if (this.jaxbAttributeWrapper != null){
                 this.jaxbAttributeWrapper.stoichiometry = null;
             }
         }
         else {
-            if (this.jaxbAttributeWrapper == null){
-                initialiseAnnotationWrapper();
-            }
-            this.jaxbAttributeWrapper.stoichiometry = new DefaultStoichiometry(stoichiometry, stoichiometry);
+            this.stoichiometry = new XmlStoichiometry(stoichiometry);
         }
     }
 
     public void setStoichiometry(Stoichiometry stoichiometry) {
         if (stoichiometry == null){
-            if (this.jaxbAttributeWrapper == null){
+            this.stoichiometry = null;
+            if (this.jaxbAttributeWrapper != null){
                 this.jaxbAttributeWrapper.stoichiometry = null;
             }
         }
         else {
-            if (this.jaxbAttributeWrapper == null){
-                initialiseAnnotationWrapper();
-            }
-            this.jaxbAttributeWrapper.stoichiometry = stoichiometry;
+            this.stoichiometry= stoichiometry;
         }
     }
 
@@ -384,6 +384,14 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         setBiologicalRole(bioRole);
     }
 
+    public void setJAXBStoichiometry(Stoichiometry stoichiometry){
+        this.stoichiometry = stoichiometry;
+    }
+
+    public void setJAXBStoichiometryRange(Stoichiometry stoichiometry){
+        this.stoichiometry = stoichiometry;
+    }
+
     /**
      * Gets the value of the id property.
      *
@@ -424,6 +432,13 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
 
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
         this.jaxbAttributeWrapper = jaxbAttributeWrapper;
+    }
+
+    protected void initialiseStoichiometry() {
+
+        if (this.jaxbAttributeWrapper != null && this.jaxbAttributeWrapper.stoichiometry != null){
+            this.stoichiometry = this.jaxbAttributeWrapper.stoichiometry;
+        }
     }
 
     protected void setFeatureWrapper(JAXBFeatureWrapper<F> jaxbFeatureWrapper) {

@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -328,6 +329,18 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @XmlElement(name="confidenceList")
     public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
         this.jaxbConfidenceWrapper = wrapper;
+    }
+
+    @Override
+    @XmlElement(name="stoichiometry", type = psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometry.class, namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBStoichiometry(Stoichiometry stoichiometry) {
+        super.setJAXBStoichiometry(stoichiometry);
+    }
+
+    @Override
+    @XmlElement(name="stoichiometryRange", type = XmlStoichiometryRange.class, namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBStoichiometryRange(Stoichiometry stoichiometry) {
+        super.setJAXBStoichiometryRange(stoichiometry);
     }
 
     @Override

@@ -26,11 +26,11 @@ public abstract class AbstractXmlParameterWriter implements PsiXmlParameterWrite
 
     public AbstractXmlParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25ParameterWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlParameterWriter");
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml25ParameterWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlParameterWriter. It is necessary for generating an id to an experimentDescription");
         }
         this.objectIndex = objectIndex;
     }

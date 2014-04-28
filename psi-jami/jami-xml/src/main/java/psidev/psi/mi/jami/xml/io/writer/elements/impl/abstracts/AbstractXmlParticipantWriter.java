@@ -3,19 +3,18 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 /**
- * Xml 25 writer for participant
+ * Abstract Xml writer for participant
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -144,6 +143,8 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             writeConfidences(object);
             // write parameters
             writeParameters(object);
+            // write stoichiometry
+            writeStoichiometry(object);
             // write attributes
             writeAttributes(object);
             // write end participant
@@ -163,6 +164,9 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     public void setComplexAsInteractor(boolean complexAsInteractor) {
         this.writeComplexAsInteractor = complexAsInteractor;
     }
+    protected abstract void writeStoichiometry(P object);
+
+    protected abstract void writeOtherAttributes(P object, boolean writeAttributeList) throws XMLStreamException;
 
     protected void writeAttributes(P object) throws XMLStreamException {
         // write attributes
@@ -174,40 +178,14 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
                 getAttributeWriter().write((Annotation)ann);
             }
             // write stoichiometry attribute if not null
-            if (stc != null){
-                writeStoichiometryAttribute(stc);
-            }
-            // write end rattributeList
+            writeOtherAttributes(object, false);
+            // write end attributeList
             getStreamWriter().writeEndElement();
         }
         // write stoichiometry attribute if not null
-        else if (stc != null){
-            // write start attribute list
-            getStreamWriter().writeStartElement("attributeList");
-            writeStoichiometryAttribute(stc);
-            // write end rattributeList
-            getStreamWriter().writeEndElement();
+        else {
+            writeOtherAttributes(object, true);
         }
-    }
-
-    protected void writeStoichiometryAttribute(Stoichiometry stc) throws XMLStreamException {
-        // write stoichiometry
-
-        // write start
-        this.streamWriter.writeStartElement("attribute");
-        // write topic
-        this.streamWriter.writeAttribute("name", Annotation.COMMENT);
-        this.streamWriter.writeAttribute("nameAc", Annotation.COMMENT_MI);
-        // write description
-        this.streamWriter.writeCharacters(PsiXmlUtils.STOICHIOMETRY_PREFIX);
-        this.streamWriter.writeCharacters(Long.toString(stc.getMinValue()));
-        // stoichiometry range
-        if (stc.getMaxValue() != stc.getMinValue()){
-            this.streamWriter.writeCharacters(" - ");
-            this.streamWriter.writeCharacters(Long.toString(stc.getMaxValue()));
-        }
-        // write end attribute
-        this.streamWriter.writeEndElement();
     }
 
     protected void writeFeatures(P object) throws XMLStreamException {
