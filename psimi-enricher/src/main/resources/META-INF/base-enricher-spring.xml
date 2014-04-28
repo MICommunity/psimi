@@ -116,10 +116,6 @@
         <constructor-arg index="0" value="${participant.logFile}"/>
     </bean>
 
-    <bean id="participantPoolListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEvidencePoolEnricherStatisticsWriter">
-        <constructor-arg index="0" value="${participantpool.logFile}"/>
-    </bean>
-
     <bean id="interactionListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.InteractionEnricherStatisticsWriter">
         <constructor-arg index="0" value="${interaction.logFile}"/>
     </bean>
