@@ -373,11 +373,8 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
             // write detection method
             writeDetectionMethods(feature);
 
-            // write interaction dependency
-            writeCvTerm("Interaction dependency", feature.getInteractionDependency());
-
-            // write interaction dependency
-            writeCvTerm("Interaction effect", feature.getInteractionEffect());
+            // write interaction dependency/feature role
+            writeCvTerm("Interaction dependency", feature.getRole());
 
             // write xrefs
             if (!feature.getXrefs().isEmpty()){
