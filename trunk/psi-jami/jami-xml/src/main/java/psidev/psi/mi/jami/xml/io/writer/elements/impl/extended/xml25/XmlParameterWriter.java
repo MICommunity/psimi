@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25;
 
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
@@ -8,16 +8,16 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * XML 3.0 writer of a parameter
+ * XML 2.5 writer of a parameter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>14/11/13</pre>
  */
 
-public class Xml30ParameterWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml30ParameterWriter {
+public class XmlParameterWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ParameterWriter {
 
-    public Xml30ParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
+    public XmlParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         super(writer, objectIndex);
     }
 
@@ -31,6 +31,13 @@ public class Xml30ParameterWriter extends psidev.psi.mi.jami.xml.io.writer.eleme
                 getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(xmlParameter.getExperiment())));
                 getStreamWriter().writeEndElement();
             }
+            else{
+                super.writeOtherProperties(object);
+
+            }
+        }
+        else{
+            super.writeOtherProperties(object);
         }
     }
 }

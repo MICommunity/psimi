@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.ExpandedXmlParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;

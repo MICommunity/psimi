@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25NamedExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlNamedModelledParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlNamedParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;

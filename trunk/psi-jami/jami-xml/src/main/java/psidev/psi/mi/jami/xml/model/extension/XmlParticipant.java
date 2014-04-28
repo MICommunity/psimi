@@ -4,6 +4,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
 
 import javax.xml.bind.annotation.*;
 import java.util.List;
@@ -91,6 +92,18 @@ public class XmlParticipant extends AbstractXmlParticipant<Interaction,Feature> 
     @XmlElement(name = "featureList")
     public void setJAXBFeatureWrapper(JAXBFeatureWrapper jaxbFeatureWrapper) {
         super.setFeatureWrapper(jaxbFeatureWrapper);
+    }
+
+    @Override
+    @XmlElement(name="stoichiometry", type = psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometry.class, namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBStoichiometry(Stoichiometry stoichiometry) {
+        super.setJAXBStoichiometry(stoichiometry);
+    }
+
+    @Override
+    @XmlElement(name="stoichiometryRange", type = XmlStoichiometryRange.class, namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBStoichiometryRange(Stoichiometry stoichiometry) {
+        super.setJAXBStoichiometryRange(stoichiometry);
     }
 
     @Override

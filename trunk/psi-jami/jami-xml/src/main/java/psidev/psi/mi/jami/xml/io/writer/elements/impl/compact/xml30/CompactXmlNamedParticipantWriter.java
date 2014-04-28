@@ -1,26 +1,27 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30;
 
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlNamedParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml30NamedParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Expanded Xml 2.5 writer for a basic named participant with a shortname and a fullname.
+ * Compact Xml 2.5 writer for a basic named participant with a shortname and a fullname.
  * It ignores experimental details
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>14/11/13</pre>
  */
 
-public class ExpandedXmlNamedParticipantWriter extends AbstractXmlNamedParticipantWriter<Participant, Feature> implements ExpandedPsiXmlElementWriter<Participant> {
-    public ExpandedXmlNamedParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+public class CompactXmlNamedParticipantWriter extends AbstractXml30NamedParticipantWriter<Participant, Feature> implements CompactPsiXmlElementWriter<Participant> {
+    public CompactXmlNamedParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 
@@ -31,7 +32,7 @@ public class ExpandedXmlNamedParticipantWriter extends AbstractXmlNamedParticipa
 
     @Override
     protected void writeMolecule(Interactor interactor) throws XMLStreamException {
-        super.writeMoleculeDescription(interactor);
+        super.writeMoleculeRef(interactor);
     }
 
     @Override

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * Unit tester for Xml25ParameterWriter
+ * Unit tester for XmlParameterWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

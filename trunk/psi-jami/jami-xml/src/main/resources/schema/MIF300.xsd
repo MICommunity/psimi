@@ -1468,11 +1468,6 @@
                     <xs:documentation>A list of causal relationships involving this participant in this interaction</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>Semi-structured additional description of the data contained in the entry.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:choice minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Description of the participant stoichiometry. Can be a single stoichiometry or a stoichiometry range.</xs:documentation>
@@ -1488,6 +1483,11 @@
                     </xs:annotation>
                 </xs:element>
             </xs:choice>
+            <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Semi-structured additional description of the data contained in the entry.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:sequence>
         <xs:attribute name="id" type="xs:int" use="required"/>
     </xs:complexType>
@@ -1872,11 +1872,6 @@
                     <xs:documentation>A list of causal relationships involving this participant in this interaction</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>Semi-structured additional description of the data contained in the entry.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:choice minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Description of the participant stoichiometry. Can be a single stoichiometry or a stoichiometry range.</xs:documentation>
@@ -1892,6 +1887,11 @@
                     </xs:annotation>
                 </xs:element>
             </xs:choice>
+            <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Semi-structured additional description of the data contained in the entry.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
         </xs:sequence>
         <xs:attribute name="id" type="xs:int" use="required"/>
     </xs:complexType>

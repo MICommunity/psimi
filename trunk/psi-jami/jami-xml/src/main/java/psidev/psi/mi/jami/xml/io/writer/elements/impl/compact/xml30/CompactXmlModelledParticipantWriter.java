@@ -1,26 +1,26 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30;
 
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlModelledFeatureWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlNamedParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml30ParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Expanded XML 2.5 writer for a named modelled participant having a fullname and a shortname.
- * It ignores experimental details.
+ * Compact XML 2.5 writer for a modelled participant. (ignore all experimental details)
+ *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>14/11/13</pre>
  */
 
-public class ExpandedXmlNamedModelledParticipantWriter extends AbstractXmlNamedParticipantWriter<ModelledParticipant, ModelledFeature> implements ExpandedPsiXmlElementWriter<ModelledParticipant> {
-    public ExpandedXmlNamedModelledParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+public class CompactXmlModelledParticipantWriter extends AbstractXml30ParticipantWriter<ModelledParticipant, ModelledFeature> implements CompactPsiXmlElementWriter<ModelledParticipant> {
+    public CompactXmlModelledParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 
@@ -31,7 +31,7 @@ public class ExpandedXmlNamedModelledParticipantWriter extends AbstractXmlNamedP
 
     @Override
     protected void writeMolecule(Interactor interactor) throws XMLStreamException {
-        super.writeMoleculeDescription(interactor);
+        super.writeMoleculeRef(interactor);
     }
 
     @Override

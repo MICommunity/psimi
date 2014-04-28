@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlParameterWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlParameter;
 
 import javax.xml.stream.XMLStreamException;
@@ -17,7 +18,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * Unit tester for Xml25ParameterWriter
+ * Unit tester for XmlParameterWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -57,7 +58,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_parameter_null() throws XMLStreamException, IOException {
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(null);
         streamWriter.flush();
 
@@ -69,7 +70,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         XmlParameter param = new XmlParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5)), null, null);
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -82,7 +83,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         param.setExperiment(new DefaultExperiment(new DefaultPublication()));
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -97,7 +98,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
 
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -112,7 +113,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
 
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -125,7 +126,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         this.elementCache.clear();
         param.setExperiment(new DefaultExperiment(new DefaultPublication()));
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -141,7 +142,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         this.elementCache.extractIdForExperiment(exp);
         param.setExperiment(exp);
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -156,7 +157,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         this.elementCache.extractIdForExperiment(new DefaultExperiment(new DefaultPublication("123")));
         this.elementCache.extractIdForExperiment(exp);
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         param.setExperiment(exp);
         writer.write(param);
         streamWriter.flush();

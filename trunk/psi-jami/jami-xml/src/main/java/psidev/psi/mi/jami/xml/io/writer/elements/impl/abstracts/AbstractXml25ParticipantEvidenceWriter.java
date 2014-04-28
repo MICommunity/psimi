@@ -17,13 +17,13 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>14/11/13</pre>
  */
 
-public abstract class AbstractXmlParticipantEvidenceWriter extends AbstractXmlParticipantWriter<ParticipantEvidence, FeatureEvidence> {
+public abstract class AbstractXml25ParticipantEvidenceWriter extends AbstractXml25ParticipantWriter<ParticipantEvidence, FeatureEvidence> {
     private PsiXmlVariableNameWriter<CvTerm> cvWriter;
     private PsiXmlElementWriter<Confidence> confidenceWriter;
     private PsiXmlElementWriter<Organism> hostOrganismWriter;
     private PsiXmlElementWriter<Parameter> parameterWriter;
 
-    public AbstractXmlParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public AbstractXml25ParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 

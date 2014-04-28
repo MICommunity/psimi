@@ -1,37 +1,37 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30;
 
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml30NamedParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Compact XML 2.5 writer for a basic participant (ignore experimental details)
- *
+ * Expanded Xml 2.5 writer for a basic named participant with a shortname and a fullname.
+ * It ignores experimental details
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>14/11/13</pre>
  */
 
-public class CompactXmlParticipantWriter extends AbstractXmlParticipantWriter<Participant, Feature> implements CompactPsiXmlElementWriter<Participant> {
-    public CompactXmlParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+public class ExpandedXmlNamedParticipantWriter extends AbstractXml30NamedParticipantWriter<Participant, Feature> implements ExpandedPsiXmlElementWriter<Participant> {
+    public ExpandedXmlNamedParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 
     @Override
     protected void initialiseFeatureWriter() {
-        super.setFeatureWriter( new XmlFeatureWriter(getStreamWriter(), getObjectIndex()));
+        super.setFeatureWriter(new XmlFeatureWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override
     protected void writeMolecule(Interactor interactor) throws XMLStreamException {
-        super.writeMoleculeRef(interactor);
+        super.writeMoleculeDescription(interactor);
     }
 
     @Override

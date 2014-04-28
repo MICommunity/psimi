@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25;
 
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledFeature;
@@ -6,21 +6,22 @@ import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlModelledFeatureWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25NamedParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Compact XML 2.5 writer for a modelled participant. (ignore all experimental details)
+ * Compact XML 2.5 writer for a named modelled participant having a fullname and a shortname.
+ * It ignores experimental details.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>14/11/13</pre>
  */
 
-public class CompactXmlModelledParticipantWriter extends AbstractXmlParticipantWriter<ModelledParticipant, ModelledFeature> implements CompactPsiXmlElementWriter<ModelledParticipant> {
-    public CompactXmlModelledParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+public class CompactXmlNamedModelledParticipantWriter extends AbstractXml25NamedParticipantWriter<ModelledParticipant, ModelledFeature> implements CompactPsiXmlElementWriter<ModelledParticipant> {
+    public CompactXmlNamedModelledParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 

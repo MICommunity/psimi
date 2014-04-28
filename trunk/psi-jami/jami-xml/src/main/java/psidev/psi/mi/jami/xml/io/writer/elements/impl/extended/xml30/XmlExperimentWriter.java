@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
@@ -20,9 +20,9 @@ import java.util.List;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml30ExperimentWriter extends Xml30NamedExperimentWriter {
+public class XmlExperimentWriter extends Xml30NamedExperimentWriter {
 
-    public Xml30ExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 
