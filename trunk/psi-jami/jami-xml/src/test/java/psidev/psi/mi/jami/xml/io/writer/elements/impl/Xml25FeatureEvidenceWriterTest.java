@@ -373,7 +373,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
         feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -387,7 +387,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
         feature.setShortName("test feature");
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -402,7 +402,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -418,7 +418,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -434,7 +434,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -449,7 +449,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -465,7 +465,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -479,7 +479,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
         feature.setRole(CvTermUtils.createMICvTerm("decreasing-ptm", "MI:1223"));
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -494,7 +494,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -509,7 +509,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
         range.setParticipant(new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor()));
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -525,7 +525,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
         elementCache.extractIdForFeature(new DefaultFeature());
         elementCache.extractIdForFeature(feature);
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 
@@ -539,7 +539,7 @@ public class Xml25FeatureEvidenceWriterTest extends AbstractXml25WriterTest {
         feature.getDetectionMethods().add(new DefaultCvTerm("inferred", "MI:0362"));
         elementCache.clear();
 
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(feature);
         streamWriter.flush();
 

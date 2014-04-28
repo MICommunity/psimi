@@ -7,16 +7,16 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Abstract class for feature evidence writers
+ * Abstract class for feature evidence 2.5 writers
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>13/11/13</pre>
  */
 
-public class AbstractXmlFeatureEvidenceWriter extends AbstractXmlFeatureWriter<FeatureEvidence> {
+public class AbstractXml25FeatureEvidenceWriter extends AbstractXmlFeatureWriter<FeatureEvidence> {
 
-    public AbstractXmlFeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public AbstractXml25FeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 

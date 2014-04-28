@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.NamedParticipant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml30FeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml30ParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -29,7 +29,7 @@ public class ExpandedXmlNamedParticipantEvidenceWriter extends AbstractXml30Part
 
     @Override
     protected void initialiseFeatureWriter() {
-        super.setFeatureWriter(new XmlFeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
+        super.setFeatureWriter(new Xml30FeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override

@@ -636,9 +636,10 @@
                     <xs:documentation>The list of feature types describing the feature.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="featureDetectionMethodList" type="mif:featureDetectionMethodList" minOccurs="0">
+            <xs:element name="featureDetectionMethod" type="mif:cvType" maxOccurs="unbounded" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>The list of feature detection methods used to detect and confirm this feature. </xs:documentation>
+                    <xs:documentation>Experimental method used to identify the feature. A setting here overrides the global setting given in the experimentDescription.
+                        External controlled vocabulary. </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="experimentRefList" type="mif:experimentRefList" minOccurs="0">
@@ -685,20 +686,6 @@
                 <xs:annotation>
                     <xs:documentation>Description and classification of the feature. This element is controlled by the PSI-MI controlled vocabulary "feature",
                         root term id MI:0116.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="featureDetectionMethodList">
-        <xs:annotation>
-            <xs:documentation>A list of feature detection methods used to identify and confirm the feature.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element name="featureDetectionMethod" type="mif:cvType" maxOccurs="unbounded">
-                <xs:annotation>
-                    <xs:documentation>Experimental method used to identify the feature. A setting here overrides the global setting given in the experimentDescription.
-                        External controlled vocabulary. </xs:documentation>
                 </xs:annotation>
             </xs:element>
         </xs:sequence>

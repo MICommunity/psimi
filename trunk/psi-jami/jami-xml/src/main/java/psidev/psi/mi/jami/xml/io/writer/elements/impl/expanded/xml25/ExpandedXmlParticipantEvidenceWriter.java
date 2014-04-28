@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ParticipantEvidenceWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -25,7 +25,7 @@ public class ExpandedXmlParticipantEvidenceWriter extends AbstractXml25Participa
 
     @Override
     protected void initialiseFeatureWriter() {
-        super.setFeatureWriter(new XmlFeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
+        super.setFeatureWriter(new Xml25FeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override

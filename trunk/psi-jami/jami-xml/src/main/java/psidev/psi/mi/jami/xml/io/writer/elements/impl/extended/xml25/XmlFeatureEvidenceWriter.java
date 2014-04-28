@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25;
 
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.FeatureEvidence;
@@ -16,7 +16,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureEvidenceWriter {
+public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureEvidenceWriter {
     public XmlFeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }

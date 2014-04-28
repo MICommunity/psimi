@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml30ParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.CompactXmlExperimentalInteractorWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlFeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -31,7 +30,7 @@ public class CompactXmlParticipantEvidenceWriter extends AbstractXml30Participan
 
     @Override
     protected void initialiseFeatureWriter() {
-        super.setFeatureWriter(new XmlFeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
+        super.setFeatureWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlFeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
     }
 
     public CompactPsiXmlElementWriter<ExperimentalInteractor> getExperimentalInteractorWriter() {
