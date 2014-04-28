@@ -6,8 +6,8 @@ import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.tab.listener.MitabParserLogger;
-import psidev.psi.mi.jami.xml.cache.InMemoryPsiXml25Cache;
-import psidev.psi.mi.jami.xml.cache.PsiXml25IdCache;
+import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserLogger;
 import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
@@ -173,7 +173,7 @@ public class MIDataSourceOptionFactory {
      * @return the default options for the PSI-xml 2.5 datasource
      */
     public Map<String, Object> getDefaultXml25Options(Object inputData){
-        return getXml25Options(InteractionObjectCategory.evidence, true, new PsiXmlParserLogger(), inputData, null, new InMemoryPsiXml25Cache());
+        return getXml25Options(InteractionObjectCategory.evidence, true, new PsiXmlParserLogger(), inputData, null, new InMemoryPsiXmlCache());
     }
 
     /**
@@ -185,7 +185,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the Psi Xml datasource using the provided objectCategory
      */
     public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, Object inputData){
-        return getXml25Options(objectCategory, true, null, inputData, null, new InMemoryPsiXml25Cache());
+        return getXml25Options(objectCategory, true, null, inputData, null, new InMemoryPsiXmlCache());
     }
 
     /**
@@ -197,7 +197,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getXml25Options(boolean streaming, Object inputData){
-        return getXml25Options(null, streaming, null, inputData, null, new InMemoryPsiXml25Cache());
+        return getXml25Options(null, streaming, null, inputData, null, new InMemoryPsiXmlCache());
     }
 
     /**
@@ -209,7 +209,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource with the provided listener
      */
     public Map<String, Object> getXml25Options(MIFileParserListener listener, Object inputData){
-        return getXml25Options(null, true, listener, inputData, null, new InMemoryPsiXml25Cache());
+        return getXml25Options(null, true, listener, inputData, null, new InMemoryPsiXmlCache());
     }
 
     /**
@@ -222,7 +222,7 @@ public class MIDataSourceOptionFactory {
      * @param objectCache: cache for parsed objects having an id
      * @return the Xml 2.5 datasource options
      */
-    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input, ComplexExpansionMethod expansionMethod, PsiXml25IdCache objectCache){
+    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input, ComplexExpansionMethod expansionMethod, PsiXmlIdCache objectCache){
         Map<String, Object> options = getOptions(MIFileType.psi25_xml, objectCategory, streaming, listener, input);
         if (expansionMethod != null){
             options.put(MIDataSourceOptions.COMPLEX_EXPANSION_OPTION_KEY, expansionMethod);

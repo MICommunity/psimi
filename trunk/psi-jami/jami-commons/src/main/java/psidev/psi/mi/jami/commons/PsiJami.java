@@ -79,31 +79,31 @@ public class PsiJami {
 
         // XML writers
         Map<String, Object> supportedOptions4 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXmlType.compact, false, false);
-        writerFactory.registerDataSourceWriter(CompactXml25Writer.class, supportedOptions4);
+        writerFactory.registerDataSourceWriter(CompactXmlWriter.class, supportedOptions4);
         Map<String, Object> supportedOptions5 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXmlType.expanded, false, false);
-        writerFactory.registerDataSourceWriter(ExpandedXml25Writer.class, supportedOptions5);
+        writerFactory.registerDataSourceWriter(ExpandedXmlWriter.class, supportedOptions5);
         Map<String, Object> supportedOptions6 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXmlType.compact, false, false);
-        writerFactory.registerDataSourceWriter(CompactXml25BinaryWriter.class, supportedOptions6);
+        writerFactory.registerDataSourceWriter(CompactXmlBinaryWriter.class, supportedOptions6);
         Map<String, Object> supportedOptions7 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXmlType.expanded, false, false);
-        writerFactory.registerDataSourceWriter(ExpandedXml25BinaryWriter.class, supportedOptions7);
+        writerFactory.registerDataSourceWriter(ExpandedXmlBinaryWriter.class, supportedOptions7);
 
         Map<String, Object> supportedOptions44 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXmlType.compact, false, true);
-        writerFactory.registerDataSourceWriter(CompactXml25NamedWriter.class, supportedOptions44);
+        writerFactory.registerDataSourceWriter(CompactXmlNamedWriter.class, supportedOptions44);
         Map<String, Object> supportedOptions55 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXmlType.expanded, false, true);
-        writerFactory.registerDataSourceWriter(ExpandedXml25NamedWriter.class, supportedOptions55);
+        writerFactory.registerDataSourceWriter(ExpandedXmlNamedWriter.class, supportedOptions55);
         Map<String, Object> supportedOptions66 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXmlType.compact, false, true);
-        writerFactory.registerDataSourceWriter(CompactXml25NamedBinaryWriter.class, supportedOptions66);
+        writerFactory.registerDataSourceWriter(CompactXmlNamedBinaryWriter.class, supportedOptions66);
         Map<String, Object> supportedOptions77 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXmlType.expanded, false, true);
-        writerFactory.registerDataSourceWriter(ExpandedXml25NamedBinaryWriter.class, supportedOptions77);
+        writerFactory.registerDataSourceWriter(ExpandedXmlNamedBinaryWriter.class, supportedOptions77);
 
         Map<String, Object> supportedOptions8 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXmlType.compact, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25Writer.class, supportedOptions8);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlWriter.class, supportedOptions8);
         Map<String, Object> supportedOptions9 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed, PsiXmlType.expanded, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25Writer.class, supportedOptions9);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlWriter.class, supportedOptions9);
         Map<String, Object> supportedOptions10 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXmlType.compact, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25BinaryWriter.class, supportedOptions10);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlBinaryWriter.class, supportedOptions10);
         Map<String, Object> supportedOptions11 = createXML25InteractionWriterOptions(InteractionObjectCategory.mixed_binary, PsiXmlType.expanded, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25BinaryWriter.class, supportedOptions11);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlBinaryWriter.class, supportedOptions11);
     }
 
     public static void initialiseModelledInteractionWriters() {
@@ -137,31 +137,31 @@ public class PsiJami {
 
         // XML 2.5 options
         Map<String, Object> supportedOptions4 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXmlType.compact, false, false);
-        writerFactory.registerDataSourceWriter(CompactXml25ModelledWriter.class, supportedOptions4);
+        writerFactory.registerDataSourceWriter(CompactXmlModelledWriter.class, supportedOptions4);
         Map<String, Object> supportedOptions5 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXmlType.expanded, false, false);
-        writerFactory.registerDataSourceWriter(ExpandedXml25ModelledWriter.class, supportedOptions5);
+        writerFactory.registerDataSourceWriter(ExpandedXmlModelledWriter.class, supportedOptions5);
         Map<String, Object> supportedOptions6 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXmlType.compact, false, false);
-        writerFactory.registerDataSourceWriter(CompactXml25ModelledBinaryWriter.class, supportedOptions6);
+        writerFactory.registerDataSourceWriter(CompactXmlModelledBinaryWriter.class, supportedOptions6);
         Map<String, Object> supportedOptions7 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXmlType.expanded, false, false);
-        writerFactory.registerDataSourceWriter(ExpandedXml25ModelledBinaryWriter.class, supportedOptions7);
+        writerFactory.registerDataSourceWriter(ExpandedXmlModelledBinaryWriter.class, supportedOptions7);
 
         Map<String, Object> supportedOptions44 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXmlType.compact, false, true);
-        writerFactory.registerDataSourceWriter(CompactXml25NamedModelledWriter.class, supportedOptions44);
+        writerFactory.registerDataSourceWriter(CompactXmlNamedModelledWriter.class, supportedOptions44);
         Map<String, Object> supportedOptions55 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXmlType.expanded, false, true);
-        writerFactory.registerDataSourceWriter(ExpandedXml25NamedModelledWriter.class, supportedOptions55);
+        writerFactory.registerDataSourceWriter(ExpandedXmlNamedModelledWriter.class, supportedOptions55);
         Map<String, Object> supportedOptions66 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXmlType.compact, false, true);
-        writerFactory.registerDataSourceWriter(CompactXml25NamedModelledBinaryWriter.class, supportedOptions66);
+        writerFactory.registerDataSourceWriter(CompactXmlNamedModelledBinaryWriter.class, supportedOptions66);
         Map<String, Object> supportedOptions77 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXmlType.expanded, false, true);
-        writerFactory.registerDataSourceWriter(ExpandedXml25NamedModelledBinaryWriter.class, supportedOptions77);
+        writerFactory.registerDataSourceWriter(ExpandedXmlNamedModelledBinaryWriter.class, supportedOptions77);
 
         Map<String, Object> supportedOptions8 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXmlType.compact, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25ModelledWriter.class, supportedOptions8);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlModelledWriter.class, supportedOptions8);
         Map<String, Object> supportedOptions9 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled, PsiXmlType.expanded, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25ModelledWriter.class, supportedOptions9);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlModelledWriter.class, supportedOptions9);
         Map<String, Object> supportedOptions10 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXmlType.compact, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25ModelledBinaryWriter.class, supportedOptions10);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlModelledBinaryWriter.class, supportedOptions10);
         Map<String, Object> supportedOptions11 = createXML25InteractionWriterOptions(InteractionObjectCategory.modelled_binary, PsiXmlType.expanded, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25ModelledBinaryWriter.class, supportedOptions11);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlModelledBinaryWriter.class, supportedOptions11);
     }
 
     public static void initialiseInteractionEvidenceWriters() {
@@ -194,31 +194,31 @@ public class PsiJami {
 
         // xml 25 writers
         Map<String, Object> supportedOptions1 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXmlType.compact, false, false);
-        writerFactory.registerDataSourceWriter(CompactXml25EvidenceWriter.class, supportedOptions1);
+        writerFactory.registerDataSourceWriter(CompactXmlEvidenceWriter.class, supportedOptions1);
         Map<String, Object> supportedOptions2 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXmlType.expanded, false, false);
-        writerFactory.registerDataSourceWriter(ExpandedXml25EvidenceWriter.class, supportedOptions2);
+        writerFactory.registerDataSourceWriter(ExpandedXmlEvidenceWriter.class, supportedOptions2);
         Map<String, Object> supportedOptions3 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXmlType.compact, false, false);
-        writerFactory.registerDataSourceWriter(CompactXml25BinaryEvidenceWriter.class, supportedOptions3);
+        writerFactory.registerDataSourceWriter(CompactXmlBinaryEvidenceWriter.class, supportedOptions3);
         Map<String, Object> supportedOptions16 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXmlType.expanded, false, false);
-        writerFactory.registerDataSourceWriter(ExpandedXml25BinaryEvidenceWriter.class, supportedOptions16);
+        writerFactory.registerDataSourceWriter(ExpandedXmlBinaryEvidenceWriter.class, supportedOptions16);
 
         Map<String, Object> supportedOptions44 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXmlType.compact, false, true);
-        writerFactory.registerDataSourceWriter(CompactXml25NamedEvidenceWriter.class, supportedOptions44);
+        writerFactory.registerDataSourceWriter(CompactXmlNamedEvidenceWriter.class, supportedOptions44);
         Map<String, Object> supportedOptions55 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXmlType.expanded, false, true);
-        writerFactory.registerDataSourceWriter(ExpandedXml25NamedEvidenceWriter.class, supportedOptions55);
+        writerFactory.registerDataSourceWriter(ExpandedXmlNamedEvidenceWriter.class, supportedOptions55);
         Map<String, Object> supportedOptions66 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXmlType.compact, false, true);
-        writerFactory.registerDataSourceWriter(CompactXml25NamedBinaryEvidenceWriter.class, supportedOptions66);
+        writerFactory.registerDataSourceWriter(CompactXmlNamedBinaryEvidenceWriter.class, supportedOptions66);
         Map<String, Object> supportedOptions77 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXmlType.expanded, false, true);
-        writerFactory.registerDataSourceWriter(ExpandedXml25NamedBinaryEvidenceWriter.class, supportedOptions77);
+        writerFactory.registerDataSourceWriter(ExpandedXmlNamedBinaryEvidenceWriter.class, supportedOptions77);
 
         Map<String, Object> supportedOptions17 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXmlType.compact, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25EvidenceWriter.class, supportedOptions17);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlEvidenceWriter.class, supportedOptions17);
         Map<String, Object> supportedOptions18 = createXML25InteractionWriterOptions(InteractionObjectCategory.evidence, PsiXmlType.expanded, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25EvidenceWriter.class, supportedOptions18);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlEvidenceWriter.class, supportedOptions18);
         Map<String, Object> supportedOptions19 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXmlType.compact, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXml25BinaryEvidenceWriter.class, supportedOptions19);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlBinaryEvidenceWriter.class, supportedOptions19);
         Map<String, Object> supportedOptions20 = createXML25InteractionWriterOptions(InteractionObjectCategory.binary_evidence, PsiXmlType.expanded, true, true);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXml25BinaryEvidenceWriter.class, supportedOptions20);
+        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlBinaryEvidenceWriter.class, supportedOptions20);
 
     }
 
@@ -250,16 +250,16 @@ public class PsiJami {
         datasourceFactory.registerDataSource(LightMitabBinarySource.class, supportedOptions3333);
 
         Map<String, Object> supportedOptions4 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.basic);
-        datasourceFactory.registerDataSource(LightXml25StreamSource.class, supportedOptions4);
+        datasourceFactory.registerDataSource(LightXmlStreamSource.class, supportedOptions4);
 
         Map<String, Object> supportedOptions44 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.basic_binary);
-        datasourceFactory.registerDataSource(LightXml25BinaryStreamSource.class, supportedOptions44);
+        datasourceFactory.registerDataSource(LightXmlBinaryStreamSource.class, supportedOptions44);
 
         Map<String, Object> supportedOptions444 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.basic);
-        datasourceFactory.registerDataSource(LightXml25Source.class, supportedOptions444);
+        datasourceFactory.registerDataSource(LightXmlSource.class, supportedOptions444);
 
         Map<String, Object> supportedOptions4444 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.basic_binary);
-        datasourceFactory.registerDataSource(LightXml25BinarySource.class, supportedOptions444);
+        datasourceFactory.registerDataSource(LightXmlBinarySource.class, supportedOptions444);
     }
 
     public static void initialiseModelledInteractionSources() {
@@ -278,16 +278,16 @@ public class PsiJami {
         datasourceFactory.registerDataSource(MitabModelledBinarySource.class, supportedOptions2222);
 
         Map<String, Object> supportedOptions3 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.modelled);
-        datasourceFactory.registerDataSource(Xml25ModelledStreamSource.class, supportedOptions3);
+        datasourceFactory.registerDataSource(XmlModelledStreamSource.class, supportedOptions3);
 
         Map<String, Object> supportedOptions33 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.modelled_binary);
-        datasourceFactory.registerDataSource(Xml25ModelledBinaryStreamSource.class, supportedOptions33);
+        datasourceFactory.registerDataSource(XmlModelledBinaryStreamSource.class, supportedOptions33);
 
         Map<String, Object> supportedOptions333 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.modelled);
-        datasourceFactory.registerDataSource(Xml25ModelledSource.class, supportedOptions333);
+        datasourceFactory.registerDataSource(XmlModelledSource.class, supportedOptions333);
 
         Map<String, Object> supportedOptions3333 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.modelled_binary);
-        datasourceFactory.registerDataSource(Xml25ModelledBinarySource.class, supportedOptions3333);
+        datasourceFactory.registerDataSource(XmlModelledBinarySource.class, supportedOptions3333);
     }
 
     public static void initialiseInteractionEvidenceSources() {
@@ -306,16 +306,16 @@ public class PsiJami {
         datasourceFactory.registerDataSource(MitabBinaryEvidenceSource.class, supportedOptions1111);
 
         Map<String, Object> supportedOptions2 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.evidence);
-        datasourceFactory.registerDataSource(Xml25EvidenceStreamSource.class, supportedOptions2);
+        datasourceFactory.registerDataSource(XmlEvidenceStreamSource.class, supportedOptions2);
 
         Map<String, Object> supportedOptions22 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), true, InteractionObjectCategory.binary_evidence);
-        datasourceFactory.registerDataSource(Xml25BinaryEvidenceStreamSource.class, supportedOptions22);
+        datasourceFactory.registerDataSource(XmlBinaryEvidenceStreamSource.class, supportedOptions22);
 
         Map<String, Object> supportedOptions222 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.evidence);
-        datasourceFactory.registerDataSource(Xml25EvidenceSource.class, supportedOptions222);
+        datasourceFactory.registerDataSource(XmlEvidenceSource.class, supportedOptions222);
 
         Map<String, Object> supportedOptions2222 = createXmlDataSourceOptions(MIFileType.psi25_xml.toString(), false, InteractionObjectCategory.binary_evidence);
-        datasourceFactory.registerDataSource(Xml25BinaryEvidenceSource.class, supportedOptions2222);
+        datasourceFactory.registerDataSource(XmlBinaryEvidenceSource.class, supportedOptions2222);
     }
 
     private static Map<String, Object> createMITABInteractionWriterOptions(InteractionObjectCategory interactionCategory, MitabVersion version, boolean extended, boolean needCompleExpansion) {
