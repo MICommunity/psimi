@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.commons;
 
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import java.io.*;
 
@@ -176,7 +176,7 @@ public class MIFileAnalyzer {
         }
         else {
 
-            PushbackReader reader = new PushbackReader(new InputStreamReader(stream), PsiXml25Utils.XML_BUFFER_SIZE);
+            PushbackReader reader = new PushbackReader(new InputStreamReader(stream), PsiXmlUtils.XML_BUFFER_SIZE);
             return readOpenedStream(reader);
         }
     }
@@ -198,7 +198,7 @@ public class MIFileAnalyzer {
         }
         else {
 
-            PushbackReader reader2 = new PushbackReader(reader, PsiXml25Utils.XML_BUFFER_SIZE);
+            PushbackReader reader2 = new PushbackReader(reader, PsiXmlUtils.XML_BUFFER_SIZE);
             // check first line
             return readOpenedStream(reader2);
         }
@@ -219,7 +219,7 @@ public class MIFileAnalyzer {
             throw new IOException("The input stream cannot be null.");
         }
         else {
-            PushbackReader reader = new PushbackReader(new InputStreamReader(stream), PsiXml25Utils.XML_BUFFER_SIZE);
+            PushbackReader reader = new PushbackReader(new InputStreamReader(stream), PsiXmlUtils.XML_BUFFER_SIZE);
             MIFileType type = MIFileType.other;
             try{
                 type = identifyMIFileTypeAndConsume(reader);
@@ -247,7 +247,7 @@ public class MIFileAnalyzer {
             throw new IOException("The input reader cannot be null.");
         }
         else {
-            PushbackReader reader2 = new PushbackReader(reader, PsiXml25Utils.XML_BUFFER_SIZE);
+            PushbackReader reader2 = new PushbackReader(reader, PsiXmlUtils.XML_BUFFER_SIZE);
             MIFileType type = MIFileType.other;
             try{
                 type = identifyMIFileTypeAndConsume(reader2);
@@ -261,10 +261,10 @@ public class MIFileAnalyzer {
     }
 
     private MIFileType identifyMIFileTypeAndConsume(PushbackReader reader) throws IOException {
-        char[] buffer = new char[PsiXml25Utils.XML_BUFFER_SIZE];
+        char[] buffer = new char[PsiXmlUtils.XML_BUFFER_SIZE];
 
         // read BUFFER_SIZE into the buffer
-        int c = reader.read( buffer, 0, PsiXml25Utils.XML_BUFFER_SIZE );
+        int c = reader.read( buffer, 0, PsiXmlUtils.XML_BUFFER_SIZE );
         // build a string representation for it
         final String line = String.valueOf( buffer );
 

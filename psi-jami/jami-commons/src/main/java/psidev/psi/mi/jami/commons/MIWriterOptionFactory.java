@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.xml.PsiXmlType;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryLightIdentityObjectCache;
-import psidev.psi.mi.jami.xml.cache.PsiXml25ObjectCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -379,7 +379,7 @@ public class MIWriterOptionFactory {
      * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
-    public Map<String, Object> getExpandedXml25Options(InteractionObjectCategory objectCategory, PsiXml25ObjectCache elementCache,
+    public Map<String, Object> getExpandedXml25Options(InteractionObjectCategory objectCategory, PsiXmlObjectCache elementCache,
                                                        Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended,
                                                        PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
@@ -426,7 +426,7 @@ public class MIWriterOptionFactory {
      * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
-    public Map<String, Object> getCompactXml25Options(InteractionObjectCategory objectCategory, PsiXml25ObjectCache elementCache,
+    public Map<String, Object> getCompactXml25Options(InteractionObjectCategory objectCategory, PsiXmlObjectCache elementCache,
                                                       Set<Experiment> experimentSet,Set<Interactor> interactorSet,Set<String> availabilitySet,
                                                Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended,
                                                PsiXmlVersion version){
@@ -485,7 +485,7 @@ public class MIWriterOptionFactory {
      * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
-    public Map<String, Object> getExpandedXml25Options(InteractionObjectCategory objectCategory, PsiXml25ObjectCache elementCache,
+    public Map<String, Object> getExpandedXml25Options(InteractionObjectCategory objectCategory, PsiXmlObjectCache elementCache,
                                                        Set<Interaction> interactionSet, Source defaultSource,
                                                        XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
                                                        boolean writeComplexAsInteractors, boolean extended,
@@ -547,7 +547,7 @@ public class MIWriterOptionFactory {
      * @param version: Psi xml version
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
-    public Map<String, Object> getCompactXml25Options(InteractionObjectCategory objectCategory, PsiXml25ObjectCache elementCache,
+    public Map<String, Object> getCompactXml25Options(InteractionObjectCategory objectCategory, PsiXmlObjectCache elementCache,
                                                       Set<Experiment> experimentSet,Set<Interactor> interactorSet,Set<String> availabilitySet,
                                                       Set<Interaction> interactionSet, Source defaultSource,
                                                       XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
@@ -621,7 +621,7 @@ public class MIWriterOptionFactory {
      * @return the options for the PSI-XML 2.5  InteractionWriter
      */
     public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, PsiXmlType xmlType,
-                                               PsiXml25ObjectCache elementCache, Set<Experiment> experimentSet,
+                                               PsiXmlObjectCache elementCache, Set<Experiment> experimentSet,
                                                Set<Interactor> interactorSet, Set<String> availabilitySet,
                                                Set<Interaction> interactionSet, Source defaultSource,
                                                XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
