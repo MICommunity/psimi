@@ -2,10 +2,9 @@ package psidev.psi.mi.jami.xml.model.extension.factory;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.factory.InteractorFactory;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.Polymer;
-import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
 import psidev.psi.mi.jami.xml.model.extension.*;
 
@@ -87,17 +86,59 @@ public class XmlInteractorFactory extends InteractorFactory{
         }
 
         if (reloadedInteractorDependingOnType != null){
+
+            // interactor pool
+            if (reloadedInteractorDependingOnType instanceof InteractorPool){
+                Collection<Xref> components = XrefUtils.collectAllXrefsHavingQualifier(source.getXrefs(), Xref.INTERACTOR_SET_QUALIFIER_MI,
+                        Xref.INTERACTOR_SET_QUALIFIER);
+
+                if (!components.isEmpty()){
+                    // remove component xrefs from source
+                    source.getXrefs().removeAll(components);
+                    // create interactor from component
+                    processInteractorPool(components, (InteractorPool)reloadedInteractorDependingOnType, source.getSequence(), source.getOrganism());
+                }
+            }
+            // polymer
+            else if (reloadedInteractorDependingOnType instanceof Polymer){
+                ((Polymer)reloadedInteractorDependingOnType).setSequence(source.getSequence());
+            }
+
             InteractorCloner.copyAndOverrideBasicInteractorProperties(source, reloadedInteractorDependingOnType);
             ((FileSourceContext)reloadedInteractorDependingOnType).setSourceLocator((PsiXmLocator)source.getSourceLocator());
             reloadedInteractorDependingOnType.setId(source.getId());
-            if (reloadedInteractorDependingOnType instanceof Polymer){
-                ((Polymer)reloadedInteractorDependingOnType).setSequence(source.getSequence());
-            }
 
             return reloadedInteractorDependingOnType;
         }
         else{
             return source;
+        }
+    }
+
+    private void processInteractorPool(Collection<Xref> xref, InteractorPool pool, String sequence, Organism organism) {
+        for (Xref ref : xref){
+            Interactor subInteractor = createInteractorFromDatabase(ref.getDatabase(), ref.getId().toLowerCase());
+            if (subInteractor != null){
+                subInteractor.getIdentifiers().add(new XmlXref(ref.getDatabase(), ref.getId(), ref.getVersion(), CvTermUtils.createIdentityQualifier()));
+                ((XmlInteractor)subInteractor).setSourceLocator(((XmlXref) ref).getSourceLocator());
+            }
+            // create a default interactor
+            else{
+                subInteractor = createInteractor(ref.getId().toLowerCase(), CvTermUtils.createUnknownInteractorType());
+                subInteractor.getIdentifiers().add(new XmlXref(ref.getDatabase(), ref.getId(), ref.getVersion(), CvTermUtils.createIdentityQualifier()));
+                ((XmlInteractor)subInteractor).setSourceLocator(((XmlXref)ref).getSourceLocator());
+            }
+
+            // add sequence
+            if (subInteractor instanceof Polymer){
+                ((Polymer) subInteractor).setSequence(sequence);
+            }
+
+            // add organism
+            subInteractor.setOrganism(organism);
+
+            // add the component to the interactor pool
+            pool.add(subInteractor);
         }
     }
 }

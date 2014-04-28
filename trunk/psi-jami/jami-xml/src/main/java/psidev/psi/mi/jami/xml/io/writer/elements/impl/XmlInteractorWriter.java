@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.model.extension.XmlXref;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -148,6 +149,10 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             else if (!object.getXrefs().isEmpty()){
                 writeXrefFromInteractorXrefs(object);
             }
+            // write set members if interactor pool
+            else {
+                writeOtherSetMembers(object, true, true);
+            }
 
             // write interactor type
            getInteractorTypeWriter().write(object.getInteractorType(), "interactorType");
@@ -158,14 +163,7 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             }
 
             // write sequence
-            if (object instanceof Polymer){
-                Polymer pol = (Polymer) object;
-                if (pol.getSequence() != null){
-                    this.streamWriter.writeStartElement("sequence");
-                    this.streamWriter.writeCharacters(pol.getSequence());
-                    this.streamWriter.writeEndElement();
-                }
-            }
+            processSequence(object);
 
             // write attributes
             if (!object.getAnnotations().isEmpty()){
@@ -199,6 +197,31 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
         }
     }
 
+    protected void processSequence(Interactor object) throws XMLStreamException {
+        if (object instanceof Polymer){
+            writePolymerSequence((Polymer) object);
+        }
+        else if (object instanceof InteractorPool){
+            InteractorPool pool = (InteractorPool)object;
+
+            if (!pool.isEmpty()){
+                Interactor subInteractor = pool.iterator().next();
+                if (subInteractor instanceof Polymer){
+                     writePolymerSequence((Polymer)subInteractor);
+                }
+            }
+        }
+    }
+
+    protected void writePolymerSequence(Polymer object) throws XMLStreamException {
+        Polymer pol = object;
+        if (pol.getSequence() != null){
+            this.streamWriter.writeStartElement("sequence");
+            this.streamWriter.writeCharacters(pol.getSequence());
+            this.streamWriter.writeEndElement();
+        }
+    }
+
     protected void writeXrefFromInteractorXrefs(Interactor object) throws XMLStreamException {
         Iterator<Xref> refIterator = object.getXrefs().iterator();
         // default qualifier is null as we are not processing identifiers
@@ -221,6 +244,9 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
                 index++;
             }
         }
+
+        // write set members if interactor pool
+        writeOtherSetMembers(object, false, false);
 
         // write end xref
         this.streamWriter.writeEndElement();
@@ -268,7 +294,47 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             }
         }
 
+        // write set members if interactor pool
+        writeOtherSetMembers(object, false, false);
+
         // write end xref
         this.streamWriter.writeEndElement();
+    }
+
+    protected void writeOtherSetMembers(Interactor object, boolean needToWriteXref, boolean needToWritePrimaryRef) throws XMLStreamException {
+        // write components of set
+        if (object instanceof InteractorPool){
+            InteractorPool pool = (InteractorPool)object;
+
+            if (!pool.isEmpty()){
+                // write xref if necessary
+                if (needToWriteXref){
+                    this.streamWriter.writeStartElement("xref");
+                }
+
+                boolean isFirst = needToWritePrimaryRef;
+                // default qualifier is set member
+                getXrefWriter().setDefaultRefType(Xref.INTERACTOR_SET_QUALIFIER);
+                getXrefWriter().setDefaultRefTypeAc(Xref.INTERACTOR_SET_QUALIFIER_MI);
+                for (Interactor interactor : pool){
+                    Xref preferredIdentifier = interactor.getPreferredIdentifier();
+
+                    if (preferredIdentifier != null && isFirst){
+                        isFirst = false;
+                        getXrefWriter().write(new XmlXref(preferredIdentifier.getDatabase(), preferredIdentifier.getId(),
+                                preferredIdentifier.getVersion()),"primaryRef");
+                    }
+                    else if (preferredIdentifier != null){
+                        getXrefWriter().write(new XmlXref(preferredIdentifier.getDatabase(), preferredIdentifier.getId(),
+                                preferredIdentifier.getVersion()),"secondaryRef");
+                    }
+                }
+
+                // write end xref if necessary
+                if (needToWriteXref){
+                    this.streamWriter.writeEndElement();
+                }
+            }
+        }
     }
 }
