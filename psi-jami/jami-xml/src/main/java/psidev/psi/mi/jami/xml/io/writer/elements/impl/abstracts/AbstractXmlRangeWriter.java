@@ -83,7 +83,7 @@ public abstract class AbstractXmlRangeWriter implements PsiXmlElementWriter<Rang
         }
     }
 
-    protected abstract void writeOtherProperties(Range object);
+    protected abstract void writeOtherProperties(Range object) throws XMLStreamException;
 
     protected XMLStreamWriter getStreamWriter() {
         return streamWriter;
