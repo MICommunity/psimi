@@ -276,7 +276,9 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     }
 
     public void setJAXBParticipantRef(int id, PsiXmLocator locator){
-        this.participant = new ParticipantRef(id, locator);
+        if (this.participant == null){
+            this.participant = new ParticipantRef(id, locator);
+        }
     }
 
     @XmlElement(name = "participantRef" , namespace = "http://psi.hupo.org/mi/mif300")
