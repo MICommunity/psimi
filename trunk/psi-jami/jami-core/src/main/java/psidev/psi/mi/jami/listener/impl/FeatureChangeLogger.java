@@ -70,18 +70,6 @@ public class FeatureChangeLogger<T extends Feature> implements FeatureChangeList
         featureChangeLogger.log(Level.INFO, "The range " + oldStart.toString()+"-"+oldEnd.toString() + " has been replaced with "+range.toString()+" in the feature " + feature.toString());
     }
 
-    public void onInteractionEffectUpdate(T protein, CvTerm old) {
-        if (old == null){
-            featureChangeLogger.log(Level.INFO, "The interaction effect has been initialised for the feature " + protein.toString());
-        }
-        else if (protein.getRole() == null){
-            featureChangeLogger.log(Level.INFO, "The interaction effect has been reset for the feature " + protein.toString());
-        }
-        else {
-            featureChangeLogger.log(Level.INFO, "The interaction effect " + old.toString() + " has been replaced with " + protein.getRole() + " in the feature " + protein.toString());
-        }
-    }
-
     public void onRoleUpdate(T protein, CvTerm oldRole) {
         if (oldRole == null){
             featureChangeLogger.log(Level.INFO, "The feature role has been initialised for the feature " + protein.toString());
