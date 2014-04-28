@@ -73,6 +73,11 @@ public abstract class AbstractXml30ParticipantEvidenceWriter extends AbstractXml
     }
 
     @Override
+    protected void initialiseFeatureWriter() {
+        super.setFeatureWriter(new Xml30FeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
     protected void writeExperimentalPreparations(ParticipantEvidence object) throws XMLStreamException {
         if (!object.getExperimentalPreparations().isEmpty()){
             getStreamWriter().writeStartElement("experimentalPreparationList");

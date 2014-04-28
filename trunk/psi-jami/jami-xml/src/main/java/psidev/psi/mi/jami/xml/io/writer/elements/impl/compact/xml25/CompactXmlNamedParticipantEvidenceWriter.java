@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.NamedParticipant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml25ParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -24,11 +23,6 @@ import javax.xml.stream.XMLStreamWriter;
 public class CompactXmlNamedParticipantEvidenceWriter extends AbstractXml25ParticipantEvidenceWriter implements CompactPsiXmlElementWriter<ParticipantEvidence> {
     public CompactXmlNamedParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
-    }
-
-    @Override
-    protected void initialiseFeatureWriter() {
-        super.setFeatureWriter(new Xml25FeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override
