@@ -29,7 +29,7 @@ public class ExpandedXmlParticipantEvidenceWriter extends AbstractXml30Participa
 
     @Override
     protected void initialiseFeatureWriter() {
-        super.setFeatureWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlFeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
+        super.setFeatureWriter(new XmlFeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
     }
 
     public ExpandedPsiXmlElementWriter<ExperimentalInteractor> getExperimentalInteractorWriter() {
