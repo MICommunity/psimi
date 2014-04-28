@@ -125,12 +125,7 @@ public class FeatureEnricherStatisticsWriter<T extends Feature>
         incrementUpdateCount();
     }
 
-    public void onInteractionDependencyUpdate(T feature, CvTerm oldDependency) {
-        checkObject(feature);
-        incrementUpdateCount();
-    }
-
-    public void onInteractionEffectUpdate(T feature, CvTerm oldEffect) {
+    public void onRoleUpdate(T feature, CvTerm oldRole) {
         checkObject(feature);
         incrementUpdateCount();
     }
