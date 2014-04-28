@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.ExpandedXmlModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.ExpandedXmlParticipantEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlFeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXmlWriter;

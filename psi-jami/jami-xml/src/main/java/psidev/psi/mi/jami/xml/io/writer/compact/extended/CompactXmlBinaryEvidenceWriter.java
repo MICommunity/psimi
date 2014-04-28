@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlMo
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlConfidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlFeatureEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlFeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlHostOrganismWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlInferredInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParameterWriter;

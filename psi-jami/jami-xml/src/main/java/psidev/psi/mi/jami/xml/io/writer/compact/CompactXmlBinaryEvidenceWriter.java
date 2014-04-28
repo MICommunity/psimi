@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25FeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlBinaryInteractionEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlModelledInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlModelledParticipantWriter;
@@ -168,7 +168,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
                                                                                   PsiXmlXrefWriter primaryRefWriter,
                                                                                   PsiXmlVariableNameWriter<CvTerm> featureTypeWriter,
                                                                                   PsiXmlElementWriter<Range> rangeWriter) {
-        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(getStreamWriter(), getElementCache());
+        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setRangeWriter(rangeWriter);
         writer.setXrefWriter(primaryRefWriter);
         writer.setFeatureTypeWriter(featureTypeWriter);

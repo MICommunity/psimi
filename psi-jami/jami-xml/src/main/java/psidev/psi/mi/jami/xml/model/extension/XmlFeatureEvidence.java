@@ -110,25 +110,9 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
         super.setId(id);
     }
 
-    /**
-     * Sets the value of the featureDetectionMethod property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    @XmlElement(name = "featureDetectionMethod", type = XmlCvTerm.class)
-    public void setJAXBFeatureDetectionMethod(CvTerm value) {
-        if (featureDetectionMethods == null){
-            this.featureDetectionMethods = new ArrayList<CvTerm>();
-        }
-        if (!featureDetectionMethods.isEmpty()){
-            featureDetectionMethods.remove(0);
-        }
-        if (value != null){
-            this.featureDetectionMethods.add(0, value);
-        }
+    @XmlElement(name="featureDetectionMethod", type = XmlCvTerm.class)
+    public List<CvTerm> getJAXBFeatureDetectionMethods() {
+        return (List<CvTerm>) getDetectionMethods();
     }
 
     @XmlElement(name="experimentRefList")
