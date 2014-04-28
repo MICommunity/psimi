@@ -180,15 +180,11 @@ public class MinimalFeatureEnricherTest {
                         Assert.fail();
                     }
 
-                    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
+                    public void onRoleUpdate(Feature feature, CvTerm oldDependency) {
                         fail();
                     }
 
                     public void onTypeUpdate(Feature feature, CvTerm oldType) {
-                        fail();
-                    }
-
-                    public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
                         fail();
                     }
 
@@ -246,13 +242,10 @@ public class MinimalFeatureEnricherTest {
                     public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
                     public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
-                    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
+                    public void onRoleUpdate(Feature feature, CvTerm oldDependency) {
                         fail();
                     }
                     public void onTypeUpdate(Feature feature, CvTerm oldType) {
-                        fail();
-                    }
-                    public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
                         fail();
                     }
                     public void onAddedLinkedFeature(Feature feature, Feature added) {
@@ -330,13 +323,10 @@ public class MinimalFeatureEnricherTest {
                     public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
                     public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
-                    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
+                    public void onRoleUpdate(Feature feature, CvTerm oldDependency) {
                         fail();
                     }
                     public void onTypeUpdate(Feature feature, CvTerm oldType) {
-                        fail();
-                    }
-                    public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
                         fail();
                     }
                     public void onAddedLinkedFeature(Feature feature, Feature added) {
@@ -409,13 +399,10 @@ public class MinimalFeatureEnricherTest {
                     public void onShortNameUpdate(Feature feature, String oldShortName)  {fail();}
                     public void onFullNameUpdate(Feature feature, String oldFullName)  {fail();}
                     public void onInterproUpdate(Feature feature, String oldInterpro) {fail();}
-                    public void onInteractionDependencyUpdate(Feature feature, CvTerm oldDependency) {
+                    public void onRoleUpdate(Feature feature, CvTerm oldDependency) {
                         fail();
                     }
                     public void onTypeUpdate(Feature feature, CvTerm oldType) {
-                        fail();
-                    }
-                    public void onInteractionEffectUpdate(Feature feature, CvTerm oldEffect) {
                         fail();
                     }
                     public void onAddedLinkedFeature(Feature feature, Feature added) {

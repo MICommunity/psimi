@@ -45,35 +45,19 @@ public class FullFeatureUpdater<F extends Feature> extends FullFeatureEnricher<F
     }
 
     @Override
-    protected void processInteractionDependency(F featureToEnrich, F objectSource) throws EnricherException {
-        if (!DefaultCvTermComparator.areEquals(objectSource.getInteractionDependency(), featureToEnrich.getInteractionDependency())){
-            CvTerm old = featureToEnrich.getInteractionDependency();
-            featureToEnrich.setInteractionDependency(objectSource.getInteractionDependency());
+    protected void processRole(F featureToEnrich, F objectSource) throws EnricherException {
+        if (!DefaultCvTermComparator.areEquals(objectSource.getRole(), featureToEnrich.getRole())){
+            CvTerm old = featureToEnrich.getRole();
+            featureToEnrich.setRole(objectSource.getRole());
             if(getFeatureEnricherListener() != null) {
-                getFeatureEnricherListener().onInteractionDependencyUpdate(featureToEnrich, old);
+                getFeatureEnricherListener().onRoleUpdate(featureToEnrich, old);
             }
         }
         else if (getCvTermEnricher() != null
-                && featureToEnrich.getInteractionDependency() != objectSource.getInteractionDependency()){
-            getCvTermEnricher().enrich(featureToEnrich.getInteractionDependency(), objectSource.getInteractionDependency());
+                && featureToEnrich.getRole() != objectSource.getRole()){
+            getCvTermEnricher().enrich(featureToEnrich.getRole(), objectSource.getRole());
         }
-        processInteractionDependency(featureToEnrich);
-    }
-
-    @Override
-    protected void processInteractionEffect(F featureToEnrich, F objectSource) throws EnricherException {
-        if (!DefaultCvTermComparator.areEquals(objectSource.getInteractionEffect(), featureToEnrich.getInteractionEffect())){
-            CvTerm old = featureToEnrich.getInteractionEffect();
-            featureToEnrich.setInteractionEffect(objectSource.getInteractionEffect());
-            if(getFeatureEnricherListener() != null) {
-                getFeatureEnricherListener().onInteractionEffectUpdate(featureToEnrich, old);
-            }
-        }
-        else if (getCvTermEnricher() != null
-                && featureToEnrich.getInteractionEffect() != objectSource.getInteractionEffect()){
-            getCvTermEnricher().enrich(featureToEnrich.getInteractionEffect(), objectSource.getInteractionEffect());
-        }
-        processInteractionEffect(featureToEnrich);
+        processRole(featureToEnrich);
     }
 
     @Override

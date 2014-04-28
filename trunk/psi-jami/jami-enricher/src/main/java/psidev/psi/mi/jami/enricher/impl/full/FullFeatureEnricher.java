@@ -41,8 +41,7 @@ public class FullFeatureEnricher<F extends Feature> extends MinimalFeatureEnrich
 
     @Override
     protected void processOtherProperties(F featureToEnrich, F objectSource) throws EnricherException {
-        processInteractionDependency(featureToEnrich, objectSource);
-        processInteractionEffect(featureToEnrich, objectSource);
+        processRole(featureToEnrich, objectSource);
 
         // process xrefs
         processXrefs(featureToEnrich, objectSource);
@@ -64,42 +63,24 @@ public class FullFeatureEnricher<F extends Feature> extends MinimalFeatureEnrich
     @Override
     protected void processOtherProperties(F featureToEnrich) throws EnricherException {
         // process interaction dependency
-        processInteractionDependency(featureToEnrich);
+        processRole(featureToEnrich);
 
-        // process interaction effect
-        processInteractionEffect(featureToEnrich);
     }
 
-    protected void processInteractionDependency(F featureToEnrich) throws EnricherException {
-        if(getCvTermEnricher() != null && featureToEnrich.getInteractionDependency() != null) {
-            getCvTermEnricher().enrich( featureToEnrich.getInteractionDependency() );
+    protected void processRole(F featureToEnrich) throws EnricherException {
+        if(getCvTermEnricher() != null && featureToEnrich.getRole() != null) {
+            getCvTermEnricher().enrich( featureToEnrich.getRole() );
         }
     }
 
-    protected void processInteractionDependency(F featureToEnrich, F objectSource) throws EnricherException {
-        if (objectSource.getInteractionDependency() != null && featureToEnrich.getInteractionDependency() == null){
-            featureToEnrich.setInteractionDependency(objectSource.getInteractionDependency());
+    protected void processRole(F featureToEnrich, F objectSource) throws EnricherException {
+        if (objectSource.getRole() != null && featureToEnrich.getRole() == null){
+            featureToEnrich.setRole(objectSource.getRole());
             if(getFeatureEnricherListener() != null) {
-                getFeatureEnricherListener().onInteractionDependencyUpdate(featureToEnrich, null);
+                getFeatureEnricherListener().onRoleUpdate(featureToEnrich, null);
             }
         }
-        processInteractionDependency(featureToEnrich);
-    }
-
-    protected void processInteractionEffect(F featureToEnrich) throws EnricherException {
-        if(getCvTermEnricher() != null && featureToEnrich.getInteractionEffect() != null) {
-            getCvTermEnricher().enrich( featureToEnrich.getInteractionEffect() );
-        }
-    }
-
-    protected void processInteractionEffect(F featureToEnrich, F objectSource) throws EnricherException {
-        if (objectSource.getInteractionEffect() != null && featureToEnrich.getInteractionEffect() == null){
-            featureToEnrich.setInteractionEffect(objectSource.getInteractionEffect());
-            if(getFeatureEnricherListener() != null) {
-                getFeatureEnricherListener().onInteractionEffectUpdate(featureToEnrich, null);
-            }
-        }
-        processInteractionEffect(featureToEnrich);
+        processRole(featureToEnrich);
     }
 
     protected void processXrefs(F objectToEnrich, F cvTermFetched) {

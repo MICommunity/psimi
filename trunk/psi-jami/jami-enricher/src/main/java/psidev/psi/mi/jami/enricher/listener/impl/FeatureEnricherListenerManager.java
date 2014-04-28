@@ -112,15 +112,9 @@ public class FeatureEnricherListenerManager<T extends Feature>
         }
     }
 
-    public void onInteractionDependencyUpdate(T feature, CvTerm oldDependency) {
+    public void onRoleUpdate(T feature, CvTerm oldDependency) {
         for(FeatureEnricherListener listener : getListenersList()){
-            listener.onInteractionDependencyUpdate(feature, oldDependency);
-        }
-    }
-
-    public void onInteractionEffectUpdate(T feature, CvTerm oldEffect) {
-        for(FeatureEnricherListener listener : getListenersList()){
-            listener.onInteractionEffectUpdate(feature, oldEffect);
+            listener.onRoleUpdate(feature, oldDependency);
         }
     }
 
