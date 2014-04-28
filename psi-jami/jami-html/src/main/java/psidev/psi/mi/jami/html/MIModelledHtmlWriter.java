@@ -44,9 +44,6 @@ public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteracti
                     if (effect.getResponse() != null){
                         writeCvTerm("Allosteric response", effect.getResponse());
                     }
-                    if (effect.getCooperativeEffectValue() != null){
-                        writeProperty("Cooperative effect value", effect.getCooperativeEffectValue().toString());
-                    }
                     Allostery allostery = (Allostery)effect;
                     String anchor = HtmlWriterUtils.getHtmlAnchorFor(allostery.getAllostericMolecule());
                     writeProperty("Allosteric molecule", "<a href=\"#"+anchor+"\">Participant "+anchor+"</a>");
@@ -79,9 +76,6 @@ public class MIModelledHtmlWriter extends AbstractMIHtmlWriter<ModelledInteracti
                     writeCvTerm("Cooperative effect outcome", effect.getOutCome());
                     if (effect.getResponse() != null){
                         writeCvTerm("Pre-assembly response", effect.getResponse());
-                    }
-                    if (effect.getCooperativeEffectValue() != null){
-                        writeProperty("Cooperative effect value", effect.getCooperativeEffectValue().toString());
                     }
                     for (CooperativityEvidence evidence : effect.getCooperativityEvidences()){
                         writePublication(evidence.getPublication());
