@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- human GABA receptor complex. The stoichiometry information is stored in proper stoichiometryRange element -->
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
+    <entry>
+        <source releaseDate="2014-04-29+01:00">
+            <names>
+                <shortLabel>chembl</shortLabel>
+                <fullName>CHEMBL database</fullName>
+            </names>
+            <xref>
+                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0967" refType="identity" refTypeAc="MI:0356"/>
+                <secondaryRef db="intact" dbAc="MI:0469" id="EBI-9008383" refType="identity" refTypeAc="MI:0356"/>
+            </xref>
+        </source>
+        <experimentList>
+            <experimentDescription id="9">
+                <names>
+                    <shortLabel>human</shortLabel>
+                    <fullName>Curated complexes - human</fullName>
+                </names>
+                <bibref>
+                    <xref>
+                        <primaryRef db="pubmed" dbAc="MI:0446" id="14681455" refType="primary-reference" refTypeAc="MI:0358"/>
+                    </xref>
+                </bibref>
+                <xref>
+                    <primaryRef db="intact" dbAc="MI:0469" id="EBI-706540" refType="identity" refTypeAc="MI:0356"/>
+                </xref>
+                <interactionDetectionMethod>
+                    <names>
+                        <shortLabel>inferred by curator</shortLabel>
+                        <fullName>inferred by curator</fullName>
+                        <alias typeAc="MI:0303" type="go synonym">modelled by curator</alias>
+                        <alias typeAc="MI:0303" type="go synonym">modeled by curator</alias>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0364" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="intact" dbAc="MI:0469" id="EBI-608505" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                    </xref>
+                </interactionDetectionMethod>
+                <attributeList>
+                    <attribute name="curated-complex"/>
+                    <attribute name="comment" nameAc="MI:0612">A collection of literature-mined stable and functionally defined human molecular complexes of known stoichiometry and biological role.</attribute>
+                </attributeList>
+            </experimentDescription>
+        </experimentList>
+        <interactorList>
+            <interactor id="10">
+                <names>
+                    <shortLabel>gbra1_human</shortLabel>
+                    <fullName>Gamma-aminobutyric acid receptor subunit alpha-1</fullName>
+                    <alias typeAc="MI:0301" type="gene name">GABRA1</alias>
+                    <alias typeAc="MI:0302" type="gene name synonym">GABA(A) receptor subunit alpha-1</alias>
+                </names>
+                <xref>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P14867" version="SP_142" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="D3DQK6" version="SP_142" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_001121115.1"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q8N629" version="SP_142" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005230"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005887"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0008144"/>
+                    <secondaryRef db="reactome" dbAc="MI:0467" id="REACT_15518"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR018000"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_000797.2"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_001121120.1"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0051932"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR005431"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_001121116.1"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0006810"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007214"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005886"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR001390"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005254"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006202"/>
+                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000022355"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0034220"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0030054"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006201"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0055085"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0034707"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006029"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045211"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0004890"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_001121117.1"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007268"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006028"/>
+                    <secondaryRef db="reactome" dbAc="MI:0467" id="REACT_13685"/>
+                    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-6258308" refType="identity" refTypeAc="MI:0356"/>
+                </xref>
+                <interactorType>
+                    <names>
+                        <shortLabel>protein</shortLabel>
+                        <fullName>protein</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="intact" dbAc="MI:0469" id="EBI-619654" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="see-also" refTypeAc="MI:0361"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                    </xref>
+                </interactorType>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>MRKSPGLSDCLWAWILLLSTLTGRSYGQPSLQDELKDNTTVFTRILDRLLDGYDNRLRPGLGERVTEVKTDIFVTSFGPVSDHDMEYTIDVFFRQSWKDERLKFKGPMTVLRLNNLMASKIWTPDTFFHNGKKSVAHNMTMPNKLLRITEDGTLLYTMRLTVRAECPMHLEDFPMDAHACPLKFGSYAYTRAEVVYEWTREPARSVVVAEDGSRLNQYDLLGQTVDSGIVQSSTGEYVVMTTHFHLKRKIGYFVIQTYLPCIMTVILSQVSFWLNRESVPARTVFGVTTVLTMTTLSISARNSLPKVAYATAMDWFIAVCYAFVFSALIEFATVNYFTKRGYAWDGKSVVPEKPKKVKDPLIKKNNTYAPTATSYTPNLARGDPGLATIAKSATIEPKEVKPETKPPEPKKTFNSVSKIDRLSRIAFPLLFGIFNLVYWATYLNREPQLKAPTPHQ</sequence>
+            </interactor>
+            <interactor id="11">
+                <names>
+                    <shortLabel>gbrb2_human</shortLabel>
+                    <fullName>Gamma-aminobutyric acid receptor subunit beta-2</fullName>
+                    <alias typeAc="MI:0301" type="gene name">GABRB2</alias>
+                    <alias typeAc="MI:0302" type="gene name synonym">GABA(A) receptor subunit beta-2</alias>
+                </names>
+                <xref>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P47870" version="SP_73" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_068711.1"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0060384"/>
+                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000145864" secondary="Homo sapiens"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007214" secondary="gamma-aminobutyric acid signa"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0004890" secondary="GABA-A receptor activity"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A8K1A0" version="SP_92" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005237"/>
+                    <secondaryRef db="reactome" dbAc="MI:0467" id="REACT_15518"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR018000"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006028" secondary="GABAA_recept"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005887" secondary="C:integral to plasma membrane"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0051932"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006029" secondary="Neu_channel_memb"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0043524"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005829"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="D1LYT1" version="SP_100" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007605"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006202" secondary="Neur_chan_lig_bd"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q4FZB2" version="SP_73" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0090102"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q16323" version="SP_73" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0006810"/>
+                    <secondaryRef db="intact" dbAc="MI:0469" id="MINT-268409" refType="intact-secondary"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005886"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="D1LYT0" version="SP_100" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005254"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0070062"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0034220"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006201" secondary="Neur_channel"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0030054"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0055085"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0034707"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR002289" secondary="GABAAb_receptor"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045211"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="A8K115" version="SP_100" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007268"/>
+                    <secondaryRef db="reactome" dbAc="MI:0467" id="REACT_13685"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_000804.1"/>
+                    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-6949072" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0060119"/>
+                </xref>
+                <interactorType>
+                    <names>
+                        <shortLabel>protein</shortLabel>
+                        <fullName>protein</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="intact" dbAc="MI:0469" id="EBI-619654" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="see-also" refTypeAc="MI:0361"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                    </xref>
+                </interactorType>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>MWRVRKRGYFGIWSFPLIIAAVCAQSVNDPSNMSLVKETVDRLLKGYDIRLRPDFGGPPVAVGMNIDIASIDMVSEVNMDYTLTMYFQQAWRDKRLSYNVIPLNLTLDNRVADQLWVPDTYFLNDKKSFVHGVTVKNRMIRLHPDGTVLYGLRITTTAACMMDLRRYPLDEQNCTLEIESYGYTTDDIEFYWRGDDNAVTGVTKIELPQFSIVDYKLITKKVVFSTGSYPRLSLSFKLKRNIGYFILQTYMPSILITILSWVSFWINYDASAARVALGITTVLTMTTINTHLRETLPKIPYVKAIDMYLMGCFVFVFMALLEYALVNYIFFGRGPQRQKKAAEKAASANNEKMRLDVNKIFYKDIKQNGTQYRSLWDPTGNLSPTRRTTNYDFSLYTMDPHENILLSTLEIKNEMATSEAVMGLGDPRSTMLAYDASSIQYRKAGLPRHSFGRNALERHVAQKKSRLRRRASQLKITIPDLTDVNAIDRWSRIFFPVVFSFFNIVYWLYYVN</sequence>
+                <attributeList>
+                    <attribute name="comment" nameAc="MI:0612">mint</attribute>
+                    <attribute name="function" nameAc="MI:0613">GABA, the major inhibitory neurotransmitter in the vertebrate brain, mediates neuronal inhibition by binding to the GABA/benzodiazepine receptor and opening an integral chloride channel</attribute>
+                </attributeList>
+            </interactor>
+            <interactor id="12">
+                <names>
+                    <shortLabel>gbrg2_human</shortLabel>
+                    <fullName>Gamma-aminobutyric acid receptor subunit gamma-2</fullName>
+                    <alias typeAc="MI:0301" type="gene name">GABRG2</alias>
+                    <alias typeAc="MI:0302" type="gene name synonym">GABA(A) receptor subunit gamma-2</alias>
+                </names>
+                <xref>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P18507" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0030424"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005887"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005230"/>
+                    <secondaryRef db="reactome" dbAc="MI:0467" id="REACT_15518"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR018000"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9UN15" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0009791"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0032590"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0051932"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_944494.1"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_000807.2"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_944493.2"/>
+                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000113327"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0060077"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0006810"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007214"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR005439"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005886"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005737"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006202"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005254"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0034220"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006201"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0030054"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0008503"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q6PCC3" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0055085"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006029"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0034707"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045211"/>
+                    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-9008430" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0004890"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007268"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="F5HB82" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9UDB3" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006028"/>
+                    <secondaryRef db="reactome" dbAc="MI:0467" id="REACT_13685"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q6GRL6" refType="secondary-ac" refTypeAc="MI:0360"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR005437"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0030534"/>
+                </xref>
+                <interactorType>
+                    <names>
+                        <shortLabel>protein</shortLabel>
+                        <fullName>protein</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="intact" dbAc="MI:0469" id="EBI-619654" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="see-also" refTypeAc="MI:0361"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                    </xref>
+                </interactorType>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <sequence>MSSPNIWSTGSSVYSTPVFSQKMTVWILLLLSLYPGFTSQKSDDDYEDYASNKTWVLTPKVPEGDVTVILNNLLEGYDNKLRPDIGVKPTLIHTDMYVNSIGPVNAINMEYTIDIFFAQTWYDRRLKFNSTIKVLRLNSNMVGKIWIPDTFFRNSKKADAHWITTPNRMLRIWNDGRVLYTLRLTIDAECQLQLHNFPMDEHSCPLEFSSYGYPREEIVYQWKRSSVEVGDTRSWRLYQFSFVGLRNTTEVVKTTSGDYVVMSVYFDLSRRMGYFTIQTYIPCTLIVVLSWVSFWINKDAVPARTSLGITTVLTMTTLSTIARKSLPKVSYVTAMDLFVSVCFIFVFSALVEYGTLHYFVSNRKPSKDKDKKKKNPAPTIDIRPRSATIQMNNATHLQERDEEYGYECLDGKDCASFFCCFEDCRTGAWRHGRIHIRIAKMDSYARIFFPTAFCLFNLVYWVSYLYL</sequence>
+            </interactor>
+        </interactorList>
+        <interactionList>
+            <interaction id="13">
+                <names>
+                    <shortLabel>gabar_a1_b2_g2_human</shortLabel>
+                    <alias typeAc="MI:1315" type="complex recommended name">GABA-A receptor alpha-1/beta-2/gamma-2</alias>
+                    <alias typeAc="MI:1316" type="complex systematic name">GABRA1:GABRB2:GABRC2</alias>
+                    <alias typeAc="MI:0673" type="complex synonym">GABA-A receptor alpha1-beta2-gamma2</alias>
+                </names>
+                <xref>
+                    <primaryRef db="reactome" dbAc="MI:0467" id="REACT_26202.2" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0008503" secondary="benzodiazepine receptor activity" refType="function" refTypeAc="MI:0355"/>
+                    <secondaryRef db="pubmed" dbAc="MI:0446" id="18790874" refType="see-also" refTypeAc="MI:0361"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0004890" secondary="GABA-A receptor activity" refType="function" refTypeAc="MI:0355"/>
+                    <secondaryRef db="chembl" dbAc="MI:0967" id="CHEMBL2095172" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0051932" secondary="synaptic transmission, GABAergic" refType="process" refTypeAc="MI:0359"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005230" secondary="extracellular ligand-gated ion channel activity" refType="function" refTypeAc="MI:0355"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:1902476" secondary="chloride transmembrane transport" refType="process" refTypeAc="MI:0359"/>
+                    <secondaryRef db="omim" dbAc="MI:0480" id="611277" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007214" secondary="gamma-aminobutyric acid signaling pathway" refType="process" refTypeAc="MI:0359"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0042165" secondary="neurotransmitter binding" refType="function" refTypeAc="MI:0355"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:1902711" secondary="GABA-A receptor complex" refType="component" refTypeAc="MI:0354"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0030594" secondary="neurotransmitter receptor activity" refType="function" refTypeAc="MI:0355"/>
+                    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-9008426" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="omim" dbAc="MI:0480" id="611136" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0008144" secondary="drug binding" refType="function" refTypeAc="MI:0355"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005254" secondary="chloride channel activity" refType="function" refTypeAc="MI:0355"/>
+                    <secondaryRef db="omim" dbAc="MI:0480" id="607681" refType="identity" refTypeAc="MI:0356"/>
+                </xref>
+                <experimentList>
+                    <experimentRef>9</experimentRef>
+                </experimentList>
+                <participantList>
+                    <participant id="14">
+                        <names>
+                            <shortLabel>not-defined-1914078772</shortLabel>
+                        </names>
+                        <xref>
+                            <primaryRef db="intact" dbAc="MI:0469" id="EBI-9008439" refType="identity" refTypeAc="MI:0356"/>
+                        </xref>
+                        <interactorRef>10</interactorRef>
+                        <biologicalRole>
+                            <names>
+<shortLabel>unspecified role</shortLabel>
+<fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+<secondaryRef db="intact" dbAc="MI:0469" id="EBI-77781" refType="identity" refTypeAc="MI:0356"/>
+<secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                            </xref>
+                        </biologicalRole>
+                        <stoichiometryRange minValue="1" maxValue="3"/>
+                    </participant>
+                    <participant id="15">
+                        <names>
+                            <shortLabel>not-defined-2024086833</shortLabel>
+                        </names>
+                        <xref>
+                            <primaryRef db="intact" dbAc="MI:0469" id="EBI-9008440" refType="identity" refTypeAc="MI:0356"/>
+                        </xref>
+                        <interactorRef>11</interactorRef>
+                        <biologicalRole>
+                            <names>
+<shortLabel>unspecified role</shortLabel>
+<fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+<secondaryRef db="intact" dbAc="MI:0469" id="EBI-77781" refType="identity" refTypeAc="MI:0356"/>
+<secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                            </xref>
+                        </biologicalRole>
+                        <stoichiometryRange minValue="1" maxValue="3"/>
+                    </participant>
+                    <participant id="16">
+                        <names>
+                            <shortLabel>not-defined-396423842</shortLabel>
+                        </names>
+                        <xref>
+                            <primaryRef db="intact" dbAc="MI:0469" id="EBI-9008441" refType="identity" refTypeAc="MI:0356"/>
+                        </xref>
+                        <interactorRef>12</interactorRef>
+                        <biologicalRole>
+                            <names>
+<shortLabel>unspecified role</shortLabel>
+<fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+<secondaryRef db="intact" dbAc="MI:0469" id="EBI-77781" refType="identity" refTypeAc="MI:0356"/>
+<secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                            </xref>
+                        </biologicalRole>
+                        <stoichiometryRange minValue="1" maxValue="3"/>
+                    </participant>
+                </participantList>
+                <interactionType>
+                    <names>
+                        <shortLabel>physical association</shortLabel>
+                        <fullName>physical association</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0915" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="intact" dbAc="MI:0469" id="EBI-1813147" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
+                    </xref>
+                </interactionType>
+                <intraMolecular>false</intraMolecular>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>human</shortLabel>
+                        <fullName>Homo sapiens</fullName>
+                    </names>
+                </organism>
+                <interactorType>
+                    <names>
+                        <shortLabel>stable complex</shortLabel>
+                        <fullName>stable complex</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1302" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </interactorType>
+                <evidenceType>
+                    <names>
+                        <shortLabel>inference from background scientific knowledge used in manual assertion</shortLabel>
+                        <fullName>inference from background scientific knowledge used in manual assertion</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="eco" id="ECO:0000306" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </evidenceType>
+                <attributeList>
+                    <attribute name="curated-complex">Anion-selective, ligand-gated ion channel. GABA, the major inhibitory neurotransmitter in the vertebrate brain, mediates neuronal inhibition by binding to the GABA/benzodiazepine receptor and opening an integral chloride channel. The alpha1-beta2-gamma2 conformation is thought to be the most common GABA-A receptor found in the brain. Also found in liver, smooth airways muscle and immune cells. Mediates the sedative, anterograde amnestic and in part anticonvulsant actions of diazepam. Isoform 1 and isoform 2 of GABRB2 show reduced expression in schizophrenic brain. Isoform 3 shows increased expression in schizophrenic and bipolar disorder brains while isoform 4 shows reduced expression.</attribute>
+                    <attribute name="complex-properties" nameAc="MI:0629">The gamma2 subunit carries the benzodiazepine binding site. Evidence for the existence and conformation of the diverse GABA-A receptors relies on localisation and pharmacological studies so conformation is based on cumulative evidence and comparison with related ligand-gated ion channel families (e.g. nicotinic acetylcholine receptors).</attribute>
+                    <attribute name="complex-assembly">Heteropentamer</attribute>
+                    <attribute name="ligand">Gamma-aminobutyric acid (CHEBI:16865)</attribute>
+                    <attribute name="disease" nameAc="MI:0617">Epilepsy, childhood absence 4 (ECA4) [MIM:611136]: A subtype of idiopathic generalized epilepsy characterized by an onset at age 6-7 years, frequent absence seizures (several per day) and bilateral, synchronous, symmetric 3-Hz spike waves on EEG. Tonic-clonic seizures often develop in adolescence. Absence seizures may either remit or persist into adulthood.&#xD;
+&#xD;
+&#xD;
+&#xD;
+Epilepsy, childhood absence 2 (ECA2) [MIM:607681]: A subtype of idiopathic generalized epilepsy characterized by an onset at age 6-7 years, frequent absence seizures (several per day) and bilateral, synchronous, symmetric 3-Hz spike waves on EEG. Tonic-clonic seizures often develop in adolescence. Some individuals manifest febrile seizures. Absence seizures may either remit or persist into adulthood.&#xD;
+&#xD;
+Febrile seizures, familial, 8 (FEB8) [MIM:611277]: Seizures associated with febrile episodes in childhood without any evidence of intracranial infection or defined pathologic or traumatic cause. It is a common condition, affecting 2-5% of children aged 3 months to 5 years. The majority are simple febrile seizures (generally defined as generalized onset, single seizures with a duration of less than 30 minutes). Complex febrile seizures are characterized by focal onset, duration greater than 30 minutes, and/or more than one seizure in a 24 hour period. The likelihood of developing epilepsy following simple febrile seizures is low. Complex febrile seizures are associated with a moderately increased incidence of epilepsy.&#xD;
+&#xD;
+Generalized epilepsy with febrile seizures plus 3 (GEFS+3) [MIM:611277]: A rare autosomal dominant, familial condition with incomplete penetrance and large intrafamilial variability. Patients display febrile seizures persisting sometimes beyond the age of 6 years and/or a variety of afebrile seizure types. This disease combines febrile seizures, generalized seizures often precipitated by fever at age 6 years or more, and partial seizures, with a variable degree of severity.&#xD;
+&#xD;
+Severe myoclonic epilepsy in infancy (SMEI) [MIM:607208]: A rare disorder characterized by generalized tonic, clonic, and tonic-clonic seizures that are initially induced by fever and begin during the first year of life. Later, patients also manifest other seizure types, including absence, myoclonic, and simple and complex partial seizures. Psychomotor development delay is observed around the second year of life. Some patients manifest a borderline disease phenotype and do not necessarily fulfill all diagnostic criteria for core SMEI. SMEI is considered to be the most severe phenotype within the spectrum of generalized epilepsies with febrile seizures-plus.</attribute>
+                    <attribute name="ligand">Benzodiazepines (CHEBI:22720)</attribute>
+                    <attribute name="ligand">Ethanol (CHEBI:16236)</attribute>
+                    <attribute name="disease" nameAc="MI:0617">Juvenile myoclonic epilepsy 5 (EJM5) [MIM:611136]: A subtype of idiopathic generalized epilepsy. Patients have afebrile seizures only, with onset in adolescence (rather than in childhood) and myoclonic jerks which usually occur after awakening and are triggered by sleep deprivation and fatigue.</attribute>
+                    <attribute name="disease" nameAc="MI:0617">Severe myoclonic epilepsy in infancy (SMEI) [MIM:607208]: A rare disorder characterized by generalized tonic, clonic, and tonic-clonic seizures that are initially induced by fever and begin during the first year of life. Later, patients also manifest other seizure types, including absence, myoclonic, and simple and complex partial seizures. Psychomotor development delay is observed around the second year of life. Some patients manifest a borderline disease phenotype and do not necessarily fulfill all diagnostic criteria for core SMEI. SMEI is considered to be the most severe phenotype within the spectrum of generalized epilepsies with febrile seizures-plus.</attribute>
+                </attributeList>
+            </interaction>
+        </interactionList>
+    </entry>
+</entrySet>
