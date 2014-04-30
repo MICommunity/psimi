@@ -6,7 +6,7 @@ Cks1 for targeting p27Kip1 for proteasomal degradation. The degron motif of p27K
 with the invariant glutamate residue of the motif inserting into the interface between Skp2 and Cks1. In addition, the threonine 187
 residue of p27Kip1 is required to be phosphorylated and binds to the Cks1 subunit of the complex. Hence, Skp2 and Cks1 cooperate for
 binding phosphorylated p27Kip1 by forming a composite binding site for the degron motif of p27Kip1. -->
-<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="3" version="0" level="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="0" version="0" level="3" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
 	<entry>
 		<interactorList>
 			<interactor id="1">
@@ -259,14 +259,14 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
 						</bibref>
 					</parameter>
 				</parameterList>
-                <evidenceCode>
+                <evidenceType>
                     <names>
                         <shortLabel>experimental evidence</shortLabel>
                     </names>
                     <xref>
                         <primaryRef db="evidence ontology" dbAc="MI:1331" id="ECO:0000006" refType="identity" refTypeAc="MI:0356"/>
                     </xref>
-                </evidenceCode>
+                </evidenceType>
 				<cooperativeEffectList>
 					<preassembly>
 						<cooperativityEvidenceList>
