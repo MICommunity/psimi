@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- Degradation of the cyclin-CDK inhibitor p27Kip1 is required for cell cycle progression and is mediated by the proteasome in a
-poly-ubiquitylation-dependent manner. Poly-ubiquitylation of p27Kip1 is mediated by the SCF-Skp2 ubiquitin ligase, which depends on
-the F-box protein Skp2 for target recognition. However, in the case of p27Kip1, Skp2 has to associate with the CDK regulatory subunit
-Cks1 for targeting p27Kip1 for proteasomal degradation. The degron motif of p27Kip1 binds across the surface of both Skp2 and Cks1,
-with the invariant glutamate residue of the motif inserting into the interface between Skp2 and Cks1. In addition, the threonine 187
-residue of p27Kip1 is required to be phosphorylated and binds to the Cks1 subunit of the complex. Hence, Skp2 and Cks1 cooperate for
-binding phosphorylated p27Kip1 by forming a composite binding site for the degron motif of p27Kip1. -->
+<!-- The Ataxin-1 protein contains two overlapping short linear motifs that mediate mutually exclusive interactions with different Ataxin-1 binding partners.
+ One motif binds to the RRM domain of splicing factor U2AF65 while the other motif binds to 14-3-3Z. The specificity of this Ataxin-1 region for these two
+ different binding partners depends on its physicochemical nature and is regulated by Akt1-catalyzed phosphorylation of the serine residue in position 775
+ of Ataxin-1, a phosphorylation site that overlaps both motifs. In the unphosphorylated state, Ataxin-1 binds to U2AF65 but not to 14-3-3Z. However,
+ upon phosphorylation of Ataxin-1 at serine 775 by Akt1, Ataxin-1 can bind 14-3-3Z with low-micromolar affinity, while its affinity for U2AF65 is weakened,
+ allowing 14-3-3Z to outcompete U2AF65. Hence, phosphorylation of Ataxin-1 at serine 775 by Akt1 switches the specificity of Ataxin-1 from U2AF65 to 14-3-3Z. -->
 <entrySet xmlns="http://psi.hupo.org/mi/mif" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="4" version="5" level="2" xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd">
     <entry>
         <experimentList>
             <experimentDescription id="539974">
                 <bibref>
                     <xref>
-                        <primaryRef db="pubmed" dbAc="MI:0446" id="16209941" refType="primary-reference" refTypeAc="MI:0358"/>
+                        <primaryRef db="pubmed" dbAc="MI:0446" id="20037628" refType="primary-reference" refTypeAc="MI:0358"/>
                     </xref>
                 </bibref>
                 <hostOrganismList>
@@ -31,26 +30,26 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                     </xref>
                 </interactionDetectionMethod>
                 <attributeList>
-                    <attribute name="author-list" nameAc="MI:0636">Hao B., Zheng N., Schulman B.A., Wu G., Miller J.J., Pagano M., Pavletich N.P.</attribute>
-                    <attribute name="contact-email" nameAc="MI:0634">nikola@xray2.mskcc.org</attribute>
-                    <attribute name="journal" nameAc="MI:0885">Mol. Cell (9-19)</attribute>
-                    <attribute name="publication year" nameAc="MI:0886">2005</attribute>
+                    <attribute name="author-list" nameAc="MI:0636">de Chiara C., Menon R.P., Strom M., Gibson T.J., Pastore A.</attribute>
+                    <attribute name="contact-email" nameAc="MI:0634">apastor@nimr.mrc.ac.uk</attribute>
+                    <attribute name="journal" nameAc="MI:0885">PLoS One</attribute>
+                    <attribute name="publication year" nameAc="MI:0886">2009</attribute>
                 </attributeList>
             </experimentDescription>
         </experimentList>
         <interactorList>
             <interactor id="1">
                 <names>
-                    <shortLabel>Skp2</shortLabel>
-                    <fullName>S-phase kinase-associated protein 2</fullName>
-                    <alias typeAc="MI:0301" type="gene name">SKP2</alias>
-                    <alias type="display_short">Q13309</alias>
-                    <alias type="display_long">skp2_human</alias>
+                    <shortLabel>Atx1</shortLabel>
+                    <fullName>Spinocerebellar ataxia type 1 protein</fullName>
+                    <alias typeAc="MI:0301" type="gene name">ATXN1</alias>
+                    <alias type="display_short">P54253</alias>
+                    <alias type="display_long">atx1_human</alias>
                 </names>
                 <xref>
-                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="Q13309" refType="identity" refTypeAc="MI:0356"/>
-                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000145604" refType="gene product" refTypeAc="MI:0251"/>
-                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_005974.2" refType="identity" refTypeAc="MI:0356"/>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P54253" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000124788" refType="gene product" refTypeAc="MI:0251"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_000323.2" refType="identity" refTypeAc="MI:0356"/>
                 </xref>
                 <interactorType>
                     <names>
@@ -69,16 +68,16 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
             </interactor>
             <interactor id="2">
                 <names>
-                    <shortLabel>Cks1</shortLabel>
-                    <fullName>Cyclin-dependent kinases regulatory subunit 1</fullName>
-                    <alias typeAc="MI:0301" type="gene name">CKS1B</alias>
-                    <alias type="display_short">P61024</alias>
-                    <alias type="display_long">cks1_human</alias>
+                    <shortLabel>Akt1</shortLabel>
+                    <fullName>RAC-alpha serine/threonine-protein kinase</fullName>
+                    <alias typeAc="MI:0301" type="gene name">AKT1</alias>
+                    <alias type="display_short">P31749</alias>
+                    <alias type="display_long">akt1_human</alias>
                 </names>
                 <xref>
-                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P61024" refType="identity" refTypeAc="MI:0356"/>
-                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000173207" refType="gene product" refTypeAc="MI:0251"/>
-                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_001817.1" refType="identity" refTypeAc="MI:0356"/>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P31749" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000142208" refType="gene product" refTypeAc="MI:0251"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_001014431.1" refType="identity" refTypeAc="MI:0356"/>
                 </xref>
                 <interactorType>
                     <names>
@@ -97,16 +96,44 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
             </interactor>
             <interactor id="3">
                 <names>
-                    <shortLabel>p27Kip1</shortLabel>
-                    <fullName>Cyclin-dependent kinase inhibitor 1B</fullName>
-                    <alias typeAc="MI:0301" type="gene name">CDKN1B</alias>
-                    <alias type="display_short">P46527</alias>
-                    <alias type="display_long">cdn1b_human</alias>
+                    <shortLabel>1433z</shortLabel>
+                    <fullName>14-3-3 protein zeta/delta</fullName>
+                    <alias typeAc="MI:0301" type="gene name">YWHAZ</alias>
+                    <alias type="display_short">P63104</alias>
+                    <alias type="display_long">1433z_human</alias>
                 </names>
                 <xref>
-                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P46527" refType="identity" refTypeAc="MI:0356"/>
-                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000111276" refType="gene product" refTypeAc="MI:0251"/>
-                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_004055.1" refType="identity" refTypeAc="MI:0356"/>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P63104" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000164924" refType="gene product" refTypeAc="MI:0251"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_003397.1" refType="identity" refTypeAc="MI:0356"/>
+                </xref>
+                <interactorType>
+                    <names>
+                        <shortLabel>protein</shortLabel>
+                        <fullName>protein</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </interactorType>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                    </names>
+                </organism>
+            </interactor>
+            <interactor id="4">
+                <names>
+                    <shortLabel>U2af65</shortLabel>
+                    <fullName>Splicing factor U2AF 65 kDa subunit</fullName>
+                    <alias typeAc="MI:0301" type="gene name">U2AF2</alias>
+                    <alias type="display_short">P26368</alias>
+                    <alias type="display_long">u2af2_human</alias>
+                </names>
+                <xref>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P26368" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000063244" refType="gene product" refTypeAc="MI:0251"/>
+                    <secondaryRef db="refseq" dbAc="MI:0481" id="NP_009210.1" refType="identity" refTypeAc="MI:0356"/>
                 </xref>
                 <interactorType>
                     <names>
@@ -127,323 +154,46 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
         <interactionList>
             <interaction id="11">
                 <names>
-                    <shortLabel>Skp2-Cks1-1</shortLabel>
-                    <fullName>S-phase kinase-associated protein 2-Cyclin-dependent kinases regulatory subunit 1-1</fullName>
-                    <alias type="display_short">Q13309-P61024-1</alias>
+                    <shortLabel>Akt1-Atx1-1</shortLabel>
+                    <fullName>RAC-alpha serine/threonine-protein kinase-Spinocerebellar ataxia type 1 protein-1</fullName>
+                    <alias type="display_short">P31749-P54253-1</alias>
                 </names>
                 <xref>
-                    <primaryRef db="intact" dbAc="MI:0469" id="EBI-6859782" refType="exp-evidence"/>
-                    <secondaryRef db="imex" dbAc="MI:0670" id="IM-20900-1" refType="exp-evidence"/>
-                    <secondaryRef db="rcsb pdb" dbAc="MI:0469" id="2ASS" refType="identity" refTypeAc="MI:0356"/>
-                    <secondaryRef db="eco" id="ECO:0000006"/>
+                    <primaryRef db="innatedb" dbAc="MI:0974" id="IDB-155874" refType="exp-evidence"/>
+                    <primaryRef db="evidence ontology" dbAc="MI:1331" id="ECO:0000006"/>
                 </xref>
                 <experimentList>
                     <experimentRef>539974</experimentRef>
                 </experimentList>
                 <participantList>
                     <participant id="21">
+                        <interactorRef>2</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>enzyme</shortLabel>
+                                <fullName>enzyme</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0501" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                    </participant>
+                    <participant id="22">
                         <interactorRef>1</interactorRef>
                         <biologicalRole>
                             <names>
-                                <shortLabel>unspecified role</shortLabel>
-                                <fullName>unspecified role</fullName>
+                                <shortLabel>enzyme target</shortLabel>
+                                <fullName>enzyme target</fullName>
                             </names>
                             <xref>
-                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0502" refType="identity" refTypeAc="MI:0356"/>
                             </xref>
                         </biologicalRole>
                         <featureList>
                             <feature id="31">
                                 <names>
-                                    <shortLabel>region</shortLabel>
-                                    <fullName>region</fullName>
-                                </names>
-                                <featureType>
-                                    <names>
-                                        <shortLabel>sufficient binding region</shortLabel>
-                                        <fullName>sufficient binding region</fullName>
-                                    </names>
-                                    <xref>
-                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
-                                    </xref>
-                                </featureType>
-                                <featureRangeList>
-                                    <featureRange>
-                                        <startStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </startStatus>
-                                        <begin position="89"/>
-                                        <endStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </endStatus>
-                                        <end position="424"/>
-                                        <isLink>false</isLink>
-                                    </featureRange>
-                                </featureRangeList>
-                            </feature>
-                        </featureList>
-                        <attributeList>
-                            <attribute name="comment">Stoichiometry: 1</attribute>
-                        </attributeList>
-                    </participant>
-                    <participant id="22">
-                        <interactorRef>2</interactorRef>
-                        <biologicalRole>
-                            <names>
-                                <shortLabel>unspecified role</shortLabel>
-                                <fullName>unspecified role</fullName>
-                            </names>
-                            <xref>
-                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
-                            </xref>
-                        </biologicalRole>
-                        <featureList>
-                            <feature id="32">
-                                <names>
-                                    <shortLabel>Cyclin-dep_kinase_reg-sub</shortLabel>
-                                    <fullName>Cyclin-dependent kinase, regulatory subunit</fullName>
-                                </names>
-                                <xref>
-                                    <primaryRef db="interpro" dbAc="MI:0449" id="IPR000789" refType="identity" refTypeAc="MI:0356"/>
-                                </xref>
-                                <featureType>
-                                    <names>
-                                        <shortLabel>sufficient binding region</shortLabel>
-                                        <fullName>sufficient binding region</fullName>
-                                    </names>
-                                    <xref>
-                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
-                                    </xref>
-                                </featureType>
-                                <featureRangeList>
-                                    <featureRange>
-                                        <startStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </startStatus>
-                                        <begin position="5"/>
-                                        <endStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </endStatus>
-                                        <end position="73"/>
-                                        <isLink>false</isLink>
-                                    </featureRange>
-                                </featureRangeList>
-                            </feature>
-                        </featureList>
-                        <attributeList>
-                            <attribute name="comment">Stoichiometry: 1</attribute>
-                        </attributeList>
-                    </participant>
-                </participantList>
-                <inferredInteractionList>
-                    <inferredInteraction>
-                        <participant>
-                            <participantFeatureRef>31</participantFeatureRef>
-                        </participant>
-                        <participant>
-                            <participantFeatureRef>32</participantFeatureRef>
-                        </participant>
-                    </inferredInteraction>
-                </inferredInteractionList>
-                <interactionType>
-                    <names>
-                        <shortLabel>direct interaction</shortLabel>
-                    </names>
-                    <xref>
-                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
-                    </xref>
-                </interactionType>
-                <intraMolecular>false</intraMolecular>
-                <parameterList>
-                    <parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="0.006" uncertainty="0.001">
-                        <experimentRef>539974</experimentRef>
-                    </parameter>
-                </parameterList>
-                <attributeList>
-                    <attribute name="cooperative mechanism" nameAc="MI:1156">pre-assembly</attribute>
-                    <attribute name="cooperative effect outcome" nameAc="MI:1153">positive cooperative effect</attribute>
-                    <attribute name="pre-assembly response" nameAc="MI:1170">composite binding site formation</attribute>
-                    <attribute name="affected interaction" nameAc="MI:1150">12</attribute>
-                </attributeList>
-            </interaction>
-            <interaction id="12">
-                <names>
-                    <shortLabel>Skp2_Cks1-p27Kip1-1</shortLabel>
-                    <fullName>S-phase kinase-associated protein 2_Cyclin-dependent kinases regulatory subunit 1-Cyclin-dependent kinase inhibitor 1B-1</fullName>
-                    <alias type="display_short">Q13309_P61024-P46527-1</alias>
-                </names>
-                <xref>
-                    <primaryRef db="intact" dbAc="MI:0469" id="EBI-6859798" refType="identity" refTypeAc="MI:0356"/>
-                    <secondaryRef db="imex" dbAc="MI:0670" id="IM-20900-2" refType="imex-primary" refTypeAc="MI:0662"/>
-                    <secondaryRef db="rcsb pdb" dbAc="MI:0469" id="2AST" refType="identity" refTypeAc="MI:0356"/>
-                </xref>
-                <experimentList>
-                    <experimentRef>539974</experimentRef>
-                </experimentList>
-                <participantList>
-                    <participant id="23">
-                        <interactionRef>11</interactionRef>
-                        <biologicalRole>
-                            <names>
-                                <shortLabel>unspecified role</shortLabel>
-                                <fullName>unspecified role</fullName>
-                            </names>
-                            <xref>
-                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
-                            </xref>
-                        </biologicalRole>
-                        <featureList>
-                            <feature id="33">
-                                <names>
-                                    <shortLabel>region</shortLabel>
-                                    <fullName>region</fullName>
-                                </names>
-                                <featureType>
-                                    <names>
-                                        <shortLabel>sufficient binding region</shortLabel>
-                                        <fullName>sufficient binding region</fullName>
-                                    </names>
-                                    <xref>
-                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
-                                    </xref>
-                                </featureType>
-                                <featureRangeList>
-                                    <featureRange>
-                                        <startStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </startStatus>
-                                        <begin position="89"/>
-                                        <endStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </endStatus>
-                                        <end position="424"/>
-                                        <isLink>false</isLink>
-                                    </featureRange>
-                                    <featureRange>
-                                        <startStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </startStatus>
-                                        <begin position="5"/>
-                                        <endStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </endStatus>
-                                        <end position="73"/>
-                                        <isLink>false</isLink>
-                                    </featureRange>
-                                </featureRangeList>
-                            </feature>
-                        </featureList>
-                        <attributeList>
-                            <attribute name="comment">Stoichiometry: 1</attribute>
-                        </attributeList>
-                    </participant>
-                    <participant id="24">
-                        <interactorRef>3</interactorRef>
-                        <biologicalRole>
-                            <names>
-                                <shortLabel>unspecified role</shortLabel>
-                                <fullName>unspecified role</fullName>
-                            </names>
-                            <xref>
-                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
-                            </xref>
-                        </biologicalRole>
-                        <featureList>
-                            <feature id="34">
-                                <names>
-                                    <shortLabel>DEG_SCF_SKP2-CKS1_1</shortLabel>
-                                    <fullName>DEG_SCF_SKP2-CKS1_1</fullName>
-                                </names>
-                                <xref>
-                                    <primaryRef db="elm" dbAc="MI:1317" id="DEG_SCF_SKP2-CKS1_1" refType="identity" refTypeAc="MI:0356"/>
-                                </xref>
-                                <featureType>
-                                    <names>
-                                        <shortLabel>sufficient binding region</shortLabel>
-                                        <fullName>sufficient binding region</fullName>
-                                    </names>
-                                    <xref>
-                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
-                                    </xref>
-                                </featureType>
-                                <featureRangeList>
-                                    <featureRange>
-                                        <startStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </startStatus>
-                                        <begin position="181"/>
-                                        <endStatus>
-                                            <names>
-                                                <shortLabel>certain</shortLabel>
-                                                <fullName>certain sequence position</fullName>
-                                            </names>
-                                            <xref>
-                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
-                                            </xref>
-                                        </endStatus>
-                                        <end position="190"/>
-                                        <isLink>false</isLink>
-                                    </featureRange>
-                                </featureRangeList>
-                            </feature>
-                            <feature id="35">
-                                <names>
-                                    <shortLabel>required-phosphothr187</shortLabel>
-                                    <fullName>required-phosphothr187</fullName>
+                                    <shortLabel>resulting-phosphoser775</shortLabel>
+                                    <fullName>resulting-phosphoser775</fullName>
                                 </names>
                                 <featureType>
                                     <names>
@@ -465,7 +215,7 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                                                 <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
                                             </xref>
                                         </startStatus>
-                                        <begin position="187"/>
+                                        <begin position="775"/>
                                         <endStatus>
                                             <names>
                                                 <shortLabel>certain</shortLabel>
@@ -475,7 +225,341 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                                                 <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
                                             </xref>
                                         </endStatus>
-                                        <end position="187"/>
+                                        <end position="775"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                                <attributeList>
+                                    <attribute name="resulting-ptm" nameAc="MI:0639"/>
+                                </attributeList>
+                            </feature>
+                        </featureList>
+                    </participant>
+                </participantList>
+                <interactionType>
+                    <names>
+                        <shortLabel>phosphorylation reaction</shortLabel>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0217" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </interactionType>
+                <intraMolecular>false</intraMolecular>
+                <attributeList>
+                    <attribute name="cooperative mechanism" nameAc="MI:1156">pre-assembly</attribute>
+                    <attribute name="cooperative effect outcome" nameAc="MI:1153">negative cooperative effect</attribute>
+                    <attribute name="pre-assembly response" nameAc="MI:1170">altered physicochemical compatibility</attribute>
+                    <attribute name="affected interaction" nameAc="MI:1150">12</attribute>
+                </attributeList>
+            </interaction>
+            <interaction id="12">
+                <names>
+                    <shortLabel>Atx1-U2af65-1</shortLabel>
+                    <fullName>Spinocerebellar ataxia type 1 protein-Splicing factor U2AF 65 kDa subunit-1</fullName>
+                    <alias type="display_short">P54253-P26368-1</alias>
+                </names>
+                <xref>
+                    <primaryRef db="intact" dbAc="MI:0469" id="EBI-946472" refType="exp-evidence"/>
+                    <secondaryRef db="imex" dbAc="MI:0670" id="IM-11827-914" refType="exp-evidence"/>
+                </xref>
+                <experimentList>
+                    <experimentRef>539974</experimentRef>
+                </experimentList>
+                <participantList>
+                    <participant id="23">
+                        <interactorRef>1</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                        <featureList>
+                            <feature id="32">
+                                <names>
+                                    <shortLabel>LIG_ULM_U2AF65_1</shortLabel>
+                                    <fullName>LIG_ULM_U2AF65_1</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="elm" dbAc="MI:1317" id="LIG_ULM_U2AF65_1" refType="identity" refTypeAc="MI:0356"/>
+                                </xref>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>sufficient binding region</shortLabel>
+                                        <fullName>sufficient binding region</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="769"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="779"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                            <feature id="33">
+                                <names>
+                                    <shortLabel>decreasing-phosphoser775</shortLabel>
+                                    <fullName>decreasing-phosphoser775</fullName>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>phosphorylated residue</shortLabel>
+                                        <fullName>phosphorylated residue</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mod" dbAc="MI:0897" id="MOD:00696" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="775"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="775"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                                <attributeList>
+                                    <attribute name="decreasing-ptm" nameAc="MI:1223"/>
+                                </attributeList>
+                            </feature>
+                        </featureList>
+                        <attributeList>
+                            <attribute name="comment">Stoichiometry: 1</attribute>
+                        </attributeList>
+                    </participant>
+                    <participant id="24">
+                        <interactorRef>4</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                        <featureList>
+                            <feature id="34">
+                                <names>
+                                    <shortLabel>RRM_dom</shortLabel>
+                                    <fullName>RNA recognition motif domain</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="interpro" dbAc="MI:0449" id="IPR000504" refType="identity" refTypeAc="MI:0356"/>
+                                </xref>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>sufficient binding region</shortLabel>
+                                        <fullName>sufficient binding region</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="369"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="475"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                        <attributeList>
+                            <attribute name="comment">Stoichiometry: 1</attribute>
+                        </attributeList>
+                    </participant>
+                </participantList>
+                <inferredInteractionList>
+                    <inferredInteraction>
+                        <participant>
+                            <participantFeatureRef>32</participantFeatureRef>
+                        </participant>
+                        <participant>
+                            <participantFeatureRef>34</participantFeatureRef>
+                        </participant>
+                    </inferredInteraction>
+                </inferredInteractionList>
+                <interactionType>
+                    <names>
+                        <shortLabel>direct interaction</shortLabel>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </interactionType>
+                <intraMolecular>false</intraMolecular>
+                <parameterList>
+                    <parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="9.2" uncertainty="0.3">
+                        <experimentRef>539974</experimentRef>
+                    </parameter>
+                </parameterList>
+                <attributeList>
+                    <attribute name="kinetics">"Phosphorylation of Atx1 at S775 by Akt1 lowers the affinity for U2af65 to Kd = 35.8+/-1.3 x 10E-6 molar."</attribute>
+                </attributeList>
+            </interaction>
+            <interaction id="13">
+                <names>
+                    <shortLabel>Atx1-1433z-1</shortLabel>
+                    <fullName>Spinocerebellar ataxia type 1-protein-14-3-3 protein zeta/delta-1</fullName>
+                    <alias type="display_short">P54253-P63104-1</alias>
+                </names>
+                <xref>
+                    <primaryRef db="mint" dbAc="MI:0471" id="MINT-8009553" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="evidence ontology" dbAc="MI:1331" id="ECO:0000006"/>
+                </xref>
+                <participantList>
+                    <participant id="25">
+                        <interactorRef>1</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                        <featureList>
+                            <feature id="35">
+                                <names>
+                                    <shortLabel>LIG_14-3-3_1</shortLabel>
+                                    <fullName>LIG_14-3-3_1</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="elm" dbAc="MI:1317" id="LIG_14-3-3_1" refType="identity" refTypeAc="MI:0356"/>
+                                </xref>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>sufficient binding region</shortLabel>
+                                        <fullName>sufficient binding region</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="769"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="779"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                            <feature id="36">
+                                <names>
+                                    <shortLabel>required-phosphoser775</shortLabel>
+                                    <fullName>required-phosphoser775</fullName>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>phosphorylated residue</shortLabel>
+                                        <fullName>phosphorylated residue</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mod" dbAc="MI:0897" id="MOD:00696" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="775"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="775"/>
                                         <isLink>false</isLink>
                                     </featureRange>
                                 </featureRangeList>
@@ -488,14 +572,74 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                             <attribute name="comment">Stoichiometry: 1</attribute>
                         </attributeList>
                     </participant>
+                    <participant id="26">
+                        <interactorRef>3</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                        <featureList>
+                            <feature id="37">
+                                <names>
+                                    <shortLabel>14-3-3_domain</shortLabel>
+                                    <fullName>14-3-3 domain</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="interpro" dbAc="MI:0449" id="IPR023410" refType="identity" refTypeAc="MI:0356"/>
+                                </xref>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>sufficient binding region</shortLabel>
+                                        <fullName>sufficient binding region</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="1"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="245"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                        <attributeList>
+                            <attribute name="comment">Stoichiometry: 1</attribute>
+                        </attributeList>
+                    </participant>
                 </participantList>
                 <inferredInteractionList>
                     <inferredInteraction>
                         <participant>
-                            <participantFeatureRef>33</participantFeatureRef>
+                            <participantFeatureRef>35</participantFeatureRef>
                         </participant>
                         <participant>
-                            <participantFeatureRef>34</participantFeatureRef>
+                            <participantFeatureRef>37</participantFeatureRef>
                         </participant>
                     </inferredInteraction>
                 </inferredInteractionList>
@@ -504,15 +648,22 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                         <shortLabel>direct interaction</shortLabel>
                     </names>
                     <xref>
-                        <primaryRef refType="identical object" db="psi-mi" refTypeAc="MI:0356" dbAc="MI:0488" id="MI:0407"/>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
                     </xref>
                 </interactionType>
                 <intraMolecular>false</intraMolecular>
                 <parameterList>
-                    <parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="7" uncertainty="1">
+                    <parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="0.4" uncertainty="0.03">
                         <experimentRef>539974</experimentRef>
                     </parameter>
                 </parameterList>
+                <attributeList>
+                    <attribute name="cooperative mechanism" nameAc="MI:1156">pre-assembly</attribute>
+                    <attribute name="cooperative effect outcome" nameAc="MI:1153">negative cooperative effect</attribute>
+                    <attribute name="pre-assembly response" nameAc="MI:1170">binding site hiding</attribute>
+                    <attribute name="affected interaction" nameAc="MI:1150">12</attribute>
+                    <attribute name="kinetics">"No binding was detected between 1433z and unphosphorylated Atx1 peptide."</attribute>
+                </attributeList>
             </interaction>
         </interactionList>
     </entry>
