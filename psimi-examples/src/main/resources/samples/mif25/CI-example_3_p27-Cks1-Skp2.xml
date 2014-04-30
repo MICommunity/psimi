@@ -135,6 +135,7 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                     <primaryRef db="intact" dbAc="MI:0469" id="EBI-6859782" refType="exp-evidence"/>
                     <secondaryRef db="imex" dbAc="MI:0670" id="IM-20900-1" refType="exp-evidence"/>
                     <secondaryRef db="rcsb pdb" dbAc="MI:0469" id="2ASS" refType="identity" refTypeAc="MI:0356"/>
+                    <secondaryRef db="eco" id="ECO:0000006"/>
                 </xref>
                 <experimentList>
                     <experimentRef>539974</experimentRef>
