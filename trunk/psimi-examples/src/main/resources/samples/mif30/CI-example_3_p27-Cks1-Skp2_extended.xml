@@ -285,6 +285,14 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                         <experimentRef>539974</experimentRef>
 					</parameter>
 				</parameterList>
+                <evidenceCode>
+                    <names>
+                        <shortLabel>experimental evidence</shortLabel>
+                    </names>
+                    <xref>
+                        <primaryRef db="evidence ontology" dbAc="MI:1331" id="ECO:0000006" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </evidenceCode>
 				<cooperativeEffectList>
 					<preassembly>
 						<cooperativityEvidenceList>
@@ -300,14 +308,6 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                                     	<attribute name="publication year" nameAc="MI:0886">2005</attribute>
                                 	</attributeList>
 								</bibref>
-								<evidenceCode>
-									<names>
-										<shortLabel>experimental evidence</shortLabel>
-									</names>
-									<xref>
-										<primaryRef db="evidence ontology" dbAc="MI:1331" id="ECO:0000006" refType="identity" refTypeAc="MI:0356"/>
-									</xref>
-								</evidenceCode>
 								<evidenceMethodList>
 									<evidenceMethod>
 										<names>
