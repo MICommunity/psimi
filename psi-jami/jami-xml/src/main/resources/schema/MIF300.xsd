@@ -650,14 +650,11 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="interactionDependencyType" type="mif:cvType" minOccurs="0">
+            <xs:element name="featureRole" type="mif:cvType" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>Describes the impact of the interaction on the feature. (Ex: resulting-ptm, ...)</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="interactionEffectType" type="mif:cvType" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>Describes the impact of the feature on the interaction. (Ex: prerequisite-ptm,...)</xs:documentation>
+                    <xs:documentation>The role of the feature in the context of this interaction. It usually describes the impact of
+                        the interaction on the feature. (Ex: resulting-ptm, ...) or the impact of the feature on the interaction.
+                        (Ex: prerequisite-ptm,...).</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
