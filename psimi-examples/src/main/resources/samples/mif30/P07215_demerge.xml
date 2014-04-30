@@ -152,11 +152,11 @@ It refers to a demerged uniprot entry : P07215 (MTCU_YEAST) which has been demer
                 </xref>
                 <interactorType>
                     <names>
-                        <shortLabel>candidate set</shortLabel>
-                        <fullName>candidate set</fullName>
+                        <shortLabel>defined set</shortLabel>
+                        <fullName>defined set</fullName>
                     </names>
                     <xref>
-                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1305" refType="identity" refTypeAc="MI:0356"/>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1307" refType="identity" refTypeAc="MI:0356"/>
                     </xref>
                 </interactorType>
                 <organism ncbiTaxId="559292">
