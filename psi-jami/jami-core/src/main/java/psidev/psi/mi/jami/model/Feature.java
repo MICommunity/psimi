@@ -142,7 +142,7 @@ public interface Feature<P extends Participant, F extends Feature> {
     public CvTerm getRole();
 
     /**
-     * Sets the interaction effect for this feature.
+     * Sets the interaction effect/role for this feature.
      * @param role : the feature role
      */
     public void setRole(CvTerm role);
