@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<!-- Curated IntAct publication 22267217 registered in IMEx central. Two variable variable parameters : Curdlan (ug/ml) with two different values 0 and 10
+<!-- Curated IntAct publication 22267217 registered in IMEx central. Two variable parameters : Curdlan (ug/ml) with two different values 0 and 10
 and Piceatannol (uM) with two different values 0 and 40.-->
 <entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
     <entry>
