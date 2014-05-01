@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.InteractionSource;
-import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
+import psidev.psi.mi.jami.factory.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.model.AbstractEntry;

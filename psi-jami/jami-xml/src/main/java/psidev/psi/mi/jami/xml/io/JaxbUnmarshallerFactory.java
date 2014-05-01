@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.xml.io;
 
-import psidev.psi.mi.jami.factory.InteractionObjectCategory;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
-import psidev.psi.mi.jami.xml.model.*;
+import psidev.psi.mi.jami.xml.model.xml25.*;
+import psidev.psi.mi.jami.xml.model.xml30.Xml300BasicEntrySet;
+import psidev.psi.mi.jami.xml.model.xml30.Xml300ModelledEntrySet;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -36,7 +38,7 @@ public class JaxbUnmarshallerFactory {
      * The unmarhsaller is initialised so it can be used in a streaming way
      * @throws JAXBException
      */
-    public Unmarshaller createUnmarshaller(PsiXmlVersion version, InteractionObjectCategory category) throws JAXBException {
+    public Unmarshaller createUnmarshaller(PsiXmlVersion version, InteractionCategory category) throws JAXBException {
         // create unmarshaller knowing the version
         switch (version){
             case v2_5_4:
@@ -58,7 +60,7 @@ public class JaxbUnmarshallerFactory {
      * The unmarhsaller is initialised so it can only be used to parse the all entrySet (no streaming)
      * @throws JAXBException
      */
-    public Unmarshaller createFullUnmarshaller(PsiXmlVersion version, InteractionObjectCategory category) throws JAXBException {
+    public Unmarshaller createFullUnmarshaller(PsiXmlVersion version, InteractionCategory category) throws JAXBException {
         // create unmarshaller knowing the version
         switch (version){
             case v2_5_4:
@@ -72,146 +74,98 @@ public class JaxbUnmarshallerFactory {
         }
     }
 
-    public Unmarshaller createXml300JAXBUnmarshaller(InteractionObjectCategory category) throws JAXBException {
+    public Unmarshaller createXml300JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
         // create unmarshaller knowing the interaction category we want to parse
         switch (category){
             case basic:
                 return createBasicXml300JAXBUnmarshaller();
-            case basic_binary:
-                return createBasicXml300JAXBUnmarshaller();
             case evidence:
-                return createEvidenceXml300JAXBUnmarshaller();
-            case binary_evidence:
                 return createEvidenceXml300JAXBUnmarshaller();
             case modelled:
                 return createModelledXml300JAXBUnmarshaller();
-            case modelled_binary:
-                return createModelledXml300JAXBUnmarshaller();
             case mixed:
-                return createEvidenceXml300JAXBUnmarshaller();
-            case mixed_binary:
                 return createEvidenceXml300JAXBUnmarshaller();
             default:
                 return createEvidenceXml300JAXBUnmarshaller();
         }
     }
 
-    public Unmarshaller createXml253JAXBUnmarshaller(InteractionObjectCategory category) throws JAXBException {
+    public Unmarshaller createXml253JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
         // create unmarshaller knowing the interaction category we want to parse
         switch (category){
             case basic:
                 return createBasicXml253JAXBUnmarshaller();
-            case basic_binary:
-                return createBasicXml253JAXBUnmarshaller();
             case evidence:
-                return createEvidenceXml253JAXBUnmarshaller();
-            case binary_evidence:
                 return createEvidenceXml253JAXBUnmarshaller();
             case modelled:
                 return createModelledXml253JAXBUnmarshaller();
-            case modelled_binary:
-                return createModelledXml253JAXBUnmarshaller();
             case mixed:
-                return createEvidenceXml253JAXBUnmarshaller();
-            case mixed_binary:
                 return createEvidenceXml253JAXBUnmarshaller();
             default:
                 return createEvidenceXml253JAXBUnmarshaller();
         }
     }
 
-    public Unmarshaller createXml254JAXBUnmarshaller(InteractionObjectCategory category) throws JAXBException {
+    public Unmarshaller createXml254JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
         // create unmarshaller knowing the interaction category we want to parse
         switch (category){
             case basic:
                 return createBasicXml254JAXBUnmarshaller();
-            case basic_binary:
-                return createBasicXml254JAXBUnmarshaller();
             case evidence:
-                return createEvidenceXml254JAXBUnmarshaller();
-            case binary_evidence:
                 return createEvidenceXml254JAXBUnmarshaller();
             case modelled:
                 return createModelledXml254JAXBUnmarshaller();
-            case modelled_binary:
-                return createModelledXml254JAXBUnmarshaller();
             case mixed:
-                return createEvidenceXml254JAXBUnmarshaller();
-            case mixed_binary:
                 return createEvidenceXml254JAXBUnmarshaller();
             default:
                 return createEvidenceXml254JAXBUnmarshaller();
         }
     }
 
-    public Unmarshaller createFullXml300JAXBUnmarshaller(InteractionObjectCategory category) throws JAXBException {
+    public Unmarshaller createFullXml300JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
 
         // create unmarshaller knowing the interaction category we want to parse
         switch (category){
             case basic:
                 return createBasicFullXml300JAXBUnmarshaller();
-            case basic_binary:
-                return createBasicFullXml300JAXBUnmarshaller();
             case evidence:
-                return createEvidenceFullXml300JAXBUnmarshaller();
-            case binary_evidence:
                 return createEvidenceFullXml300JAXBUnmarshaller();
             case modelled:
                 return createModelledFullXml300JAXBUnmarshaller();
-            case modelled_binary:
-                return createModelledFullXml300JAXBUnmarshaller();
             case mixed:
-                return createEvidenceFullXml300JAXBUnmarshaller();
-            case mixed_binary:
                 return createEvidenceFullXml300JAXBUnmarshaller();
             default:
                 return createEvidenceFullXml300JAXBUnmarshaller();
         }
     }
 
-    public Unmarshaller createFullXml253JAXBUnmarshaller(InteractionObjectCategory category) throws JAXBException {
+    public Unmarshaller createFullXml253JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
 
         // create unmarshaller knowing the interaction category we want to parse
         switch (category){
             case basic:
                 return createBasicFullXml253JAXBUnmarshaller();
-            case basic_binary:
-                return createBasicFullXml253JAXBUnmarshaller();
             case evidence:
-                return createEvidenceFullXml253JAXBUnmarshaller();
-            case binary_evidence:
                 return createEvidenceFullXml253JAXBUnmarshaller();
             case modelled:
                 return createModelledFullXml253JAXBUnmarshaller();
-            case modelled_binary:
-                return createModelledFullXml253JAXBUnmarshaller();
             case mixed:
-                return createEvidenceFullXml253JAXBUnmarshaller();
-            case mixed_binary:
                 return createEvidenceFullXml253JAXBUnmarshaller();
             default:
                 return createEvidenceFullXml253JAXBUnmarshaller();
         }
     }
 
-    public Unmarshaller createFullXml254JAXBUnmarshaller(InteractionObjectCategory category) throws JAXBException {
+    public Unmarshaller createFullXml254JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
         // create unmarshaller knowing the interaction category we want to parse
         switch (category){
             case basic:
                 return createBasicFullXml254JAXBUnmarshaller();
-            case basic_binary:
-                return createBasicFullXml254JAXBUnmarshaller();
             case evidence:
-                return createEvidenceFullXml254JAXBUnmarshaller();
-            case binary_evidence:
                 return createEvidenceFullXml254JAXBUnmarshaller();
             case modelled:
                 return createModelledFullXml254JAXBUnmarshaller();
-            case modelled_binary:
-                return createModelledFullXml254JAXBUnmarshaller();
             case mixed:
-                return createEvidenceFullXml254JAXBUnmarshaller();
-            case mixed_binary:
                 return createEvidenceFullXml254JAXBUnmarshaller();
             default:
                 return createEvidenceFullXml254JAXBUnmarshaller();

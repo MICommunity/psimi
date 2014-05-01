@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
-import psidev.psi.mi.jami.factory.InteractionObjectCategory;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
 
@@ -38,7 +38,7 @@ public class FullXmlEvidenceParser extends AbstractFullPsiXmlParser<InteractionE
 
     @Override
     protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        return JaxbUnmarshallerFactory.getInstance().createFullUnmarshaller(getVersion(), InteractionObjectCategory.evidence);
+        return JaxbUnmarshallerFactory.getInstance().createFullUnmarshaller(getVersion(), InteractionCategory.evidence);
     }
 
 }

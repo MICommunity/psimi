@@ -1,4 +1,7 @@
-package psidev.psi.mi.jami.xml.model;
+package psidev.psi.mi.jami.xml.model.xml25;
+
+import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
+import psidev.psi.mi.jami.xml.model.ExperimentalEntry;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -7,9 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
- * Basic EntrySet implementation for JAXB read only .
- *
- * Ignore all experimental details
+ * Xml254ExperimentalEntrySet implementation for JAXB read only
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -17,10 +18,10 @@ import java.util.List;
  */
 @XmlRootElement(name = "entrySet", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Xml253BasicEntrySet extends AbstractEntrySet<BasicEntry>{
+public class Xml253ExperimentalEntrySet extends AbstractEntrySet<ExperimentalEntry> {
 
-    @XmlElement(type=BasicEntry.class, name="entry", required = true)
-    public List<BasicEntry> getEntries() {
+    @XmlElement(type=ExperimentalEntry.class, name="entry", required = true)
+    public List<ExperimentalEntry> getEntries() {
         return super.getEntries();
     }
 }

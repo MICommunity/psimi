@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
-import psidev.psi.mi.jami.factory.InteractionObjectCategory;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
 
@@ -39,6 +39,6 @@ public class XmlEvidenceParser extends AbstractPsiXmlParser<InteractionEvidence>
 
     @Override
     protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        return JaxbUnmarshallerFactory.getInstance().createUnmarshaller(getVersion(), InteractionObjectCategory.evidence);
+        return JaxbUnmarshallerFactory.getInstance().createUnmarshaller(getVersion(), InteractionCategory.evidence);
     }
 }

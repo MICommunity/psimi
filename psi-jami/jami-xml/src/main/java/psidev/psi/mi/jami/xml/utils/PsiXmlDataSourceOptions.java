@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.utils;
 
-import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
+import psidev.psi.mi.jami.factory.MIFileDataSourceOptions;
 
 /**
  * Class that lists all possible options for PsiXmlDataSource.
