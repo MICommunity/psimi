@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.model.InteractionCategory;
+import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.binary.impl.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
@@ -30,9 +30,9 @@ public class InteractionUtils {
     /**
      * The method will find the interactionCategory (binary, self, etc.)
      * @param interaction
-     * @return the InteractionCategory, null if the given interaction is null
+     * @return the ComplexType, null if the given interaction is null
      */
-    public static InteractionCategory findInteractionCategoryOf(Interaction interaction, boolean checkExperimentalRoleIfInteractionEvidence){
+    public static ComplexType findInteractionCategoryOf(Interaction interaction, boolean checkExperimentalRoleIfInteractionEvidence){
         if (interaction == null){
             return null;
         }
@@ -45,26 +45,26 @@ public class InteractionUtils {
             if (p.getStoichiometry() == null || p.getStoichiometry().getMaxValue() == 0){
                 // if we have self participants, then it is self_intra_molecular
                 if (ParticipantUtils.isSelfParticipant(p, checkExperimentalRoleIfInteractionEvidence) || ParticipantUtils.isPutativeSelfParticipant(p, checkExperimentalRoleIfInteractionEvidence)){
-                    return InteractionCategory.self_intra_molecular;
+                    return ComplexType.self_intra_molecular;
                 }
                 // we can consider that we have self inter molecular
                 else {
-                    return InteractionCategory.self_inter_molecular;
+                    return ComplexType.self_inter_molecular;
                 }
             }
             // intra molecular
             else if (p.getStoichiometry().getMaxValue() == 1){
-                 return InteractionCategory.self_intra_molecular;
+                 return ComplexType.self_intra_molecular;
             }
             else{
-                return InteractionCategory.self_inter_molecular;
+                return ComplexType.self_inter_molecular;
             }
         }
         else if (interaction.getParticipants().size() == 2){
-            return InteractionCategory.binary;
+            return ComplexType.binary;
         }
         else if (interaction.getParticipants().size() > 2){
-            return InteractionCategory.n_ary;
+            return ComplexType.n_ary;
         }
 
         return null;
@@ -73,9 +73,9 @@ public class InteractionUtils {
     /**
      * The method will find the interactionCategory (binary, self, etc.)
      * @param interaction
-     * @return the InteractionCategory, null if the given interaction is null
+     * @return the ComplexType, null if the given interaction is null
      */
-    public static InteractionCategory findInteractionEvidenceCategoryOf(InteractionEvidence interaction){
+    public static ComplexType findInteractionEvidenceCategoryOf(InteractionEvidence interaction){
         if (interaction == null){
             return null;
         }
@@ -88,26 +88,26 @@ public class InteractionUtils {
             if (p.getStoichiometry() == null || p.getStoichiometry().getMaxValue() == 0){
                 // if we have self participants, then it is self_intra_molecular
                 if (ParticipantUtils.isSelfParticipantEvidence(p) || ParticipantUtils.isPutativeSelfParticipantEvidence(p)){
-                    return InteractionCategory.self_intra_molecular;
+                    return ComplexType.self_intra_molecular;
                 }
                 // we can consider that we have self inter molecular
                 else {
-                    return InteractionCategory.self_inter_molecular;
+                    return ComplexType.self_inter_molecular;
                 }
             }
             // intra molecular
             else if (p.getStoichiometry().getMaxValue() == 1){
-                return InteractionCategory.self_intra_molecular;
+                return ComplexType.self_intra_molecular;
             }
             else{
-                return InteractionCategory.self_inter_molecular;
+                return ComplexType.self_inter_molecular;
             }
         }
         else if (interaction.getParticipants().size() == 2){
-            return InteractionCategory.binary;
+            return ComplexType.binary;
         }
         else if (interaction.getParticipants().size() > 2){
-            return InteractionCategory.n_ary;
+            return ComplexType.n_ary;
         }
 
         return null;
@@ -116,9 +116,9 @@ public class InteractionUtils {
     /**
      * The method will find the interactionCategory (binary, self, etc.)
      * @param interaction
-     * @return the InteractionCategory, null if the given interaction is null
+     * @return the ComplexType, null if the given interaction is null
      */
-    public static InteractionCategory findModelledInteractionCategoryOf(ModelledInteraction interaction){
+    public static ComplexType findModelledInteractionCategoryOf(ModelledInteraction interaction){
 
         return InteractionUtils.findInteractionCategoryOf(interaction, false);
     }

@@ -3,9 +3,9 @@ package psidev.psi.mi.jami.binary.expansion;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.factory.DefaultBinaryInteractionFactory;
+import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.InteractionUtils;
 
@@ -45,7 +45,7 @@ public abstract class AbstractComplexExpansionMethod<T extends Interaction<? ext
 
     public Collection<B> expand(T interaction) {
 
-        InteractionCategory category = findInteractionCategory(interaction);
+        ComplexType category = findInteractionCategory(interaction);
 
         switch (category){
             case binary:
@@ -82,7 +82,7 @@ public abstract class AbstractComplexExpansionMethod<T extends Interaction<? ext
         return Collections.singletonList((B) getBinaryInteractionFactory().createBinaryInteractionWrapperFrom(interaction));
     }
 
-    protected InteractionCategory findInteractionCategory(T interaction) {
+    protected ComplexType findInteractionCategory(T interaction) {
         return InteractionUtils.findInteractionCategoryOf(interaction, true);
     }
 

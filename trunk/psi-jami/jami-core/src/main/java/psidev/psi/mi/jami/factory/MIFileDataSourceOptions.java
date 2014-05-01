@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.datasource;
+package psidev.psi.mi.jami.factory;
 
 /**
  * Class that lists all possible options for MIFileDataSource.
@@ -9,7 +9,7 @@ package psidev.psi.mi.jami.datasource;
  * @since <pre>05/12/13</pre>
  */
 
-public class MIFileDataSourceOptions extends MIDataSourceOptions{
+public class MIFileDataSourceOptions extends MIDataSourceOptions {
 
     /**
      * The input MI source that contains the interactions. It usually can be a String (path to a file or URL),

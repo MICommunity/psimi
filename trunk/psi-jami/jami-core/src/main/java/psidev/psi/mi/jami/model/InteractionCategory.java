@@ -1,14 +1,18 @@
 package psidev.psi.mi.jami.model;
 
 /**
- * The category of interaction
+ * Enum to recognize the object category of an interaction :
+ * - evidence : for InteractionEvidence implementations.
+ * - modelled: for ModelledInteraction implementations.
+ * - basic: for basic implementations of Interaction
+ *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>04/06/13</pre>
+ * @since <pre>03/07/13</pre>
  */
 
 public enum InteractionCategory {
 
-    binary, n_ary, self_intra_molecular, self_inter_molecular, other
+    evidence, modelled, basic, mixed
 }

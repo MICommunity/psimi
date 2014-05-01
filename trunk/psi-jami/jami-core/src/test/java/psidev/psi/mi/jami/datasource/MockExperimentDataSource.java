@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.datasource;
 
+import psidev.psi.mi.jami.factory.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 
 import java.util.Map;

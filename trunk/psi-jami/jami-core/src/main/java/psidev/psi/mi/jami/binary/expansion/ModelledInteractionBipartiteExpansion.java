@@ -29,7 +29,7 @@ public class ModelledInteractionBipartiteExpansion extends AbstractBipartiteExpa
     }
 
     @Override
-    protected InteractionCategory findInteractionCategory(ModelledInteraction interaction) {
+    protected ComplexType findInteractionCategory(ModelledInteraction interaction) {
         return InteractionUtils.findModelledInteractionCategoryOf(interaction);
     }
 

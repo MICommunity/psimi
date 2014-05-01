@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.datasource;
+package psidev.psi.mi.jami.factory;
 
 /**
  * Class that lists all possible options for InteractionWriter
@@ -34,8 +34,15 @@ public class InteractionWriterOptions {
 
     /**
      * The option to describe the type of interaction object we want to write.
-     * It has to be an enum of type InteractionObjectCategory. If this option is not provided,
+     * It has to be an enum of type InteractionCategory(mixed, modelled, evidence, basic). If this option is not provided,
      * the default value will vary depending on the type of the interaction writer.
      */
-    public static final String INTERACTION_OBJECT_OPTION_KEY = "interaction_object_key";
+    public static final String INTERACTION_CATEGORY_OPTION_KEY = "interaction_category_key";
+
+    /**
+     * The option to describe the complex type of interaction object we want to write.
+     * It has to be an enum of type ComplexType (binary,n-ary, self). If this option is not provided,
+     * the default value will vary depending on the type of the datasource.
+     */
+    public static final String COMPLEX_TYPE_OPTION_KEY = "complex_type_key";
 }
