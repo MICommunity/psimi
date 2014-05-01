@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.parser;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
+import psidev.psi.mi.jami.factory.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.model.Interaction;
 
 import java.io.File;

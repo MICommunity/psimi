@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
-import psidev.psi.mi.jami.factory.InteractionObjectCategory;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
@@ -39,7 +39,7 @@ public class FullXmlParser extends AbstractFullPsiXmlParser<Interaction<? extend
 
     @Override
     protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        return JaxbUnmarshallerFactory.getInstance().createFullUnmarshaller(getVersion(), InteractionObjectCategory.basic);
+        return JaxbUnmarshallerFactory.getInstance().createFullUnmarshaller(getVersion(), InteractionCategory.basic);
     }
 
 }

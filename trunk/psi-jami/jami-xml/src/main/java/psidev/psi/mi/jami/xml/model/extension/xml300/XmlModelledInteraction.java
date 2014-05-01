@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
-@XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif300")
+@XmlRootElement(name = "abstractInteraction", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
 

@@ -1,4 +1,7 @@
-package psidev.psi.mi.jami.xml.model;
+package psidev.psi.mi.jami.xml.model.xml25;
+
+import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
+import psidev.psi.mi.jami.xml.model.ExperimentalEntry;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,9 +16,9 @@ import java.util.List;
  * @version $Id$
  * @since <pre>07/11/13</pre>
  */
-@XmlRootElement(name = "entrySet", namespace = "net:sf:psidev:mi")
+@XmlRootElement(name = "entrySet", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Xml253ExperimentalEntrySet extends AbstractEntrySet<ExperimentalEntry>{
+public class Xml254ExperimentalEntrySet extends AbstractEntrySet<ExperimentalEntry> {
 
     @XmlElement(type=ExperimentalEntry.class, name="entry", required = true)
     public List<ExperimentalEntry> getEntries() {

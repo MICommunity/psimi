@@ -1,4 +1,7 @@
-package psidev.psi.mi.jami.xml.model;
+package psidev.psi.mi.jami.xml.model.xml30;
+
+import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
+import psidev.psi.mi.jami.xml.model.ExperimentalEntry;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -7,9 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
 /**
- * Modelled EntrySet implementation for JAXB read only
- *
- * Ignore all experimental details
+ * Xml300ExperimentalEntrySet implementation for JAXB read only
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -17,10 +18,10 @@ import java.util.List;
  */
 @XmlRootElement(name = "entrySet", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Xml300ModelledEntrySet extends AbstractEntrySet<ModelledEntry>{
+public class Xml300ExperimentalEntrySet extends AbstractEntrySet<ExperimentalEntry> {
 
-    @XmlElement(type=ModelledEntry.class, name="entry", required = true)
-    public List<ModelledEntry> getEntries() {
+    @XmlElement(type=ExperimentalEntry.class, name="entry", required = true)
+    public List<ExperimentalEntry> getEntries() {
         return super.getEntries();
     }
 }

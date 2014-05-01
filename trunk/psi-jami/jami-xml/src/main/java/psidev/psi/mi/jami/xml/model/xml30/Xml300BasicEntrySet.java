@@ -1,4 +1,7 @@
-package psidev.psi.mi.jami.xml.model;
+package psidev.psi.mi.jami.xml.model.xml30;
+
+import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
+import psidev.psi.mi.jami.xml.model.BasicEntry;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -17,7 +20,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "entrySet", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Xml300BasicEntrySet extends AbstractEntrySet<BasicEntry>{
+public class Xml300BasicEntrySet extends AbstractEntrySet<BasicEntry> {
 
     @XmlElement(type=BasicEntry.class, name="entry", required = true)
     public List<BasicEntry> getEntries() {
