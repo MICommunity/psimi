@@ -1,10 +1,11 @@
 package psidev.psi.mi.jami.commons;
 
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.datasource.MIDataSourceOptions;
-import psidev.psi.mi.jami.datasource.MIFileDataSourceOptions;
-import psidev.psi.mi.jami.factory.InteractionObjectCategory;
+import psidev.psi.mi.jami.factory.MIDataSourceOptions;
+import psidev.psi.mi.jami.factory.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
+import psidev.psi.mi.jami.model.ComplexType;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.tab.listener.MitabParserLogger;
 import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
@@ -104,8 +105,8 @@ public class MIDataSourceOptionFactory {
         switch (sourceType){
             case mitab:
                 return getDefaultMitabOptions(inputData);
-            case psi25_xml:
-                return getDefaultXml25Options(inputData);
+            case psimi_xml:
+                return getDefaultXmlOptions(inputData);
             default:
                 return null;
         }
@@ -118,7 +119,7 @@ public class MIDataSourceOptionFactory {
      * @return the default options for the MITAB datasource
      */
     public Map<String, Object> getDefaultMitabOptions(Object inputData){
-        return getMitabOptions(InteractionObjectCategory.evidence, true, new MitabParserLogger(), inputData);
+        return getMitabOptions(InteractionCategory.evidence, ComplexType.n_ary, true, new MitabParserLogger(), inputData);
     }
 
     /**
@@ -126,10 +127,11 @@ public class MIDataSourceOptionFactory {
      * It will read elements from this objectCategory in a streaming way.
      * It will use the MitabParserLogger to listen to the MITAB parsing events
      * @param objectCategory
+     * @param complexType: the kind of complex : n-ary or binary
      * @return the options for the MITAB datasource using the provided objectCategory
      */
-    public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, Object inputData){
-        return getMitabOptions(objectCategory, true, null, inputData);
+    public Map<String, Object> getMitabOptions(InteractionCategory objectCategory, psidev.psi.mi.jami.model.ComplexType complexType, Object inputData){
+        return getMitabOptions(objectCategory, complexType, true, null, inputData);
     }
 
     /**
@@ -140,7 +142,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the MITAB datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getMitabOptions(boolean streaming, Object inputData){
-        return getMitabOptions(null, streaming, null, inputData);
+        return getMitabOptions(null, null, streaming, null, inputData);
     }
 
     /**
@@ -151,18 +153,20 @@ public class MIDataSourceOptionFactory {
      * @return the options for the MITAB datasource with the provided listener
      */
     public Map<String, Object> getMitabOptions(MIFileParserListener listener, Object inputData){
-        return getMitabOptions(null, true, listener, inputData);
+        return getMitabOptions(null, null, true, listener, inputData);
     }
 
     /**
      * Create the options for the MITAB datasource.
      * @param objectCategory : interaction object type to load
+     * @param complexType: the kind of complex : n-ary or binary
      * @param streaming : true if we want to load interactions in a streaming way
      * @param listener : the listener to use for listening MITAB parsing events
      * @return the MITAB datasource options
      */
-    public Map<String, Object> getMitabOptions(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
-        return getOptions(MIFileType.mitab, objectCategory, streaming, listener, input);
+    public Map<String, Object> getMitabOptions(InteractionCategory objectCategory, psidev.psi.mi.jami.model.ComplexType complexType,
+                                               boolean streaming, MIFileParserListener listener, Object input){
+        return getOptions(MIFileType.mitab, objectCategory, complexType, streaming, listener, input);
     }
 
     /**
@@ -172,8 +176,9 @@ public class MIDataSourceOptionFactory {
      * It will keep the parsed objects having an id in memory.
      * @return the default options for the PSI-xml 2.5 datasource
      */
-    public Map<String, Object> getDefaultXml25Options(Object inputData){
-        return getXml25Options(InteractionObjectCategory.evidence, true, new PsiXmlParserLogger(), inputData, null, new InMemoryPsiXmlCache());
+    public Map<String, Object> getDefaultXmlOptions(Object inputData){
+        return getXml25Options(InteractionCategory.evidence, psidev.psi.mi.jami.model.ComplexType.n_ary, true, new PsiXmlParserLogger(),
+                inputData, null, new InMemoryPsiXmlCache());
     }
 
     /**
@@ -182,10 +187,11 @@ public class MIDataSourceOptionFactory {
      * It will use the PsiXmlParserLogger to listen to the Psi=XML parsing events
      * It will keep the parsed objects having an id in memory.
      * @param objectCategory
+     * @param complexType: the kind of complex : n-ary or binary
      * @return the options for the Psi Xml datasource using the provided objectCategory
      */
-    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, Object inputData){
-        return getXml25Options(objectCategory, true, null, inputData, null, new InMemoryPsiXmlCache());
+    public Map<String, Object> getXml25Options(InteractionCategory objectCategory, psidev.psi.mi.jami.model.ComplexType complexType, Object inputData){
+        return getXml25Options(objectCategory, complexType, true, null, inputData, null, new InMemoryPsiXmlCache());
     }
 
     /**
@@ -197,7 +203,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getXml25Options(boolean streaming, Object inputData){
-        return getXml25Options(null, streaming, null, inputData, null, new InMemoryPsiXmlCache());
+        return getXml25Options(null, null, streaming, null, inputData, null, new InMemoryPsiXmlCache());
     }
 
     /**
@@ -209,12 +215,13 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource with the provided listener
      */
     public Map<String, Object> getXml25Options(MIFileParserListener listener, Object inputData){
-        return getXml25Options(null, true, listener, inputData, null, new InMemoryPsiXmlCache());
+        return getXml25Options(null, null, true, listener, inputData, null, new InMemoryPsiXmlCache());
     }
 
     /**
      * Create the options for the PSI-XML 2.5 datasource.
      * @param objectCategory : interaction object type to load
+     * @param complexType: the kind of complex : n-ary or binary
      * @param streaming : true if we want to load interactions in a streaming way
      * @param listener : the listener to use for listening XML parsing events
      * @param input : the MI source containing data
@@ -222,8 +229,10 @@ public class MIDataSourceOptionFactory {
      * @param objectCache: cache for parsed objects having an id
      * @return the Xml 2.5 datasource options
      */
-    public Map<String, Object> getXml25Options(InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input, ComplexExpansionMethod expansionMethod, PsiXmlIdCache objectCache){
-        Map<String, Object> options = getOptions(MIFileType.psi25_xml, objectCategory, streaming, listener, input);
+    public Map<String, Object> getXml25Options(InteractionCategory objectCategory, psidev.psi.mi.jami.model.ComplexType complexType,
+                                               boolean streaming, MIFileParserListener listener, Object input, ComplexExpansionMethod expansionMethod,
+                                               PsiXmlIdCache objectCache){
+        Map<String, Object> options = getOptions(MIFileType.psimi_xml, objectCategory, complexType, streaming, listener, input);
         if (expansionMethod != null){
             options.put(MIDataSourceOptions.COMPLEX_EXPANSION_OPTION_KEY, expansionMethod);
         }
@@ -237,16 +246,19 @@ public class MIDataSourceOptionFactory {
      * Create a map of options
      * @param type : MI source type (mitab, xml25, etc.)
      * @param objectCategory : the kind of interactions to be returned by the datasource (interaction evidence, binary, modelled interaction, ...)
+     * @param complexType: the kind of complex : n-ary or binary
      * @param streaming : boolean value to know if we want to stream the interactions or load the full interaction dataset
      * @param listener : parser listener
      * @param input : the MI source containing data
      * @return the map of options
      */
-    public Map<String, Object> getOptions(MIFileType type, InteractionObjectCategory objectCategory, boolean streaming, MIFileParserListener listener, Object input){
+    public Map<String, Object> getOptions(MIFileType type, InteractionCategory objectCategory, psidev.psi.mi.jami.model.ComplexType complexType,
+                                          boolean streaming, MIFileParserListener listener, Object input){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(MIFileDataSourceOptions.INPUT_TYPE_OPTION_KEY, type.toString());
-        options.put(MIDataSourceOptions.INTERACTION_OBJECT_OPTION_KEY, objectCategory != null ? objectCategory : InteractionObjectCategory.evidence);
+        options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, objectCategory != null ? objectCategory : InteractionCategory.evidence);
+        options.put(MIDataSourceOptions.COMPLEX_TYPE_OPTION_KEY, complexType != null ? complexType : psidev.psi.mi.jami.model.ComplexType.n_ary);
         options.put(MIFileDataSourceOptions.STREAMING_OPTION_KEY, streaming);
         if (listener != null){
             options.put(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY, listener);

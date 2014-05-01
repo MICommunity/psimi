@@ -53,7 +53,7 @@ public class MIFileAnalyzer {
                     return MIFileType.other;
                 }
                 else if (line.contains("<entrySet")){
-                    return MIFileType.psi25_xml;
+                    return MIFileType.psimi_xml;
                 }
                 else{
                     return MIFileType.other;
@@ -118,19 +118,19 @@ public class MIFileAnalyzer {
                 // we have xml
                 else if (line.trim().contains("<?xml")){
                     if (line.contains("<entrySet")){
-                        return MIFileType.psi25_xml;
+                        return MIFileType.psimi_xml;
                     }
 
                     String line2 = reader.readLine();
                     if (line2 != null && line2.contains("<entrySet")){
-                        return MIFileType.psi25_xml;
+                        return MIFileType.psimi_xml;
                     }
                     else {
                         return MIFileType.other;
                     }
                 }
                 else if (line.contains("<entrySet")){
-                    return MIFileType.psi25_xml;
+                    return MIFileType.psimi_xml;
                 }
                 else if (line.toLowerCase().trim().contains(MITAB_25_TITLE.toLowerCase())){
                     return MIFileType.mitab;
@@ -275,7 +275,7 @@ public class MIFileAnalyzer {
         }
         // we have xml
         else if (line.contains("<entrySet")){
-            type = MIFileType.psi25_xml;
+            type = MIFileType.psimi_xml;
         }
         else if (line.toLowerCase().trim().contains(MITAB_25_TITLE.toLowerCase())){
             type = MIFileType.mitab;

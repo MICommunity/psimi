@@ -10,5 +10,5 @@ package psidev.psi.mi.jami.commons;
 
 public enum MIFileType {
 
-    psi25_xml, mitab, other
+    psimi_xml, mitab, other
 }
