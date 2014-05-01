@@ -94,6 +94,12 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     }
 
     @Override
+    @XmlElement(name = "featureRole", type = XmlCvTerm.class, namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBFeatureRole(CvTerm role) {
+        super.setJAXBFeatureRole(role);
+    }
+
+    @Override
     @XmlElement(name="attributeList")
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
         super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
