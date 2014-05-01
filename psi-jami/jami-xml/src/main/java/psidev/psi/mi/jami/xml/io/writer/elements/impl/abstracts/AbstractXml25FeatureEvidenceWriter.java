@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class AbstractXml25FeatureEvidenceWriter extends AbstractXmlFeatureWriter<FeatureEvidence> {
+public class AbstractXml25FeatureEvidenceWriter extends AbstractXml25FeatureWriter<FeatureEvidence> {
 
     public AbstractXml25FeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);

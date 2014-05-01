@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlPublicationWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -16,7 +17,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 /**
- * Unit tester for Xml25PublicationWriter
+ * Unit tester for XmlPublicationWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -99,7 +100,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         pub.setTitle("test title");
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 
@@ -114,7 +115,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         pub.setTitle("test title");
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 
@@ -129,7 +130,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         pub.setTitle("test title");
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 
@@ -144,7 +145,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         pub.setTitle("test title");
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 
@@ -159,7 +160,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         pub.setTitle("test title");
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 
@@ -174,7 +175,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         pub.setTitle("test title");
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 
@@ -197,7 +198,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
 
         pub.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 
@@ -211,7 +212,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 
@@ -225,7 +226,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
 
-        Xml25PublicationWriter writer = new Xml25PublicationWriter(createStreamWriter());
+        XmlPublicationWriter writer = new XmlPublicationWriter(createStreamWriter());
         writer.write(pub);
         streamWriter.flush();
 

@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25;
 
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlRangeWriter;
@@ -13,9 +13,9 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml25RangeWriter extends AbstractXmlRangeWriter {
+public class XmlRangeWriter extends AbstractXmlRangeWriter {
 
-    public Xml25RangeWriter(XMLStreamWriter writer){
+    public XmlRangeWriter(XMLStreamWriter writer){
         super(writer);
     }
 

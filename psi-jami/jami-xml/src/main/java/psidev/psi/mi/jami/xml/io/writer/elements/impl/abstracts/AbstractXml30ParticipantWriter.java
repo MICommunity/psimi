@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Stoichiometry;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml30StoichiometryWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlStoichiometryWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -29,7 +29,7 @@ public abstract class AbstractXml30ParticipantWriter<P extends Participant, F ex
 
     public PsiXmlElementWriter<Stoichiometry> getStoichiometryWriter() {
         if (this.stoichiometryWriter == null){
-            this.stoichiometryWriter = new Xml30StoichiometryWriter(getStreamWriter());
+            this.stoichiometryWriter = new XmlStoichiometryWriter(getStreamWriter());
         }
         return stoichiometryWriter;
     }

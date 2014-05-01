@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlExperimentWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -102,7 +103,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     public PsiXmlElementWriter<Experiment> getExperimentWriter() {
         if (this.experimentWriter == null){
-            this.experimentWriter = new Xml25ExperimentWriter(streamWriter, objectIndex);
+            this.experimentWriter = new XmlExperimentWriter(streamWriter, objectIndex);
         }
         return experimentWriter;
     }

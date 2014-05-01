@@ -4,11 +4,12 @@ import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlNamedBinaryInteractionEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.CompactXmlNamedModelledInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlNamedModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlNamedParticipantEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlFeatureEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlNamedExperimentWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -171,7 +172,7 @@ public class CompactXmlNamedBinaryEvidenceWriter extends AbstractCompactXmlWrite
                                                                                   PsiXmlXrefWriter primaryRefWriter,
                                                                                   PsiXmlVariableNameWriter<CvTerm> featureTypeWriter,
                                                                                   PsiXmlElementWriter<Range> rangeWriter) {
-        Xml25FeatureEvidenceWriter writer = new Xml25FeatureEvidenceWriter(getStreamWriter(), getElementCache());
+        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setRangeWriter(rangeWriter);
         writer.setXrefWriter(primaryRefWriter);
         writer.setFeatureTypeWriter(featureTypeWriter);
@@ -187,7 +188,7 @@ public class CompactXmlNamedBinaryEvidenceWriter extends AbstractCompactXmlWrite
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
                                                                  PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter,
                                                                  PsiXmlElementWriter<Confidence> confidenceWriter) {
-        Xml25NamedExperimentWriter expWriter = new Xml25NamedExperimentWriter(getStreamWriter(), getElementCache());
+        XmlNamedExperimentWriter expWriter = new XmlNamedExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setXrefWriter(primaryRefWriter);
         expWriter.setAttributeWriter(attributeWriter);
         expWriter.setPublicationWriter(publicationWriter);

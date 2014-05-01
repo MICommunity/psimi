@@ -1,10 +1,11 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.NamedExperiment;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -18,10 +19,10 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml30NamedExperimentWriter extends Xml30ExperimentWriter {
+public class XmlNamedExperimentWriter extends XmlExperimentWriter {
     private PsiXmlElementWriter<Alias> aliasWriter;
 
-    public Xml30NamedExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public XmlNamedExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 

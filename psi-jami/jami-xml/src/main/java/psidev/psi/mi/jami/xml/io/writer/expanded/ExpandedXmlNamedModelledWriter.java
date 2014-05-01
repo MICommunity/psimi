@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.xml.io.writer.expanded;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25NamedExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlModelledFeatureWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlModelledFeatureWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlNamedExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlNamedModelledInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.ExpandedXmlNamedModelledParticipantWriter;
 
@@ -157,7 +157,7 @@ public class ExpandedXmlNamedModelledWriter extends AbstractExpandedXmlWriter<Mo
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
                                                                  PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter,
                                                                  PsiXmlElementWriter<Confidence> confidenceWriter) {
-        Xml25NamedExperimentWriter expWriter = new Xml25NamedExperimentWriter(getStreamWriter(), getElementCache());
+        XmlNamedExperimentWriter expWriter = new XmlNamedExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setXrefWriter(primaryRefWriter);
         expWriter.setAttributeWriter(attributeWriter);
         expWriter.setPublicationWriter(publicationWriter);

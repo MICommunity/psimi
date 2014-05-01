@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAvailabilityWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25ParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -52,7 +52,7 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     public PsiXmlParameterWriter getParameterWriter() {
         if (this.parameterWriter == null){
-            this.parameterWriter = new Xml25ParameterWriter(getStreamWriter(), getObjectIndex());
+            this.parameterWriter = new XmlParameterWriter(getStreamWriter(), getObjectIndex());
         }
         return parameterWriter;
     }

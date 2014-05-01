@@ -5,6 +5,8 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlFeatureEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -63,7 +65,7 @@ public abstract class AbstractXml30ParticipantEvidenceWriter extends AbstractXml
 
     public PsiXmlElementWriter<Parameter> getParameterWriter() {
         if (this.parameterWriter == null){
-            this.parameterWriter = new Xml30ParameterWriter(getStreamWriter(), getObjectIndex());
+            this.parameterWriter = new XmlParameterWriter(getStreamWriter(), getObjectIndex());
         }
         return parameterWriter;
     }
@@ -74,7 +76,7 @@ public abstract class AbstractXml30ParticipantEvidenceWriter extends AbstractXml
 
     @Override
     protected void initialiseFeatureWriter() {
-        super.setFeatureWriter(new Xml30FeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
+        super.setFeatureWriter(new XmlFeatureEvidenceWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override

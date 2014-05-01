@@ -25,7 +25,7 @@ public abstract class AbstractXmlRangeWriter implements PsiXmlElementWriter<Rang
 
     public AbstractXmlRangeWriter(XMLStreamWriter writer){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25RangeWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlRangeWriter");
         }
         this.streamWriter = writer;
     }

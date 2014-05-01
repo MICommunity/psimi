@@ -1,10 +1,11 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.ResultingSequence;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -18,11 +19,11 @@ import java.util.Iterator;
  * @since <pre>12/11/13</pre>
  */
 
-public class Xml30ResultingSequenceWriter implements PsiXmlElementWriter<ResultingSequence> {
+public class XmlResultingSequenceWriter implements PsiXmlElementWriter<ResultingSequence> {
     private XMLStreamWriter streamWriter;
     private PsiXmlXrefWriter xrefWriter;
 
-    public Xml30ResultingSequenceWriter(XMLStreamWriter writer){
+    public XmlResultingSequenceWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the AbstractXmlParticipantWriter");
         }

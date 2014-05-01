@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Stoichiometry;
@@ -15,10 +15,10 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>11/11/13</pre>
  */
 
-public class Xml30StoichiometryWriter implements PsiXmlElementWriter<Stoichiometry> {
+public class XmlStoichiometryWriter implements PsiXmlElementWriter<Stoichiometry> {
     private XMLStreamWriter streamWriter;
 
-    public Xml30StoichiometryWriter(XMLStreamWriter writer){
+    public XmlStoichiometryWriter(XMLStreamWriter writer){
         if (writer == null){
             throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlAnnotationWriter");
         }

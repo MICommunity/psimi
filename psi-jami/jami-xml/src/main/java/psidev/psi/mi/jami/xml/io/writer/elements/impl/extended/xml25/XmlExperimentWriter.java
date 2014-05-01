@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml25NamedExperimentWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlNamedExperimentWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
@@ -20,7 +20,7 @@ import java.util.List;
  * @since <pre>13/11/13</pre>
  */
 
-public class XmlExperimentWriter extends Xml25NamedExperimentWriter {
+public class XmlExperimentWriter extends XmlNamedExperimentWriter {
 
     public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
