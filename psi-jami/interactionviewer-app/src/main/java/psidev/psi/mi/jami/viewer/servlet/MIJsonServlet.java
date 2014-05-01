@@ -21,14 +21,15 @@ import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.json.MIJsonBinaryEvidenceWriter;
 import psidev.psi.mi.jami.json.MIJsonEvidenceWriter;
+import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.cache.InMemoryPsiXml25Cache;
+import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -201,11 +202,11 @@ public class MIJsonServlet extends HttpServlet{
 
         switch (fileType){
             case mitab:
-               miDataSource = miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionObjectCategory.binary_evidence, true, null, dataStream));
+               miDataSource = miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionCategory.evidence, ComplexType.binary, true, null, dataStream));
                interactionWriter = new MIJsonBinaryEvidenceWriter(writer, this.fetcher);
                break;
-            case psi25_xml:
-                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXml25Options(InteractionObjectCategory.evidence, true, null, dataStream, null, new InMemoryPsiXml25Cache()));
+            case psimi_xml:
+                miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXml25Options(InteractionCategory.evidence, ComplexType.n_ary, true, null, dataStream, null, new InMemoryPsiXmlCache()));
                 interactionWriter = new MIJsonEvidenceWriter(writer, this.fetcher, this.expansionMethod);
                 break;
             default:
