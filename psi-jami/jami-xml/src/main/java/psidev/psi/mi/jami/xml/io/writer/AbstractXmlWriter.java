@@ -4,7 +4,7 @@ import javanet.staxutils.IndentingXMLStreamWriter;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultSource;

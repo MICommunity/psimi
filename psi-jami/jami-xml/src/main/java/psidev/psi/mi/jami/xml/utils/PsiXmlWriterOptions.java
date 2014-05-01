@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.utils;
 
-import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.InteractionWriterOptions;
 
 /**
  * Class that lists all possible options for PsiXmlWriter.
