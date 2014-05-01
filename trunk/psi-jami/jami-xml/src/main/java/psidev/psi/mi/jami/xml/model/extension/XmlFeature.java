@@ -86,6 +86,12 @@ public class XmlFeature extends AbstractXmlFeature<Participant,Feature>{
     }
 
     @Override
+    @XmlElement(name = "featureRole", type = XmlCvTerm.class, namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBFeatureRole(CvTerm role) {
+        super.setJAXBFeatureRole(role);
+    }
+
+    @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
             super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));

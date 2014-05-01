@@ -13,7 +13,6 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,6 +36,8 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
 
     private JAXBAttributeWrapper jaxbAttributeWrapper;
     private JAXBRangeWrapper jaxbRangeWrapper;
+
+    private CvTerm role;
 
     public AbstractXmlFeature(){
     }
@@ -83,15 +84,6 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
 
     protected void initialiseLinkedFeatures(){
         this.linkedFeatures = new ArrayList<F>();
-    }
-
-    protected void initialiseLinkedFeaturesWith(Collection<F> features){
-        if (features == null){
-            this.linkedFeatures = Collections.EMPTY_LIST;
-        }
-        else {
-            this.linkedFeatures = features;
-        }
     }
 
     /**
@@ -201,16 +193,21 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
     }
 
     public CvTerm getRole() {
-        return this.jaxbAttributeWrapper != null ? this.jaxbAttributeWrapper.role : null;
+        if (this.role == null){
+            initialiseRole();
+        }
+        return this.role;
     }
 
     public void setRole(CvTerm effect) {
-        if (this.jaxbAttributeWrapper == null && effect != null){
-            initialiseAnnotationWrapper();
-            this.jaxbAttributeWrapper.role = effect;
+        if (effect == null){
+            this.role = null;
+            if (this.jaxbAttributeWrapper != null){
+                this.jaxbAttributeWrapper.role = null;
+            }
         }
-        else if (this.jaxbAttributeWrapper != null){
-            this.jaxbAttributeWrapper.role = effect;
+        else {
+            this.role = effect;
         }
     }
 
@@ -292,6 +289,10 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         this.jaxbRangeWrapper = jaxbRangeWrapper;
     }
 
+    public void setJAXBFeatureRole(CvTerm role){
+        this.role = role;
+    }
+
     protected JAXBRangeWrapper getJAXBRangeWrapper() {
         if (this.jaxbRangeWrapper == null){
             initialiseRangeWrapper();
@@ -304,6 +305,12 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
             initialiseAnnotationWrapper();
         }
         return this.jaxbAttributeWrapper;
+    }
+
+    protected void initialiseRole() {
+        if (this.jaxbAttributeWrapper != null && this.jaxbAttributeWrapper.role != null){
+            this.role = this.jaxbAttributeWrapper.role;
+        }
     }
 
     //////////////////////////////// classes
@@ -428,8 +435,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
                 else if (FeatureUtils.isFeatureRole(annotation)){
                     role = new XmlCvTerm(annotation.getTopic().getShortName(), annotation.getTopic().getMIIdentifier());
                     ((XmlCvTerm)role).setSourceLocator(((FileSourceContext)annotation).getSourceLocator());
-                    addAnnotation(index, annotation);
-                    return true;
+                    return false;
                 }
                 else {
                     return addAnnotation(index, annotation);

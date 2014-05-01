@@ -623,9 +623,10 @@
                     <xs:documentation>Reference to an external feature description, for example InterPro entry.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="featureTypeList" type="mif:featureTypeList" minOccurs="0">
+            <xs:element name="featureType" type="mif:cvType" maxOccurs="unbounded">
                 <xs:annotation>
-                    <xs:documentation>The list of feature types describing the feature.</xs:documentation>
+                    <xs:documentation>Description and classification of the feature. This element is controlled by the PSI-MI controlled vocabulary "feature",
+                        root term id MI:0116.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="featureDetectionMethod" type="mif:cvType" maxOccurs="unbounded" minOccurs="0">
@@ -664,20 +665,6 @@
             </xs:element>
         </xs:sequence>
         <xs:attribute name="id" type="xs:int" use="required"/>
-    </xs:complexType>
-    <xs:complexType name="featureTypeList">
-        <xs:annotation>
-            <xs:documentation>A list of feature types describing the feature.
-            </xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element name="featureType" type="mif:cvType" maxOccurs="unbounded">
-                <xs:annotation>
-                    <xs:documentation>Description and classification of the feature. This element is controlled by the PSI-MI controlled vocabulary "feature",
-                        root term id MI:0116.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xs:sequence>
     </xs:complexType>
     <xs:complexType name="interval">
         <xs:annotation>
@@ -1850,9 +1837,10 @@
                     <xs:documentation>Reference to an external feature description, for example InterPro entry.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="featureTypeList" type="mif:featureTypeList" minOccurs="0">
+            <xs:element name="featureType" type="mif:cvType" maxOccurs="unbounded">
                 <xs:annotation>
-                    <xs:documentation>The list of feature types describing the feature.</xs:documentation>
+                    <xs:documentation>Description and classification of the feature. This element is controlled by the PSI-MI controlled vocabulary "feature",
+                        root term id MI:0116.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="featureRangeList">
@@ -1866,9 +1854,11 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
-            <xs:element name="interactionDependencyType" type="mif:cvType" minOccurs="0">
+            <xs:element name="featureRole" type="mif:cvType" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>Describes the impact of the feature on the interaction or vice-versa. (Ex: resulting-ptm, prerequisite-ptm,...)</xs:documentation>
+                    <xs:documentation>The role of the feature in the context of this interaction. It usually describes the impact of
+                        the interaction on the feature. (Ex: resulting-ptm, ...) or the impact of the feature on the interaction.
+                        (Ex: prerequisite-ptm,...).</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
