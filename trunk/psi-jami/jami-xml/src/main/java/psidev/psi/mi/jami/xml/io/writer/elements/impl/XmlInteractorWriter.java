@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlXref;
 
@@ -204,10 +204,28 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
         else if (object instanceof InteractorPool){
             InteractorPool pool = (InteractorPool)object;
 
+            // only write interactor set sequence if all interactors are from same type and have same sequence
             if (!pool.isEmpty()){
-                Interactor subInteractor = pool.iterator().next();
+                String sequence = null;
+                Iterator<Interactor> iterator = pool.iterator();
+                Interactor subInteractor = iterator.next();
                 if (subInteractor instanceof Polymer){
-                     writePolymerSequence((Polymer)subInteractor);
+                    sequence = ((Polymer) subInteractor).getSequence();
+                    if (sequence != null){
+                        while (iterator.hasNext()){
+                            subInteractor = iterator.next();
+                            if (subInteractor instanceof Polymer){
+                                String seq = ((Polymer) subInteractor).getSequence();
+                                if (seq == null || !seq.equals(sequence)){
+                                    break;
+                                }
+                            }
+
+                            if (!iterator.hasNext()){
+                                writePolymerSequence((Polymer)subInteractor);
+                            }
+                        }
+                    }
                 }
             }
         }

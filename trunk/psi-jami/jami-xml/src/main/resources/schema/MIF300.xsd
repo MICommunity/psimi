@@ -734,7 +734,9 @@
             </xs:element>
             <xs:element name="participantRef" type="xs:int" minOccurs="0" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>References a participant described in the entry</xs:documentation>
+                    <xs:documentation>References a participant described in the entry. The participantRef is aimed at describing complex binding sites
+                        such as composite binding sites where the participant is an interaction and the binding site ranges has to specify which
+                        participant in the subunit it refers to.</xs:documentation>
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
