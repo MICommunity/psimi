@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.model.InteractionCategory;
+import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
@@ -32,7 +32,7 @@ public class InteractionEvidenceMatrixExpansion extends AbstractMatrixExpansion<
     }
 
     @Override
-    protected InteractionCategory findInteractionCategory(InteractionEvidence interaction) {
+    protected ComplexType findInteractionCategory(InteractionEvidence interaction) {
         return InteractionUtils.findInteractionEvidenceCategoryOf(interaction);
     }
 

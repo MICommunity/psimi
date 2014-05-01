@@ -30,7 +30,7 @@ public class InteractionEvidenceBipartiteExpansion extends AbstractBipartiteExpa
     }
 
     @Override
-    protected InteractionCategory findInteractionCategory(InteractionEvidence interaction) {
+    protected ComplexType findInteractionCategory(InteractionEvidence interaction) {
         return InteractionUtils.findInteractionEvidenceCategoryOf(interaction);
     }
 

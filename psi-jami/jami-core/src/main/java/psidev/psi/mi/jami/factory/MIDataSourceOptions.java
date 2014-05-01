@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.datasource;
+package psidev.psi.mi.jami.factory;
 
 /**
  * Class that lists all possible options for MIDataSource
@@ -11,10 +11,17 @@ package psidev.psi.mi.jami.datasource;
 public class MIDataSourceOptions {
     /**
      * The option to describe the type of interaction object we want to return.
-     * It has to be an enum of type InteractionObjectCategory. If this option is not provided,
+     * It has to be an enum of type InteractionCategory (evidence, modelled, basic, mixed). If this option is not provided,
      * the default value will vary depending on the type of the datasource.
      */
-    public static final String INTERACTION_OBJECT_OPTION_KEY = "interaction_object_key";
+    public static final String INTERACTION_CATEGORY_OPTION_KEY = "interaction_category_key";
+
+    /**
+     * The option to describe the complex type of interaction object we want to return.
+     * It has to be an enum of type ComplexType (binary,n-ary, self). If this option is not provided,
+     * the default value will vary depending on the type of the datasource.
+     */
+    public static final String COMPLEX_TYPE_OPTION_KEY = "complex_type_key";
 
     /**
      * The option to provide a complex expansion method to expand n-ary interactions in binary interactions.

@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.model.InteractionCategory;
+import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
@@ -50,13 +50,13 @@ public class InteractionUtilsTest {
         nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
         nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p3")));
 
-        Assert.assertEquals(InteractionCategory.binary, InteractionUtils.findInteractionCategoryOf(binary, false));
-        Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra, false));
-        Assert.assertEquals(InteractionCategory.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_inter, false));
-        Assert.assertEquals(InteractionCategory.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_intra_no_stoichiometry_but_self_exp_role, false));
-        Assert.assertEquals(InteractionCategory.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_intra_no_stoichiometry_but_putative_self_exp_role, false));
-        Assert.assertEquals(InteractionCategory.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_inter_no_stoichiometry, false));
-        Assert.assertEquals(InteractionCategory.n_ary, InteractionUtils.findInteractionCategoryOf(nary, false));
+        Assert.assertEquals(ComplexType.binary, InteractionUtils.findInteractionCategoryOf(binary, false));
+        Assert.assertEquals(ComplexType.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra, false));
+        Assert.assertEquals(ComplexType.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_inter, false));
+        Assert.assertEquals(ComplexType.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_intra_no_stoichiometry_but_self_exp_role, false));
+        Assert.assertEquals(ComplexType.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_intra_no_stoichiometry_but_putative_self_exp_role, false));
+        Assert.assertEquals(ComplexType.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_inter_no_stoichiometry, false));
+        Assert.assertEquals(ComplexType.n_ary, InteractionUtils.findInteractionCategoryOf(nary, false));
     }
 
     @Test
@@ -90,13 +90,13 @@ public class InteractionUtilsTest {
         nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
         nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p3")));
 
-        Assert.assertEquals(InteractionCategory.binary, InteractionUtils.findInteractionCategoryOf(binary, true));
-        Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra, true));
-        Assert.assertEquals(InteractionCategory.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_inter, true));
-        Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra_no_stoichiometry_but_self_exp_role, true));
-        Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra_no_stoichiometry_but_putative_self_exp_role, true));
-        Assert.assertEquals(InteractionCategory.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_inter_no_stoichiometry, true));
-        Assert.assertEquals(InteractionCategory.n_ary, InteractionUtils.findInteractionCategoryOf(nary, true));
+        Assert.assertEquals(ComplexType.binary, InteractionUtils.findInteractionCategoryOf(binary, true));
+        Assert.assertEquals(ComplexType.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra, true));
+        Assert.assertEquals(ComplexType.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_inter, true));
+        Assert.assertEquals(ComplexType.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra_no_stoichiometry_but_self_exp_role, true));
+        Assert.assertEquals(ComplexType.self_intra_molecular, InteractionUtils.findInteractionCategoryOf(self_intra_no_stoichiometry_but_putative_self_exp_role, true));
+        Assert.assertEquals(ComplexType.self_inter_molecular, InteractionUtils.findInteractionCategoryOf(self_inter_no_stoichiometry, true));
+        Assert.assertEquals(ComplexType.n_ary, InteractionUtils.findInteractionCategoryOf(nary, true));
     }
 
     @Test
@@ -130,12 +130,12 @@ public class InteractionUtilsTest {
         nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p2")));
         nary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p3")));
 
-        Assert.assertEquals(InteractionCategory.binary, InteractionUtils.findInteractionEvidenceCategoryOf(binary));
-        Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_intra));
-        Assert.assertEquals(InteractionCategory.self_inter_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_inter));
-        Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_intra_no_stoichiometry_but_self_exp_role));
-        Assert.assertEquals(InteractionCategory.self_intra_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_intra_no_stoichiometry_but_putative_self_exp_role));
-        Assert.assertEquals(InteractionCategory.self_inter_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_inter_no_stoichiometry));
-        Assert.assertEquals(InteractionCategory.n_ary, InteractionUtils.findInteractionEvidenceCategoryOf(nary));
+        Assert.assertEquals(ComplexType.binary, InteractionUtils.findInteractionEvidenceCategoryOf(binary));
+        Assert.assertEquals(ComplexType.self_intra_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_intra));
+        Assert.assertEquals(ComplexType.self_inter_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_inter));
+        Assert.assertEquals(ComplexType.self_intra_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_intra_no_stoichiometry_but_self_exp_role));
+        Assert.assertEquals(ComplexType.self_intra_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_intra_no_stoichiometry_but_putative_self_exp_role));
+        Assert.assertEquals(ComplexType.self_inter_molecular, InteractionUtils.findInteractionEvidenceCategoryOf(self_inter_no_stoichiometry));
+        Assert.assertEquals(ComplexType.n_ary, InteractionUtils.findInteractionEvidenceCategoryOf(nary));
     }
 }

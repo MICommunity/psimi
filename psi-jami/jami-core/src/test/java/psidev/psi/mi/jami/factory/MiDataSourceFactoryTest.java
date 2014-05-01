@@ -34,16 +34,6 @@ public class MiDataSourceFactoryTest {
         MIDataSourceFactory.getInstance().getMIDataSourceWith(requiredOptions);
     }
 
-    public void test_existing_file_data_source_options() throws IllegalAccessException, InstantiationException {
-
-        MIDataSourceFactory.getInstance().registerDataSource(MockExperimentDataSource.class, Collections.EMPTY_MAP);
-
-        Map<String, Object> requiredOptions = new HashMap<String, Object>();
-
-        Assert.assertNotNull(MIDataSourceFactory.getInstance().getMIDataSourceWith(requiredOptions));
-        Assert.assertTrue(MIDataSourceFactory.getInstance().getMIDataSourceWith(requiredOptions) instanceof MockExperimentDataSource);
-    }
-
     @Test
     public void test_no_supported_options() throws IllegalAccessException, InstantiationException {
         MIDataSourceFactory.getInstance().registerDataSource(MockInteractionDataSource.class, Collections.EMPTY_MAP);

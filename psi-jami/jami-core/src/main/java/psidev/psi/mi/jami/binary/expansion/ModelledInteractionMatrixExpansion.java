@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
-import psidev.psi.mi.jami.model.InteractionCategory;
+import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.Participant;
@@ -32,7 +32,7 @@ public class ModelledInteractionMatrixExpansion extends AbstractMatrixExpansion<
     }
 
     @Override
-    protected InteractionCategory findInteractionCategory(ModelledInteraction interaction) {
+    protected ComplexType findInteractionCategory(ModelledInteraction interaction) {
         return InteractionUtils.findModelledInteractionCategoryOf(interaction);
     }
 
