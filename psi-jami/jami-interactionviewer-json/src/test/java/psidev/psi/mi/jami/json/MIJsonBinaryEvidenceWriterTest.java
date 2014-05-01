@@ -5,7 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteractionEvidence;
-import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.Participant;

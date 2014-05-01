@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.json;
 
 import junit.framework.Assert;
 import org.junit.Test;
-import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
