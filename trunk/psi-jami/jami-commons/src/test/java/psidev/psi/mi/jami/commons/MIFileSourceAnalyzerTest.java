@@ -31,7 +31,7 @@ public class MIFileSourceAnalyzerTest {
 
         MIFileType sourceType = analyzer.identifyMIFileTypeFor(file);
 
-        Assert.assertEquals(MIFileType.psi25_xml, sourceType);
+        Assert.assertEquals(MIFileType.psimi_xml, sourceType);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class MIFileSourceAnalyzerTest {
 
         MIFileType sourceType = analyzer.identifyMIFileTypeFor(file);
 
-        Assert.assertEquals(MIFileType.psi25_xml, sourceType);
+        Assert.assertEquals(MIFileType.psimi_xml, sourceType);
     }
 
     @Test
@@ -51,7 +51,7 @@ public class MIFileSourceAnalyzerTest {
 
         MIFileType sourceType = analyzer.identifyMIFileTypeFor(file);
 
-        Assert.assertEquals(MIFileType.psi25_xml, sourceType);
+        Assert.assertEquals(MIFileType.psimi_xml, sourceType);
     }
 
     @Test
@@ -61,7 +61,7 @@ public class MIFileSourceAnalyzerTest {
 
         MIFileType sourceType = analyzer.identifyMIFileTypeFor(file);
 
-        Assert.assertEquals(MIFileType.psi25_xml, sourceType);
+        Assert.assertEquals(MIFileType.psimi_xml, sourceType);
     }
 
     @Test
@@ -71,7 +71,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
-        Assert.assertEquals(MIFileType.psi25_xml, openedStream.getSource());
+        Assert.assertEquals(MIFileType.psimi_xml, openedStream.getSource());
         Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
@@ -84,7 +84,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
-        Assert.assertEquals(MIFileType.psi25_xml, openedStream.getSource());
+        Assert.assertEquals(MIFileType.psimi_xml, openedStream.getSource());
         Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
@@ -97,7 +97,7 @@ public class MIFileSourceAnalyzerTest {
 
         OpenedInputStream openedStream = analyzer.extractMIFileTypeFrom(stream);
 
-        Assert.assertEquals(MIFileType.psi25_xml, openedStream.getSource());
+        Assert.assertEquals(MIFileType.psimi_xml, openedStream.getSource());
         Assert.assertNotNull(openedStream.getReader());
 
         openedStream.close();
