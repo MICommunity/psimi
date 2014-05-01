@@ -35,7 +35,7 @@ public abstract class AbstractXmlPublicationWriter implements PsiXmlPublicationW
 
     public AbstractXmlPublicationWriter(XMLStreamWriter writer){
         if (writer == null){
-            throw new IllegalArgumentException("The XML stream writer is mandatory for the Xml25PublicationWriter");
+            throw new IllegalArgumentException("The XML stream writer is mandatory for the XmlPublicationWriter");
         }
         this.streamWriter = writer;
     }

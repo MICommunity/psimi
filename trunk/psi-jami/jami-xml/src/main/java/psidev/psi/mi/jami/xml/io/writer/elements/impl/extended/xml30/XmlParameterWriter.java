@@ -15,7 +15,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>14/11/13</pre>
  */
 
-public class XmlParameterWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.Xml30ParameterWriter {
+public class XmlParameterWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlParameterWriter {
 
     public XmlParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         super(writer, objectIndex);

@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlNamedExperimentWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.text.ParseException;
 
 /**
- * Unit tester for Xml25NamedExperimentWriter
+ * Unit tester for XmlNamedExperimentWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -137,7 +138,7 @@ public class Xml30NamedExperimentWriterTest extends AbstractXml25WriterTest {
         exp.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         elementCache.clear();
 
-        Xml30NamedExperimentWriter writer = new Xml30NamedExperimentWriter(createStreamWriter(), elementCache);
+        XmlNamedExperimentWriter writer = new XmlNamedExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -159,7 +160,7 @@ public class Xml30NamedExperimentWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        Xml30NamedExperimentWriter writer = new Xml30NamedExperimentWriter(createStreamWriter(), elementCache);
+        XmlNamedExperimentWriter writer = new XmlNamedExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -181,7 +182,7 @@ public class Xml30NamedExperimentWriterTest extends AbstractXml25WriterTest {
         exp.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        Xml30NamedExperimentWriter writer = new Xml30NamedExperimentWriter(createStreamWriter(), elementCache);
+        XmlNamedExperimentWriter writer = new XmlNamedExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -198,7 +199,7 @@ public class Xml30NamedExperimentWriterTest extends AbstractXml25WriterTest {
 
         this.elementCache.clear();
 
-        Xml30NamedExperimentWriter writer = new Xml30NamedExperimentWriter(createStreamWriter(), elementCache);
+        XmlNamedExperimentWriter writer = new XmlNamedExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 

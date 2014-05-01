@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
@@ -15,9 +15,9 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>12/11/13</pre>
  */
 
-public class Xml30ExperimentWriter extends AbstractXmlExperimentWriter {
+public class XmlExperimentWriter extends AbstractXmlExperimentWriter {
 
-    public Xml30ExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
+    public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         super(writer, objectIndex);
     }
 
@@ -43,6 +43,6 @@ public class Xml30ExperimentWriter extends AbstractXmlExperimentWriter {
     }
 
     protected void initialisePublicationWriter() {
-        super.setPublicationWriter(new Xml30PublicationWriter(getStreamWriter()));
+        super.setPublicationWriter(new XmlPublicationWriter(getStreamWriter()));
     }
 }

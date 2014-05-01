@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.ResultingSequence;
@@ -17,22 +17,22 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class Xml30RangeWriter extends AbstractXmlRangeWriter {
+public class XmlRangeWriter extends AbstractXmlRangeWriter {
 
     private PsiXmlElementWriter<ResultingSequence> resultingSequenceWriter;
     private PsiXmlObjectCache objectIndex;
 
-    public Xml30RangeWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
+    public XmlRangeWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         super(writer);
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the Xml30RangeWriter. It is necessary for generating an id to a participant");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlRangeWriter. It is necessary for generating an id to a participant");
         }
         this.objectIndex = objectIndex;
     }
 
     public PsiXmlElementWriter<ResultingSequence> getResultingSequenceWriter() {
         if (this.resultingSequenceWriter == null){
-            this.resultingSequenceWriter = new Xml30ResultingSequenceWriter(getStreamWriter());
+            this.resultingSequenceWriter = new XmlResultingSequenceWriter(getStreamWriter());
         }
         return resultingSequenceWriter;
     }

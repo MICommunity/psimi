@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.expanded.extended;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlFeatureWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlFeatureWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.ExpandedXmlModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.ExpandedXmlParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.*;

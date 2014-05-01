@@ -2,19 +2,17 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlRangeWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Abstract writer for Xml25Feature.
@@ -80,7 +78,7 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
 
     public PsiXmlElementWriter<Range> getRangeWriter() {
         if (this.rangeWriter == null){
-            this.rangeWriter = new Xml25RangeWriter(streamWriter);
+            this.rangeWriter = new XmlRangeWriter(streamWriter);
         }
         return rangeWriter;
     }
@@ -119,6 +117,8 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
                 writeOtherProperties(object);
                 // write feature ranges
                 writeRanges(object);
+                // write feature role
+                writeFeatureRole(object);
                 // write attributes
                 writeAttributes(object);
                 // write end feature
@@ -130,6 +130,10 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
         }
     }
 
+    protected abstract void writeFeatureRole(F object) throws XMLStreamException;
+
+    protected abstract void writeOtherAttributes(F object, boolean writeAttributeList) throws XMLStreamException;
+
     protected void writeAttributes(F object) throws XMLStreamException {
         // write attributes
         if (!object.getAnnotations().isEmpty()){
@@ -139,73 +143,15 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
                 getAttributeWriter().write((Annotation)ann);
             }
             // write interaction dependency
-            if (object.getRole() != null && AnnotationUtils.collectFirstAnnotationWithTopic(object.getAnnotations(),
-                    object.getRole().getMIIdentifier(),
-                    object.getRole().getShortName()) == null){
-                writeAttribute(object.getRole().getShortName(), object.getRole().getMIIdentifier(), null);
-            }
+            writeOtherAttributes(object, false);
 
-            // write participant ref
-            if (!object.getRanges().isEmpty()){
-                Set<Integer> participantSet = new HashSet<Integer>();
-                for (Object obj : object.getRanges()){
-                    Range range = (Range)obj;
-                    if (range.getParticipant() != null){
-                        Integer id = this.objectIndex.extractIdForParticipant(range.getParticipant());
-                        if (!participantSet.contains(id)){
-                            participantSet.add(id);
-                            writeAttribute(CooperativeEffect.PARTICIPANT_REF, CooperativeEffect.PARTICIPANT_REF_ID, Integer.toString(id));
-                        }
-                    }
-                }
-            }
             // write end attributeList
             getStreamWriter().writeEndElement();
         }
         // write interaction dependency
-        else if (object.getRole() != null){
-            // write start attribute list
-            getStreamWriter().writeStartElement("attributeList");
-            writeAttribute(object.getRole().getShortName(), object.getRole().getMIIdentifier(), null);
-            // write participant ref
-            if (!object.getRanges().isEmpty()){
-                Set<Integer> participantSet = new HashSet<Integer>();
-                for (Object obj : object.getRanges()){
-                    Range range = (Range)obj;
-                    if (range.getParticipant() != null){
-                        Integer id = this.objectIndex.extractIdForParticipant(range.getParticipant());
-                        if (!participantSet.contains(id)){
-                            participantSet.add(id);
-                            writeAttribute(CooperativeEffect.PARTICIPANT_REF, CooperativeEffect.PARTICIPANT_REF_ID, Integer.toString(id));
-                        }
-                    }
-                }
-            }
-            // write end attributeList
-            getStreamWriter().writeEndElement();
-        }
-        // write participant ref
-        else if (!object.getRanges().isEmpty()){
-
-            Set<Integer> participantSet = new HashSet<Integer>();
-            for (Object obj : object.getRanges()){
-                Range range = (Range)obj;
-                if (range.getParticipant() != null){
-                    Integer id = this.objectIndex.extractIdForParticipant(range.getParticipant());
-                    if (!participantSet.contains(id)){
-                        participantSet.add(id);
-                    }
-                }
-            }
-            if (!participantSet.isEmpty()){
-                // write start attribute list
-                getStreamWriter().writeStartElement("attributeList");
-                for (Integer id : participantSet){
-                    writeAttribute(CooperativeEffect.PARTICIPANT_REF, CooperativeEffect.PARTICIPANT_REF_ID, Integer.toString(id));
-                }
-                // write end attributeList
-                getStreamWriter().writeEndElement();
-            }
+        else{
+            // write role and participant ref attribute if not null
+            writeOtherAttributes(object, true);
         }
     }
 

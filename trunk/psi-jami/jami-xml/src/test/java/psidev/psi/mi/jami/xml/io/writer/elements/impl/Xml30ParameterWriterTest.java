@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultParameter;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -40,7 +41,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
     @Test
     public void test_write_parameter_null() throws XMLStreamException, IOException {
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(null);
         streamWriter.flush();
 
@@ -52,7 +53,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         Parameter param = new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5)));
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -64,7 +65,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         Parameter param = new DefaultParameter(new DefaultCvTerm("kd", "MI:xxxx"), new ParameterValue(new BigDecimal(5)));
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -77,7 +78,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
                 new DefaultCvTerm("molar"));
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -90,7 +91,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
                 new DefaultCvTerm("molar","MI:xxxx"));
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -102,7 +103,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         Parameter param = new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5),(short)10,(short)3));
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 
@@ -114,7 +115,7 @@ public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
         Parameter param = new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5)), new BigDecimal(10));
         this.elementCache.clear();
 
-        Xml30ParameterWriter writer = new Xml30ParameterWriter(createStreamWriter(), elementCache);
+        XmlParameterWriter writer = new XmlParameterWriter(createStreamWriter(), elementCache);
         writer.write(param);
         streamWriter.flush();
 

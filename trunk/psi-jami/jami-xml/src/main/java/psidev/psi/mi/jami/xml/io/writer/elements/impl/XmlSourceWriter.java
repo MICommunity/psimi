@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlSourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlPublicationWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -64,7 +65,7 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
 
     public PsiXmlElementWriter<Publication> getPublicationWriter() {
         if (this.publicationWriter == null){
-            this.publicationWriter = new Xml25PublicationWriter(streamWriter);
+            this.publicationWriter = new XmlPublicationWriter(streamWriter);
         }
         return publicationWriter;
     }

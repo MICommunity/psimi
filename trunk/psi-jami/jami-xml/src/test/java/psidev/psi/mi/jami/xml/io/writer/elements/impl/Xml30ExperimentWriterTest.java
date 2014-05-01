@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlExperimentWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -118,7 +119,7 @@ public class Xml30ExperimentWriterTest extends AbstractXml25WriterTest {
         exp.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
         elementCache.clear();
 
-        Xml30ExperimentWriter writer = new Xml30ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -140,7 +141,7 @@ public class Xml30ExperimentWriterTest extends AbstractXml25WriterTest {
 
         elementCache.clear();
 
-        Xml30ExperimentWriter writer = new Xml30ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 
@@ -162,7 +163,7 @@ public class Xml30ExperimentWriterTest extends AbstractXml25WriterTest {
         exp.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        Xml30ExperimentWriter writer = new Xml30ExperimentWriter(createStreamWriter(), elementCache);
+        XmlExperimentWriter writer = new XmlExperimentWriter(createStreamWriter(), elementCache);
         writer.write(exp);
         streamWriter.flush();
 

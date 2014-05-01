@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.*;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
@@ -660,7 +661,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
                                                                  PsiXmlElementWriter<Organism> nonExperimentalHostOrganismWriter,
                                                                  PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter,
                                                                  PsiXmlElementWriter<Confidence> confidenceWriter) {
-        Xml25ExperimentWriter expWriter = new Xml25ExperimentWriter(getStreamWriter(), getElementCache());
+        XmlExperimentWriter expWriter = new XmlExperimentWriter(getStreamWriter(), getElementCache());
         expWriter.setXrefWriter(primaryRefWriter);
         expWriter.setAttributeWriter(attributeWriter);
         expWriter.setPublicationWriter(publicationWriter);
@@ -679,7 +680,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
                                                                                                                PsiXmlElementWriter<Organism> organismWriter);
 
     protected PsiXmlParameterWriter instantiateParameterWriter() {
-        return new Xml25ParameterWriter(getStreamWriter(), getElementCache());
+        return new XmlParameterWriter(getStreamWriter(), getElementCache());
     }
 
     protected abstract <F extends Feature> PsiXmlElementWriter<F> instantiateFeatureWriter(PsiXmlElementWriter<Alias> aliasWriter,
@@ -689,7 +690,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
                                                                             PsiXmlElementWriter<Range> rangeWriter);
 
     protected PsiXmlElementWriter<Range> instantiateRangeWriter(PsiXmlElementWriter<Position> beginWriter, PsiXmlElementWriter<Position> endWriter) {
-        Xml25RangeWriter rangeWriter = new Xml25RangeWriter(getStreamWriter());
+        XmlRangeWriter rangeWriter = new XmlRangeWriter(getStreamWriter());
         rangeWriter.setStartPositionWriter(beginWriter);
         rangeWriter.setEndPositionWriter(endWriter);
         return rangeWriter;
@@ -766,7 +767,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
     }
 
     protected PsiXmlPublicationWriter instantiatePublicationWriter(PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter) {
-        Xml25PublicationWriter publicationWriter = new Xml25PublicationWriter(getStreamWriter());
+        XmlPublicationWriter publicationWriter = new XmlPublicationWriter(getStreamWriter());
         publicationWriter.setAttributeWriter(attributeWriter);
         publicationWriter.setXrefWriter(primaryRefWriter);
         return publicationWriter;

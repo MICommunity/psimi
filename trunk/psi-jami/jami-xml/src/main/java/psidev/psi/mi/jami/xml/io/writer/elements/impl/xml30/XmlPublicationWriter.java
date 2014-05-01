@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Annotation;
@@ -17,9 +17,9 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>11/11/13</pre>
  */
 
-public class Xml30PublicationWriter extends AbstractXmlPublicationWriter {
+public class XmlPublicationWriter extends AbstractXmlPublicationWriter {
 
-    public Xml30PublicationWriter(XMLStreamWriter writer){
+    public XmlPublicationWriter(XMLStreamWriter writer){
         super(writer);
     }
 

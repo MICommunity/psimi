@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25;
 
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Parameter;
@@ -19,9 +19,9 @@ import java.util.Date;
  * @since <pre>14/11/13</pre>
  */
 
-public class Xml25ParameterWriter extends AbstractXmlParameterWriter {
+public class XmlParameterWriter extends AbstractXmlParameterWriter {
 
-    public Xml25ParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
+    public XmlParameterWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         super(writer, objectIndex);
     }
 
