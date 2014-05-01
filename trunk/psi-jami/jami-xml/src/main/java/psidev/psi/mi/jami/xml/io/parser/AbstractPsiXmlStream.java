@@ -7,6 +7,8 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.*;
 import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.factory.MIDataSourceOptions;
+import psidev.psi.mi.jami.factory.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.MIFileDatasourceUtils;
