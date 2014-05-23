@@ -7,8 +7,8 @@ import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.AbstractXmlWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExperimentWriter;
+import psidev.psi.mi.jami.xml.model.extension.factory.options.PsiXmlWriterOptions;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;

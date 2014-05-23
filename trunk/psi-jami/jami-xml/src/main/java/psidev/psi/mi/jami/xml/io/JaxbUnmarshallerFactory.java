@@ -39,6 +39,10 @@ public class JaxbUnmarshallerFactory {
      * @throws JAXBException
      */
     public Unmarshaller createUnmarshaller(PsiXmlVersion version, InteractionCategory category) throws JAXBException {
+        if (category.equals(InteractionCategory.mixed) && !version.equals(PsiXmlVersion.v3_0_0)){
+            category = InteractionCategory.evidence;
+        }
+
         // create unmarshaller knowing the version
         switch (version){
             case v2_5_4:
@@ -46,7 +50,7 @@ public class JaxbUnmarshallerFactory {
             case v2_5_3:
                 return createXml253JAXBUnmarshaller(category);
             case v3_0_0:
-                return createXml300JAXBUnmarshaller(category);
+                return createXml300JAXBUnmarshaller();
             default:
                 return createXml254JAXBUnmarshaller(category);
         }
@@ -61,6 +65,10 @@ public class JaxbUnmarshallerFactory {
      * @throws JAXBException
      */
     public Unmarshaller createFullUnmarshaller(PsiXmlVersion version, InteractionCategory category) throws JAXBException {
+        if (category.equals(InteractionCategory.mixed) && !version.equals(PsiXmlVersion.v3_0_0)){
+            category = InteractionCategory.evidence;
+        }
+
         // create unmarshaller knowing the version
         switch (version){
             case v2_5_4:
@@ -74,20 +82,9 @@ public class JaxbUnmarshallerFactory {
         }
     }
 
-    public Unmarshaller createXml300JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
+    public Unmarshaller createXml300JAXBUnmarshaller() throws JAXBException {
         // create unmarshaller knowing the interaction category we want to parse
-        switch (category){
-            case basic:
-                return createBasicXml300JAXBUnmarshaller();
-            case evidence:
-                return createEvidenceXml300JAXBUnmarshaller();
-            case modelled:
-                return createModelledXml300JAXBUnmarshaller();
-            case mixed:
-                return createEvidenceXml300JAXBUnmarshaller();
-            default:
-                return createEvidenceXml300JAXBUnmarshaller();
-        }
+        return createEvidenceXml300JAXBUnmarshaller();
     }
 
     public Unmarshaller createXml253JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
@@ -173,30 +170,11 @@ public class JaxbUnmarshallerFactory {
 
     }
 
-    private Unmarshaller createModelledXml300JAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlModelledInteraction.class,
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlExperiment.class,
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlInteractor.class,
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlSource.class,
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlAnnotation.class);
-        return ctx.createUnmarshaller();
-    }
-
     private Unmarshaller createEvidenceXml300JAXBUnmarshaller() throws JAXBException {
         JAXBContext ctx = JAXBContext.newInstance(
                 psidev.psi.mi.jami.xml.model.extension.xml300.XmlInteractionEvidence.class,
                 psidev.psi.mi.jami.xml.model.extension.xml300.Availability.class,
                 psidev.psi.mi.jami.xml.model.extension.xml300.XmlExperiment.class,
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlInteractor.class,
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlSource.class,
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlAnnotation.class);
-        return ctx.createUnmarshaller();
-    }
-
-    private Unmarshaller createBasicXml300JAXBUnmarshaller() throws JAXBException {
-        JAXBContext ctx = JAXBContext.newInstance(
-                psidev.psi.mi.jami.xml.model.extension.xml300.XmlBasicInteraction.class,
                 psidev.psi.mi.jami.xml.model.extension.xml300.XmlInteractor.class,
                 psidev.psi.mi.jami.xml.model.extension.xml300.XmlSource.class,
                 psidev.psi.mi.jami.xml.model.extension.xml300.XmlAnnotation.class);

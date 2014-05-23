@@ -140,9 +140,10 @@
         <xs:sequence>
             <xs:choice maxOccurs="unbounded">
                 <xs:element name="interaction" type="mif:interaction"/>
-                <xs:element name="modelledInteraction" type="mif:modelledInteraction">
+                <xs:element name="abstractInteraction" type="mif:abstractInteraction">
                     <xs:annotation>
                         <xs:documentation>Abstract interaction describing a stable complex, allosteric interaction , etc...
+                            These interactions are abstracted from the experimental context and used to describe biological entities
                         </xs:documentation>
                     </xs:annotation>
                 </xs:element>
@@ -425,17 +426,19 @@
         </xs:sequence>
         <xs:attribute name="ncbiTaxId" type="xs:int" use="required"/>
     </xs:complexType>
-    <xs:complexType name="modelledConfidenceList">
+    <xs:complexType name="abstractConfidenceList">
         <xs:annotation>
-            <xs:documentation>A list of confidence values for a complex or abstract interaction.</xs:documentation>
+            <xs:documentation>A list of confidence values for a complex or abstract interaction.
+                These confidences can refer to their original publications.></xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="confidence" type="mif:modelledConfidence" maxOccurs="unbounded"/>
+            <xs:element name="confidence" type="mif:abstractConfidence" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="modelledConfidence">
+    <xs:complexType name="abstractConfidence">
         <xs:annotation>
-            <xs:documentation>A confidence value for a complex or other 'abstract' interaction.</xs:documentation>
+            <xs:documentation>A confidence value for a complex or other 'abstract' interaction.
+                It can refer to its original publication/review.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="type" type="mif:openCvType"/>
@@ -922,10 +925,35 @@
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
+    <xs:complexType name="experimentalVariableValueList">
+        <xs:annotation>
+            <xs:documentation>A list of experimental parameter/condition values for which the interaction occurs.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="variableValues" minOccurs="1" maxOccurs="unbounded" type="mif:variableValues">
+                <xs:annotation>
+                    <xs:documentation>A set of experimental parameter/conditions values applied together and for which this interaction occurs.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="variableValues">
+        <xs:annotation>
+            <xs:documentation>A set of experimental parameter/conditions values applied together and for which this interaction occurs.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="variableValueRef" minOccurs="1" maxOccurs="unbounded" type="xs:int">
+                <xs:annotation>
+                    <xs:documentation>The reference to the id of the variableValue described in the variableParameterList/variableParameter/variableParameterValueList
+                        of the experiment.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
 
     <xs:complexType name="interaction">
         <xs:annotation>
-            <xs:documentation>A molecular interaction.</xs:documentation>
+            <xs:documentation>A molecular interaction described with some experimental context.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="names" type="mif:names" minOccurs="0">
@@ -953,7 +981,7 @@
                     </xs:annotation>
                 </xs:element>
             </xs:choice>
-            <xs:element name="experimentList" type="mif:experimentList" minOccurs="0"/>
+            <xs:element name="experimentList" type="mif:experimentList"/>
             <xs:element name="participantList" type="mif:participantList"/>
             <xs:element name="inferredInteractionList" type="mif:inferredInteractionList" minOccurs="0"/>
             <xs:element name="interactionType" type="mif:cvType" minOccurs="0" maxOccurs="unbounded">
@@ -978,35 +1006,14 @@
             </xs:element>
             <xs:element name="confidenceList" type="mif:confidenceList" minOccurs="0"/>
             <xs:element name="parameterList" type="mif:parameterList" minOccurs="0"/>
-            <xs:element name="organism" type="mif:bioSource" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>The organism where this interaction naturally occurs (organism of a stable complex, etc.).</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="interactorType" type="mif:cvType" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>The interactor type if the interaction is used as a participant of another interaction.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="evidenceType" type="mif:cvType" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>External controlled vocabulary characterising the evidence type,
-                        for example "physical interaction evidence, inferred from literature".</xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:element name="causalRelationshipList" type="mif:causalRelationshipList" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>A list of causal relationships involving participants in this interaction</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="cooperativeEffectList" type="mif:cooperativeEffectList" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>A list of cooperative effects this interaction has on subsequent interactions, either through an allosteric or pre-assembly effect.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:element name="experimentalVariableValueList" type="mif:experimentalVariableValueList" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>A list of cooperative effects this interaction has on subsequent interactions, either through an allosteric or pre-assembly effect.</xs:documentation>
+                    <xs:documentation>A list of variable/dynamic parameters used in this experiment to investigate dynamic interactions.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0"/>
@@ -1044,12 +1051,13 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="modelledInteraction">
+    <xs:complexType name="abstractInteraction">
         <xs:annotation>
-            <xs:documentation>An 'abstract' molecular interaction - e.g - stable complexes, allosteric interaction, ....</xs:documentation>
+            <xs:documentation>An 'abstract' molecular interaction - e.g - stable complexes, allosteric interaction, ....
+                These interactions are abstracted from their experimental context and represent biological entities.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="names" type="mif:names" minOccurs="1">
+            <xs:element name="names" type="mif:names" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Name(s) of the interaction.</xs:documentation>
                 </xs:annotation>
@@ -1059,18 +1067,12 @@
                     <xs:documentation>Interaction database ID, interaction evidence references</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="participantList" type="mif:modelledParticipantList"/>
-            <xs:element name="bindingFeatureList" type="mif:bindingFeatureList" minOccurs="0"/>
+            <xs:element name="participantList" type="mif:abstractParticipantList"/>
+            <xs:element name="bindingFeatureList" type="mif:bindingFeaturesList" minOccurs="0"/>
             <xs:element name="interactionType" type="mif:cvType" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>External controlled vocabulary characterising the interaction type,
                         for example "physical interaction".</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="evidenceType" type="mif:cvType" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>External controlled vocabulary characterising the evidence type,
-                        for example "physical interaction evidence, inferred from literature".</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="intraMolecular" type="xs:boolean" default="false" minOccurs="0">
@@ -1078,7 +1080,9 @@
                     <xs:documentation>If true, this interaction is an intramolecular interaction, e.g. an autophosphorylation. If missing, this element is assumed to be false.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="organism" type="mif:bioSource" minOccurs="1">
+            <xs:element name="confidenceList" type="mif:abstractConfidenceList" minOccurs="0"/>
+            <xs:element name="parameterList" type="mif:abstractParameterList" minOccurs="0"/>
+            <xs:element name="organism" type="mif:bioSource" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>The organism where this complex/abstract interaction naturally occurs.</xs:documentation>
                 </xs:annotation>
@@ -1088,8 +1092,12 @@
                     <xs:documentation>The interactor type for this complex when it is used as a participant of another interaction.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="confidenceList" type="mif:modelledConfidenceList" minOccurs="0"/>
-            <xs:element name="parameterList" type="mif:modelledParameterList" minOccurs="0"/>
+            <xs:element name="evidenceType" type="mif:cvType" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>External controlled vocabulary characterising the evidence type,
+                        for example "physical interaction evidence, inferred from literature".</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="causalRelationshipList" type="mif:causalRelationshipList" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>A list of causal relationships involving participants in this interaction</xs:documentation>
@@ -1382,21 +1390,28 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="modelledParticipantList">
+    <xs:complexType name="abstractParticipantList">
         <xs:annotation>
-            <xs:documentation>A list of molecules participating in a modelled interaction. A complex has one
-                (homo-dimers), two (binary), or more (complexes) participants.
+            <xs:documentation>A list of molecules participating in an abstract interaction. A complex has one
+                (homo-dimers), two (binary), or more (complexes) participants. As the interaction is abstracted from the experimental context, the
+                participants are also abstracted from any experimental context.
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="participant" type="mif:modelledParticipant" maxOccurs="unbounded"/>
+            <xs:element name="participant" type="mif:abstractParticipant" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="modelledParticipant">
+    <xs:complexType name="abstractParticipant">
         <xs:annotation>
-            <xs:documentation>A molecule participating in a modelled interaction (complex, allsoteric interaction, ...).</xs:documentation>
+            <xs:documentation>A molecule participating in an interaction (complex, allsoteric interaction, ...).
+                This participant is abstracted from its experimental context.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
+            <xs:element name="names" type="mif:names" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Names for the participant</xs:documentation>
+                </xs:annotation>
+            </xs:element>
             <xs:element name="xref" type="mif:xref" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Contains the xref(s) for the participant.</xs:documentation>
@@ -1416,9 +1431,9 @@
                         <xs:documentation>Fully describes an interactor</xs:documentation>
                     </xs:annotation>
                 </xs:element>
-                <xs:element name="modelledInteractionRef" type="xs:int">
+                <xs:element name="interactionRef" type="xs:int">
                     <xs:annotation>
-                        <xs:documentation>References a modelled interaction described in this entry. Used for the hierarchical buildup of complexes.</xs:documentation>
+                        <xs:documentation>References an abstract interaction described in this entry. Used for the hierarchical buildup of complexes.</xs:documentation>
                     </xs:annotation>
                 </xs:element>
             </xs:choice>
@@ -1427,7 +1442,7 @@
                     <xs:documentation>The role of the participant in the interaction. This describes the biological role, e.g. enzyme or enzyme target. The experimental role of the participant, e.g. 'bait', is shown in experimentalForm. This element is controlled by the PSI-MI controlled vocabulary "biologicalRole", root term id MI:0500.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="featureList" type="mif:modelledFeatureList" minOccurs="0"/>
+            <xs:element name="featureList" type="mif:abstractFeatureList" minOccurs="0"/>
             <xs:element name="causalRelationshipList" type="mif:causalRelationshipList2" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>A list of causal relationships involving this participant in this interaction</xs:documentation>
@@ -1468,17 +1483,21 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="bindingFeatureList">
+    <xs:complexType name="bindingFeaturesList">
         <xs:annotation>
             <xs:documentation>Show the topology of interactions within a complex.
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="bindingFeature" type="mif:bindingFeatures" maxOccurs="unbounded"/>
+            <xs:element name="bindingFeatures" type="mif:bindingFeatures" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
     <xs:complexType name="bindingFeatures">
+        <xs:annotation>
+            <xs:documentation>List all the features reported in the complex that are linked to each other.
+            </xs:documentation>
+        </xs:annotation>
         <xs:sequence>
             <xs:element name="participantFeatureRef" type="xs:int" minOccurs="2" maxOccurs="unbounded"/>
         </xs:sequence>
@@ -1815,16 +1834,17 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="modelledFeatureList">
+    <xs:complexType name="abstractFeatureList">
         <xs:annotation>
-            <xs:documentation>Sequence features relevant for the modelled interaction, for example binding domains.
+            <xs:documentation>Sequence features relevant for the abstract interaction. These features are abstracted from any experimental context
+                and are usually binding sites, variants, etc..
             </xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="feature" type="mif:modelledFeature" maxOccurs="unbounded"/>
+            <xs:element name="feature" type="mif:abstractFeature" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="modelledFeature">
+    <xs:complexType name="abstractFeature">
         <xs:annotation>
             <xs:documentation>A biological feature, e.g. domain, on a sequence.</xs:documentation>
         </xs:annotation>
@@ -1883,16 +1903,17 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="modelledParameterList">
+    <xs:complexType name="abstractParameterList">
         <xs:annotation>
-            <xs:documentation>Lists parameters which are relevant for the complex/abstract interaction, e.g. kinetics.</xs:documentation>
+            <xs:documentation>Lists parameters which are relevant for the complex/abstract interaction, e.g. kinetics.
+            These parameters can refer to their original publication.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="parameter" type="mif:modelledParameter" maxOccurs="unbounded"/>
+            <xs:element name="parameter" type="mif:abstractParameter" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
 
-    <xs:complexType name="modelledParameter">
+    <xs:complexType name="abstractParameter">
         <xs:complexContent>
             <xs:extension base="mif:parameterBase">
                 <xs:sequence>

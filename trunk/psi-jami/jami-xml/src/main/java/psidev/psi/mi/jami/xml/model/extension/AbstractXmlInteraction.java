@@ -10,9 +10,9 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.ChecksumUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
-import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -29,13 +29,12 @@ import java.util.List;
  * @since <pre>09/07/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlInteraction<T extends Participant> implements ExtendedPsiXmlInteraction<T>, FileSourceContext, Locatable{
+public abstract class AbstractXmlInteraction<T extends Participant> implements FileSourceContext, Locatable, NamedInteraction<T>{
 
     private NamesContainer namesContainer;
     private InteractionXrefContainer xrefContainer;
     private Boolean intraMolecular;
     private int id;
-    private List<CvTerm> interactionTypes;
     private Date updatedDate;
     private Date createdDate;
     private PsiXmLocator sourceLocator;
@@ -43,7 +42,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
 
     private JAXBAttributeWrapper jaxbAttributeWrapper;
     private JAXBParticipantWrapper<T> jaxbParticipantWrapper;
-    private JAXBInferredInteractionWrapper jaxbInferredInteractionWrapper;
 
     public AbstractXmlInteraction(){
         XmlEntryContext context = XmlEntryContext.getInstance();
@@ -163,25 +161,9 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         this.createdDate = created;
     }
 
-    public CvTerm getInteractionType() {
-        return (this.interactionTypes != null && !this.interactionTypes.isEmpty())? this.interactionTypes.iterator().next() : null;
-    }
+    public abstract CvTerm getInteractionType();
 
-    public void setInteractionType(CvTerm term) {
-        if (this.interactionTypes == null && term != null){
-            this.interactionTypes = new ArrayList<CvTerm>();
-            this.interactionTypes.add(term);
-        }
-        else if (this.interactionTypes != null){
-            if (!this.interactionTypes.isEmpty() && term == null){
-                this.interactionTypes.remove(0);
-            }
-            else if (term != null){
-                this.interactionTypes.remove(0);
-                this.interactionTypes.add(0, term);
-            }
-        }
-    }
+    public abstract void setInteractionType(CvTerm term);
 
     public Collection<T> getParticipants() {
         if (jaxbParticipantWrapper == null){
@@ -245,7 +227,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
      *
      * @param value
      *     allowed object is
-     *     {@link NamesContainer }
+     *     {@link psidev.psi.mi.jami.xml.model.extension.NamesContainer }
      *
      */
     public void setJAXBNames(NamesContainer value) {
@@ -257,7 +239,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
      *
      * @param value
      *     allowed object is
-     *     {@link InteractorXrefContainer }
+     *     {@link psidev.psi.mi.jami.xml.model.extension.InteractorXrefContainer }
      *
      */
     public void setJAXBXref(InteractionXrefContainer value) {
@@ -298,28 +280,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         if (getSourceLocator() != null){
             sourceLocator.setObjectId(this.id);
         }
-    }
-
-    /**
-     * Gets the value of the interactionTypeList property.
-     *
-     * @return
-     *     possible object is
-     *     {@link XmlCvTerm }
-     *
-     */
-    public List<CvTerm> getInteractionTypes() {
-        if (this.interactionTypes == null){
-           this.interactionTypes = new ArrayList<CvTerm>();
-        }
-        return this.interactionTypes;
-    }
-
-    public List<InferredInteraction> getInferredInteractions() {
-        if (this.jaxbInferredInteractionWrapper == null){
-            this.jaxbInferredInteractionWrapper = new JAXBInferredInteractionWrapper();
-        }
-        return this.jaxbInferredInteractionWrapper.inferredInteractions;
     }
 
     @Override
@@ -366,10 +326,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
                 listener.onInteractionWithoutParticipants(this, this);
             }
         }
-    }
-
-    public void setJAXBInferredInteractionWrapper(JAXBInferredInteractionWrapper jaxbInferredWrapper) {
-        this.jaxbInferredInteractionWrapper = jaxbInferredWrapper;
     }
 
     public NamesContainer getJAXBNames() {
@@ -605,55 +561,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements E
         @Override
         public String toString() {
             return "Participant List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
-        }
-    }
-
-    @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="inferredInteractionWrapper")
-    public static class JAXBInferredInteractionWrapper implements Locatable, FileSourceContext{
-        private PsiXmLocator sourceLocator;
-        @XmlLocation
-        @XmlTransient
-        private Locator locator;
-        private List<InferredInteraction> inferredInteractions;
-
-        public JAXBInferredInteractionWrapper(){
-            initialiseInferredInteractions();
-        }
-
-        @Override
-        public Locator sourceLocation() {
-            return (Locator)getSourceLocator();
-        }
-
-        public FileSourceLocator getSourceLocator() {
-            if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
-            }
-            return sourceLocator;
-        }
-
-        public void setSourceLocator(FileSourceLocator sourceLocator) {
-            if (sourceLocator == null){
-                this.sourceLocator = null;
-            }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-            }
-        }
-
-        protected void initialiseInferredInteractions(){
-            inferredInteractions = new ArrayList<InferredInteraction>();
-        }
-
-        @XmlElement(name="inferredInteraction", type = InferredInteraction.class, required = true)
-        public List<InferredInteraction> getJAXBInferredInteractions() {
-            return inferredInteractions;
-        }
-
-        @Override
-        public String toString() {
-            return "Inferred Interaction List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

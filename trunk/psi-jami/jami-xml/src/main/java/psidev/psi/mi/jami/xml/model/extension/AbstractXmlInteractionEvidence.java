@@ -26,7 +26,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteraction<ParticipantEvidence> implements ExtendedPsiXmlInteractionEvidence {
+public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInteraction<ParticipantEvidence> implements ExtendedPsiXmlInteractionEvidence {
 
     private AbstractAvailability availability;
     private boolean isInferred;
@@ -417,7 +417,7 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractXmlInteract
 
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="participantEvidenceWrapper")
-    public static class JAXBParticipantWrapper extends AbstractXmlInteraction.JAXBParticipantWrapper<ParticipantEvidence> {
+    public static class JAXBParticipantWrapper extends AbstractPsiXmlInteraction.JAXBParticipantWrapper<ParticipantEvidence> {
 
         public JAXBParticipantWrapper(){
             super();
