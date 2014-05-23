@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.InteractionEvidenceSpokeExpansion;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.factory.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 

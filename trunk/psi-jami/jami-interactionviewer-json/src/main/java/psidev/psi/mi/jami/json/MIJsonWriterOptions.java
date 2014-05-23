@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.json;
 
-import psidev.psi.mi.jami.factory.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 
 /**
  * Class that lists all possible options for MIJson writers.
