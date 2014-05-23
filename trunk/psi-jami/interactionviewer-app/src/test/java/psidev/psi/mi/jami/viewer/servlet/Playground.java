@@ -48,7 +48,7 @@ public class Playground {
 
     @Before
     public void init() throws BridgeFailedException {
-        PsiJami.initialiseInteractionEvidenceSources();
+        PsiJami.initialiseAllMIDataSources();
         fileAnalyzer = new MIFileAnalyzer();
         expansionMethod = new InteractionEvidenceSpokeExpansion();
         Properties prop = new Properties();
