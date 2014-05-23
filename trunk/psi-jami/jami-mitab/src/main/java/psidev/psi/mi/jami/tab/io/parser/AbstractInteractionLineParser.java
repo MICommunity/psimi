@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
+import psidev.psi.mi.jami.tab.extension.factory.MitabInteractorFactory;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.utils.AliasUtils;

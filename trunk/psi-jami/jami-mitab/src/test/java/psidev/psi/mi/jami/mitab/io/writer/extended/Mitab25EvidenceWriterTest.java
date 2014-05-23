@@ -3,14 +3,14 @@ package psidev.psi.mi.jami.mitab.io.writer.extended;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
-import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.tab.MitabVersion;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.io.writer.extended.Mitab25EvidenceWriter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.tab.utils.MitabWriterOptions;
+import psidev.psi.mi.jami.tab.extension.factory.options.MitabWriterOptions;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
