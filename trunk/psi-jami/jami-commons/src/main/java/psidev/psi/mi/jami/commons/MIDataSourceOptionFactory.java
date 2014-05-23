@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.commons;
 
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
-import psidev.psi.mi.jami.factory.MIDataSourceOptions;
-import psidev.psi.mi.jami.factory.MIFileDataSourceOptions;
+import psidev.psi.mi.jami.factory.options.MIDataSourceOptions;
+import psidev.psi.mi.jami.factory.options.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.InteractionCategory;
@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.tab.listener.MitabParserLogger;
 import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserLogger;
-import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
+import psidev.psi.mi.jami.xml.model.extension.factory.options.PsiXmlWriterOptions;
 
 import java.io.File;
 import java.io.IOException;
@@ -257,7 +257,9 @@ public class MIDataSourceOptionFactory {
         Map<String, Object> options = new HashMap<String, Object>(10);
 
         options.put(MIFileDataSourceOptions.INPUT_TYPE_OPTION_KEY, type.toString());
-        options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, objectCategory != null ? objectCategory : InteractionCategory.evidence);
+        if (objectCategory != null){
+            options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, objectCategory);
+        }
         options.put(MIDataSourceOptions.COMPLEX_TYPE_OPTION_KEY, complexType != null ? complexType : psidev.psi.mi.jami.model.ComplexType.n_ary);
         options.put(MIFileDataSourceOptions.STREAMING_OPTION_KEY, streaming);
         if (listener != null){
