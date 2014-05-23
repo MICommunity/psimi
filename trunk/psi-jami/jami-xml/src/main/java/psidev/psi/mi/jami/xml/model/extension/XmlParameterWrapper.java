@@ -4,8 +4,6 @@ import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Xml parameter wrapper
@@ -18,7 +16,7 @@ import java.util.Collection;
 public class XmlParameterWrapper implements ModelledParameter{
 
     private Parameter parameter;
-    private Collection<Publication> publications;
+    private Publication publication;
 
     public XmlParameterWrapper(Parameter param){
         if (param == null){
@@ -48,11 +46,12 @@ public class XmlParameterWrapper implements ModelledParameter{
     }
 
     @Override
-    public Collection<Publication> getPublications() {
-        if (publications == null){
-            this.publications = new ArrayList<Publication>();
-        }
-        return this.publications;
+    public Publication getPublication() {
+        return this.publication;
+    }
+
+    public void setPublication(Publication publication) {
+        this.publication = publication;
     }
 
     @Override
