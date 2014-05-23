@@ -24,7 +24,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AbstractXmlModelledInteraction extends AbstractXmlInteraction<ModelledParticipant> implements ModelledInteraction{
+public abstract class AbstractXmlModelledInteraction extends AbstractPsiXmlInteraction<ModelledParticipant> implements ModelledInteraction{
 
     private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
@@ -217,7 +217,7 @@ public abstract class AbstractXmlModelledInteraction extends AbstractXmlInteract
 
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="modelledParticipantWrapper")
-    public static class JAXBParticipantWrapper extends AbstractXmlInteraction.JAXBParticipantWrapper<ModelledParticipant> {
+    public static class JAXBParticipantWrapper extends AbstractPsiXmlInteraction.JAXBParticipantWrapper<ModelledParticipant> {
 
         public JAXBParticipantWrapper(){
             super();

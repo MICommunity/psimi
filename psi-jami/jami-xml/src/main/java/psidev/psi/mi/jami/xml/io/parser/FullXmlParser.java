@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
-import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
 
@@ -11,7 +11,7 @@ import java.io.*;
 import java.net.URL;
 
 /**
- * Full Parser generating basic interaction objects and ignore experimental details.
+ * Full Parser generating interaction objects that could be a mix or modelled interactions and interaction evidences.
  *
  * It will load the all entrySet so is consuming a lot of memory in case of large files but is very performant for small files
  *
@@ -39,7 +39,7 @@ public class FullXmlParser extends AbstractFullPsiXmlParser<Interaction<? extend
 
     @Override
     protected Unmarshaller createJAXBUnmarshaller() throws JAXBException {
-        return JaxbUnmarshallerFactory.getInstance().createFullUnmarshaller(getVersion(), InteractionCategory.basic);
+        return JaxbUnmarshallerFactory.getInstance().createFullUnmarshaller(getVersion(), InteractionCategory.mixed);
     }
 
 }

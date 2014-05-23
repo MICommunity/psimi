@@ -8,8 +8,6 @@ import psidev.psi.mi.jami.model.Publication;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Xml implementation of ModelledParameter
@@ -20,7 +18,7 @@ import java.util.Collection;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlModelledParameter extends XmlParameter implements ModelledParameter{
-    private Collection<Publication> publications;
+    private Publication publication;
 
     public XmlModelledParameter() {
         super();
@@ -30,16 +28,16 @@ public class XmlModelledParameter extends XmlParameter implements ModelledParame
         super(type, value, uncertainty, unit);
     }
 
-    public Collection<Publication> getPublications() {
-        if (publications == null){
-            this.publications = new ArrayList<Publication>(1);
+    public Publication getPublication() {
+        if (publication == null){
             if (getExperiment() != null){
-                Publication pub = getExperiment().getPublication();
-                if (pub != null){
-                   this.publications.add(pub);
-                }
+                this.publication = getExperiment().getPublication();
             }
         }
-        return this.publications;
+        return this.publication;
+    }
+
+    public void setPublication(Publication publication) {
+        this.publication = publication;
     }
 }

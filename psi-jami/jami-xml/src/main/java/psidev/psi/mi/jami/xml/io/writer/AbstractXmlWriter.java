@@ -4,7 +4,7 @@ import javanet.staxutils.IndentingXMLStreamWriter;
 import org.codehaus.stax2.XMLOutputFactory2;
 import org.codehaus.stax2.XMLStreamWriter2;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.factory.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
@@ -13,8 +13,8 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.*;
+import psidev.psi.mi.jami.xml.model.extension.factory.options.PsiXmlWriterOptions;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXmlWriterOptions;
 
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.stream.XMLOutputFactory;
@@ -109,7 +109,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
         }
 
         if (options == null && !isInitialised){
-            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         else if (options == null){
             return;
@@ -238,6 +238,14 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
                     this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"2");
                     this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"5");
                     this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"3");
+                    break;
+                case v3_0_0:
+                    this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml300_NAMESPACE_URI);
+                    this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
+                    this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, PsiXmlUtils.PSI_SCHEMA_300_LOCATION);
+                    this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"3");
+                    this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"0");
+                    this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"0");
                     break;
                 default:
                     this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml254_NAMESPACE_URI);

@@ -91,7 +91,7 @@ public class InferredInteraction
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getParticipants().add(newItem);
+     *    getLinkedFeatures().add(newItem);
      * </pre>
      *
      *

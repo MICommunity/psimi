@@ -17,7 +17,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public abstract class AbstractXmlBasicInteraction extends AbstractXmlInteraction<Participant>{
+public abstract class AbstractXmlBasicInteraction extends AbstractPsiXmlInteraction<Participant> {
 
     @XmlLocation
     @XmlTransient
@@ -116,7 +116,7 @@ public abstract class AbstractXmlBasicInteraction extends AbstractXmlInteraction
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="basicParticipantWrapper")
-    public static class JAXBParticipantWrapper extends AbstractXmlInteraction.JAXBParticipantWrapper<Participant> {
+    public static class JAXBParticipantWrapper extends AbstractPsiXmlInteraction.JAXBParticipantWrapper<Participant> {
 
         public JAXBParticipantWrapper(){
             super();

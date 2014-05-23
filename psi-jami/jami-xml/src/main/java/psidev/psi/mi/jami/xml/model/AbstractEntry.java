@@ -6,6 +6,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Annotation;
+import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
@@ -25,7 +26,7 @@ import java.util.List;
  * @since <pre>07/11/13</pre>
  */
 @XmlTransient
-public abstract class AbstractEntry<T extends Object> extends Entry implements Locatable, FileSourceContext {
+public abstract class AbstractEntry<T extends Interaction> extends Entry implements Locatable, FileSourceContext {
     private PsiXmLocator sourceLocator;
     private JAXBInteractorsWrapper interactorsWrapper;
     private JAXBInteractionsWrapper<T> interactionsWrapper;

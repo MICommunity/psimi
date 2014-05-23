@@ -5,16 +5,16 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.model.AbstractEntry;
 import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
-import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.net.URL;
 
 /**
- * Full Parser generating binary interaction evidence objects and loading all experimental details.
+ * Full Parser generating binary interactions that could be a mix or modelled interactions and interaction evidences.
  *
  * It will load the all entrySet so is consuming a lot of memory in case of large files but is very performant for small files
  *

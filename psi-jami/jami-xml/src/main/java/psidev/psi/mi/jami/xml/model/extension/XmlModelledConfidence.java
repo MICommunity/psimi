@@ -6,8 +6,6 @@ import psidev.psi.mi.jami.model.Publication;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Xml implementation of ModelledConfidence
@@ -19,7 +17,7 @@ import java.util.Collection;
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlModelledConfidence extends XmlConfidence implements ModelledConfidence{
 
-    Collection<Publication> publications;
+    Publication publication;
 
     public XmlModelledConfidence() {
         super();
@@ -30,15 +28,19 @@ public class XmlModelledConfidence extends XmlConfidence implements ModelledConf
         super(type, value);
     }
 
-    public Collection<Publication> getPublications() {
-        if (publications == null){
-            this.publications = new ArrayList<Publication>(getExperiments().size());
+    public Publication getPublication() {
+        if (publication == null){
             for (Experiment exp : getExperiments()){
                 if (exp.getPublication() != null){
-                    publications.add(exp.getPublication());
+                    this.publication = exp.getPublication();
+                    break;
                 }
             }
         }
-        return this.publications;
+        return this.publication;
+    }
+
+    public void setPublication(Publication publication) {
+        this.publication = publication;
     }
 }

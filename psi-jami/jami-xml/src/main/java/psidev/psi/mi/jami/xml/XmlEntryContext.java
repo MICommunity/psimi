@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteractionParticipant;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.extension.xml300.BindingFeatures;
 import psidev.psi.mi.jami.xml.model.reference.XmlIdReference;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class XmlEntryContext {
     private PsiXmlIdCache elementCache;
     private Collection<XmlIdReference> references;
     private Collection<InferredInteraction> inferredInteractions;
+    private Collection<BindingFeatures> bindingFeatures;
     private Entry currentEntry;
     private PsiXmlParserListener listener;
 
@@ -61,6 +63,9 @@ public class XmlEntryContext {
         this.currentEntry = null;
         if (this.inferredInteractions != null){
             this.inferredInteractions.clear();
+        }
+        if (this.bindingFeatures != null){
+            this.bindingFeatures.clear();
         }
     }
 
@@ -132,6 +137,12 @@ public class XmlEntryContext {
         }
     }
 
+    public void registerBindingFeature(BindingFeatures infer){
+        if (this.bindingFeatures != null){
+            this.bindingFeatures.add(infer);
+        }
+    }
+
     public void registerReference(XmlIdReference ref){
         if (this.references != null){
             this.references.add(ref);
@@ -139,7 +150,7 @@ public class XmlEntryContext {
     }
 
     public boolean hasInferredInteractions(){
-        return !inferredInteractions.isEmpty();
+        return !inferredInteractions.isEmpty() || !bindingFeatures.isEmpty();
     }
 
     public boolean hasUnresolvedReferences(){
@@ -148,6 +159,7 @@ public class XmlEntryContext {
 
     public void initialiseInferredInteractionList(){
         this.inferredInteractions = new ArrayList<InferredInteraction>();
+        this.bindingFeatures = new ArrayList<BindingFeatures>();
     }
 
     public void initialiseReferencesList(){
@@ -198,6 +210,38 @@ public class XmlEntryContext {
                 else{
                     if (listener != null){
                         listener.onInvalidSyntax(inferred, new PsiXmlParserException("InferredInteraction must have at least one inferredInteractionParticipant."));
+                    }
+                }
+
+                inferredIterator.remove();
+            }
+        }
+
+        if (bindingFeatures != null){
+            Iterator<BindingFeatures> inferredIterator = bindingFeatures.iterator();
+            while(inferredIterator.hasNext()){
+                BindingFeatures inferred = inferredIterator.next();
+                if (!inferred.getLinkedFeatures().isEmpty()){
+                    Iterator<ModelledFeature> partIterator = inferred.getLinkedFeatures().iterator();
+                    List<ModelledFeature> partIterator2 = new ArrayList<ModelledFeature>(inferred.getLinkedFeatures());
+                    int currentIndex = 0;
+
+                    while (partIterator.hasNext()){
+                        currentIndex++;
+                        ModelledFeature p1 = partIterator.next();
+                        for (int i = currentIndex; i < partIterator2.size();i++){
+                            ModelledFeature p2 = partIterator2.get(i);
+
+                            p1.getLinkedFeatures().add(p2);
+                            if (p1 != p2){
+                                p2.getLinkedFeatures().add(p1);
+                            }
+                        }
+                    }
+                }
+                else{
+                    if (listener != null){
+                        listener.onInvalidSyntax(inferred, new PsiXmlParserException("BindingFeatures must have at least one participantFeatureRef."));
                     }
                 }
 
