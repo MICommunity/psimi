@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -45,7 +45,7 @@ public class AnnotationSyntaxRule extends AbstractMIRule<Annotation> {
             CvTerm topic = annotation.getTopic();
 
             if (topic == null ||
-                    PsiXml25Utils.UNSPECIFIED.equals(topic.getShortName()) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(topic.getShortName()) ||
                     MitabUtils.UNKNOWN_DATABASE.equals(topic.getShortName())){
                 MiContext annotationContext = RuleUtils.buildContext(annotation, "annotation");
 

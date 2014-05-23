@@ -2,7 +2,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -42,7 +42,7 @@ public class MissingInteractorNameRule extends AbstractMIRule<Interactor> {
 
         if (interactor.getShortName() == null ||
                 interactor.getShortName().length() == 0 ||
-                PsiXml25Utils.UNSPECIFIED.equals(interactor.getShortName()) ||
+                PsiXmlUtils.UNSPECIFIED.equals(interactor.getShortName()) ||
                 MitabUtils.UNKNOWN_NAME.equals(interactor.getShortName())){
             // list of messages to return
             MiContext experimentContext = RuleUtils.buildContext(interactor, "interactor");

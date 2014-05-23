@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -49,7 +49,7 @@ public class DatabaseXrefSyntaxRule extends AbstractMIRule<Xref> {
 
             if (id == null ||
                     id.trim().length() == 0 ||
-                    PsiXml25Utils.UNSPECIFIED.equals(id) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(id) ||
                     MitabUtils.UNKNOWN_ID.equals(id)){
                 MiContext xrefContext = RuleUtils.buildContext(xref, "database xref");
                 messages = new ArrayList<ValidatorMessage>();
@@ -60,7 +60,7 @@ public class DatabaseXrefSyntaxRule extends AbstractMIRule<Xref> {
             }
 
             if (database == null ||
-                    PsiXml25Utils.UNSPECIFIED.equals(database.getShortName()) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(database.getShortName()) ||
                     MitabUtils.UNKNOWN_ID.equals(database.getShortName())){
                 MiContext xrefContext = RuleUtils.buildContext(xref, "database xref");
 

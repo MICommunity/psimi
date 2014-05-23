@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.reference.XmlIdReference;
+import psidev.psi.mi.jami.xml.model.reference.XmlIdReference;
 import psidev.psi.tools.ontology_manager.OntologyManager;
 import psidev.psi.tools.validator.rules.codedrule.ObjectRule;
 

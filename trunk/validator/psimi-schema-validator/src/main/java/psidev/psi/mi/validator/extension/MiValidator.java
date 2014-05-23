@@ -309,7 +309,7 @@ public class MiValidator extends Validator {
             }
             long id = getUniqueId();
 
-            File tempFile = MIFileUtils.storeAsTemporaryFile(openedStream.getReader(), "validator."+id, openedStream.getSource().equals(MIFileType.psi25_xml) ? ".xml" : ".txt");
+            File tempFile = MIFileUtils.storeAsTemporaryFile(openedStream.getReader(), "validator."+id, openedStream.getSource().equals(MIFileType.psimi_xml) ? ".xml" : ".txt");
 
             // 1. Validate XML input using Schema (MIF)
             validate(tempFile);
@@ -992,7 +992,7 @@ public class MiValidator extends Validator {
     }
 
     private InteractionStream<InteractionEvidence> parseDataSource(File file) throws IOException {
-        PsiJami.initialiseInteractionEvidenceSources();
+        PsiJami.initialiseAllMIDataSources();
         MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
         MIDataSourceOptionFactory optionsFactory = MIDataSourceOptionFactory.getInstance();
 

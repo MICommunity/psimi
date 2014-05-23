@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Checksum;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -47,7 +47,7 @@ public class ChecksumSyntaxRule extends AbstractMIRule<Checksum> {
             CvTerm method = checksum.getMethod();
 
             if (method == null ||
-                    PsiXml25Utils.UNSPECIFIED.equals(method.getShortName()) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(method.getShortName()) ||
                     MitabUtils.UNKNOWN_TYPE.equals(method.getShortName())){
                 MiContext xrefContext = RuleUtils.buildContext(checksum, "checksum");
                 messages = new ArrayList<ValidatorMessage>();
@@ -96,7 +96,7 @@ public class ChecksumSyntaxRule extends AbstractMIRule<Checksum> {
 
             if (checksum.getValue() == null ||
                     checksum.getValue().trim().length() == 0 ||
-                    PsiXml25Utils.UNSPECIFIED.equals(checksum.getValue()) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(checksum.getValue()) ||
                     MitabUtils.UNKNOWN_ID.equals(checksum.getValue())){
                 MiContext xrefContext = RuleUtils.buildContext(checksum, "checksum");
                 if (messages.isEmpty()){
