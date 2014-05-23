@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Parameter;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -48,7 +48,7 @@ public class ParameterSyntaxRule extends AbstractMIRule<Parameter> {
             CvTerm unit = parameter.getUnit();
 
             if (type == null ||
-                    PsiXml25Utils.UNSPECIFIED.equals(type.getShortName()) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(type.getShortName()) ||
                     MitabUtils.UNKNOWN_TYPE.equals(type.getShortName())){
                 MiContext xrefContext = RuleUtils.buildContext(parameter, "parameter");
                 messages = new ArrayList<ValidatorMessage>();

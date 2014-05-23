@@ -2,7 +2,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -44,7 +44,7 @@ public class AliasSyntaxRule extends AbstractMIRule<Alias> {
 
             if (alias.getName() == null ||
                     alias.getName().trim().length() == 0 ||
-                    PsiXml25Utils.UNSPECIFIED.equals(alias.getName()) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(alias.getName()) ||
                     MitabUtils.UNKNOWN_NAME.equals(alias.getName())){
                 MiContext aliasContext = RuleUtils.buildContext(alias, "alias");
 

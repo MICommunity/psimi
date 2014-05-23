@@ -2,7 +2,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -37,7 +37,7 @@ public class MissingCvTermNameRule extends AbstractMIRule<CvTerm> {
 
         if (cv.getShortName() == null ||
                 cv.getShortName().length() == 0 ||
-                PsiXml25Utils.UNSPECIFIED.equals(cv.getShortName()) ||
+                PsiXmlUtils.UNSPECIFIED.equals(cv.getShortName()) ||
                 MitabUtils.UNKNOWN_NAME.equals(cv.getShortName()) ||
                 MitabUtils.UNKNOWN_DATABASE.equals(cv.getShortName()) ||
                 MitabUtils.UNKNOWN_TYPE.equals(cv.getShortName())){

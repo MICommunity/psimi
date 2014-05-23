@@ -3,7 +3,7 @@ package psidev.psi.mi.validator.extension.rules.psimi;
 import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.tab.utils.MitabUtils;
-import psidev.psi.mi.jami.xml.utils.PsiXml25Utils;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 import psidev.psi.mi.validator.extension.MiContext;
 import psidev.psi.mi.validator.extension.rules.AbstractMIRule;
 import psidev.psi.mi.validator.extension.rules.RuleUtils;
@@ -47,7 +47,7 @@ public class ConfidenceSyntaxRule extends AbstractMIRule<Confidence> {
             CvTerm type = confidence.getType();
 
             if (type == null ||
-                    PsiXml25Utils.UNSPECIFIED.equals(type.getShortName()) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(type.getShortName()) ||
                     MitabUtils.UNKNOWN_TYPE.equals(type.getShortName())){
                 MiContext xrefContext = RuleUtils.buildContext(confidence, "confidence");
                 messages = new ArrayList<ValidatorMessage>();
@@ -96,7 +96,7 @@ public class ConfidenceSyntaxRule extends AbstractMIRule<Confidence> {
 
             if (confidence.getValue() == null ||
                     confidence.getValue().trim().length() == 0 ||
-                    PsiXml25Utils.UNSPECIFIED.equals(confidence.getValue()) ||
+                    PsiXmlUtils.UNSPECIFIED.equals(confidence.getValue()) ||
                     MitabUtils.UNKNOWN_ID.equals(confidence.getValue())){
                 MiContext xrefContext = RuleUtils.buildContext(confidence, "confidence");
                 if (messages.isEmpty()){
