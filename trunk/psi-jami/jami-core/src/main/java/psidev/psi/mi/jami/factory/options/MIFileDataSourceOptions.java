@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.factory;
+package psidev.psi.mi.jami.factory.options;
 
 /**
  * Class that lists all possible options for MIFileDataSource.

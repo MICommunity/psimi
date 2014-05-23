@@ -4,10 +4,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.model.Publication;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
 /**
  * Default implementation for ModelledInteraction
  *
@@ -20,29 +16,22 @@ import java.util.Collections;
 
 public class DefaultModelledConfidence extends DefaultConfidence implements ModelledConfidence {
 
-    private Collection<Publication> publications;
+    private Publication publication;
 
     public DefaultModelledConfidence(CvTerm type, String value) {
         super(type, value);
     }
 
-    protected void initialisePublications(){
-        publications = new ArrayList<Publication>();
+    public DefaultModelledConfidence(CvTerm type, String value, Publication publication) {
+        super(type, value);
+        this.publication = publication;
     }
 
-    protected void initialisePublicationsWith(Collection<Publication> publications){
-        if (publications == null){
-            this.publications = Collections.EMPTY_LIST;
-        }
-        else {
-            this.publications = publications;
-        }
+    public Publication getPublication() {
+        return this.publication;
     }
 
-    public Collection<Publication> getPublications() {
-        if (this.publications == null){
-            initialisePublications();
-        }
-        return publications;
+    public void setPublication(Publication publication) {
+        this.publication = publication;
     }
 }
