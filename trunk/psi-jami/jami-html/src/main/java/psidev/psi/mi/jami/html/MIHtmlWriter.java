@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.html;
 
-import psidev.psi.mi.jami.factory.InteractionWriterOptions;
+import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 
