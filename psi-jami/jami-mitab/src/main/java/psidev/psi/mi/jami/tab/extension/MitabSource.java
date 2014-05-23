@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.tab.utils.MitabUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 /**
- * Mitab extension of MitabSource
+ * Mitab extension of DefaultMitabSource
  * It contains a FileSourceLocator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
