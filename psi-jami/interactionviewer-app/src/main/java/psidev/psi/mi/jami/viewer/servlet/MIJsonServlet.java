@@ -67,7 +67,7 @@ public class MIJsonServlet extends HttpServlet{
 
     public void init() throws ServletException
     {
-        PsiJami.initialiseInteractionEvidenceSources();
+        PsiJami.initialiseAllMIDataSources();
         fileAnalyzer = new MIFileAnalyzer();
         expansionMethod = new InteractionEvidenceSpokeExpansion();
 
