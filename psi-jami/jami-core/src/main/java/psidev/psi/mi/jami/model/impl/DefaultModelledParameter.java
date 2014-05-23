@@ -7,9 +7,6 @@ import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.Publication;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 
 /**
  * Default implementation for ModelledParameter
@@ -23,7 +20,7 @@ import java.util.Collections;
 
 public class DefaultModelledParameter extends DefaultParameter implements ModelledParameter{
 
-    private Collection<Publication> publications;
+    private Publication publication;
 
     public DefaultModelledParameter(CvTerm type, ParameterValue value) {
         super(type, value);
@@ -49,23 +46,11 @@ public class DefaultModelledParameter extends DefaultParameter implements Modell
         super(type, value, unit);
     }
 
-    protected void initialisePublications(){
-        publications = new ArrayList<Publication>();
+    public Publication getPublication() {
+        return this.publication;
     }
 
-    protected void initialiseExperimentsWith(Collection<Publication> publications){
-        if (publications == null){
-            this.publications = Collections.EMPTY_LIST;
-        }
-        else {
-            this.publications = publications;
-        }
-    }
-
-    public Collection<Publication> getPublications() {
-        if (this.publications == null){
-            initialisePublications();
-        }
-        return publications;
+    public void setPublication(Publication publication) {
+        this.publication = publication;
     }
 }

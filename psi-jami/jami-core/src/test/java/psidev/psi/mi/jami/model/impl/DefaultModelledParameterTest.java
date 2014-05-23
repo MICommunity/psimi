@@ -25,7 +25,7 @@ public class DefaultModelledParameterTest {
         Assert.assertEquals(5, parameter.getValue().intValue());
         Assert.assertNull(parameter.getUnit());
         Assert.assertNull(parameter.getUncertainty());
-        Assert.assertNotNull(parameter.getPublications());
+        Assert.assertNull(parameter.getPublication());
     }
 
     @Test

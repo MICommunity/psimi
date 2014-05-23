@@ -20,7 +20,7 @@ public class DefaultModelledConfidenceTest {
 
         Assert.assertEquals(new DefaultCvTerm("author-score"), confidence.getType());
         Assert.assertEquals("high", confidence.getValue());
-        Assert.assertNotNull(confidence.getPublications());
+        Assert.assertNull(confidence.getPublication());
     }
 
     @Test

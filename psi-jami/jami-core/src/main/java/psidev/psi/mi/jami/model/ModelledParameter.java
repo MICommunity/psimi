@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.model;
 
-import java.util.Collection;
-
 /**
  * A modelled parameter is a parameter for a modelled interaction.
  *
@@ -15,9 +13,14 @@ import java.util.Collection;
 public interface ModelledParameter extends Parameter {
 
     /**
-     * The publications where this parameter has been reported if relevant.
-     * The collection cannot be null. If the modelledParameter does not have any publications, the method should return an empty collection
-     * @return the collection of Publication where this modelledParameter has been reported
+     * The publication where this parameter has been reported if relevant, null otherwise.
+     * @return the Publication where this modelledParameter has been reported, null if no publications reported this parameter
      */
-    public <P extends Publication> Collection<P> getPublications();
+    public Publication getPublication();
+
+    /**
+     * Sets the publication of this parameter
+     * @param publication
+     */
+    public void setPublication(Publication publication);
 }
