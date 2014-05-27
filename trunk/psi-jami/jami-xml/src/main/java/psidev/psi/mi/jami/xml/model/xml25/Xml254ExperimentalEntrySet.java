@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.xml.model.xml25;
 
 import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
-import psidev.psi.mi.jami.xml.model.ExperimentalEntry;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
