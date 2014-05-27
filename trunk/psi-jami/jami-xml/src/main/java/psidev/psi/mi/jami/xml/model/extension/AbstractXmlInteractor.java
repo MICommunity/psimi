@@ -279,13 +279,13 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
         this.xrefContainer = value;
     }
 
-    @XmlElement(name = "interactorType", required = true, type = XmlCvTerm.class)
-    public void setJAXBInteractorType(CvTerm interactorType) {
+    @XmlElement(name = "interactorType", required = true)
+    public void setJAXBInteractorType(XmlCvTerm interactorType) {
         this.interactorType = interactorType;
     }
 
-    @XmlElement(name = "organism", type = XmlOrganism.class)
-    public void setJAXBOrganism(Organism organism) {
+    @XmlElement(name = "organism")
+    public void setJAXBOrganism(XmlOrganism organism) {
         this.organism = organism;
     }
 

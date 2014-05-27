@@ -63,8 +63,8 @@ public class XmlFeature extends AbstractXmlFeature<Participant,Feature>{
     }
 
     @Override
-    @XmlElement(name = "featureType", type = XmlCvTerm.class)
-    public void setJAXBType(CvTerm type) {
+    @XmlElement(name = "featureType")
+    public void setJAXBType(XmlCvTerm type) {
         super.setJAXBType(type);
     }
 
@@ -86,8 +86,8 @@ public class XmlFeature extends AbstractXmlFeature<Participant,Feature>{
     }
 
     @Override
-    @XmlElement(name = "featureRole", type = XmlCvTerm.class, namespace = "http://psi.hupo.org/mi/mif300")
-    public void setJAXBFeatureRole(CvTerm role) {
+    @XmlElement(name = "featureRole", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBFeatureRole(XmlCvTerm role) {
         super.setJAXBFeatureRole(role);
     }
 

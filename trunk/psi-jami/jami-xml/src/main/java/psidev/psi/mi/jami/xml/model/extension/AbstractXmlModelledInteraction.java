@@ -213,6 +213,13 @@ public abstract class AbstractXmlModelledInteraction extends AbstractPsiXmlInter
         super.setParticipantWrapper(new JAXBParticipantWrapper());
     }
 
+    protected Collection<Experiment> getExperiments() {
+        if (this.jaxbExperimentWrapper != null){
+            this.jaxbExperimentWrapper = new JAXBExperimentWrapper();
+        }
+        return this.jaxbExperimentWrapper.experiments;
+    }
+
     ////////////////////////////////////////////////////// classes
 
     @XmlAccessorType(XmlAccessType.NONE)

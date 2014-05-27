@@ -41,7 +41,7 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
         return this.status;
     }
 
-    public void setJAXBStatus(CvTerm status) {
+    public void setJAXBStatus(XmlCvTerm status) {
         this.status = status;
     }
 

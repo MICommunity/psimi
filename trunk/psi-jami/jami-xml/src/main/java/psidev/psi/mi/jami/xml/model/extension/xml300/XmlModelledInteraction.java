@@ -24,7 +24,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "abstractInteraction", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParticipant> implements ModelledInteraction{
+public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParticipant> implements ExtendedPsiXmlModelledInteraction{
 
     private CvTerm interactionType;
     private Collection<InteractionEvidence> interactionEvidences;
@@ -116,6 +116,13 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         return this.cooperativeEffects;
     }
 
+    public List<BindingFeatures> getBindingFeatures() {
+        if (jaxbBindingFeaturesWrapper == null){
+            jaxbBindingFeaturesWrapper = new JAXBBindingFeaturesWrapper();
+        }
+        return jaxbBindingFeaturesWrapper.bindingFeatures;
+    }
+
     @Override
     @XmlElement(name = "names")
     public void setJAXBNames(NamesContainer value) {
@@ -180,7 +187,6 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @Override
-    @XmlElement(name="interactionType", type = XmlCvTerm.class)
     public void setInteractionType(CvTerm term) {
         this.interactionType = term;
     }
@@ -201,6 +207,11 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         else{
             super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
         }
+    }
+
+    @XmlElement(name="interactionType")
+    public void setJAXBInteractionType(XmlCvTerm term) {
+        setInteractionType(term);
     }
 
     @XmlElement(name="bindingFeaturesList")

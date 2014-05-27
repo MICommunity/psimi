@@ -162,18 +162,18 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
         this.namesContainer = value;
     }
 
-    @XmlElement(name = "cellType", type = XmlOpenCvTerm.class)
-    public void setJAXBCellType(CvTerm cellType) {
+    @XmlElement(name = "cellType")
+    public void setJAXBCellType(XmlOpenCvTerm cellType) {
         this.cellType = cellType;
     }
 
-    @XmlElement(name = "compartment", type = XmlOpenCvTerm.class)
-    public void setJAXBCompartment(CvTerm compartment) {
+    @XmlElement(name = "compartment")
+    public void setJAXBCompartment(XmlOpenCvTerm compartment) {
         this.compartment = compartment;
     }
 
-    @XmlElement(name = "tissue", type = XmlOpenCvTerm.class)
-    public void setJAXBTissue(CvTerm tissue) {
+    @XmlElement(name = "tissue")
+    public void setJAXBTissue(XmlOpenCvTerm tissue) {
         this.tissue = tissue;
     }
 

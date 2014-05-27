@@ -94,8 +94,8 @@ public abstract class AbstractXmlConfidence implements Confidence, FileSourceCon
      *     {@link psidev.psi.mi.jami.xml.model.extension.XmlOpenCvTerm }
      *
      */
-    @XmlElement(name = "unit", required = true, type = XmlOpenCvTerm.class)
-    public void setJAXBType(CvTerm value) {
+    @XmlElement(name = "unit", required = true)
+    public void setJAXBType(XmlOpenCvTerm value) {
         this.type = value;
         if (value == null){
             PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();

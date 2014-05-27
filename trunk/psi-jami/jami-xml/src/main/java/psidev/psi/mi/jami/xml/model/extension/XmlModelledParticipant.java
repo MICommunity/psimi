@@ -73,8 +73,8 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     }
 
     @Override
-    @XmlElement(name = "biologicalRole", type = XmlCvTerm.class)
-    public void setJAXBBiologicalRole(CvTerm bioRole) {
+    @XmlElement(name = "biologicalRole")
+    public void setJAXBBiologicalRole(XmlCvTerm bioRole) {
         super.setJAXBBiologicalRole(bioRole);
     }
 
@@ -95,14 +95,14 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     }
 
     @Override
-    @XmlElement(name="stoichiometry", type = psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometry.class, namespace = "http://psi.hupo.org/mi/mif300")
-    public void setJAXBStoichiometry(Stoichiometry stoichiometry) {
+    @XmlElement(name="stoichiometry", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBStoichiometry(psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometry stoichiometry) {
         super.setJAXBStoichiometry(stoichiometry);
     }
 
     @Override
-    @XmlElement(name="stoichiometryRange", type = XmlStoichiometryRange.class, namespace = "http://psi.hupo.org/mi/mif300")
-    public void setJAXBStoichiometryRange(Stoichiometry stoichiometry) {
+    @XmlElement(name="stoichiometryRange", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBStoichiometryRange(XmlStoichiometryRange stoichiometry) {
         super.setJAXBStoichiometryRange(stoichiometry);
     }
 
