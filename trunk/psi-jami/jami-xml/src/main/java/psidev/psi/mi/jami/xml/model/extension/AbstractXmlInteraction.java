@@ -328,10 +328,6 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
         }
     }
 
-    public NamesContainer getJAXBNames() {
-        return namesContainer;
-    }
-
     public InteractionXrefContainer getJAXBXref() {
         return xrefContainer;
     }
@@ -346,6 +342,24 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
 
     protected void initialiseParticipantWrapper(){
         this.jaxbParticipantWrapper = new JAXBParticipantWrapper();
+    }
+
+    protected NamesContainer getNamesContainer() {
+        if (this.namesContainer == null){
+            initialiseNamesContainer();
+        }
+        return namesContainer;
+    }
+
+    protected JAXBAttributeWrapper getAttributeWrapper() {
+        if (this.jaxbAttributeWrapper == null){
+            initialiseAnnotationWrapper();
+        }
+        return jaxbAttributeWrapper;
+    }
+
+    protected void initialiseNamesContainer(){
+        this.namesContainer = new NamesContainer();
     }
 
     ////////////////////////////////////////////////////////////////// classes
@@ -392,6 +406,15 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
             checksums = new InteractionChecksumList();
         }
 
+        protected void initialiseAnnotationsWith(List<Annotation> annots){
+            annotations = annots;
+            checksums = new InteractionChecksumList();
+        }
+
+        protected List<Annotation> getAnnotations() {
+            return annotations;
+        }
+
         private void processAddedChecksumEvent(Checksum added) {
             if (rigid == null && ChecksumUtils.doesChecksumHaveMethod(added, Checksum.RIGID_MI, Checksum.RIGID)){
                 // the rigid is not set, we can set the rigid
@@ -417,7 +440,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
             return jaxbAttributes;
         }
 
-        private class JAXBAttributeList extends ArrayList<Annotation> {
+        protected class JAXBAttributeList extends ArrayList<Annotation> {
 
             public JAXBAttributeList(){
                 super();
@@ -467,7 +490,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
                 return add;
             }
 
-            private boolean processAnnotation(Integer index, Annotation annotation) {
+            protected boolean processAnnotation(Integer index, Annotation annotation) {
                 if (AnnotationUtils.doesAnnotationHaveTopic(annotation, Checksum.CHECKSUM_MI, Checksum.CHECKUM)
                         || AnnotationUtils.doesAnnotationHaveTopic(annotation, Checksum.RIGID_MI, Checksum.RIGID)){
                     XmlChecksum checksum = new XmlChecksum(annotation.getTopic(), annotation.getValue() != null ? annotation.getValue() : PsiXmlUtils.UNSPECIFIED);

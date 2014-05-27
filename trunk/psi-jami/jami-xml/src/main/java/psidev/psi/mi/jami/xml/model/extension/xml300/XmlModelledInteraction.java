@@ -6,9 +6,12 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.AnnotationUtils;
+import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.model.extension.*;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
+import psidev.psi.mi.jami.xml.model.extension.XmlAnnotation;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -116,6 +119,98 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         return this.cooperativeEffects;
     }
 
+    public String getPhysicalProperties() {
+        Annotation prop = getAttributeWrapper().physicalProperties;
+        return prop != null ? prop.getValue() : null;
+    }
+
+    public void setPhysicalProperties(String properties) {
+        JAXBAttributeWrapper.ComplexAnnotationList complexAnnotationList = (JAXBAttributeWrapper.ComplexAnnotationList)getAnnotations();
+        Annotation propAnnot = getAttributeWrapper().physicalProperties;
+
+        // add new properties if not null
+        if (propAnnot != null){
+            CvTerm propTopic = CvTermUtils.createMICvTerm(Annotation.COMPLEX_PROPERTIES, Annotation.COMPLEX_PROPERTIES_MI);
+            // first remove properties if not null
+            if (propAnnot != null){
+                complexAnnotationList.removeOnly(propAnnot);
+            }
+            getAttributeWrapper().physicalProperties = new XmlAnnotation(propTopic, properties);
+            complexAnnotationList.addOnly(getAttributeWrapper().physicalProperties);
+        }
+        // remove all url if the collection is not empty
+        else if (!complexAnnotationList.isEmpty()) {
+            AnnotationUtils.removeAllAnnotationsWithTopic(complexAnnotationList, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
+            getAttributeWrapper().physicalProperties = null;
+        }
+    }
+
+    public String getRecommendedName() {
+        return getNamesContainer().getRecommendedName();
+    }
+
+    public void setRecommendedName(String name) {
+        getNamesContainer().setRecommendedName(name);
+    }
+
+    public String getSystematicName() {
+        return getNamesContainer().getSystematicName();
+    }
+
+    public void setSystematicName(String name) {
+        getNamesContainer().setSystematicName(name);
+    }
+
+    @Override
+    public Xref getPreferredIdentifier() {
+        return null;
+    }
+
+    @Override
+    public Organism getOrganism() {
+        return null;
+    }
+
+    @Override
+    public void setOrganism(Organism organism) {
+
+    }
+
+    @Override
+    public CvTerm getInteractorType() {
+        return null;
+    }
+
+    @Override
+    public void setInteractorType(CvTerm type) {
+
+    }
+
+    @Override
+    public List<Alias> getAliases() {
+        return super.getAliases();
+    }
+
+    @Override
+    public Collection<Checksum> getChecksums() {
+        return super.getChecksums();
+    }
+
+    @Override
+    public Collection<Xref> getXrefs() {
+        return super.getXrefs();
+    }
+
+    @Override
+    public Collection<Xref> getIdentifiers() {
+        return super.getIdentifiers();
+    }
+
+    @Override
+    public Collection<Annotation> getAnnotations() {
+        return super.getAnnotations();
+    }
+
     public List<BindingFeatures> getBindingFeatures() {
         if (jaxbBindingFeaturesWrapper == null){
             jaxbBindingFeaturesWrapper = new JAXBBindingFeaturesWrapper();
@@ -140,17 +235,9 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         super.setIntraMolecular(intra);
     }
 
-    @Override
     @XmlElement(name="attributeList")
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
         super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
-        // build the modelled cooperative effects from annotations
-        // if possible
-        Collection<Annotation> annotations = getAnnotations();
-        CooperativeEffect effect = PsiXmlUtils.extractCooperativeEffectFrom(annotations, null, XmlEntryContext.getInstance().getListener());
-        if (effect != null){
-            getCooperativeEffects().add(effect);
-        }
     }
 
     @XmlAttribute(name = "id", required = true)
@@ -222,6 +309,25 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @Override
     protected void initialiseParticipantWrapper() {
         super.setParticipantWrapper(new JAXBParticipantWrapper());
+    }
+
+    @Override
+    protected void initialiseNamesContainer() {
+        super.setJAXBNames(new ComplexNamesContainer());
+    }
+
+    @Override
+    protected ComplexNamesContainer getNamesContainer() {
+        return (ComplexNamesContainer) super.getNamesContainer();
+    }
+
+    protected JAXBAttributeWrapper getAttributeWrapper() {
+        return (JAXBAttributeWrapper) super.getAttributeWrapper();
+    }
+
+    @Override
+    protected void initialiseAnnotationWrapper() {
+        super.setJAXBAttributeWrapper(new JAXBAttributeWrapper());
     }
 
     ////////////////////////////////////////////////////// classes
@@ -387,6 +493,63 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         @Override
         public String toString() {
             return "Binding features List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="complexAttributeWrapper")
+    public static class JAXBAttributeWrapper extends AbstractXmlInteraction.JAXBAttributeWrapper{
+        private Annotation physicalProperties;
+
+        public JAXBAttributeWrapper(){
+            super();
+        }
+
+        @Override
+        protected void initialiseAnnotations() {
+            super.initialiseAnnotationsWith(new ComplexAnnotationList());
+        }
+
+        private void processAddedAnnotationEvent(Annotation added) {
+            if (physicalProperties == null && AnnotationUtils.doesAnnotationHaveTopic(added, Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES)){
+                physicalProperties = added;
+            }
+        }
+
+        private void processRemovedAnnotationEvent(Annotation removed) {
+            if (physicalProperties != null && physicalProperties.equals(removed)){
+                physicalProperties = AnnotationUtils.collectFirstAnnotationWithTopic(getAnnotations(), Annotation.COMPLEX_PROPERTIES_MI, Annotation.COMPLEX_PROPERTIES);
+            }
+        }
+
+        private void clearPropertiesLinkedToAnnotations() {
+            physicalProperties = null;
+        }
+
+        private class ComplexAnnotationList extends AbstractListHavingProperties<Annotation> {
+            public ComplexAnnotationList(){
+                super();
+            }
+
+            @Override
+            protected void processAddedObjectEvent(Annotation added) {
+                processAddedAnnotationEvent(added);
+            }
+
+            @Override
+            protected void processRemovedObjectEvent(Annotation removed) {
+                processRemovedAnnotationEvent(removed);
+            }
+
+            @Override
+            protected void clearProperties() {
+                clearPropertiesLinkedToAnnotations();
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "Com-lex Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }
