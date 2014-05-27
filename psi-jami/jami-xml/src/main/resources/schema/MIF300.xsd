@@ -1069,7 +1069,7 @@
             </xs:element>
             <xs:element name="evidenceType" type="mif:cvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>External controlled vocabulary characterising the evidence type,
+                    <xs:documentation>External controlled vocabulary characterising the evidence type (usually from the Evidence Ontology),
                         for example "physical interaction evidence, inferred from literature".</xs:documentation>
                 </xs:annotation>
             </xs:element>

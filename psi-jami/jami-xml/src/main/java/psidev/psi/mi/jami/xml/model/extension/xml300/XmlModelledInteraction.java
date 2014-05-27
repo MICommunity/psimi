@@ -37,6 +37,8 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     private JAXBParameterWrapper jaxbParameterWrapper;
     private CvTerm evidenceType;
     private JAXBBindingFeaturesWrapper jaxbBindingFeaturesWrapper;
+    private Organism organism;
+    private CvTerm interactorType;
 
     @XmlLocation
     @XmlTransient
@@ -163,27 +165,29 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
     @Override
     public Xref getPreferredIdentifier() {
-        return null;
+        return !getIdentifiers().isEmpty() ? getIdentifiers().iterator().next() : null;
     }
 
     @Override
     public Organism getOrganism() {
-        return null;
+        return this.organism;
     }
 
     @Override
     public void setOrganism(Organism organism) {
-
+        this.organism = organism;
     }
 
-    @Override
     public CvTerm getInteractorType() {
-        return null;
+        if (this.interactorType == null){
+            this.interactorType = new XmlCvTerm(Complex.COMPLEX, new XmlXref(CvTermUtils.createPsiMiDatabase(),Complex.COMPLEX_MI, CvTermUtils.createIdentityQualifier()));
+        }
+
+        return this.interactorType;
     }
 
-    @Override
-    public void setInteractorType(CvTerm type) {
-
+    public void setInteractorType(CvTerm interactorType) {
+        this.interactorType = interactorType;
     }
 
     @Override
@@ -209,55 +213,6 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @Override
     public Collection<Annotation> getAnnotations() {
         return super.getAnnotations();
-    }
-
-    public List<BindingFeatures> getBindingFeatures() {
-        if (jaxbBindingFeaturesWrapper == null){
-            jaxbBindingFeaturesWrapper = new JAXBBindingFeaturesWrapper();
-        }
-        return jaxbBindingFeaturesWrapper.bindingFeatures;
-    }
-
-    @Override
-    @XmlElement(name = "names")
-    public void setJAXBNames(NamesContainer value) {
-        super.setJAXBNames(value);
-    }
-
-    @Override
-    @XmlElement(name = "xref")
-    public void setJAXBXref(InteractionXrefContainer value) {
-        super.setJAXBXref(value);
-    }
-
-    @XmlElement(name = "intraMolecular", defaultValue = "false", type = Boolean.class)
-    public void setJAXBIntraMolecular(boolean intra) {
-        super.setIntraMolecular(intra);
-    }
-
-    @XmlElement(name="attributeList")
-    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
-        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
-    }
-
-    @XmlAttribute(name = "id", required = true)
-    public void setJAXBId(int value) {
-        super.setId(value);
-    }
-
-    @XmlElement(name="participantList", required = true)
-    public void setJAXBParticipantWrapper(JAXBParticipantWrapper jaxbParticipantWrapper) {
-        super.setParticipantWrapper(jaxbParticipantWrapper);
-    }
-
-    @XmlElement(name="confidenceList")
-    public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
-        this.jaxbConfidenceWrapper = wrapper;
-    }
-
-    @XmlElement(name="parameterList")
-    public void setJAXBParameterWrapper(JAXBParameterWrapper wrapper) {
-        this.jaxbParameterWrapper = wrapper;
     }
 
     public CvTerm getEvidenceType() {
@@ -296,6 +251,66 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         }
     }
 
+    public List<BindingFeatures> getBindingFeatures() {
+        if (jaxbBindingFeaturesWrapper == null){
+            jaxbBindingFeaturesWrapper = new JAXBBindingFeaturesWrapper();
+        }
+        return jaxbBindingFeaturesWrapper.bindingFeatures;
+    }
+
+    @XmlElement(name = "names")
+    public void setJAXBNames(ComplexNamesContainer value) {
+        super.setJAXBNames(value);
+    }
+
+    @Override
+    @XmlElement(name = "xref")
+    public void setJAXBXref(InteractionXrefContainer value) {
+        super.setJAXBXref(value);
+    }
+
+    @XmlElement(name = "intraMolecular", defaultValue = "false", type = Boolean.class)
+    public void setJAXBIntraMolecular(boolean intra) {
+        super.setIntraMolecular(intra);
+    }
+
+    @XmlElement(name="attributeList")
+    public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
+        super.setJAXBAttributeWrapper(jaxbAttributeWrapper);
+    }
+
+    @XmlAttribute(name = "id", required = true)
+    public void setJAXBId(int value) {
+        super.setId(value);
+        // register also as a complex
+        XmlEntryContext.getInstance().registerComplex(super.getId(), this);
+    }
+
+    @XmlElement(name="participantList", required = true)
+    public void setJAXBParticipantWrapper(JAXBParticipantWrapper jaxbParticipantWrapper) {
+        super.setParticipantWrapper(jaxbParticipantWrapper);
+    }
+
+    @XmlElement(name="confidenceList")
+    public void setJAXBConfidenceWrapper(JAXBConfidenceWrapper wrapper) {
+        this.jaxbConfidenceWrapper = wrapper;
+    }
+
+    @XmlElement(name="parameterList")
+    public void setJAXBParameterWrapper(JAXBParameterWrapper wrapper) {
+        this.jaxbParameterWrapper = wrapper;
+    }
+
+    @XmlElement(name="organism")
+    public void setJAXBOrganism(XmlOrganism organism) {
+        this.organism = organism;
+    }
+
+    @XmlElement(name = "interactorType")
+    public void setJAXBInteractorType(XmlCvTerm interactorType) {
+        this.interactorType = interactorType;
+    }
+
     @XmlElement(name="interactionType")
     public void setJAXBInteractionType(XmlCvTerm term) {
         setInteractionType(term);
@@ -304,6 +319,11 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlElement(name="bindingFeaturesList")
     public void setJAXBBindingFeaturesWrapper(JAXBBindingFeaturesWrapper jaxbInferredWrapper) {
         this.jaxbBindingFeaturesWrapper = jaxbInferredWrapper;
+    }
+
+    @XmlElement(name = "evidenceType")
+    public void setJAXBEvidenceType(XmlCvTerm evidenceType) {
+        this.evidenceType = evidenceType;
     }
 
     @Override
