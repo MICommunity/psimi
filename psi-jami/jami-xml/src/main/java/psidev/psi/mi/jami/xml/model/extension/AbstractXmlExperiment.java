@@ -318,8 +318,8 @@ public class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSour
         this.namesContainer = value;
     }
 
-    @XmlElement(name = "bibref", required = true, type = BibRef.class)
-    public void setJAXBPublication(Publication publication) {
+    @XmlElement(name = "bibref", required = true)
+    public void setJAXBPublication(BibRef publication) {
         setPublicationAndAddExperiment(publication);
         if (publication != null){
             XmlEntryContext context = XmlEntryContext.getInstance();
@@ -371,8 +371,8 @@ public class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSour
      *     {@link psidev.psi.mi.jami.xml.model.extension.XmlCvTerm }
      *
      */
-    @XmlElement(name = "interactionDetectionMethod", required = true, type = XmlCvTerm.class)
-    public void setJAXBInteractionDetectionMethod(CvTerm value) {
+    @XmlElement(name = "interactionDetectionMethod", required = true)
+    public void setJAXBInteractionDetectionMethod(XmlCvTerm value) {
         if (value == null){
             this.interactionDetectionMethod = new XmlCvTerm(Experiment.UNSPECIFIED_METHOD, Experiment.UNSPECIFIED_METHOD_MI);
         }

@@ -165,6 +165,14 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
 
     @Override
     public Organism getOrganism() {
+        if (this.organism == null && !this.modelledInteraction.getExperiments().isEmpty()){
+           for (Experiment exp : this.modelledInteraction.getExperiments()){
+               if (exp.getHostOrganism() != null){
+                    this.organism = exp.getHostOrganism();
+                   break;
+               }
+           }
+        }
         return this.organism;
     }
 

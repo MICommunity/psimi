@@ -1025,31 +1025,6 @@
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
-    <xs:complexType name="experimentalVariableValueList">
-        <xs:annotation>
-            <xs:documentation>A list of experimental parameter/condition values for which the interaction occurs.</xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element name="variableValues" minOccurs="1" maxOccurs="unbounded" type="mif:variableValues">
-                <xs:annotation>
-                    <xs:documentation>A set of experimental parameter/conditions values applied together and for which this interaction occurs.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
-    <xs:complexType name="variableValues">
-        <xs:annotation>
-            <xs:documentation>A set of experimental parameter/conditions values applied together and for which this interaction occurs.</xs:documentation>
-        </xs:annotation>
-        <xs:sequence>
-            <xs:element name="variableValueRef" minOccurs="1" maxOccurs="unbounded" type="xs:int">
-                <xs:annotation>
-                    <xs:documentation>The reference to the id of the variableValue described in the variableParameterList/variableParameter/variableParameterValueList
-                        of the experiment.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-        </xs:sequence>
-    </xs:complexType>
 
     <xs:complexType name="abstractInteraction">
         <xs:annotation>

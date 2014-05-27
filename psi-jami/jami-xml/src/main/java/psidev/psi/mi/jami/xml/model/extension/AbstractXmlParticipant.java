@@ -13,6 +13,7 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
 import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
 import psidev.psi.mi.jami.xml.model.reference.AbstractInteractorRef;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -380,15 +381,15 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
      *     {@link XmlCvTerm }
      *
      */
-    public void setJAXBBiologicalRole(CvTerm bioRole) {
+    public void setJAXBBiologicalRole(XmlCvTerm bioRole) {
         setBiologicalRole(bioRole);
     }
 
-    public void setJAXBStoichiometry(Stoichiometry stoichiometry){
+    public void setJAXBStoichiometry(psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometry stoichiometry){
         this.stoichiometry = stoichiometry;
     }
 
-    public void setJAXBStoichiometryRange(Stoichiometry stoichiometry){
+    public void setJAXBStoichiometryRange(XmlStoichiometryRange stoichiometry){
         this.stoichiometry = stoichiometry;
     }
 

@@ -39,8 +39,8 @@ public class XmlModelledConfidence extends AbstractXmlConfidence implements Mode
         this.publication = publication;
     }
 
-    @XmlElement(name="bibRef", type = BibRef.class)
-    public void setJAXBPublication(Publication publication) {
+    @XmlElement(name="bibRef")
+    public void setJAXBPublication(BibRef publication) {
         setPublication(publication);
     }
 }

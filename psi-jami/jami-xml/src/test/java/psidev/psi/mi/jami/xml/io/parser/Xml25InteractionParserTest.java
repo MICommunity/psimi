@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
@@ -249,6 +250,7 @@ public class Xml25InteractionParserTest {
     }
 
     @Test
+    @Ignore
     public void test_read_valid_xml25_2() throws PsiXmlParserException, JAXBException, XMLStreamException, IOException {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 

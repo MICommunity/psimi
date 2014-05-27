@@ -39,8 +39,8 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
     @XmlTransient
     private Locator locator;
 
-    private CvTerm startStatus;
-    private CvTerm endStatus;
+    private XmlCvTerm startStatus;
+    private XmlCvTerm endStatus;
 
     public XmlRange(){
 
@@ -123,8 +123,8 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "startStatus", required = true, type = XmlCvTerm.class)
-    public void setJAXBStartStatus(CvTerm value) {
+    @XmlElement(name = "startStatus", required = true)
+    public void setJAXBStartStatus(XmlCvTerm value) {
         this.startStatus = value;
     }
 
@@ -182,8 +182,8 @@ public class XmlRange implements Range, FileSourceContext, Locatable{
      *     {@link XmlCvTerm }
      *
      */
-    @XmlElement(name = "endStatus", required = true, type = XmlCvTerm.class)
-    public void setJAXBEndStatus(CvTerm value) {
+    @XmlElement(name = "endStatus", required = true)
+    public void setJAXBEndStatus(XmlCvTerm value) {
         this.endStatus = value;
     }
 

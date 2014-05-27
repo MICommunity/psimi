@@ -239,6 +239,14 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
 
     @Override
     public Organism getOrganism() {
+        if (this.organism == null && !this.interactionEvidence.getExperiments().isEmpty()){
+            for (Experiment exp : this.interactionEvidence.getExperiments()){
+                if (exp.getHostOrganism() != null){
+                    this.organism = exp.getHostOrganism();
+                    break;
+                }
+            }
+        }
         return this.organism;
     }
 

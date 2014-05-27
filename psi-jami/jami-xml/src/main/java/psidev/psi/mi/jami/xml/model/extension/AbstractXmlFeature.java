@@ -181,7 +181,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         this.type = type;
     }
 
-    public void setJAXBType(CvTerm type) {
+    public void setJAXBType(XmlCvTerm type) {
         this.type = type;
     }
 
@@ -289,7 +289,7 @@ public abstract class AbstractXmlFeature<P extends Participant, F extends Featur
         this.jaxbRangeWrapper = jaxbRangeWrapper;
     }
 
-    public void setJAXBFeatureRole(CvTerm role){
+    public void setJAXBFeatureRole(XmlCvTerm role){
         this.role = role;
     }
 
