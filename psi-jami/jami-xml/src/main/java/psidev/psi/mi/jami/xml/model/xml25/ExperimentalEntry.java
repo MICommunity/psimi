@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.model;
+package psidev.psi.mi.jami.xml.model.xml25;
 
 import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.xml.model.AbstractEntry;
 import psidev.psi.mi.jami.xml.model.extension.*;
 
 import javax.xml.bind.annotation.*;
@@ -15,14 +16,14 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * ExperimentalEntry implementation for JAXB read only
+ * Entry implementation for JAXB read only
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>07/11/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class ExperimentalEntry extends AbstractEntry<InteractionEvidence>{
+public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
     private JAXBExperimentsWrapper experimentsWrapper;
     private JAXBAvailabilitiesWrapper availabilitiesWrapper;
 

@@ -2,9 +2,9 @@ package psidev.psi.mi.jami.xml.io;
 
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlModelledInteraction;
 import psidev.psi.mi.jami.xml.model.xml25.*;
-import psidev.psi.mi.jami.xml.model.xml30.Xml300BasicEntrySet;
-import psidev.psi.mi.jami.xml.model.xml30.Xml300ModelledEntrySet;
+import psidev.psi.mi.jami.xml.model.xml30.Xml300EntrySet;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -50,7 +50,7 @@ public class JaxbUnmarshallerFactory {
             case v2_5_3:
                 return createXml253JAXBUnmarshaller(category);
             case v3_0_0:
-                return createXml300JAXBUnmarshaller();
+                return createXml300JAXBUnmarshaller(category);
             default:
                 return createXml254JAXBUnmarshaller(category);
         }
@@ -82,9 +82,9 @@ public class JaxbUnmarshallerFactory {
         }
     }
 
-    public Unmarshaller createXml300JAXBUnmarshaller() throws JAXBException {
+    public Unmarshaller createXml300JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
         // create unmarshaller knowing the interaction category we want to parse
-        return createEvidenceXml300JAXBUnmarshaller();
+        return createXml300JAXBUnmarshaller();
     }
 
     public Unmarshaller createXml253JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
@@ -121,19 +121,9 @@ public class JaxbUnmarshallerFactory {
 
     public Unmarshaller createFullXml300JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
 
-        // create unmarshaller knowing the interaction category we want to parse
-        switch (category){
-            case basic:
-                return createBasicFullXml300JAXBUnmarshaller();
-            case evidence:
-                return createEvidenceFullXml300JAXBUnmarshaller();
-            case modelled:
-                return createModelledFullXml300JAXBUnmarshaller();
-            case mixed:
-                return createEvidenceFullXml300JAXBUnmarshaller();
-            default:
-                return createEvidenceFullXml300JAXBUnmarshaller();
-        }
+        // create unmarshaller ignoring the interaction category we want to parse because always a mix
+        return createFullXml300JAXBUnmarshaller();
+
     }
 
     public Unmarshaller createFullXml253JAXBUnmarshaller(InteractionCategory category) throws JAXBException {
@@ -170,9 +160,10 @@ public class JaxbUnmarshallerFactory {
 
     }
 
-    private Unmarshaller createEvidenceXml300JAXBUnmarshaller() throws JAXBException {
+    private Unmarshaller createXml300JAXBUnmarshaller() throws JAXBException {
         JAXBContext ctx = JAXBContext.newInstance(
                 psidev.psi.mi.jami.xml.model.extension.xml300.XmlInteractionEvidence.class,
+                psidev.psi.mi.jami.xml.model.extension.xml300.XmlModelledInteraction.class,
                 psidev.psi.mi.jami.xml.model.extension.xml300.Availability.class,
                 psidev.psi.mi.jami.xml.model.extension.xml300.XmlExperiment.class,
                 psidev.psi.mi.jami.xml.model.extension.xml300.XmlInteractor.class,
@@ -241,21 +232,9 @@ public class JaxbUnmarshallerFactory {
         return ctx.createUnmarshaller();
     }
 
-    private Unmarshaller createModelledFullXml300JAXBUnmarshaller() throws JAXBException {
+    private Unmarshaller createFullXml300JAXBUnmarshaller() throws JAXBException {
 
-        JAXBContext ctx = JAXBContext.newInstance(Xml300ModelledEntrySet.class);
-        return ctx.createUnmarshaller();
-    }
-
-    private Unmarshaller createEvidenceFullXml300JAXBUnmarshaller() throws JAXBException {
-
-        JAXBContext ctx = JAXBContext.newInstance(Xml254ExperimentalEntrySet.class);
-        return ctx.createUnmarshaller();
-    }
-
-    private Unmarshaller createBasicFullXml300JAXBUnmarshaller() throws JAXBException {
-
-        JAXBContext ctx = JAXBContext.newInstance(Xml300BasicEntrySet.class);
+        JAXBContext ctx = JAXBContext.newInstance(Xml300EntrySet.class);
         return ctx.createUnmarshaller();
     }
 

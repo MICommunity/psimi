@@ -1,9 +1,10 @@
-package psidev.psi.mi.jami.xml.model;
+package psidev.psi.mi.jami.xml.model.xml25;
 
 import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.xml.model.AbstractEntry;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlBasicInteraction;
@@ -22,7 +23,7 @@ import java.util.List;
  * @since <pre>07/11/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class BasicEntry extends AbstractEntry<Interaction>{
+public class BasicEntry extends AbstractEntry<Interaction> {
     @XmlLocation
     @XmlTransient
     private Locator locator;

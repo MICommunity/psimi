@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.model;
+package psidev.psi.mi.jami.xml.model.xml30;
 
 import com.sun.xml.bind.Locatable;
 import com.sun.xml.bind.annotation.XmlLocation;
@@ -6,8 +6,16 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.xml.model.extension.*;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.xml.model.AbstractEntry;
+import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.XmlSource;
+import psidev.psi.mi.jami.xml.model.extension.xml300.Availability;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlExperiment;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlModelledInteraction;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -15,28 +23,32 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Modelled Entry implementation for JAXB read only.
- *
- * It does not take into account all experimental details
+ * PSI XML 3.0 Entry implementation for JAXB read only
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>07/11/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
+public class Entry extends AbstractEntry<Interaction> {
+    private JAXBExperimentsWrapper experimentsWrapper;
+    private JAXBAvailabilitiesWrapper availabilitiesWrapper;
+
     @XmlLocation
     @XmlTransient
     private Locator locator;
-    private JAXBExperimentsWrapper experimentsWrapper;
 
     public List<Experiment> getExperiments(){
         return this.experimentsWrapper != null ? this.experimentsWrapper.experiments : Collections.EMPTY_LIST;
     }
-
     @XmlElement(name = "source", type = XmlSource.class)
     public void setJAXBSource(ExtendedPsiXmlSource source) {
         super.setSource(source);
+    }
+
+    @XmlElement(name = "availabilityList")
+    public void setJAXBAvailabilityWrapper(JAXBAvailabilitiesWrapper wrapper) {
+        this.availabilitiesWrapper = wrapper;
     }
 
     @XmlElement(name = "experimentList")
@@ -77,9 +89,64 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
         }
     }
 
+    @Override
+    protected void initialiseAvailabilities() {
+        super.initialiseAvailabilitiesWith(this.availabilitiesWrapper != null ? this.availabilitiesWrapper.availabilities : null);
+    }
+
     //////////////////////////////// class wrapper
+
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="modelledExperimentsWrapper")
+    @XmlType(name="entryAvailabilitiesWrapper")
+    public static class JAXBAvailabilitiesWrapper implements Locatable, FileSourceContext {
+        private List<AbstractAvailability> availabilities;
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+
+        public JAXBAvailabilitiesWrapper(){
+            initialiseAvailabilities();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialiseAvailabilities(){
+            availabilities = new ArrayList<AbstractAvailability>();
+        }
+
+        @XmlElement(type= Availability.class, name="availability", required = true)
+        public List<AbstractAvailability> getJAXBAvailabilities() {
+            return availabilities;
+        }
+
+        @Override
+        public String toString() {
+            return "Entry availability List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="experimentsWrapper")
     public static class JAXBExperimentsWrapper implements Locatable, FileSourceContext {
         private List<Experiment> experiments;
         private PsiXmLocator sourceLocator;
@@ -116,7 +183,7 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
             experiments = new ArrayList<Experiment>();
         }
 
-        @XmlElement(type=XmlExperiment.class, name="experimentDescription", required = true)
+        @XmlElement(type= XmlExperiment.class, name="experimentDescription", required = true)
         public List<Experiment> getJAXBExperiments() {
             return experiments;
         }
@@ -128,15 +195,18 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction>{
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="basicInteractionsWrapper")
-    public static class JAXBInteractionsWrapper extends AbstractEntry.JAXBInteractionsWrapper<ModelledInteraction>{
+    @XmlType(name="mixedInteractionsWrapper")
+    public static class JAXBInteractionsWrapper extends AbstractEntry.JAXBInteractionsWrapper<Interaction>{
 
         public JAXBInteractionsWrapper(){
             super();
         }
 
-        @XmlElement(type=XmlModelledInteraction.class, name="interaction", required = true)
-        public List<ModelledInteraction> getJAXBInteractions() {
+        @XmlElements({
+                @XmlElement(name = "interaction", type = XmlInteractionEvidence.class),
+                @XmlElement(name = "abstractInteraction", type = XmlModelledInteraction.class)
+        })
+        public List<Interaction> getJAXBInteractions() {
             return super.getJAXBInteractions();
         }
     }
