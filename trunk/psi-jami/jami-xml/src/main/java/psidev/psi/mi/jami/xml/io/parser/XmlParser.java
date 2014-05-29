@@ -21,7 +21,7 @@ import java.io.Reader;
 import java.net.URL;
 
 /**
- * Parser generating interaction objects that can be interaction evidences or modelled interactions.
+ * Parser generating interaction objects that can be interaction evidences or abstract interactions.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

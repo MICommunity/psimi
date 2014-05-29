@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParameterWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
@@ -14,7 +14,6 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -129,6 +128,22 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
         }
         else{
             super.writeIntraMolecular(object);
+        }
+    }
+
+    @Override
+    protected void writeModelled(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteractionEvidence){
+            ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
+            if (xmlInteraction.isModelled()){
+                getStreamWriter().writeStartElement("modelled");
+                getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isModelled()));
+                // write end modelled
+                getStreamWriter().writeEndElement();
+            }
+        }
+        else{
+            super.writeModelled(object);
         }
     }
 

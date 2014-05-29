@@ -31,11 +31,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -93,11 +93,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -186,11 +186,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -266,11 +266,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -349,11 +349,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -438,11 +438,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -500,11 +500,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -557,11 +557,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -619,11 +619,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -707,11 +707,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -805,11 +805,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -872,11 +872,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +
@@ -965,11 +965,11 @@ public class CompactXml25NamedModelledWriterTest {
             "    <experimentList>\n" +
             "      <experimentDescription id=\"1\">\n" +
             "        <names>\n" +
-            "          <fullName>Mock publication and experiment for modelled interactions that are not interaction evidences.</fullName>\n" +
+            "          <fullName>Mock publication and experiment for abstract interactions that are not interaction evidences.</fullName>\n" +
             "        </names>\n" +
             "        <bibref>\n" +
             "          <attributeList>\n" +
-            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for modelled interactions that are not interaction evidences.</attribute>\n" +
+            "            <attribute name=\"publication title\" nameAc=\"MI:1091\">Mock publication and experiment for abstract interactions that are not interaction evidences.</attribute>\n" +
             "          </attributeList>\n" +
             "        </bibref>\n" +
             "        <interactionDetectionMethod>\n" +

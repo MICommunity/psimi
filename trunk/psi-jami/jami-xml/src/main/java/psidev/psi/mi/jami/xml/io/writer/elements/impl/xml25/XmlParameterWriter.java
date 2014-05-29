@@ -34,7 +34,7 @@ public class XmlParameterWriter extends AbstractXmlParameterWriter {
     }
 
     protected void initialiseDefaultExperiment(){
-        super.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("Mock publication for modelled interactions that are not interaction evidences.",(String)null,(Date)null)));
+        super.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("Mock publication for abstract interactions that are not interaction evidences.",(String)null,(Date)null)));
     }
 
     @Override

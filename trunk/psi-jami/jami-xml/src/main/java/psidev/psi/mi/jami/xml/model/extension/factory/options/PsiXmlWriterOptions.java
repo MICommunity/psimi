@@ -20,7 +20,7 @@ public class PsiXmlWriterOptions extends InteractionWriterOptions{
      * - evidence : the PSI XML 2.5 writer will write interactions implementing InteractionEvidence interface and will write all experimental details
      * - modelled : the PSI XML 2.5 writer will write interactions implementing ModelledInteraction interface and will ignore all experimental details
      * excepted interaction confidences, parameters and source.
-     * - mixed: the PSI XML 2.5 writer can write any kind of interaction and delegates to specialised writers in case it finds interaction evidences/modelled interactions, etc.
+     * - mixed: the PSI XML 2.5 writer can write any kind of interaction and delegates to specialised writers in case it finds interaction evidences/abstract interactions, etc.
      * - basic: the PSI XML 2.5 writer will write interactions implementing Interaction interface but will ignore all details related to experiments, confidences,
      * parameters and source. This aims at having a light file that only contains basic information about the interactions.
      */

@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.URL;
 
 /**
- * Xml 2.5 parser creating binary interactions that can be a mix of interaction evidences and modelled interactions
+ * Xml 2.5 parser creating binary interactions that can be a mix of interaction evidences and abstract interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
