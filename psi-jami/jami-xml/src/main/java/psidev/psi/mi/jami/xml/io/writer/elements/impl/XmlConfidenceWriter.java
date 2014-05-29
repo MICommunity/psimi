@@ -30,10 +30,14 @@ public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
 
     public PsiXmlVariableNameWriter<CvTerm> getTypeWriter() {
         if (this.typeWriter == null){
-            this.typeWriter = new XmlOpenCvTermWriter(streamWriter);
+            initialiseTypeWriter();
 
         }
         return typeWriter;
+    }
+
+    protected void initialiseTypeWriter() {
+        this.typeWriter = new XmlOpenCvTermWriter(streamWriter);
     }
 
     public void setTypeWriter(PsiXmlVariableNameWriter<CvTerm> typeWriter) {
@@ -53,6 +57,10 @@ public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
                 this.streamWriter.writeStartElement("value");
                 this.streamWriter.writeCharacters(object.getValue());
                 this.streamWriter.writeEndElement();
+
+                // write other properties
+                writeOtherProperties(object);
+
                 // write end confidence
                 this.streamWriter.writeEndElement();
 
@@ -60,5 +68,13 @@ public class XmlConfidenceWriter implements PsiXmlElementWriter<Confidence> {
                 throw new MIIOException("Impossible to write the confidence : "+object.toString(), e);
             }
         }
+    }
+
+    protected void writeOtherProperties(Confidence object) {
+        // nothing to do here
+    }
+
+    protected XMLStreamWriter getStreamWriter() {
+        return streamWriter;
     }
 }

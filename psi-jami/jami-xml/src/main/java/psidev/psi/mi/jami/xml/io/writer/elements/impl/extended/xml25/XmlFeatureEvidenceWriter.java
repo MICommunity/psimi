@@ -3,13 +3,15 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlDbXrefWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlFeatureEvidence;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Writer for extended feature evidence having experiment references
+ * Writer for expanded feature evidence having experiment references
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,6 +21,11 @@ import javax.xml.stream.XMLStreamWriter;
 public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlFeatureEvidenceWriter {
     public XmlFeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
+    }
+
+    @Override
+    protected void initialiseXrefWriter(){
+        super.setXrefWriter(new XmlDbXrefWriter(getStreamWriter()));
     }
 
     @Override
@@ -38,5 +45,15 @@ public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.e
                 getStreamWriter().writeEndElement();
             }
         }
+    }
+
+    @Override
+    protected void initialiseRangeWriter() {
+        super.setRangeWriter(new XmlRangeWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseFeatureTypeWriter() {
+        super.setFeatureTypeWriter(new XmlCvTermWriter(getStreamWriter()));
     }
 }

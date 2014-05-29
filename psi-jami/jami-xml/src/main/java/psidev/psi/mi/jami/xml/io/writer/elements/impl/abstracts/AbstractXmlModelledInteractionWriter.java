@@ -1,30 +1,30 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultExperiment;
-import psidev.psi.mi.jami.model.impl.DefaultNamedExperiment;
-import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
+import psidev.psi.mi.jami.xml.model.extension.BibRef;
+import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import java.util.Date;
 
 /**
- * Abstract class for XML 2.5 writers of modelled interaction
+ * Abstract class for XML writers of modelled interaction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>18/11/13</pre>
  */
 
-public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInteraction, P extends ModelledParticipant> extends AbstractXmlNamedInteractionWriter<I, P> {
+public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInteraction> extends AbstractXmlInteractionWriter<I, ModelledParticipant> {
     private PsiXmlElementWriter<Confidence> confidenceWriter;
     private PsiXmlParameterWriter parameterWriter;
+    private PsiXmlElementWriter<Alias> aliasWriter;
 
     public AbstractXmlModelledInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
@@ -32,9 +32,22 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
 
     public PsiXmlElementWriter<Confidence> getConfidenceWriter() {
         if (this.confidenceWriter == null){
-            this.confidenceWriter = new XmlConfidenceWriter(getStreamWriter());
+            initialiseConfidenceWriter();
         }
         return confidenceWriter;
+    }
+
+    protected abstract void initialiseConfidenceWriter();
+
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter =  new XmlAliasWriter(getStreamWriter());
+        }
+        return aliasWriter;
+    }
+
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
     }
 
     public void setConfidenceWriter(PsiXmlElementWriter<Confidence> confidenceWriter) {
@@ -43,10 +56,12 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
 
     public PsiXmlParameterWriter getParameterWriter() {
         if (this.parameterWriter == null){
-            this.parameterWriter = new XmlParameterWriter(getStreamWriter(), getObjectIndex());
+            initialiseParameterWriter();
         }
         return parameterWriter;
     }
+
+    protected abstract void initialiseParameterWriter();
 
     public void setParameterWriter(PsiXmlParameterWriter parameterWriter) {
         this.parameterWriter = parameterWriter;
@@ -54,32 +69,13 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
 
     @Override
     protected void initialiseDefaultExperiment() {
-        Experiment defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication and experiment for modelled interactions that are not interaction evidences.",(String)null,(Date)null));
+        Experiment defaultExperiment = new XmlExperiment(new BibRef("Mock publication and experiment for abstract interactions that are not interaction evidences.",(String)null,(Date)null));
         setDefaultExperiment(defaultExperiment);
-        getParameterWriter().setDefaultExperiment(getDefaultExperiment());
     }
 
     @Override
     public void setDefaultExperiment(Experiment defaultExperiment) {
         super.setDefaultExperiment(defaultExperiment);
-        getParameterWriter().setDefaultExperiment(defaultExperiment);
-    }
-
-    @Override
-    public Experiment extractDefaultExperimentFrom(I interaction) {
-        Experiment exp = null;
-        if (!interaction.getCooperativeEffects().isEmpty()){
-            CooperativeEffect effect = interaction.getCooperativeEffects().iterator().next();
-            if (!effect.getCooperativityEvidences().isEmpty()){
-                CooperativityEvidence evidence = effect.getCooperativityEvidences().iterator().next();
-                // set first experiment as default experiment
-                if (evidence.getPublication() != null){
-                    exp = new DefaultNamedExperiment(evidence.getPublication());
-                    ((NamedExperiment)exp).setFullName(evidence.getPublication().getTitle());
-                }
-            }
-        }
-        return exp != null ? exp : getDefaultExperiment() ;
     }
 
     @Override
@@ -95,29 +91,6 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     @Override
     protected void writeModelled(I object) {
         // nothing to do
-    }
-
-
-    @Override
-    protected void writeIntraMolecular(I object) throws XMLStreamException {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeExperiments(I object) throws XMLStreamException {
-        // write experimental evidences
-        if (!object.getCooperativeEffects().isEmpty()){
-            CooperativeEffect effect = object.getCooperativeEffects().iterator().next();
-            if (!effect.getCooperativityEvidences().isEmpty()){
-                CooperativityEvidence evidence = effect.getCooperativityEvidences().iterator().next();
-                // set first experiment as default experiment
-                if (evidence.getPublication() != null){
-                    NamedExperiment exp = new DefaultNamedExperiment(evidence.getPublication());
-                    exp.setFullName(evidence.getPublication().getTitle());
-                    setDefaultExperiment(exp);
-                }
-            }
-        }
     }
 
     @Override
@@ -161,94 +134,53 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
             // write cooperative effect
             // can only write the FIRST cooperative effect
             if (!object.getCooperativeEffects().isEmpty()){
-                writeCooperativeEffect(object);
+                writeCooperativeEffect(object, false);
             }
             // write end attributeList
             getStreamWriter().writeEndElement();
         }
         // write cooperative effects
         else if (!object.getCooperativeEffects().isEmpty()){
-            // write start attribute list
-            getStreamWriter().writeStartElement("attributeList");
             // write cooperative effects
-            writeCooperativeEffect(object);
-            // write end attributeList
-            getStreamWriter().writeEndElement();
+            writeCooperativeEffect(object, true);
         }
     }
 
-    protected void writeCooperativeEffect(I object) throws XMLStreamException {
-        CooperativeEffect effect = object.getCooperativeEffects().iterator().next();
-        // write mechanism first
-        if (effect instanceof Preassembly){
-            writeCooperativeEffectAttribute(CooperativeEffect.PREASSEMBLY, CooperativeEffect.PREASSEMBLY_ID, null);
-        }
-        else if (effect instanceof Allostery){
-            writeCooperativeEffectAttribute(CooperativeEffect.ALLOSTERY, CooperativeEffect.ALLOSTERY_ID, null);
-            Allostery allostery = (Allostery)effect;
-
-            // write allosteric molecule
-            writeCooperativeEffectAttribute(CooperativeEffect.ALLOSTERIC_MOLECULE, CooperativeEffect.ALLOSTERIC_MOLECULE_ID,
-                    Integer.toString(getObjectIndex().extractIdForParticipant(allostery.getAllostericMolecule())));
-            // write allosteric effector
-            AllostericEffector effector = allostery.getAllostericEffector();
-            switch (effector.getEffectorType()){
-                case molecule:
-                    MoleculeEffector moleculeEffector = (MoleculeEffector)effector;
-                    writeCooperativeEffectAttribute(CooperativeEffect.ALLOSTERIC_EFFECTOR, CooperativeEffect.ALLOSTERIC_EFFECTOR_ID,
-                            Integer.toString(getObjectIndex().extractIdForParticipant(moleculeEffector.getMolecule())));
-                    break;
-                case feature_modification:
-                    FeatureModificationEffector featureEffector = (FeatureModificationEffector)effector;
-                    writeCooperativeEffectAttribute(CooperativeEffect.ALLOSTERIC_PTM, CooperativeEffect.ALLOSTERIC_PTM_ID,
-                            Integer.toString(getObjectIndex().extractIdForFeature(featureEffector.getFeatureModification())));
-                    break;
-                default:
-                    break;
-            }
-            // write allostery type
-            if (allostery.getAllosteryType() != null){
-                writeCooperativeEffectAttribute(allostery.getAllosteryType().getShortName(), allostery.getAllosteryType().getMIIdentifier(), null);
-            }
-            // write allostery mechanism
-            if (allostery.getAllostericMechanism() != null){
-                writeCooperativeEffectAttribute(allostery.getAllostericMechanism().getShortName(), allostery.getAllostericMechanism().getMIIdentifier(), null);
-            }
-        }
-        // write outcome
-        writeCooperativeEffectAttribute(effect.getOutCome().getShortName(), effect.getOutCome().getMIIdentifier(), null);
-        // write response
-        if (effect.getResponse() != null){
-            writeCooperativeEffectAttribute(effect.getResponse().getShortName(), effect.getResponse().getMIIdentifier(), null);
-        }
-        // write affected interactions
-        if (!effect.getAffectedInteractions().isEmpty()){
-            for (ModelledInteraction affected : effect.getAffectedInteractions()){
-                getObjectIndex().registerSubComplex(affected);
-                writeCooperativeEffectAttribute(CooperativeEffect.AFFECTED_INTERACTION, CooperativeEffect.AFFECTED_INTERACTION_ID, Integer.toString(getObjectIndex().extractIdForInteraction(affected)));
-            }
-        }
-    }
+    protected abstract void writeCooperativeEffect(I object, boolean startAttributeList) throws XMLStreamException;
 
     @Override
     protected void writeNegative(I object) {
         // nothing to do
     }
 
-    protected void writeCooperativeEffectAttribute(String name, String nameAc, String value) throws XMLStreamException {
-        // write start
-        getStreamWriter().writeStartElement("attribute");
-        // write topic
-        getStreamWriter().writeAttribute("name", name);
-        if (nameAc != null){
-            getStreamWriter().writeAttribute("nameAc", nameAc);
+    @Override
+    protected void writeExperiments(I object) throws XMLStreamException {
+        // write experimental evidences
+        if (!object.getCooperativeEffects().isEmpty()){
+            CooperativeEffect effect = object.getCooperativeEffects().iterator().next();
+            if (!effect.getCooperativityEvidences().isEmpty()){
+                CooperativityEvidence evidence = effect.getCooperativityEvidences().iterator().next();
+                // set first experiment as default experiment
+                if (evidence.getPublication() != null){
+                    NamedExperiment exp = new XmlExperiment(evidence.getPublication());
+                    exp.setFullName(evidence.getPublication().getTitle());
+                    setDefaultExperiment(exp);
+                }
+            }
         }
-        // write description
-        if (value != null){
-            getStreamWriter().writeCharacters(value);
-        }
+    }
 
-        // write end attribute
-        getStreamWriter().writeEndElement();
+    @Override
+    protected void writeNames(I object) throws XMLStreamException {
+        if (object instanceof NamedInteraction){
+            NamedInteraction namedInteraction = (NamedInteraction) object;
+            // write names
+            PsiXmlUtils.writeCompleteNamesElement(namedInteraction.getShortName(),
+                    namedInteraction.getFullName(), namedInteraction.getAliases(), getStreamWriter(),
+                    getAliasWriter());
+        }
+        else{
+            super.writeNames(object);
+        }
     }
 }

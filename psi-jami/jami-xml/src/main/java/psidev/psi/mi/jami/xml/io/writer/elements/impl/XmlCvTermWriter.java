@@ -45,9 +45,13 @@ public class XmlCvTermWriter implements PsiXmlVariableNameWriter<CvTerm> {
 
     public PsiXmlXrefWriter getXrefWriter() {
         if (this.xrefWriter == null){
-           this.xrefWriter = new XmlDbXrefWriter(streamWriter);
+            initialiseXrefWriter();
         }
         return xrefWriter;
+    }
+
+    protected void initialiseXrefWriter() {
+        this.xrefWriter = new XmlDbXrefWriter(streamWriter);
     }
 
     public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {

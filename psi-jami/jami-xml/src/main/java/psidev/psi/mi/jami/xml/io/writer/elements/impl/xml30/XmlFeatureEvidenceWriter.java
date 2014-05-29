@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml30FeatureEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml30.AbstractXmlFeatureEvidenceWriter;
 
 import javax.xml.stream.XMLStreamWriter;
 
@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class XmlFeatureEvidenceWriter extends AbstractXml30FeatureEvidenceWriter {
+public class XmlFeatureEvidenceWriter extends AbstractXmlFeatureEvidenceWriter {
 
     public XmlFeatureEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);

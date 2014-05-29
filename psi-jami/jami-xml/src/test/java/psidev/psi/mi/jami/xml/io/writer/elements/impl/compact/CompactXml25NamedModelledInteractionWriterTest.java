@@ -12,13 +12,14 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedModelledInteractionWriter;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * Unit tester for CompactXmlNamedModelledInteractionWriter
+ * Unit tester for XmlNamedModelledInteractionWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -567,7 +568,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -583,7 +584,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -599,7 +600,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
         streamWriter.flush();
@@ -615,7 +616,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -629,7 +630,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -644,7 +645,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write((ModelledInteraction)interaction);
         streamWriter.flush();
 
@@ -660,7 +661,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write((ModelledInteraction)interaction);
         streamWriter.flush();
 
@@ -676,7 +677,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -692,7 +693,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -734,7 +735,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.addParticipant(participant4);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -749,7 +750,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -765,7 +766,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -781,7 +782,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         elementCache.extractIdForInteraction(new DefaultInteraction());
         elementCache.extractIdForInteraction(interaction);
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -796,7 +797,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.getModelledParameters().add(new DefaultModelledParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -811,7 +812,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.getModelledConfidences().add(new DefaultModelledConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -829,7 +830,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.getCooperativeEffects().add(assembly);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -848,7 +849,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.getCooperativeEffects().add(assembly);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -869,7 +870,7 @@ public class CompactXml25NamedModelledInteractionWriterTest extends AbstractXml2
         interaction.getCooperativeEffects().add(allostery);
         elementCache.clear();
 
-        CompactXmlNamedModelledInteractionWriter writer = new CompactXmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedModelledInteractionWriter writer = new XmlNamedModelledInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 

@@ -27,7 +27,7 @@ public class XmlInferredInteractionWriter implements PsiXmlElementWriter<Set<Fea
         }
         this.streamWriter = writer;
         if (objectIndex == null){
-            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlInferredInteractionWriter. It is necessary for generating an id to an experimentDescription");
+            throw new IllegalArgumentException("The PsiXml 2.5 object index is mandatory for the XmlInferredInteractionWriter. It is necessary for generating an id to a feature");
         }
         this.objectIndex = objectIndex;
     }

@@ -12,12 +12,13 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedInteractionWriter;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for CompactXmlNamedInteractionWriter
+ * Unit tester for XmlNamedInteractionWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -427,7 +428,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -443,7 +444,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -459,7 +460,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
         streamWriter.flush();
@@ -475,7 +476,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -489,7 +490,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -504,7 +505,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -520,7 +521,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -536,7 +537,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -552,7 +553,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -594,7 +595,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.addParticipant(participant4);
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -609,7 +610,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -625,7 +626,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -641,7 +642,7 @@ public class CompactXml25NamedInteractionWriterTest extends AbstractXml25WriterT
         elementCache.extractIdForInteraction(new DefaultInteraction());
         elementCache.extractIdForInteraction(interaction);
 
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 

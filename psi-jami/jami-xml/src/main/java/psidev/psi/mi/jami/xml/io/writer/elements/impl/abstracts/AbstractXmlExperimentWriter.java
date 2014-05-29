@@ -58,10 +58,12 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
 
     public PsiXmlXrefWriter getXrefWriter() {
         if (this.xrefWriter == null){
-            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
+            initialiseXrefWriter();
         }
         return xrefWriter;
     }
+
+    protected abstract void initialiseXrefWriter();
 
     public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
         this.xrefWriter = xrefWriter;
@@ -69,10 +71,12 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
 
     public PsiXmlElementWriter<Organism> getHostOrganismWriter() {
         if (this.hostOrganismWriter == null){
-            this.hostOrganismWriter = new XmlHostOrganismWriter(streamWriter);
+            initialiseHostOrganismWriter();
         }
         return hostOrganismWriter;
     }
+
+    protected abstract void initialiseHostOrganismWriter();
 
     public void setHostOrganismWriter(PsiXmlElementWriter<Organism> hostOrganismWriter) {
         this.hostOrganismWriter = hostOrganismWriter;
@@ -80,10 +84,12 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
 
     public PsiXmlVariableNameWriter<CvTerm> getDetectionMethodWriter() {
         if (this.detectionMethodWriter == null){
-            this.detectionMethodWriter = new XmlCvTermWriter(streamWriter);
+            initialiseDetectionMethodWriter();
         }
         return detectionMethodWriter;
     }
+
+    protected abstract void initialiseDetectionMethodWriter();
 
     public void setDetectionMethodWriter(PsiXmlVariableNameWriter<CvTerm> detectionMethodWriter) {
         this.detectionMethodWriter = detectionMethodWriter;
@@ -102,10 +108,12 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
 
     public PsiXmlElementWriter<Confidence> getConfidenceWriter() {
         if (this.confidenceWriter == null){
-            this.confidenceWriter = new XmlConfidenceWriter(streamWriter);
+            initialiseConfidenceWriter();
         }
         return confidenceWriter;
     }
+
+    protected abstract void initialiseConfidenceWriter();
 
     public void setConfidenceWriter(PsiXmlElementWriter<Confidence> confidenceWriter) {
         this.confidenceWriter = confidenceWriter;

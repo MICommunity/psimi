@@ -3,12 +3,16 @@ package psidev.psi.mi.jami.xml.io.writer.expanded.extended;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.ExpandedXmlModelledParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.ExpandedXmlParticipantEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlExperimentalInteractorWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlInteractionEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlModelledInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlFeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlSourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.AbstractExpandedXmlWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 
@@ -20,7 +24,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Expanded PSI-XML 2.5 writer for extended interaction evidences (full experimental evidences)
+ * Expanded PSI-XML 2.5 writer for expanded interaction evidences (full experimental evidences)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -70,7 +74,7 @@ public class ExpandedXmlEvidenceWriter extends AbstractExpandedXmlWriter<Interac
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
                                                                                     PsiXmlInteractionWriter interactionWriter) {
-        ExpandedXmlModelledInteractionWriter complexWriter = new ExpandedXmlModelledInteractionWriter(getStreamWriter(), getElementCache());
+        XmlModelledInteractionWriter complexWriter = new XmlModelledInteractionWriter(getStreamWriter(), getElementCache());
         complexWriter.setAttributeWriter(attributeWriter);
         complexWriter.setXrefWriter(primaryRefWriter);
         complexWriter.setConfidenceWriter(confidenceWriter);
@@ -96,7 +100,7 @@ public class ExpandedXmlEvidenceWriter extends AbstractExpandedXmlWriter<Interac
                                                                                         PsiXmlExperimentWriter experimentWriter,
                                                                                         PsiXmlElementWriter<String> availabilityWriter,
                                                                                         PsiXmlElementWriter inferredInteractionWriter) {
-        ExpandedXmlInteractionEvidenceWriter writer = new ExpandedXmlInteractionEvidenceWriter(getStreamWriter(), getElementCache());
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setAttributeWriter(attributeWriter);
         writer.setXrefWriter(primaryRefWriter);
         writer.setConfidenceWriter(confidenceWriter);
@@ -119,7 +123,7 @@ public class ExpandedXmlEvidenceWriter extends AbstractExpandedXmlWriter<Interac
                                                                                                 PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
-        ExpandedXmlModelledParticipantWriter writer = new ExpandedXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
@@ -147,7 +151,7 @@ public class ExpandedXmlEvidenceWriter extends AbstractExpandedXmlWriter<Interac
         hostOrganismWriter.setAliasWriter(aliasWriter);
         hostOrganismWriter.setCvWriter(hostOrganismWriter.getCvWriter());
 
-        ExpandedXmlParticipantEvidenceWriter writer = new ExpandedXmlParticipantEvidenceWriter(getStreamWriter(), getElementCache());
+        XmlParticipantEvidenceWriter writer = new XmlParticipantEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
@@ -158,7 +162,7 @@ public class ExpandedXmlEvidenceWriter extends AbstractExpandedXmlWriter<Interac
         writer.setParameterWriter(parameterWriter);
         writer.setConfidenceWriter(confidenceWriter);
         writer.setCvWriter(expRoleWriter);
-        writer.setExperimentalInteractorWriter(new ExpandedXmlExperimentalInteractorWriter(getStreamWriter(), getElementCache()));
+        writer.setExperimentalInteractorWriter(new XmlExperimentalInteractorWriter(getStreamWriter(), getElementCache()));
         return (PsiXmlParticipantWriter<P>) writer;
     }
 

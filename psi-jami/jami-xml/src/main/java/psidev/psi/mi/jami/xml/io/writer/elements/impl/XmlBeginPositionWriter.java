@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * XML 2.5 writer for the begin position of a range
+ * XML writer for the begin position of a range
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -32,5 +32,10 @@ public class XmlBeginPositionWriter extends AbstractXmlPositionWriter {
     @Override
     protected void writeStatus(Position object) {
         getStatusWriter().write(object.getStatus(),"startStatus");
+    }
+
+    @Override
+    protected void initialiseStatusWriter() {
+        super.setStatusWriter(new XmlCvTermWriter(getStreamWriter()));
     }
 }

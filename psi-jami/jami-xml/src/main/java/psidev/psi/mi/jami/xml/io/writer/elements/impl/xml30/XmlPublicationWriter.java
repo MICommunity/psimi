@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlPublicationWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -21,6 +22,11 @@ public class XmlPublicationWriter extends AbstractXmlPublicationWriter {
 
     public XmlPublicationWriter(XMLStreamWriter writer){
         super(writer);
+    }
+
+    @Override
+    protected void initialiseXrefWriter() {
+        super.setXrefWriter(new XmlDbXrefWriter(getStreamWriter()));
     }
 
     @Override

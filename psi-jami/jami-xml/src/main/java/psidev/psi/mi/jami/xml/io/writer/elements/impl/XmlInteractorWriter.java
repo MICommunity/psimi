@@ -13,7 +13,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.util.Iterator;
 
 /**
- * Xml25 interactor writer
+ * Xml interactor writer
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -55,10 +55,14 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
 
     public PsiXmlXrefWriter getXrefWriter() {
         if (this.xrefWriter == null){
-            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
+            initialiseXrefWriter();
 
         }
         return xrefWriter;
+    }
+
+    protected void initialiseXrefWriter() {
+        this.xrefWriter = new XmlDbXrefWriter(streamWriter);
     }
 
     public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
@@ -67,10 +71,14 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
 
     public PsiXmlVariableNameWriter<CvTerm> getInteractorTypeWriter() {
         if (this.interactorTypeWriter == null){
-            this.interactorTypeWriter = new XmlCvTermWriter(streamWriter);
+            initialiseInteractorTypeWriter();
 
         }
         return interactorTypeWriter;
+    }
+
+    protected void initialiseInteractorTypeWriter() {
+        this.interactorTypeWriter = new XmlCvTermWriter(streamWriter);
     }
 
     public void setInteractorTypeWriter(PsiXmlVariableNameWriter<CvTerm> interactorTypeWriter) {
@@ -354,5 +362,13 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
                 }
             }
         }
+    }
+
+    protected XMLStreamWriter getStreamWriter() {
+        return streamWriter;
+    }
+
+    protected PsiXmlObjectCache getObjectIndex() {
+        return objectIndex;
     }
 }

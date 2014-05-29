@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlBinaryInteractionEvidenceWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
@@ -23,7 +24,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * Unit tester for CompactXmlBinaryInteractionEvidenceWriter
+ * Unit tester for XmlBinaryInteractionEvidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -1263,7 +1264,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1280,7 +1281,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1297,7 +1298,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
         streamWriter.flush();
@@ -1314,7 +1315,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1329,7 +1330,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1345,7 +1346,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         ((InteractionEvidence)interaction).setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
 
@@ -1362,7 +1363,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         ((InteractionEvidence)interaction).setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
 
@@ -1379,7 +1380,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1396,7 +1397,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1423,7 +1424,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1439,7 +1440,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1457,7 +1458,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1474,7 +1475,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.extractIdForInteraction(interaction);
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1490,7 +1491,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1506,7 +1507,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1522,7 +1523,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1538,7 +1539,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
 
@@ -1554,7 +1555,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
 
@@ -1570,7 +1571,7 @@ public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXm
         elementCache.clear();
 
         interaction.setExperiment(new XmlExperiment(new DefaultPublication("xxxxxx")));
-        ExpandedXmlBinaryInteractionEvidenceWriter writer = new ExpandedXmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteractionEvidence)interaction);
         streamWriter.flush();
 

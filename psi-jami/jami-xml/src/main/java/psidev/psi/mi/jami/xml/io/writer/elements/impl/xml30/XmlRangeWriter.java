@@ -4,13 +4,15 @@ import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.ResultingSequence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlBeginPositionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlEndPositionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlRangeWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Xml 2.5 writer for a feature range
+ * Xml 3.0 writer for a feature range
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -32,9 +34,13 @@ public class XmlRangeWriter extends AbstractXmlRangeWriter {
 
     public PsiXmlElementWriter<ResultingSequence> getResultingSequenceWriter() {
         if (this.resultingSequenceWriter == null){
-            this.resultingSequenceWriter = new XmlResultingSequenceWriter(getStreamWriter());
+            initialiseResultingSequenceWriter();
         }
         return resultingSequenceWriter;
+    }
+
+    protected void initialiseResultingSequenceWriter() {
+        this.resultingSequenceWriter = new XmlResultingSequenceWriter(getStreamWriter());
     }
 
     public void setResultingSequenceWriter(PsiXmlElementWriter<ResultingSequence> resultingSequenceWriter) {
@@ -56,6 +62,16 @@ public class XmlRangeWriter extends AbstractXmlRangeWriter {
             getStreamWriter().writeCharacters(Integer.toString(this.objectIndex.extractIdForParticipant(object.getParticipant())));
             getStreamWriter().writeEndElement();
         }
+    }
+
+    @Override
+    protected void initialiseStartPositionWriter() {
+        super.setStartPositionWriter(new XmlBeginPositionWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseEndPositionWriter() {
+        super.setEndPositionWriter(new XmlEndPositionWriter(getStreamWriter()));
     }
 
 }

@@ -9,7 +9,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * XML 2.5 writer for an extended host organism having experiment references
+ * XML 2.5 writer for an expanded host organism having experiment references
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

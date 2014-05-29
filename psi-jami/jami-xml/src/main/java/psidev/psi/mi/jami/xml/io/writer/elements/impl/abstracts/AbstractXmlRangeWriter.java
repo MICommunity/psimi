@@ -4,8 +4,6 @@ import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlBeginPositionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlEndPositionWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -32,11 +30,12 @@ public abstract class AbstractXmlRangeWriter implements PsiXmlElementWriter<Rang
 
     public PsiXmlElementWriter<Position> getStartPositionWriter() {
         if (this.startPositionWriter == null){
-            this.startPositionWriter = new XmlBeginPositionWriter(streamWriter);
-
+            initialiseStartPositionWriter();
         }
         return startPositionWriter;
     }
+
+    protected abstract void initialiseStartPositionWriter();
 
     public void setStartPositionWriter(PsiXmlElementWriter<Position> startPositionWriter) {
         this.startPositionWriter = startPositionWriter;
@@ -44,11 +43,13 @@ public abstract class AbstractXmlRangeWriter implements PsiXmlElementWriter<Rang
 
     public PsiXmlElementWriter<Position> getEndPositionWriter() {
         if (this.endPositionWriter == null){
-            this.endPositionWriter = new XmlEndPositionWriter(streamWriter);
+            initialiseEndPositionWriter();
 
         }
         return endPositionWriter;
     }
+
+    protected abstract void initialiseEndPositionWriter();
 
     public void setEndPositionWriter(PsiXmlElementWriter<Position> endPositionWriter) {
         this.endPositionWriter = endPositionWriter;

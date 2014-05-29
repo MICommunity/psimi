@@ -10,7 +10,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * XML 2.5 writer for an extended PSI25Xref having secondary and annotations
+ * XML 2.5 writer for an expanded PSI25Xref having secondary and annotations
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

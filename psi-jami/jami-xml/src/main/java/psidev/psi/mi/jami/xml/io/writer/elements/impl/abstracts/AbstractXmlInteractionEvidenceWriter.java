@@ -5,11 +5,11 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAvailabilityWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlParameterWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.Collection;
+import java.util.Set;
 
 /**
  * Abstract class for interaction evidence writers
@@ -19,7 +19,8 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>18/11/13</pre>
  */
 
-public abstract class AbstractXmlInteractionEvidenceWriter<I extends InteractionEvidence, P extends ParticipantEvidence> extends AbstractXmlInteractionWriter<I,P> {
+public abstract class AbstractXmlInteractionEvidenceWriter<I extends InteractionEvidence>
+        extends AbstractXmlInteractionWriter<I,ParticipantEvidence> {
     private PsiXmlElementWriter<String> availabilityWriter;
     private PsiXmlElementWriter<Confidence> confidenceWriter;
     private PsiXmlParameterWriter parameterWriter;
@@ -30,9 +31,13 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     public PsiXmlElementWriter<String> getAvailabilityWriter() {
         if (this.availabilityWriter == null){
-            this.availabilityWriter =  new XmlAvailabilityWriter(getStreamWriter(), getObjectIndex());
+            initialiseAvaliabilityWriter();
         }
         return availabilityWriter;
+    }
+
+    protected void initialiseAvaliabilityWriter() {
+        this.availabilityWriter =  new XmlAvailabilityWriter(getStreamWriter(), getObjectIndex());
     }
 
     public void setAvailabilityWriter(PsiXmlElementWriter<String> availabilityWriter) {
@@ -41,10 +46,12 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     public PsiXmlElementWriter<Confidence> getConfidenceWriter() {
         if (this.confidenceWriter == null){
-            this.confidenceWriter = new XmlConfidenceWriter(getStreamWriter());
+            initialiseConfidenceWriter();
         }
         return confidenceWriter;
     }
+
+    protected abstract void initialiseConfidenceWriter();
 
     public void setConfidenceWriter(PsiXmlElementWriter<Confidence> confidenceWriter) {
         this.confidenceWriter = confidenceWriter;
@@ -52,10 +59,12 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     public PsiXmlParameterWriter getParameterWriter() {
         if (this.parameterWriter == null){
-            this.parameterWriter = new XmlParameterWriter(getStreamWriter(), getObjectIndex());
+            initialiseParameterWriter();
         }
         return parameterWriter;
     }
+
+    protected abstract void initialiseParameterWriter();
 
     public void setParameterWriter(PsiXmlParameterWriter parameterWriter) {
         this.parameterWriter = parameterWriter;
@@ -92,11 +101,6 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
         if (object.getImexId() != null){
             getStreamWriter().writeAttribute("imexId", object.getImexId());
         }
-    }
-
-    @Override
-    protected void writeIntraMolecular(I object) throws XMLStreamException {
-        // do nothing
     }
 
     @Override
@@ -156,5 +160,21 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     protected void writeAvailabilityDescription(String availability) throws XMLStreamException {
         getAvailabilityWriter().write(availability);
+    }
+
+    protected void writeInferredInteractions(I object) throws XMLStreamException {
+        Collection<Set<Feature>> inferredInteractions = collectInferredInteractionsFrom(object);
+        if (inferredInteractions != null && !inferredInteractions.isEmpty()){
+            getStreamWriter().writeStartElement("inferredInteractionList");
+            for (Set<Feature> inferred : inferredInteractions){
+                getInferredInteractionWriter().write(inferred);
+            }
+            getStreamWriter().writeEndElement();
+        }
+    }
+
+    @Override
+    protected void writeStartInteraction() throws XMLStreamException {
+        getStreamWriter().writeStartElement("interaction");
     }
 }
