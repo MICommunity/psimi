@@ -2,8 +2,11 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlInferredInteractionWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
@@ -22,9 +25,22 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
         extends psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.AbstractXmlModelledInteractionWriter<I>
         implements PsiXmlExtendedInteractionWriter<I> {
 
+    private PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter;
+
     public AbstractXmlModelledInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
 
+    }
+
+    public PsiXmlElementWriter<InferredInteraction> getXmlInferredInteractionWriter() {
+        if (this.inferredInteractionWriter == null){
+            this.inferredInteractionWriter = new XmlInferredInteractionWriter(getStreamWriter(), getObjectIndex());
+        }
+        return inferredInteractionWriter;
+    }
+
+    public void setXmlInferredInteractionWriter(PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter) {
+        this.inferredInteractionWriter = inferredInteractionWriter;
     }
 
     @Override

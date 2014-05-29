@@ -34,6 +34,10 @@ public class XmlNamedBinaryInteractionEvidenceWriter extends XmlBinaryInteractio
         return aliasWriter;
     }
 
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
+    }
+
     @Override
     protected void initialiseParticipantWriter() {
         super.setParticipantWriter(new XmlNamedParticipantEvidenceWriter(getStreamWriter(), getObjectIndex()));
