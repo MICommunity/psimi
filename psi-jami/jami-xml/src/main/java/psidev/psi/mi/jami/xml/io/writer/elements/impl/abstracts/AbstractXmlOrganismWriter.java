@@ -45,10 +45,12 @@ public abstract class AbstractXmlOrganismWriter implements PsiXmlElementWriter<O
 
     public PsiXmlVariableNameWriter<CvTerm> getCvWriter() {
         if (this.cvWriter == null){
-            this.cvWriter = new XmlOpenCvTermWriter(streamWriter);
+           initialiseCvWriter();
         }
         return cvWriter;
     }
+
+    protected abstract void initialiseCvWriter();
 
     public void setCvWriter(PsiXmlVariableNameWriter<CvTerm> cvWriter) {
         this.cvWriter = cvWriter;

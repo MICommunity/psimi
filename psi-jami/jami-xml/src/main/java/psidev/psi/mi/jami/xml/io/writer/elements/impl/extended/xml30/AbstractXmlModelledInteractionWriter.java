@@ -1,11 +1,10 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30;
 
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.ModelledInteraction;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlOrganismWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlBindingFeaturesWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlModelledInteraction;
 
@@ -29,10 +28,46 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
         implements PsiXmlExtendedInteractionWriter<I> {
 
     private PsiXmlElementWriter<Set<Feature>> bindingFeaturesWriter;
+    private PsiXmlElementWriter<Organism> organismWriter;
+    private PsiXmlElementWriter<Preassembly> preAssemblyWriter;
+    private PsiXmlElementWriter<Allostery> allosteryWriter;
 
     public AbstractXmlModelledInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
 
+    }
+
+    public PsiXmlElementWriter<Preassembly> getPreAssemblyWriter() {
+        if (this.preAssemblyWriter == null){
+            this.preAssemblyWriter = new XmlPreAssemblyWriter(getStreamWriter(), getObjectIndex());
+        }
+        return preAssemblyWriter;
+    }
+
+    public void setPreAssemblyWriter(PsiXmlElementWriter<Preassembly> preAssemblyWriter) {
+        this.preAssemblyWriter = preAssemblyWriter;
+    }
+
+    public PsiXmlElementWriter<Allostery> getAllosteryWriter() {
+        if (this.allosteryWriter == null){
+            this.allosteryWriter = new XmlAllosteryWriter(getStreamWriter(), getObjectIndex());
+        }
+        return allosteryWriter;
+    }
+
+    public void setAllosteryWriter(PsiXmlElementWriter<Allostery> allosteryWriter) {
+        this.allosteryWriter = allosteryWriter;
+    }
+
+    public PsiXmlElementWriter<Organism> getOrganismWriter() {
+        if (this.organismWriter == null){
+            this.organismWriter = new XmlOrganismWriter(getStreamWriter());
+        }
+        return organismWriter;
+    }
+
+    public void setOrganismWriter(PsiXmlElementWriter<Organism> organismWriter) {
+        this.organismWriter = organismWriter;
     }
 
     @Override
@@ -109,11 +144,6 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     }
 
     @Override
-    protected void writeOtherProperties(I object) {
-        // nothing to write
-    }
-
-    @Override
     protected void writeIntraMolecular(I object) throws XMLStreamException {
         if (object instanceof ExtendedPsiXmlModelledInteraction){
             ExtendedPsiXmlModelledInteraction xmlInteraction = (ExtendedPsiXmlModelledInteraction)object;
@@ -126,6 +156,57 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
         }
         else {
             super.writeIntraMolecular(object);
+        }
+    }
+
+    @Override
+    protected void writeOtherProperties(I object) throws XMLStreamException {
+        if (object instanceof Complex) {
+            Complex complex = (Complex) object;
+            // write organism
+            writeOrganism(complex);
+            // write interactor type
+            writeInteractorType(complex);
+        }
+        // write evidence type
+        writeEvidenceType(object);
+        // write cooperative effects
+        writeCooperativeEffects(object);
+    }
+
+    protected void writeCooperativeEffects(I object) throws XMLStreamException {
+        if (!object.getCooperativeEffects().isEmpty()){
+            getStreamWriter().writeStartElement("cooperativeEffectList");
+            for (CooperativeEffect effect : object.getCooperativeEffects()){
+                // preassembly
+                if (effect instanceof Preassembly){
+                    getPreAssemblyWriter().write((Preassembly)effect);
+                }
+                // allsotery
+                else if (effect instanceof Allostery){
+                    getAllosteryWriter().write((Allostery)effect);
+                }
+                // skip the effect
+            }
+            getStreamWriter().writeEndElement();
+        }
+    }
+
+    protected void writeEvidenceType(I object){
+        if (object.getEvidenceType() != null){
+            getInteractionTypeWriter().write(object.getEvidenceType(), "evidenceType");
+        }
+    }
+
+    protected void writeInteractorType(Complex complex){
+        if (complex.getInteractorType() != null){
+            getInteractionTypeWriter().write(complex.getInteractorType(), "interactorType");
+        }
+    }
+
+    protected void writeOrganism(Complex complex){
+        if (complex.getOrganism() != null){
+            getOrganismWriter().write(complex.getOrganism());
         }
     }
 

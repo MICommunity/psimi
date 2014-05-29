@@ -27,4 +27,9 @@ public class XmlInteractorWriter extends psidev.psi.mi.jami.xml.io.writer.elemen
     protected void initialiseInteractorTypeWriter() {
         super.setInteractorTypeWriter(new XmlCvTermWriter(getStreamWriter()));
     }
+
+    @Override
+    protected void initialiseOrganismWriter() {
+        setOrganismWriter(new XmlOrganismWriter(getStreamWriter()));
+    }
 }

@@ -43,4 +43,9 @@ public class XmlHostOrganismWriter extends psidev.psi.mi.jami.xml.io.writer.elem
             }
         }
     }
+
+    @Override
+    protected void initialiseCvWriter() {
+        super.setCvWriter(new XmlOpenCvTermWriter(getStreamWriter()));
+    }
 }
