@@ -1,6 +1,5 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30;
 
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
@@ -8,7 +7,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlBindingFeaturesWriter;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlModelledInteraction;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -85,18 +84,13 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     }
 
     @Override
-    protected void writeInteractionType(I object) throws XMLStreamException {
-        if (object instanceof ExtendedPsiXmlInteraction){
-            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
-            if (!xmlInteraction.getInteractionTypes().isEmpty()){
-                for (Object type : xmlInteraction.getInteractionTypes()){
-                    getInteractionTypeWriter().write((CvTerm)type,"interactionType");
-                }
-            }
-        }
-        else{
-            super.writeInteractionType(object);
-        }
+    protected void initialiseConfidenceWriter(){
+        super.setConfidenceWriter(new XmlModelledConfidenceWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseParameterWriter(){
+        super.setParameterWriter(new XmlModelledParameterWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override
@@ -117,6 +111,22 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     @Override
     protected void writeOtherProperties(I object) {
         // nothing to write
+    }
+
+    @Override
+    protected void writeIntraMolecular(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlModelledInteraction){
+            ExtendedPsiXmlModelledInteraction xmlInteraction = (ExtendedPsiXmlModelledInteraction)object;
+            if (xmlInteraction.isIntraMolecular()){
+                getStreamWriter().writeStartElement("intraMolecular");
+                getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));
+                // write end intra molecular
+                getStreamWriter().writeEndElement();
+            }
+        }
+        else {
+            super.writeIntraMolecular(object);
+        }
     }
 
     @Override

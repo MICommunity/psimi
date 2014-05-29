@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlConfidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlInferredInteractionWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
@@ -47,6 +48,16 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     @Override
     protected void initialiseExperimentWriter(){
         super.setExperimentWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void initialiseConfidenceWriter(){
+        super.setConfidenceWriter(new XmlConfidenceWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void initialiseParameterWriter(){
+        super.setParameterWriter(new XmlParameterWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override
@@ -249,6 +260,22 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     @Override
     protected void writeOtherProperties(I object) {
         // nothing to write
+    }
+
+    @Override
+    protected void writeIntraMolecular(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteraction){
+            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
+            if (xmlInteraction.isIntraMolecular()){
+                getStreamWriter().writeStartElement("intraMolecular");
+                getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));
+                // write end intra molecular
+                getStreamWriter().writeEndElement();
+            }
+        }
+        else {
+            super.writeIntraMolecular(object);
+        }
     }
 
     @Override
