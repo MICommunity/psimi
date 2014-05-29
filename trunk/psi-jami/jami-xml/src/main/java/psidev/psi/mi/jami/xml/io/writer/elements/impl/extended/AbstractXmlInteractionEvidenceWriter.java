@@ -32,10 +32,27 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     private PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter;
     private PsiXmlElementWriter<Alias> aliasWriter;
+    private List<Experiment> defaultExperiments;
 
     public AbstractXmlInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
 
+    }
+
+    @Override
+    public List<Experiment> getDefaultExperiments() {
+        if (this.defaultExperiments == null || this.defaultExperiments.isEmpty()){
+            this.defaultExperiments = Collections.singletonList(getDefaultExperiment());
+        }
+        return this.defaultExperiments;
+    }
+
+    @Override
+    public void setDefaultExperiments(List<Experiment> exp) {
+        this.defaultExperiments = exp;
+        if (this.defaultExperiments != null && !this.defaultExperiments.isEmpty()){
+            getParameterWriter().setDefaultExperiment(this.defaultExperiments.iterator().next());
+        }
     }
 
     public PsiXmlElementWriter<InferredInteraction> getXmlInferredInteractionWriter() {
@@ -179,48 +196,34 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
         }
     }
 
-    protected void writeExperimentRef(I object) throws XMLStreamException {
-        if (object instanceof ExtendedPsiXmlInteractionEvidence){
-            ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
-            // write experimental evidences
-            if (!xmlInteraction.getExperiments().isEmpty()){
-                getStreamWriter().writeStartElement("experimentList");
-                for (Experiment evidence : xmlInteraction.getExperiments()){
-                    getStreamWriter().writeStartElement("experimentRef");
-                    getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(evidence)));
-                    getStreamWriter().writeEndElement();
-                }
-                // write end experiment list
-                getStreamWriter().writeEndElement();
-            }
-            else {
-                super.writeExperimentRef();
-            }
+    @Override
+    protected void writeExperimentRef() throws XMLStreamException {
+        getStreamWriter().writeStartElement("experimentList");
+        for (Experiment experiment : getDefaultExperiments()){
+            getStreamWriter().writeStartElement("experimentRef");
+            getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(experiment)));
+            getStreamWriter().writeEndElement();
         }
-        else {
-            super.writeExperimentRef();
-        }
+        getStreamWriter().writeEndElement();
     }
 
-    protected void writeExperimentDescription(I object) throws XMLStreamException {
-        if (object instanceof ExtendedPsiXmlInteractionEvidence){
-            ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
-            // write experimental evidences
-            if (!xmlInteraction.getExperiments().isEmpty()){
-                getStreamWriter().writeStartElement("experimentList");
-                for (Experiment evidence : xmlInteraction.getExperiments()){
-                    getExperimentWriter().write(evidence);
-                }
-                // write end experiment list
-                getStreamWriter().writeEndElement();
-            }
-            else {
-                super.writeExperimentDescription();
-            }
+    @Override
+    protected void writeExperimentDescription() throws XMLStreamException {
+        getStreamWriter().writeStartElement("experimentList");
+        for (Experiment experiment : getDefaultExperiments()){
+            getExperimentWriter().write(experiment);
         }
-        else {
-            super.writeExperimentDescription();
-        }
+        getStreamWriter().writeEndElement();
     }
 
+    @Override
+    protected void writeExperiments(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteractionEvidence){
+            ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
+            // set default experimental evidences
+            if (!xmlInteraction.getExperiments().isEmpty()){
+                setDefaultExperiments(xmlInteraction.getExperiments());
+            }
+        }
+    }
 }

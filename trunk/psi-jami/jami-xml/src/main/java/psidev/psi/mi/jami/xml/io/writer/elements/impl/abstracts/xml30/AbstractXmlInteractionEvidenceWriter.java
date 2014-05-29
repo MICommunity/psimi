@@ -55,4 +55,9 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     protected void initialiseInteractionTypeWriter() {
         super.setInteractionTypeWriter(new XmlCvTermWriter(getStreamWriter()));
     }
+
+    @Override
+    protected void writeOtherProperties(I object) {
+        // nothing to do
+    }
 }

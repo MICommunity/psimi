@@ -66,11 +66,6 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction>
     }
 
     @Override
-    protected void writeExperiments(T object) throws XMLStreamException {
-        writeExperimentRef();
-    }
-
-    @Override
     protected void writeOtherAttributes(T object) {
         // nothing to do
     }
@@ -97,6 +92,11 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction>
 
     @Override
     protected void writeNegative(T object) {
+        // nothing to do
+    }
+
+    @Override
+    protected void writeOtherProperties(T object) {
         // nothing to do
     }
 

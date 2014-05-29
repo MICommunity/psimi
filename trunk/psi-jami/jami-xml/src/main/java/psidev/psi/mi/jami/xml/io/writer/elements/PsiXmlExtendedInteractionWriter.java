@@ -22,5 +22,18 @@ public interface PsiXmlExtendedInteractionWriter<T extends Interaction> extends 
      */
     public List<Experiment> extractDefaultExperimentsFrom(T interaction);
 
+    /**
+     * The default experiments that will be used to write a valid XML 2.5 file but are not real experiments attached
+     * to the interaction.
+     * It cannot be null.
+     * @return
+     */
+    public List<Experiment> getDefaultExperiments();
 
+    /**
+     * Sets the default experiments that will be used to write a valid XML 2.5 file even if the interaction does not have any valid experiment
+     * @param exp
+     * @throws IllegalArgumentException when default experiments is null
+     */
+    public void setDefaultExperiments(List<Experiment> exp);
 }

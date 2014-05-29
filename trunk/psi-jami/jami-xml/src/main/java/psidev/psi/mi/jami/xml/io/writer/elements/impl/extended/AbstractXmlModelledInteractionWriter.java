@@ -1,19 +1,17 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 
-import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.NamedInteraction;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParameterWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
-import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Abstract class for XML writers of modelled interaction
@@ -27,9 +25,27 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
         extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlModelledInteractionWriter<I>
         implements PsiXmlExtendedInteractionWriter<I> {
 
+    private List<Experiment> defaultExperiments;
+
     public AbstractXmlModelledInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
 
+    }
+
+    @Override
+    public List<Experiment> getDefaultExperiments() {
+        if (this.defaultExperiments == null || this.defaultExperiments.isEmpty()){
+            this.defaultExperiments = Collections.singletonList(getDefaultExperiment());
+        }
+        return this.defaultExperiments;
+    }
+
+    @Override
+    public void setDefaultExperiments(List<Experiment> exp) {
+        this.defaultExperiments = exp;
+        if (this.defaultExperiments != null && !this.defaultExperiments.isEmpty()){
+            getParameterWriter().setDefaultExperiment(this.defaultExperiments.iterator().next());
+        }
     }
 
     @Override

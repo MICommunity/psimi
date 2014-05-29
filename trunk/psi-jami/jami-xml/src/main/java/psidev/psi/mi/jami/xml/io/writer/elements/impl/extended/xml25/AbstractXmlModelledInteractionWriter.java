@@ -26,6 +26,7 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
         implements PsiXmlExtendedInteractionWriter<I> {
 
     private PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter;
+    private List<Experiment> defaultExperiments;
 
     public AbstractXmlModelledInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
@@ -113,58 +114,44 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
         }
     }
 
-
-    protected void writeExperimentRef(I object) throws XMLStreamException {
-        // write experimental evidences
-        if (!object.getCooperativeEffects().isEmpty()){
-            CooperativeEffect effect = object.getCooperativeEffects().iterator().next();
-            if (!effect.getCooperativityEvidences().isEmpty()){
-                getStreamWriter().writeStartElement("experimentList");
-                for (CooperativityEvidence evidence : effect.getCooperativityEvidences()){
-                    // set first experiment as default experiment
-                    if (evidence.getPublication() != null){
-                        NamedExperiment exp = new XmlExperiment(evidence.getPublication());
-                        exp.setFullName(evidence.getPublication().getTitle());
-                        getStreamWriter().writeStartElement("experimentRef");
-                        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(exp)));
-                        getStreamWriter().writeEndElement();
-                    }
-                }
-                // write end experiment list
-                getStreamWriter().writeEndElement();
-            }
-            else {
-                super.writeExperimentRef();
-            }
+    @Override
+    protected void writeExperimentRef() throws XMLStreamException {
+        getStreamWriter().writeStartElement("experimentList");
+        for (Experiment experiment : getDefaultExperiments()){
+            getStreamWriter().writeStartElement("experimentRef");
+            getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(experiment)));
+            getStreamWriter().writeEndElement();
         }
-        else {
-            super.writeExperimentRef();
-        }
+        getStreamWriter().writeEndElement();
     }
 
-    protected void writeExperimentDescription(I object) throws XMLStreamException {
-        // write experimental evidences
+    @Override
+    protected void writeExperimentDescription() throws XMLStreamException {
+        getStreamWriter().writeStartElement("experimentList");
+        for (Experiment experiment : getDefaultExperiments()){
+            getExperimentWriter().write(experiment);
+        }
+        getStreamWriter().writeEndElement();
+    }
+
+    @Override
+    protected void writeExperiments(I object) throws XMLStreamException {
+        // set default experiments
         if (!object.getCooperativeEffects().isEmpty()){
+            List<Experiment> defExps = new ArrayList<Experiment>(object.getCooperativeEffects().size());
             CooperativeEffect effect = object.getCooperativeEffects().iterator().next();
             if (!effect.getCooperativityEvidences().isEmpty()){
-                getStreamWriter().writeStartElement("experimentList");
                 for (CooperativityEvidence evidence : effect.getCooperativityEvidences()){
                     // set first experiment as default experiment
                     if (evidence.getPublication() != null){
                         NamedExperiment exp = new XmlExperiment(evidence.getPublication());
                         exp.setFullName(evidence.getPublication().getTitle());
-                        getExperimentWriter().write(exp);
+                        defExps.add(exp);
                     }
                 }
-                // write end experiment list
-                getStreamWriter().writeEndElement();
             }
-            else {
-                super.writeExperimentDescription();
-            }
-        }
-        else {
-            super.writeExperimentDescription();
+
+            setDefaultExperiments(defExps);
         }
     }
 
@@ -257,6 +244,11 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
 
         // write end attribute
         getStreamWriter().writeEndElement();
+    }
+
+    @Override
+    protected void writeOtherProperties(I object) {
+        // nothing to write
     }
 
     @Override

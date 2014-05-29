@@ -1,12 +1,14 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlBindingFeaturesWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
-import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -31,6 +33,16 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
 
     public AbstractXmlModelledInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
+
+    }
+
+    @Override
+    public List<Experiment> getDefaultExperiments() {
+        return Collections.EMPTY_LIST;
+    }
+
+    @Override
+    public void setDefaultExperiments(List<Experiment> exp) {
 
     }
 
@@ -87,59 +99,24 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
         }
     }
 
-
-    protected void writeExperimentRef(I object) throws XMLStreamException {
-        // write experimental evidences
-        if (!object.getCooperativeEffects().isEmpty()){
-            CooperativeEffect effect = object.getCooperativeEffects().iterator().next();
-            if (!effect.getCooperativityEvidences().isEmpty()){
-                getStreamWriter().writeStartElement("experimentList");
-                for (CooperativityEvidence evidence : effect.getCooperativityEvidences()){
-                    // set first experiment as default experiment
-                    if (evidence.getPublication() != null){
-                        NamedExperiment exp = new XmlExperiment(evidence.getPublication());
-                        exp.setFullName(evidence.getPublication().getTitle());
-                        getStreamWriter().writeStartElement("experimentRef");
-                        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(exp)));
-                        getStreamWriter().writeEndElement();
-                    }
-                }
-                // write end experiment list
-                getStreamWriter().writeEndElement();
-            }
-            else {
-                super.writeExperimentRef();
-            }
-        }
-        else {
-            super.writeExperimentRef();
-        }
+    @Override
+    protected void writeExperimentRef() throws XMLStreamException {
+        // nothing to do
     }
 
-    protected void writeExperimentDescription(I object) throws XMLStreamException {
-        // write experimental evidences
-        if (!object.getCooperativeEffects().isEmpty()){
-            CooperativeEffect effect = object.getCooperativeEffects().iterator().next();
-            if (!effect.getCooperativityEvidences().isEmpty()){
-                getStreamWriter().writeStartElement("experimentList");
-                for (CooperativityEvidence evidence : effect.getCooperativityEvidences()){
-                    // set first experiment as default experiment
-                    if (evidence.getPublication() != null){
-                        NamedExperiment exp = new XmlExperiment(evidence.getPublication());
-                        exp.setFullName(evidence.getPublication().getTitle());
-                        getExperimentWriter().write(exp);
-                    }
-                }
-                // write end experiment list
-                getStreamWriter().writeEndElement();
-            }
-            else {
-                super.writeExperimentDescription();
-            }
-        }
-        else {
-            super.writeExperimentDescription();
-        }
+    @Override
+    protected void writeExperimentDescription() throws XMLStreamException {
+        // nothing to do
+    }
+
+    @Override
+    protected void writeExperiments(I object) throws XMLStreamException {
+        // nothing to write
+    }
+
+    @Override
+    protected void writeOtherProperties(I object) {
+        // nothing to write
     }
 
     @Override
