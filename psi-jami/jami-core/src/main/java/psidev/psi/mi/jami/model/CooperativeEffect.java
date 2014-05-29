@@ -55,7 +55,8 @@ public interface CooperativeEffect {
     public static final String ALLOSTERIC_PTM_ID = "MI:1175";
     public static final String PARTICIPANT_REF = "participant-ref";
     public static final String PARTICIPANT_REF_ID = "MI:1151";
-
+    public static final String EFFECT_OUTCOME_MI ="MI:1153";
+    public static final String EFFECT_OUTCOME ="cooperative effect outcome";
 
     /**
      * Collection of experimental methods and publications from which this cooperative effect has been inferred.
