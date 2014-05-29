@@ -173,6 +173,8 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             writeConfidences(object);
             // write parameters
             writeParameters(object);
+            // write other properties
+            writeOtherProperties(object);
             // write attributes
             writeAttributes(object);
             // write end interaction
@@ -182,6 +184,8 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             throw new MIIOException("Impossible to write the interaction : "+object.toString(), e);
         }
     }
+
+    protected abstract void writeOtherProperties(T object);
 
     protected abstract void writeStartInteraction() throws XMLStreamException;
 

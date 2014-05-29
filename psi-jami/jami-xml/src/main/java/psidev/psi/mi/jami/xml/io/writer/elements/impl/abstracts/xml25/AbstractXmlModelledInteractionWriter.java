@@ -181,6 +181,11 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     }
 
     @Override
+    protected void writeOtherProperties(I object) {
+        // nothing to do
+    }
+
+    @Override
     protected void writeStartInteraction() throws XMLStreamException {
         getStreamWriter().writeStartElement("interaction");
     }

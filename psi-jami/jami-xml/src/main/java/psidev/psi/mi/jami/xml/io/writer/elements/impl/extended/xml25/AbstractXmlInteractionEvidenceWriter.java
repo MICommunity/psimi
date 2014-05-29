@@ -26,4 +26,10 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     protected void initialiseExperimentWriter(){
         super.setExperimentWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter(getStreamWriter(), getObjectIndex()));
     }
+
+
+    @Override
+    protected void writeOtherProperties(I object) {
+        // nothing to write
+    }
 }

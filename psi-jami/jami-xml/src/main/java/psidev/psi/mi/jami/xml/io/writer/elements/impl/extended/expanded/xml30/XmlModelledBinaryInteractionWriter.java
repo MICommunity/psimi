@@ -32,11 +32,6 @@ public class XmlModelledBinaryInteractionWriter extends AbstractXmlModelledInter
     }
 
     @Override
-    protected void writeExperiments(ModelledBinaryInteraction object) throws XMLStreamException {
-        writeExperimentDescription(object);
-    }
-
-    @Override
     protected void writeAttributes(ModelledBinaryInteraction object) throws XMLStreamException {
         // write attributes
         if (!object.getAnnotations().isEmpty()){

@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.AbstractXmlModelledInteractionWriter;
 
-import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
@@ -27,10 +26,5 @@ public class XmlModelledInteractionWriter extends AbstractXmlModelledInteraction
     @Override
     protected void initialiseParticipantWriter() {
         super.setParticipantWriter(new XmlModelledParticipantWriter(getStreamWriter(), getObjectIndex()));
-    }
-
-    @Override
-    protected void writeExperiments(ModelledInteraction object) throws XMLStreamException {
-        writeExperimentDescription(object);
     }
 }

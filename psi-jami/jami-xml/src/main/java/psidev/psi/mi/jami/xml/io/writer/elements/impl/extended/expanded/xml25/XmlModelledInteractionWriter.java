@@ -31,6 +31,7 @@ public class XmlModelledInteractionWriter extends AbstractXmlModelledInteraction
 
     @Override
     protected void writeExperiments(ModelledInteraction object) throws XMLStreamException {
-        writeExperimentDescription(object);
+        super.writeExperiments(object);
+        writeExperimentDescription();
     }
 }

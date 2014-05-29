@@ -40,7 +40,7 @@ public class XmlBinaryInteractionEvidenceWriter extends AbstractXmlInteractionEv
     @Override
     protected void writeExperiments(BinaryInteractionEvidence object) throws XMLStreamException {
         super.writeExperiments(object);
-        writeExperimentRef(object);
+        writeExperimentRef();
     }
 
     @Override
