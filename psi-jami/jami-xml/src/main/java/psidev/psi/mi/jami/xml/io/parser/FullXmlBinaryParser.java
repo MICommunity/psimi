@@ -14,7 +14,7 @@ import java.io.*;
 import java.net.URL;
 
 /**
- * Full Parser generating binary interactions that could be a mix or modelled interactions and interaction evidences.
+ * Full Parser generating binary interactions that could be a mix or abstract interactions and interaction evidences.
  *
  * It will load the all entrySet so is consuming a lot of memory in case of large files but is very performant for small files
  *

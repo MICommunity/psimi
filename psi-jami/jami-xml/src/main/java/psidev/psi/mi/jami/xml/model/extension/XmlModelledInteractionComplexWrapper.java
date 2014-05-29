@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Wrapper for complexes that were loaded as modelled interactions
+ * Wrapper for complexes that were loaded as abstract interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

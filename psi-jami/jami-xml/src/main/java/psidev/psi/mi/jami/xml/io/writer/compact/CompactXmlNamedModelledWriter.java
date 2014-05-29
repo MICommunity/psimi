@@ -16,7 +16,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Compact PSI-XML 2.5 writer for named modelled interactions (no experimental evidences).
+ * Compact PSI-XML 2.5 writer for named abstract interactions (no experimental evidences).
  * Participants, features, experiments also have expanded names
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)

@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.URL;
 
 /**
- * PSI-XML 2.5 data source that provides binary interactions (mixed of modelled interactions and interaction evidences).
+ * PSI-XML 2.5 data source that provides binary interactions (mixed of abstract interactions and interaction evidences).
  * It will load the full interaction dataset
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)

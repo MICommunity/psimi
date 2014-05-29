@@ -21,7 +21,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Expanded PSI-XML 2.5 writer for modelled interactions (no experimental evidences)
+ * Expanded PSI-XML 2.5 writer for abstract interactions (no experimental evidences)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

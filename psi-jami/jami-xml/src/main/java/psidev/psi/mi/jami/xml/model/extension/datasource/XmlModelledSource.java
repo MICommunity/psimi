@@ -12,7 +12,7 @@ import java.io.*;
 import java.net.URL;
 
 /**
- * PSI-XML 2.5 data source that provides modelled interactions (ignore full experimental details).
+ * PSI-XML 2.5 data source that provides abstract interactions (ignore full experimental details).
  * It will load the full interaction dataset
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
