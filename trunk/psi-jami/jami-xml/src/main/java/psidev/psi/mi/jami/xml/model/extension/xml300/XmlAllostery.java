@@ -1,27 +1,36 @@
-package psidev.psi.mi.jami.xml.model.extension;
+package psidev.psi.mi.jami.xml.model.extension.xml300;
 
-import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultCooperativeEffect;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
-import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
+import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
+
 /**
- * XML implementation of Allostery
+ * XML 3.0 implementation of Allostery
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>15/11/13</pre>
  */
-
-public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperativeEffect implements FileSourceContext {
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
+public class XmlAllostery extends AbstractXmlCooperativeEffect implements Allostery<AllostericEffector> {
     private PsiXmLocator sourceLocator;
     private CvTerm allostericMechanism;
     private CvTerm allosteryType;
     private ModelledParticipant allostericMolecule;
-    private T allostericEffector;
+    private MoleculeEffector moleculeEffector;
+    private FeatureModificationEffector featureEffector;
+
+    public XmlAllostery() {
+        super();
+    }
 
     public XmlAllostery(CvTerm outcome) {
         super(outcome);
@@ -29,23 +38,6 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
 
     public XmlAllostery(CvTerm outcome, CvTerm response) {
         super(outcome, response);
-    }
-
-    public FileSourceLocator getSourceLocator() {
-        return sourceLocator;
-    }
-
-    public void setSourceLocator(FileSourceLocator locator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
-        }
-    }
-
-    public void setSourceLocator(PsiXmLocator locator) {
-        this.sourceLocator = locator;
     }
 
     @Override
@@ -70,6 +62,9 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
     }
 
     public ModelledParticipant getAllostericMolecule() {
+        if (this.allostericMolecule == null){
+            this.allostericMolecule = new XmlModelledParticipant();
+        }
         return this.allostericMolecule;
     }
 
@@ -80,31 +75,62 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         this.allostericMolecule = participant;
     }
 
-    public T getAllostericEffector() {
-        return this.allostericEffector;
+    public AllostericEffector getAllostericEffector() {
+        if (this.moleculeEffector == null && this.featureEffector == null){
+            initialiseDefaultAllostericEffector();
+        }
+        if (this.moleculeEffector != null){
+            return this.moleculeEffector;
+        }
+        else {
+            return this.featureEffector;
+        }
     }
 
-    public void setAllostericEffector(T effector) {
+    protected void initialiseDefaultAllostericEffector(){
+        setJAXBMoleculeEffectorRef(0);
+    }
+
+    public void setAllostericEffector(AllostericEffector effector) {
         if (effector == null){
             throw new IllegalArgumentException("The allosteric effector cannot be null");
         }
-        this.allostericEffector = effector;
+
+        switch (effector.getEffectorType()){
+            case molecule:
+                this.moleculeEffector = (MoleculeEffector)effector;
+                break;
+            case feature_modification:
+                this.featureEffector = (FeatureModificationEffector)effector;
+                break;
+            default:
+                throw new IllegalArgumentException("The allosteric effector can only be a modelled participant (molecule) or a modelled feature (feature_modification)");
+        }
     }
 
-    public void addAffectedInteractionRef(int affectedInteraction, PsiXmLocator locator){
-        getAffectedInteractions().add(new ModelledInteractionRef(affectedInteraction, locator));
+    @XmlElement(name = "allostericMoleculeRef", required = true)
+    public void setJAXBAllostericMoleculeRef(int ref) {
+        this.allostericMolecule = new AllostericMoleculeRef(ref);
     }
 
-    public void setAllostericMoleculeRef(int ref, PsiXmLocator locator){
-       this.allostericMolecule = new AllostericMoleculeRef(ref, locator);
+    @XmlElement(name = "allostericEffectorRef", required = true)
+    public void setJAXBMoleculeEffectorRef(int effector) {
+        this.moleculeEffector = new XmlMoleculeEffector(effector, (PsiXmLocator)sourceLocation());
     }
 
-    public void setAllostericPTMRef(int ref, PsiXmLocator locator){
-        this.allostericEffector = (T)new XmlFeatureModificationEffector(ref, locator);
+    @XmlElement(name = "allostericModificationRef", required = true)
+    public void setJAXBFeatureEffectorRef(int effector) {
+        this.featureEffector = new XmlFeatureModificationEffector(effector, (PsiXmLocator)sourceLocation());
     }
 
-    public void setAllostericEffectorRef(int ref, PsiXmLocator locator){
-        this.allostericEffector = (T)new XmlMoleculeEffector(ref, locator);
+    @XmlElement(name = "allostericMechanism")
+    public void setJAXBAllostericMechanism(XmlCvTerm mechanism) {
+        this.allostericMechanism = mechanism;
+    }
+
+    @XmlElement(name = "allosteryType")
+    public void setJAXBAllosteryType(XmlCvTerm type) {
+        this.allosteryType = type;
     }
 
     ////////////////////////////////// inner classes
@@ -115,9 +141,8 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
     private class AllostericMoleculeRef extends AbstractParticipantRef<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
         private PsiXmLocator sourceLocator;
 
-        public AllostericMoleculeRef(int ref, PsiXmLocator locator) {
+        public AllostericMoleculeRef(int ref) {
             super(ref);
-            this.sourceLocator = locator;
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
@@ -194,66 +219,6 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
                 initialiseParticipantDelegate();
             }
             getDelegate().setInteraction(interaction);
-        }
-    }
-
-    /**
-     * interaction ref for affected cooperative interaction
-     */
-    private class ModelledInteractionRef extends AbstractComplexRef {
-        private PsiXmLocator sourceLocator;
-
-        public ModelledInteractionRef(int ref, PsiXmLocator locator) {
-            super(ref);
-            this.sourceLocator = locator;
-        }
-
-        public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Object object = parsedObjects.get(this.ref);
-                // convert interaction evidence in a complex
-                if (object instanceof AbstractXmlInteractionEvidence){
-                    ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((AbstractXmlInteractionEvidence)object);
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add(interaction);
-                    return true;
-                }
-                // wrap modelled interaction
-                else if (object instanceof ModelledInteraction){
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add((ModelledInteraction)object);
-                }
-                // wrap basic interaction
-                else if (object instanceof AbstractXmlBasicInteraction){
-                    ModelledInteraction interaction = new XmlBasicInteractionComplexWrapper((AbstractXmlBasicInteraction)object);
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add(interaction);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public String toString() {
-            return "Affected modelled interaction Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
-        }
-
-        public FileSourceLocator getSourceLocator() {
-            return this.sourceLocator;
-        }
-
-        public void setSourceLocator(FileSourceLocator sourceLocator) {
-            if (sourceLocator == null){
-                this.sourceLocator = null;
-            }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-            }
-        }
-
-        public void setSourceLocator(PsiXmLocator sourceLocator) {
-            this.sourceLocator = sourceLocator;
         }
     }
 }

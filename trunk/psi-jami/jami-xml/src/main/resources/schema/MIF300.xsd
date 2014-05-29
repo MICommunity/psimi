@@ -15,7 +15,8 @@
         <xs:sequence>
             <xs:element name="entry" maxOccurs="unbounded" type="mif:entry">
                 <xs:annotation>
-                    <xs:documentation>Describes one or more interactions as a self-contained unit. Multiple entries from different files can be concatenated into a single entrySet.</xs:documentation>
+                    <xs:documentation>Describes one or more interactions as a self-contained unit. Multiple entries from different files can be
+                        concatenated into a single entrySet.</xs:documentation>
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
@@ -212,7 +213,8 @@
     </xs:complexType>
     <xs:complexType name="xref">
         <xs:annotation>
-            <xs:documentation>Crossreference to an external database. Crossreferences to literature databases, e.g. PubMed, should not be put into this structure, but into the bibRef element where possible.</xs:documentation>
+            <xs:documentation>Crossreference to an external database. Crossreferences to literature databases, e.g. PubMed, should not be put into
+                this structure, but into the bibRef element where possible.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="primaryRef" type="mif:dbReference">
@@ -246,7 +248,8 @@
         </xs:attribute>
         <xs:attribute name="dbAc" use="optional">
             <xs:annotation>
-                <xs:documentation>Accession number of the database in the database CV. This element is controlled by the PSI-MI controlled vocabulary "database citation", root term id MI:0444.</xs:documentation>
+                <xs:documentation>Accession number of the database in the database CV. This element is controlled by the PSI-MI controlled
+                    vocabulary "database citation", root term id MI:0444.</xs:documentation>
             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -286,7 +289,8 @@
         </xs:attribute>
         <xs:attribute name="refType" use="optional">
             <xs:annotation>
-                <xs:documentation>Reference type, e.g. "identity" if this reference referes to an identical object in the external database, or "see-also" for additional information. Controlled by CV.</xs:documentation>
+                <xs:documentation>Reference type, e.g. "identity" if this reference referes to an identical object in the external database,
+                    or "see-also" for additional information. Controlled by CV.</xs:documentation>
             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -296,7 +300,8 @@
         </xs:attribute>
         <xs:attribute name="refTypeAc" use="optional">
             <xs:annotation>
-                <xs:documentation>Reference type accession number from the CV of reference types. This element is controlled by the PSI-MI controlled vocabulary "xref type", root term id MI:0353. </xs:documentation>
+                <xs:documentation>Reference type accession number from the CV of reference types. This element is controlled by the PSI-MI
+                    controlled vocabulary "xref type", root term id MI:0353. </xs:documentation>
             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -318,7 +323,8 @@
                 </xs:element>
                 <xs:element name="attributeList" type="mif:attributeList" minOccurs="0" maxOccurs="1">
                     <xs:annotation>
-                        <xs:documentation>Additional description of bibliographic reference such as publication title, authors, journal, publication date...</xs:documentation>
+                        <xs:documentation>Additional description of bibliographic reference such as publication title, authors, journal,
+                            publication date...</xs:documentation>
                     </xs:annotation>
                 </xs:element>
             </xs:sequence>
@@ -405,22 +411,26 @@
         <xs:sequence>
             <xs:element name="names" type="mif:names" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>The names of the organism.  The short label should be a common name if it exists.  The full name should be the full name of the species (i.e. genus species).</xs:documentation>
+                    <xs:documentation>The names of the organism.  The short label should be a common name if it exists.  The full name should be
+                        the full name of the species (i.e. genus species).</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="cellType" type="mif:openCvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>Description of the cell type. Currently no species-independent controlled vocabulary for cell types is available, therefore the choice of reference database(s) is open to the data provider.</xs:documentation>
+                    <xs:documentation>Description of the cell type. Currently no species-independent controlled vocabulary for cell types is available,
+                        therefore the choice of reference database(s) is open to the data provider.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="compartment" type="mif:openCvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>The subcellular compartment of the object. It is strongly recommended to refer to the Gene Ontology cellular component in this element.</xs:documentation>
+                    <xs:documentation>The subcellular compartment of the object. It is strongly recommended to refer to the Gene Ontology cellular
+                        component in this element.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="tissue" type="mif:openCvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>Description of the source tissue. Currently no species-independent controlled vocabulary for tissues is available, therefore the choice of reference database(s) is open to the data provider.</xs:documentation>
+                    <xs:documentation>Description of the source tissue. Currently no species-independent controlled vocabulary for tissues is available,
+                        therefore the choice of reference database(s) is open to the data provider.</xs:documentation>
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
@@ -480,7 +490,8 @@
     </xs:complexType>
     <xs:complexType name="openCvType">
         <xs:annotation>
-            <xs:documentation>Allows to reference an external controlled vocabulary, or to directly include a value if no suitable external definition is available.</xs:documentation>
+            <xs:documentation>Allows to reference an external controlled vocabulary, or to directly include a value if no suitable external definition
+                is available.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
             <xs:element name="names" type="mif:names">
@@ -495,7 +506,8 @@
             </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>If no suitable external controlled vocabulary is available, this attributeList can be used to describe the term. Example: Attribute name: Mouse atlas tissue name; attribute value: spinal cord, day 30.</xs:documentation>
+                    <xs:documentation>If no suitable external controlled vocabulary is available, this attributeList can be used to describe the term.
+                        Example: Attribute name: Mouse atlas tissue name; attribute value: spinal cord, day 30.</xs:documentation>
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
@@ -517,7 +529,8 @@
             </xs:element>
             <xs:element name="fullName" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>A full, detailed name or description of the object. Can be e.g. the full title of a publication, or the scientific name of a species.</xs:documentation>
+                    <xs:documentation>A full, detailed name or description of the object. Can be e.g. the full title of a publication, or the
+                        scientific name of a species.</xs:documentation>
                 </xs:annotation>
                 <xs:simpleType>
                     <xs:restriction base="xs:string">
@@ -628,13 +641,15 @@
             </xs:element>
             <xs:element name="featureType" type="mif:cvType" maxOccurs="unbounded">
                 <xs:annotation>
-                    <xs:documentation>Description and classification of the feature. This element is controlled by the PSI-MI controlled vocabulary "feature",
+                    <xs:documentation>Description and classification of the feature. This element is controlled by the PSI-MI controlled vocabulary
+                        "feature",
                         root term id MI:0116.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="featureDetectionMethod" type="mif:cvType" maxOccurs="unbounded" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>Experimental method used to identify the feature. A setting here overrides the global setting given in the experimentDescription.
+                    <xs:documentation>Experimental method used to identify the feature. A setting here overrides the global setting given in the
+                        experimentDescription.
                         External controlled vocabulary. </xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -648,7 +663,9 @@
                     <xs:sequence>
                         <xs:element name="featureRange" type="mif:baseLocation" maxOccurs="unbounded">
                             <xs:annotation>
-                                <xs:documentation>Location of the feature on the sequence of the interactor. One feature may have more than one featureRange, used e.g. for features which involve sequence positions close in the folded, three-dimensional state of a protein, but non-continuous along the sequence.</xs:documentation>
+                                <xs:documentation>Location of the feature on the sequence of the interactor. One feature may have more than one
+                                    featureRange, used e.g. for features which involve sequence positions close in the folded, three-dimensional
+                                    state of a protein, but non-continuous along the sequence.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                     </xs:sequence>
@@ -692,13 +709,16 @@
                         <xs:annotation>
                             <xs:documentation>The integer position gives the begin position of the feature. The first base or amino acid is position 1.
                                 In combination with the numeric value, the attribute 'status' allows to express fuzzy positions, e.g. 'less than 4'.
-                                Negative positions can be used to describe promotor regions when the interactor is a gene but should not be allowed for proteins</xs:documentation>
+                                Negative positions can be used to describe promotor regions when the interactor is a gene but should not be allowed for
+                                proteins</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:element name="beginInterval" type="mif:interval">
                         <xs:annotation>
-                            <xs:documentation>The begin position may be varying or unclear, but localisable to a certain range. Usually written as e.g. 3..5.
-                                Negative positions can be used to describe promotor regions when the interactor is a gene but should not be allowed for proteins</xs:documentation>
+                            <xs:documentation>The begin position may be varying or unclear, but localisable to a certain range. Usually written as e.g.
+                                3..5.
+                                Negative positions can be used to describe promotor regions when the interactor is a gene but should not be allowed for
+                                proteins</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                 </xs:choice>
@@ -714,20 +734,25 @@
                         <xs:annotation>
                             <xs:documentation>The integer position gives the end position of the feature. The first base or amino acid is position 1.
                                 In combination with the numeric value, the attribute 'status' allows to express fuzzy positions, e.g. 'more than 400'.
-                                Negative positions can be used to describe promotor regions when the interactor is a gene but should not be allowed for proteins</xs:documentation>
+                                Negative positions can be used to describe promotor regions when the interactor is a gene but should not be allowed for
+                                proteins</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:element name="endInterval" type="mif:interval">
                         <xs:annotation>
-                            <xs:documentation>The end position may be varying or unclear, but localisable to a certain range. Usually written as e.g. 3..5.
-                                Negative positions can be used to describe promotor regions when the interactor is a gene but should not be allowed for proteins</xs:documentation>
+                            <xs:documentation>The end position may be varying or unclear, but localisable to a certain range. Usually written as e.g.
+                                3..5.
+                                Negative positions can be used to describe promotor regions when the interactor is a gene but should not be allowed for
+                                proteins</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                 </xs:choice>
             </xs:sequence>
             <xs:element name="isLink" type="xs:boolean" default="false" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>True if the described feature is a linking feature connecting two amino acids rather than extending along the sequence. 'begin' references the first amino acid, 'end' the second. Standard example is a disulfide bridge. Does not reference another feature, therefore is only suitable for linking features on the same amino acid chain. </xs:documentation>
+                    <xs:documentation>True if the described feature is a linking feature connecting two amino acids rather than extending along the
+                        sequence. 'begin' references the first amino acid, 'end' the second. Standard example is a disulfide bridge. Does not
+                        reference another feature, therefore is only suitable for linking features on the same amino acid chain. </xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="resultingSequence" type="mif:resultingSequenceType" minOccurs="0" maxOccurs="1">
@@ -830,17 +855,21 @@
             <xs:element name="hostOrganismList" type="mif:hostOrganismList" minOccurs="0"/>
             <xs:element name="interactionDetectionMethod" type="mif:cvType">
                 <xs:annotation>
-                    <xs:documentation>Experimental method to determine the interaction. This element is controlled by the PSI-MI controlled vocabulary "interaction detection method", root term id MI:0001.</xs:documentation>
+                    <xs:documentation>Experimental method to determine the interaction. This element is controlled by the PSI-MI controlled vocabulary
+                        "interaction detection method", root term id MI:0001.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="participantIdentificationMethod" type="mif:cvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>Experimental method to determine the interactors involved in the interaction. This element is controlled by the PSI-MI controlled vocabulary "participant identification method", root term id MI:0002.</xs:documentation>
+                    <xs:documentation>Experimental method to determine the interactors involved in the interaction. This element is controlled by the
+                        PSI-MI controlled vocabulary "participant identification method", root term id MI:0002.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="featureDetectionMethod" type="mif:cvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>Experimental method to determine the features of interactors. If this element is filled it is assumed to apply to all features described in the experiment. But can be overridden by the featureDetectionMethod given in the individual feature. This element is controlled by the PSI-MI controlled vocabulary "feature detection method", root term id MI:0003.</xs:documentation>
+                    <xs:documentation>Experimental method to determine the features of interactors. If this element is filled it is assumed to apply to
+                        all features described in the experiment. But can be overridden by the featureDetectionMethod given in the individual feature.
+                        This element is controlled by the PSI-MI controlled vocabulary "feature detection method", root term id MI:0003.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="variableParameterList" type="mif:variableParameterList" minOccurs="0">
@@ -861,7 +890,8 @@
         </xs:sequence>
         <xs:attribute name="id" type="xs:int" use="required">
             <xs:annotation>
-                <xs:documentation>All major objects have a numerical id which must be unique to that object within an entry. The object may be repeated, though, e.g. in the denormalised representation.</xs:documentation>
+                <xs:documentation>All major objects have a numerical id which must be unique to that object within an entry. The object may be repeated,
+                    though, e.g. in the denormalised representation.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -910,13 +940,15 @@
         <xs:sequence>
             <xs:element name="value" type="xs:string">
                 <xs:annotation>
-                    <xs:documentation>Free description of the variable value. It can be numerical value or qualitative value depending on the variableParameter.</xs:documentation>
+                    <xs:documentation>Free description of the variable value. It can be numerical value or qualitative value depending on the
+                        variableParameter.</xs:documentation>
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
         <xs:attribute name="id" type="xs:int" use="required">
             <xs:annotation>
-                <xs:documentation>Unique numerical identifier for this variableValue so an interaction can refer to it later. The id has to be unique within a same entry.</xs:documentation>
+                <xs:documentation>Unique numerical identifier for this variableValue so an interaction can refer to it later. The id has to be unique
+                    within a same entry.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
         <xs:attribute name="order" type="xs:int" use="optional">
@@ -944,7 +976,8 @@
         <xs:sequence>
             <xs:element name="variableValueRef" minOccurs="1" maxOccurs="unbounded" type="xs:int">
                 <xs:annotation>
-                    <xs:documentation>The reference to the id of the variableValue described in the variableParameterList/variableParameter/variableParameterValueList
+                    <xs:documentation>The reference to the id of the variableValue described in the
+                        variableParameterList/variableParameter/variableParameterValueList
                         of the experiment.</xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -977,7 +1010,8 @@
                 </xs:element>
                 <xs:element name="availability" type="mif:availability">
                     <xs:annotation>
-                        <xs:documentation>Describes the availability of the interaction data. If no availability is given, the data is assumed to be freely available.</xs:documentation>
+                        <xs:documentation>Describes the availability of the interaction data. If no availability is given, the data is assumed to be
+                            freely available.</xs:documentation>
                     </xs:annotation>
                 </xs:element>
             </xs:choice>
@@ -991,17 +1025,21 @@
             </xs:element>
             <xs:element name="modelled" type="xs:boolean" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>If true, this element describes an interaction in a species of interest, e.g. human, but has actually been investigated in another organism, e.g. mouse. The transfer will usually be based on a homology statement made by the data producer. If this optional element is missing, it is assumed to be set to false.</xs:documentation>
+                    <xs:documentation>If true, this element describes an interaction in a species of interest, e.g. human, but has actually been
+                        investigated in another organism, e.g. mouse. The transfer will usually be based on a homology statement made by the data
+                        producer. If this optional element is missing, it is assumed to be set to false.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="intraMolecular" type="xs:boolean" default="false" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>If true, this interaction is an intramolecular interaction, e.g. an autophosphorylation. If missing, this element is assumed to be false.</xs:documentation>
+                    <xs:documentation>If true, this interaction is an intramolecular interaction, e.g. an autophosphorylation. If missing, this element
+                        is assumed to be false.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="negative" type="xs:boolean" default="false" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>If true, this interaction has been shown NOT to occur under the described experimental conditions. Default false. If this optional element is missing, it is assumed to be set to false.</xs:documentation>
+                    <xs:documentation>If true, this interaction has been shown NOT to occur under the described experimental conditions. Default false.
+                        If this optional element is missing, it is assumed to be set to false.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="confidenceList" type="mif:confidenceList" minOccurs="0"/>
@@ -1021,7 +1059,8 @@
         <xs:attribute name="imexId" type="xs:string" use="optional"/>
         <xs:attribute name="id" type="xs:int" use="required">
             <xs:annotation>
-                <xs:documentation>All major objects have a numerical id which is unique to that object within a PSI MI file. The object may be repeated, though, e.g. in the denormalised representation.</xs:documentation>
+                <xs:documentation>All major objects have a numerical id which is unique to that object within a PSI MI file. The object may be repeated,
+                    though, e.g. in the denormalised representation.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -1052,7 +1091,8 @@
             </xs:element>
             <xs:element name="intraMolecular" type="xs:boolean" default="false" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>If true, this interaction is an intramolecular interaction, e.g. an autophosphorylation. If missing, this element is assumed to be false.</xs:documentation>
+                    <xs:documentation>If true, this interaction is an intramolecular interaction, e.g. an autophosphorylation. If missing, this element
+                        is assumed to be false.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="confidenceList" type="mif:abstractConfidenceList" minOccurs="0"/>
@@ -1080,14 +1120,16 @@
             </xs:element>
             <xs:element name="cooperativeEffectList" type="mif:cooperativeEffectList" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>A list of cooperative effects this interaction has on subsequent interactions, either through an allosteric or pre-assembly effect.</xs:documentation>
+                    <xs:documentation>A list of cooperative effects this interaction has on subsequent interactions, either through an allosteric or
+                        pre-assembly effect.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0"/>
         </xs:sequence>
         <xs:attribute name="id" type="xs:int" use="required">
             <xs:annotation>
-                <xs:documentation>All major objects have a numerical id which is unique to that object within a PSI MI file. The object may be repeated, though, e.g. in the denormalised representation.</xs:documentation>
+                <xs:documentation>All major objects have a numerical id which is unique to that object within a PSI MI file. The object may be repeated,
+                    though, e.g. in the denormalised representation.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -1117,7 +1159,8 @@
             </xs:element>
             <xs:element name="causalityStatement" type="mif:cvType" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+                    <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement",
+                        root term id MI:xxxx.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="participantTargetRef" type="xs:int" minOccurs="1" maxOccurs="1">
@@ -1139,7 +1182,8 @@
         </xs:attribute>
         <xs:attribute name="causalityStatement" use="required">
             <xs:annotation>
-                <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+                <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement",
+                    root term id MI:xxxx.</xs:documentation>
             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -1149,7 +1193,8 @@
         </xs:attribute>
         <xs:attribute name="causalityStatementAc" use="required">
             <xs:annotation>
-                <xs:documentation>The causality statement MI identifier. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+                <xs:documentation>The causality statement MI identifier. This element is controlled by the PSI-MI controlled vocabulary "causality
+                    statement", root term id MI:xxxx.</xs:documentation>
             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -1184,7 +1229,8 @@
         <xs:sequence>
             <xs:element name="causalityStatement" type="mif:cvType" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
-                    <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+                    <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement",
+                        root term id MI:xxxx.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="participantTargetRef" type="xs:int" minOccurs="1" maxOccurs="1">
@@ -1201,7 +1247,8 @@
         </xs:annotation>
         <xs:attribute name="causalityStatement" use="required">
             <xs:annotation>
-                <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+                <xs:documentation>The causality statement. This element is controlled by the PSI-MI controlled vocabulary "causality statement",
+                    root term id MI:xxxx.</xs:documentation>
             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -1211,7 +1258,8 @@
         </xs:attribute>
         <xs:attribute name="causalityStatementAc" use="required">
             <xs:annotation>
-                <xs:documentation>The causality statement MI identifier. This element is controlled by the PSI-MI controlled vocabulary "causality statement", root term id MI:xxxx.</xs:documentation>
+                <xs:documentation>The causality statement MI identifier. This element is controlled by the PSI-MI controlled vocabulary "causality
+                    statement", root term id MI:xxxx.</xs:documentation>
             </xs:annotation>
             <xs:simpleType>
                 <xs:restriction base="xs:string">
@@ -1255,18 +1303,19 @@
         <xs:complexContent>
             <xs:extension base="mif:cooperativeEffectType">
                 <xs:sequence>
-                    <xs:element name="allostericMolecule" type="xs:int" minOccurs="1" maxOccurs="1">
+                    <xs:element name="allostericMoleculeRef" type="xs:int" minOccurs="1" maxOccurs="1">
                         <xs:annotation>
                             <xs:documentation>Refers to the participant that is allosterically regulated.</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:choice minOccurs="1">
-                        <xs:element name="allostericEffector" type="xs:int" minOccurs="0" maxOccurs="1">
+                        <xs:element name="allostericEffectorRef" type="xs:int" minOccurs="1" maxOccurs="1">
                             <xs:annotation>
-                                <xs:documentation>Refers to the participant that elicits an allosteric response in an allosteric molecule upon binding to that molecule.</xs:documentation>
+                                <xs:documentation>Refers to the participant that elicits an allosteric response in an allosteric molecule upon
+                                    binding to that molecule.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
-                        <xs:element name="allostericModification" type="xs:int" minOccurs="0" maxOccurs="1">
+                        <xs:element name="allostericModificationRef" type="xs:int" minOccurs="1" maxOccurs="1">
                             <xs:annotation>
                                 <xs:documentation>Refers to the modification (feature) that elicits an allosteric response in an allosteric molecule.</xs:documentation>
                             </xs:annotation>
@@ -1274,12 +1323,15 @@
                     </xs:choice>
                     <xs:element name="allostericMechanism" type="mif:cvType" minOccurs="0" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>Indicates the type of changes that occur in an allosteric molecule upon allosteric modification or binding of an allosteric effector and result in an allosteric response. This element is controlled by the PSI-MI controlled vocabulary "allosteric mechanism", root term id MI:1164.</xs:documentation>
+                            <xs:documentation>Indicates the type of changes that occur in an allosteric molecule upon allosteric modification or
+                                binding of an allosteric effector and result in an allosteric response. This element is controlled by the PSI-MI
+                                controlled vocabulary "allosteric mechanism", root term id MI:1164.</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                     <xs:element name="allosteryType" type="mif:cvType" minOccurs="0" maxOccurs="1">
                         <xs:annotation>
-                            <xs:documentation>Indicates the chemical relationship between the ligands whose binding is allosterically coupled. This element is controlled by the PSI-MI controlled vocabulary "allostery type", root term id MI:1167.</xs:documentation>
+                            <xs:documentation>Indicates the chemical relationship between the ligands whose binding is allosterically coupled.
+                                This element is controlled by the PSI-MI controlled vocabulary "allostery type", root term id MI:1167.</xs:documentation>
                         </xs:annotation>
                     </xs:element>
                 </xs:sequence>
@@ -1308,7 +1360,7 @@
                 </xs:annotation>
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element name="affectedInteraction" type="xs:int" minOccurs="1" maxOccurs="unbounded">
+                        <xs:element name="affectedInteractionRef" type="xs:int" minOccurs="1" maxOccurs="unbounded">
                             <xs:annotation>
                                 <xs:documentation>Refers to the model interaction that is affected by the current model interaction.</xs:documentation>
                             </xs:annotation>
@@ -1327,12 +1379,6 @@
                 <xs:annotation>
                     <xs:documentation>Indicates how the cooperative mechanism affects another interaction. This element is controlled by the PSI-MI
                         controlled vocabulary "cooperative effect response" root term, id MI:.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
-            <xs:element name="cooperativeEffectValue" type="xs:decimal" minOccurs="0" maxOccurs="1">
-                <xs:annotation>
-                    <xs:documentation>Quantification of the cooperative effect. The ratio of a binding or a catalytic parameter of the affected interaction in
-                        the absence versus presence of the affecting interaction.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">
@@ -1394,7 +1440,9 @@
             </xs:element>
             <xs:choice>
                 <xs:annotation>
-                    <xs:documentation>Description of the Interactor. Refers to an already defined interactor in this entry, fully describes an interactor, or references another interaction defined in this entry, to allow the hierarchical building up of complexes from subunits. </xs:documentation>
+                    <xs:documentation>Description of the Interactor. Refers to an already defined interactor in this entry, fully describes an
+                        interactor, or references another interaction defined in this entry, to allow the hierarchical building up of complexes from
+                        subunits. </xs:documentation>
                 </xs:annotation>
                 <xs:element name="interactorRef" type="xs:int">
                     <xs:annotation>
@@ -1414,7 +1462,9 @@
             </xs:choice>
             <xs:element name="biologicalRole" type="mif:cvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>The role of the participant in the interaction. This describes the biological role, e.g. enzyme or enzyme target. The experimental role of the participant, e.g. 'bait', is shown in experimentalForm. This element is controlled by the PSI-MI controlled vocabulary "biologicalRole", root term id MI:0500.</xs:documentation>
+                    <xs:documentation>The role of the participant in the interaction. This describes the biological role, e.g. enzyme or enzyme target.
+                        The experimental role of the participant, e.g. 'bait', is shown in experimentalForm. This element is controlled by the PSI-MI
+                        controlled vocabulary "biologicalRole", root term id MI:0500.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="featureList" type="mif:abstractFeatureList" minOccurs="0"/>
@@ -1521,12 +1571,14 @@
             </xs:element>
             <xs:element name="xref" type="mif:xref" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>An interactor should have an xref whenever possible. If the interactor is not available in external databases, it must be characterised within this object e.g. by its sequence.</xs:documentation>
+                    <xs:documentation>An interactor should have an xref whenever possible. If the interactor is not available in external databases,
+                        it must be characterised within this object e.g. by its sequence.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="interactorType" type="mif:cvType">
                 <xs:annotation>
-                    <xs:documentation>The molecule type of the participant, e.g. protein. This element is controlled by the PSI-MI controlled vocabulary "interactor", root term id MI:0313.</xs:documentation>
+                    <xs:documentation>The molecule type of the participant, e.g. protein. This element is controlled by the PSI-MI controlled vocabulary
+                        "interactor", root term id MI:0313.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="organism" minOccurs="0">
@@ -1558,7 +1610,8 @@
         </xs:sequence>
         <xs:attribute name="id" type="xs:int" use="required">
             <xs:annotation>
-                <xs:documentation>All major objects have a numerical id which is unique to that object within a PSI MI file. The object may be repeated, though, e.g. in the denormalised representation.</xs:documentation>
+                <xs:documentation>All major objects have a numerical id which is unique to that object within a PSI MI file. The object may be repeated,
+                    though, e.g. in the denormalised representation.</xs:documentation>
             </xs:annotation>
         </xs:attribute>
     </xs:complexType>
@@ -1579,7 +1632,9 @@
             </xs:element>
             <xs:choice>
                 <xs:annotation>
-                    <xs:documentation>Description of the Interactor. Refers to an already defined interactor in this entry, fully describes an interactor, or references another interaction defined in this entry, to allow the hierarchical building up of complexes from subunits. </xs:documentation>
+                    <xs:documentation>Description of the Interactor. Refers to an already defined interactor in this entry, fully describes
+                        an interactor, or references another interaction defined in this entry, to allow the hierarchical building up of complexes
+                        from subunits. </xs:documentation>
                 </xs:annotation>
                 <xs:element name="interactorRef" type="xs:int">
                     <xs:annotation>
@@ -1600,7 +1655,9 @@
             <xs:element name="participantIdentificationMethodList" type="mif:participantIdentificationMethodList" minOccurs="0"/>
             <xs:element name="biologicalRole" type="mif:cvType" minOccurs="0">
                 <xs:annotation>
-                    <xs:documentation>The role of the participant in the interaction. This describes the biological role, e.g. enzyme or enzyme target. The experimental role of the participant, e.g. 'bait', is shown in experimentalForm. This element is controlled by the PSI-MI controlled vocabulary "biologicalRole", root term id MI:0500.</xs:documentation>
+                    <xs:documentation>The role of the participant in the interaction. This describes the biological role, e.g. enzyme or enzyme target.
+                        The experimental role of the participant, e.g. 'bait', is shown in experimentalForm. This element is controlled by the PSI-MI
+                        controlled vocabulary "biologicalRole", root term id MI:0500.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="experimentalRoleList" type="mif:experimentalRoleList" minOccurs="0"/>
@@ -1836,7 +1893,8 @@
             </xs:element>
             <xs:element name="featureType" type="mif:cvType" maxOccurs="unbounded">
                 <xs:annotation>
-                    <xs:documentation>Description and classification of the feature. This element is controlled by the PSI-MI controlled vocabulary "feature",
+                    <xs:documentation>Description and classification of the feature. This element is controlled by the PSI-MI controlled vocabulary
+                        "feature",
                         root term id MI:0116.</xs:documentation>
                 </xs:annotation>
             </xs:element>
@@ -1845,7 +1903,9 @@
                     <xs:sequence>
                         <xs:element name="featureRange" type="mif:baseLocation" maxOccurs="unbounded">
                             <xs:annotation>
-                                <xs:documentation>Location of the feature on the sequence of the interactor. One feature may have more than one featureRange, used e.g. for features which involve sequence positions close in the folded, three-dimensional state of a protein, but non-continuous along the sequence.</xs:documentation>
+                                <xs:documentation>Location of the feature on the sequence of the interactor. One feature may have more than one
+                                    featureRange, used e.g. for features which involve sequence positions close in the folded, three-dimensional
+                                    state of a protein, but non-continuous along the sequence.</xs:documentation>
                             </xs:annotation>
                         </xs:element>
                     </xs:sequence>

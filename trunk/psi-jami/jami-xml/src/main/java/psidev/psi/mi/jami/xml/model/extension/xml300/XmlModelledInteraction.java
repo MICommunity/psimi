@@ -32,11 +32,11 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     private CvTerm interactionType;
     private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
-    private Collection<CooperativeEffect> cooperativeEffects;
     private JAXBConfidenceWrapper jaxbConfidenceWrapper;
     private JAXBParameterWrapper jaxbParameterWrapper;
     private CvTerm evidenceType;
     private JAXBBindingFeaturesWrapper jaxbBindingFeaturesWrapper;
+    private JAXBCooperativeEffectWrapper jaxbCooperativeEffectWrapper;
     private Organism organism;
     private CvTerm interactorType;
 
@@ -74,7 +74,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     protected void initialiseCooperativeEffects(){
-        this.cooperativeEffects = new ArrayList<CooperativeEffect>();
+        this.jaxbCooperativeEffectWrapper = new JAXBCooperativeEffectWrapper();
     }
 
     protected void initialiseModelledConfidenceWrapper(){
@@ -115,10 +115,10 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     public Collection<CooperativeEffect> getCooperativeEffects() {
-        if (cooperativeEffects == null){
+        if (this.jaxbCooperativeEffectWrapper == null){
             initialiseCooperativeEffects();
         }
-        return this.cooperativeEffects;
+        return this.jaxbCooperativeEffectWrapper.cooperativeEffects;
     }
 
     public String getPhysicalProperties() {
@@ -321,6 +321,11 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         this.jaxbBindingFeaturesWrapper = jaxbInferredWrapper;
     }
 
+    @XmlElement(name="cooperativeEffectList")
+    public void setJAXBCooperativeEffectWrapper(JAXBCooperativeEffectWrapper jaxbEffectWrapper) {
+        this.jaxbCooperativeEffectWrapper = jaxbEffectWrapper;
+    }
+
     @XmlElement(name = "evidenceType")
     public void setJAXBEvidenceType(XmlCvTerm evidenceType) {
         this.evidenceType = evidenceType;
@@ -461,6 +466,58 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         @Override
         public String toString() {
             return "Interaction Parameter List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="cooperativeEffectWrapper")
+    public static class JAXBCooperativeEffectWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<CooperativeEffect> cooperativeEffects;
+
+        public JAXBCooperativeEffectWrapper(){
+            initialiseCooperativeEffects();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElements({
+                @XmlElement(name = "preassembly", type = XmlPreAssembly.class),
+                @XmlElement(name = "allostery", type = XmlAllostery.class)
+        })
+        public List<CooperativeEffect> getJAXBCooperativeEffects() {
+            return this.cooperativeEffects;
+        }
+
+        protected void initialiseCooperativeEffects(){
+            this.cooperativeEffects = new ArrayList<CooperativeEffect>();
+        }
+
+        @Override
+        public String toString() {
+            return "Interaction cooperative effect List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 
