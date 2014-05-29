@@ -46,7 +46,7 @@ public class PsiXmlWriterOptions extends InteractionWriterOptions{
     public static final String XML_ENTRY_ATTRIBUTES_OPTION = "xml25_entry_attributes_key";
 
     /**
-     * The option to select specialised XML 2.5 writers using specific object instances such as extended interactions, participants,
+     * The option to select specialised XML 2.5 writers using specific object instances such as expanded interactions, participants,
      * features, confidences, parameters, host organisms, xrefs.
      * It has to be a boolean value.
      * If this option is not provided, it will be set to false by default.

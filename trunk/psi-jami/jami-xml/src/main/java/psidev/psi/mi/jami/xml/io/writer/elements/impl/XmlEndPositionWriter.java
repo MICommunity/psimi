@@ -7,7 +7,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * XML 2.5 writer for the end position of a range
+ * XML writer for the end position of a range
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -27,6 +27,11 @@ public class XmlEndPositionWriter extends AbstractXmlPositionWriter {
     @Override
     protected void writeStartIntervalNode() throws XMLStreamException {
         getStreamWriter().writeStartElement("endInterval");
+    }
+
+    @Override
+    protected void initialiseStatusWriter() {
+        super.setStatusWriter(new XmlCvTermWriter(getStreamWriter()));
     }
 
     @Override

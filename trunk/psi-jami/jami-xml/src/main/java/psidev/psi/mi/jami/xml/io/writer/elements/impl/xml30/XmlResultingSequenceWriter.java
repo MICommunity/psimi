@@ -32,9 +32,13 @@ public class XmlResultingSequenceWriter implements PsiXmlElementWriter<Resulting
 
     public PsiXmlXrefWriter getXrefWriter() {
         if (this.xrefWriter == null){
-            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
+            initialiseXrefWriter();
         }
         return xrefWriter;
+    }
+
+    protected void initialiseXrefWriter() {
+        this.xrefWriter = new XmlDbXrefWriter(streamWriter);
     }
 
     public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
@@ -95,5 +99,9 @@ public class XmlResultingSequenceWriter implements PsiXmlElementWriter<Resulting
             // write end xref
             this.streamWriter.writeEndElement();
         }
+    }
+
+    protected XMLStreamWriter getStreamWriter() {
+        return streamWriter;
     }
 }

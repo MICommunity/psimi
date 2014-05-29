@@ -7,8 +7,8 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlRangeWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAnnotationWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -45,10 +45,12 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
 
     public PsiXmlXrefWriter getXrefWriter() {
         if (this.xrefWriter == null){
-            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
+            initialiseXrefWriter();
         }
         return xrefWriter;
     }
+
+    protected abstract void initialiseXrefWriter();
 
     public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
         this.xrefWriter = xrefWriter;
@@ -56,10 +58,12 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
 
     public PsiXmlVariableNameWriter<CvTerm> getFeatureTypeWriter() {
         if (this.featureTypeWriter == null){
-           this.featureTypeWriter = new XmlCvTermWriter(streamWriter);
+           initialiseFeatureTypeWriter();
         }
         return featureTypeWriter;
     }
+
+    protected abstract void initialiseFeatureTypeWriter();
 
     public void setFeatureTypeWriter(PsiXmlVariableNameWriter<CvTerm> featureTypeWriter) {
         this.featureTypeWriter = featureTypeWriter;
@@ -78,10 +82,12 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
 
     public PsiXmlElementWriter<Range> getRangeWriter() {
         if (this.rangeWriter == null){
-            this.rangeWriter = new XmlRangeWriter(streamWriter);
+            initialiseRangeWriter();
         }
         return rangeWriter;
     }
+
+    protected abstract void initialiseRangeWriter();
 
     public void setRangeWriter(PsiXmlElementWriter<Range> rangeWriter) {
         this.rangeWriter = rangeWriter;

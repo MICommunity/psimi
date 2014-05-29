@@ -5,16 +5,19 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.compact.AbstractCompactXmlWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlModelledParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlConfidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlBinaryInteractionEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlExperimentalInteractorWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlModelledInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlFeatureEvidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlHostOrganismWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlInferredInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlSourceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.CompactXmlParticipantEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlSourceWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 
 import javax.xml.stream.XMLStreamException;
@@ -25,7 +28,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Compact PSI-XML 2.5 writer for extended binary interaction evidences (full experimental evidences)
+ * Compact PSI-XML 2.5 writer for expanded binary interaction evidences (full experimental evidences)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -92,7 +95,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
                                                                                     PsiXmlInteractionWriter interactionWriter) {
-        CompactXmlModelledInteractionWriter complexWriter = new CompactXmlModelledInteractionWriter(getStreamWriter(), getElementCache());
+        XmlModelledInteractionWriter complexWriter = new XmlModelledInteractionWriter(getStreamWriter(), getElementCache());
         complexWriter.setAttributeWriter(attributeWriter);
         complexWriter.setXrefWriter(primaryRefWriter);
         complexWriter.setConfidenceWriter(confidenceWriter);
@@ -118,7 +121,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
                                                                                               PsiXmlExperimentWriter experimentWriter,
                                                                                               PsiXmlElementWriter<String> availabilityWriter,
                                                                                               PsiXmlElementWriter inferredInteractionWriter) {
-        CompactXmlBinaryInteractionEvidenceWriter writer = new CompactXmlBinaryInteractionEvidenceWriter(getStreamWriter(), getElementCache());
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setAttributeWriter(attributeWriter);
         writer.setXrefWriter(primaryRefWriter);
         writer.setConfidenceWriter(confidenceWriter);
@@ -141,7 +144,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
                                                                                                 PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
@@ -169,7 +172,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
         hostOrganismWriter.setAliasWriter(aliasWriter);
         hostOrganismWriter.setCvWriter(hostOrganismWriter.getCvWriter());
 
-        CompactXmlParticipantEvidenceWriter writer = new CompactXmlParticipantEvidenceWriter(getStreamWriter(), getElementCache());
+        XmlParticipantEvidenceWriter writer = new XmlParticipantEvidenceWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
@@ -180,7 +183,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
         writer.setParameterWriter(parameterWriter);
         writer.setConfidenceWriter(confidenceWriter);
         writer.setCvWriter(expRoleWriter);
-        writer.setExperimentalInteractorWriter(new CompactXmlExperimentalInteractorWriter(getStreamWriter(), getElementCache()));
+        writer.setExperimentalInteractorWriter(new XmlExperimentalInteractorWriter(getStreamWriter(), getElementCache()));
         return (PsiXmlParticipantWriter<P>) writer;
     }
 

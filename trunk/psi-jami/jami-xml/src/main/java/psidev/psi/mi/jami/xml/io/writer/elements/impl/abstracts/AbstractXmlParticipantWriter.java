@@ -56,10 +56,12 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
 
     public PsiXmlXrefWriter getXrefWriter() {
         if (this.xrefWriter == null){
-            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
+            initialiseXrefWriter();
         }
         return xrefWriter;
     }
+
+    protected abstract void initialiseXrefWriter();
 
     public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
         this.xrefWriter = xrefWriter;
@@ -67,10 +69,12 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
 
     public PsiXmlVariableNameWriter<CvTerm> getBiologicalRoleWriter() {
         if (this.biologicalRoleWriter == null){
-            this.biologicalRoleWriter = new XmlCvTermWriter(streamWriter);
+            initialiseBiologicalRoleWriter();
         }
         return biologicalRoleWriter;
     }
+
+    protected abstract void initialiseBiologicalRoleWriter();
 
     public void setBiologicalRoleWriter(PsiXmlVariableNameWriter<CvTerm> biologicalRoleWriter) {
         this.biologicalRoleWriter = biologicalRoleWriter;
@@ -89,10 +93,12 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
 
     public PsiXmlElementWriter<Interactor> getInteractorWriter() {
         if (this.interactorWriter == null){
-            this.interactorWriter = new XmlInteractorWriter(streamWriter, objectIndex);
+            initialiseInteractorWriter();
         }
         return interactorWriter;
     }
+
+    protected abstract void initialiseInteractorWriter();
 
     public void setInteractorWriter(PsiXmlElementWriter<Interactor> interactorWriter) {
         this.interactorWriter = interactorWriter;

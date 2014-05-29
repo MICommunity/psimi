@@ -3,14 +3,13 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalCvTerm;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * XML 2.5 writer for experimental cv terms
+ * XML writer for experimental cv terms
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

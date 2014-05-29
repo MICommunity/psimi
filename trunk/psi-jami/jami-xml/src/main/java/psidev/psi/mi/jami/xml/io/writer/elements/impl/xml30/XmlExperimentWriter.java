@@ -2,6 +2,10 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlHostOrganismWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlExperimentWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -45,4 +49,25 @@ public class XmlExperimentWriter extends AbstractXmlExperimentWriter {
     protected void initialisePublicationWriter() {
         super.setPublicationWriter(new XmlPublicationWriter(getStreamWriter()));
     }
+
+    @Override
+    protected void initialiseXrefWriter() {
+        super.setXrefWriter(new XmlDbXrefWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseHostOrganismWriter() {
+        super.setHostOrganismWriter(new XmlHostOrganismWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseDetectionMethodWriter() {
+        super.setDetectionMethodWriter(new XmlCvTermWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseConfidenceWriter() {
+        super.setConfidenceWriter(new XmlConfidenceWriter(getStreamWriter()));
+    }
+
 }

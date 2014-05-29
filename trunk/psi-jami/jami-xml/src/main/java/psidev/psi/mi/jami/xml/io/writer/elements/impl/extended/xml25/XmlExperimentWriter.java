@@ -4,7 +4,11 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlNamedExperimentWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlConfidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlDbXrefWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlHostOrganismWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.*;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
@@ -12,7 +16,7 @@ import javax.xml.stream.XMLStreamWriter;
 import java.util.List;
 
 /**
- * XML 2.5 writer for extended experiments having participant identification method,
+ * XML 2.5 writer for expanded experiments having participant identification method,
  * feature detection method and a list of host organisms
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -67,5 +71,30 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
         else{
             super.writeHostOrganism(object);
         }
+    }
+
+    @Override
+    protected void initialisePublicationWriter() {
+        super.setPublicationWriter(new XmlPublicationWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseXrefWriter() {
+        super.setXrefWriter(new XmlDbXrefWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseHostOrganismWriter() {
+        super.setHostOrganismWriter(new XmlHostOrganismWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void initialiseConfidenceWriter() {
+        super.setConfidenceWriter(new XmlConfidenceWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void initialiseDetectionMethodWriter() {
+        super.setDetectionMethodWriter(new XmlCvTermWriter(getStreamWriter()));
     }
 }

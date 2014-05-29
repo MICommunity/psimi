@@ -4,10 +4,10 @@ import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlModelledBinaryInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlModelledInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlModelledParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlModelledFeatureWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlModelledBinaryInteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.ExpandedXmlModelledInteractionWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.ExpandedXmlModelledParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -63,7 +63,7 @@ public class ExpandedXmlModelledBinaryWriter extends AbstractExpandedXmlWriter<M
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
                                                                                     PsiXmlInteractionWriter interactionWriter) {
-        ExpandedXmlModelledInteractionWriter complexWriter = new ExpandedXmlModelledInteractionWriter(getStreamWriter(), getElementCache());
+        XmlModelledInteractionWriter complexWriter = new XmlModelledInteractionWriter(getStreamWriter(), getElementCache());
         complexWriter.setAttributeWriter(attributeWriter);
         complexWriter.setXrefWriter(primaryRefWriter);
         complexWriter.setConfidenceWriter(confidenceWriter);
@@ -90,7 +90,7 @@ public class ExpandedXmlModelledBinaryWriter extends AbstractExpandedXmlWriter<M
                                                                                               PsiXmlExperimentWriter experimentWriter,
                                                                                               PsiXmlElementWriter<String> availabilityWriter,
                                                                                               PsiXmlElementWriter inferredInteractionWriter) {
-        ExpandedXmlModelledBinaryInteractionWriter writer = new ExpandedXmlModelledBinaryInteractionWriter(getStreamWriter(), getElementCache());
+        XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(getStreamWriter(), getElementCache());
         writer.setAttributeWriter(attributeWriter);
         writer.setXrefWriter(primaryRefWriter);
         writer.setConfidenceWriter(confidenceWriter);
@@ -125,7 +125,7 @@ public class ExpandedXmlModelledBinaryWriter extends AbstractExpandedXmlWriter<M
                                                                                               PsiXmlParameterWriter parameterWriter,
                                                                                               PsiXmlElementWriter<Organism> organismWriter) {
 
-        ExpandedXmlModelledParticipantWriter writer = new ExpandedXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);

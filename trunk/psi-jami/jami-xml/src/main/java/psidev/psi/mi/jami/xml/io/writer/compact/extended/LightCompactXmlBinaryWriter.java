@@ -5,9 +5,12 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.compact.AbstractCompactXmlWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlModelledParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlBasicBinaryInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlModelledInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlSourceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlFeatureWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlModelledParticipantWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParameterWriter;
@@ -72,7 +75,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
                                                                                     PsiXmlInteractionWriter interactionWriter) {
-        CompactXmlModelledInteractionWriter complexWriter = new CompactXmlModelledInteractionWriter(getStreamWriter(), getElementCache());
+        XmlModelledInteractionWriter complexWriter = new XmlModelledInteractionWriter(getStreamWriter(), getElementCache());
         complexWriter.setAttributeWriter(attributeWriter);
         complexWriter.setXrefWriter(primaryRefWriter);
         complexWriter.setConfidenceWriter(confidenceWriter);
@@ -98,7 +101,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
                                                                                 PsiXmlExperimentWriter experimentWriter,
                                                                                 PsiXmlElementWriter<String> availabilityWriter,
                                                                                 PsiXmlElementWriter inferredInteractionWriter) {
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(getStreamWriter(), getElementCache());
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(getStreamWriter(), getElementCache());
         writer.setAttributeWriter(attributeWriter);
         writer.setXrefWriter(primaryRefWriter);
         writer.setChecksumWriter(checksumWriter);
@@ -118,7 +121,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
                                                                                                 PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(getStreamWriter(), getElementCache());
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
@@ -139,7 +142,7 @@ public class LightCompactXmlBinaryWriter extends AbstractCompactXmlWriter<Binary
                                                                                               PsiXmlParameterWriter parameterWriter,
                                                                                               PsiXmlElementWriter<Organism> organismWriter) {
 
-        CompactXmlParticipantWriter writer = new CompactXmlParticipantWriter(getStreamWriter(), getElementCache());
+        XmlParticipantWriter writer = new XmlParticipantWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);

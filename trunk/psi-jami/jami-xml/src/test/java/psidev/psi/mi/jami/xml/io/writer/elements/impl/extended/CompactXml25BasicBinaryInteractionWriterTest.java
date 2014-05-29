@@ -15,6 +15,7 @@ import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlBasicBinaryInteractionWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteraction;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
@@ -23,7 +24,7 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for CompactXmlBasicBinaryInteractionWriter
+ * Unit tester for XmlBasicBinaryInteractionWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -368,7 +369,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -384,7 +385,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -400,7 +401,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
         streamWriter.flush();
@@ -416,7 +417,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -430,7 +431,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -445,7 +446,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteraction)interaction);
         streamWriter.flush();
 
@@ -461,7 +462,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteraction)interaction);
         streamWriter.flush();
 
@@ -477,7 +478,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -493,7 +494,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -520,7 +521,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.addParticipant(participant2);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -535,7 +536,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -552,7 +553,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -568,7 +569,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         elementCache.extractIdForInteraction(new DefaultInteraction());
         elementCache.extractIdForInteraction(interaction);
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -583,7 +584,7 @@ public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXml25W
         interaction.setIntraMolecular(true);
         elementCache.clear();
 
-        CompactXmlBasicBinaryInteractionWriter writer = new CompactXmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlBasicBinaryInteractionWriter writer = new XmlBasicBinaryInteractionWriter(createStreamWriter(), this.elementCache);
         writer.write((BinaryInteraction)interaction);
         streamWriter.flush();
 

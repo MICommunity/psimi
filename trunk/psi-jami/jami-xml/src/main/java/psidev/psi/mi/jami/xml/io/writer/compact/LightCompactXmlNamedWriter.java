@@ -3,11 +3,12 @@ package psidev.psi.mi.jami.xml.io.writer.compact;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedModelledInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedModelledParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlFeatureWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlNamedExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlNamedModelledParticipantWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlNamedParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -18,7 +19,7 @@ import java.io.Writer;
 
 /**
  * Compact PSI-XML 2.5 writer for light interactions (no experimental evidences) having names.
- * Participants, experiments and features are also assumed to have extended names
+ * Participants, experiments and features are also assumed to have expanded names
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -69,7 +70,7 @@ public class LightCompactXmlNamedWriter extends AbstractCompactXmlWriter<Interac
                                                                                     PsiXmlParticipantWriter<ModelledParticipant> modelledParticipantWriter,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
                                                                                     PsiXmlInteractionWriter interactionWriter) {
-        CompactXmlNamedModelledInteractionWriter complexWriter = new CompactXmlNamedModelledInteractionWriter(getStreamWriter(), getElementCache());
+        XmlNamedModelledInteractionWriter complexWriter = new XmlNamedModelledInteractionWriter(getStreamWriter(), getElementCache());
         complexWriter.setAttributeWriter(attributeWriter);
         complexWriter.setXrefWriter(primaryRefWriter);
         complexWriter.setConfidenceWriter(confidenceWriter);
@@ -95,7 +96,7 @@ public class LightCompactXmlNamedWriter extends AbstractCompactXmlWriter<Interac
                                                                                 PsiXmlExperimentWriter experimentWriter,
                                                                                 PsiXmlElementWriter<String> availabilityWriter,
                                                                                 PsiXmlElementWriter inferredInteractionWriter) {
-        CompactXmlNamedInteractionWriter writer = new CompactXmlNamedInteractionWriter(getStreamWriter(), getElementCache());
+        XmlNamedInteractionWriter writer = new XmlNamedInteractionWriter(getStreamWriter(), getElementCache());
         writer.setAttributeWriter(attributeWriter);
         writer.setXrefWriter(primaryRefWriter);
         writer.setChecksumWriter(checksumWriter);
@@ -115,7 +116,7 @@ public class LightCompactXmlNamedWriter extends AbstractCompactXmlWriter<Interac
                                                                                                 PsiXmlVariableNameWriter<CvTerm> bioRoleWriter,
                                                                                                 PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
                                                                                                 PsiXmlParticipantWriter participantWriter) {
-        CompactXmlNamedModelledParticipantWriter writer = new CompactXmlNamedModelledParticipantWriter(getStreamWriter(), getElementCache());
+        XmlNamedModelledParticipantWriter writer = new XmlNamedModelledParticipantWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);
@@ -136,7 +137,7 @@ public class LightCompactXmlNamedWriter extends AbstractCompactXmlWriter<Interac
                                                                                               PsiXmlParameterWriter parameterWriter,
                                                                                               PsiXmlElementWriter<Organism> organismWriter) {
 
-        CompactXmlNamedParticipantWriter writer = new CompactXmlNamedParticipantWriter(getStreamWriter(), getElementCache());
+        XmlNamedParticipantWriter writer = new XmlNamedParticipantWriter(getStreamWriter(), getElementCache());
         writer.setXrefWriter(primaryRefWriter);
         writer.setAliasWriter(aliasWriter);
         writer.setAttributeWriter(attributeWriter);

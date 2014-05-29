@@ -10,14 +10,14 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlModelledParticipantWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.CompactXmlParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlModelledParticipantWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 
 /**
- * Unit tester for CompactXmlModelledParticipantWriter
+ * Unit tester for XmlModelledParticipantWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -188,7 +188,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -202,7 +202,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         ModelledParticipant participant = new DefaultModelledParticipant(complex);
         elementCache.clear();
 
-        CompactXmlParticipantWriter writer = new CompactXmlParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlParticipantWriter writer = new XmlParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -216,7 +216,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         ModelledParticipant participant = new DefaultModelledParticipant(complex);
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.setComplexAsInteractor(true);
         writer.write(participant);
         streamWriter.flush();
@@ -230,7 +230,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         ModelledParticipant participant = new DefaultModelledParticipant(complex);
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -244,7 +244,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         participant.getAliases().add(new DefaultAlias("test"));
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -258,7 +258,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         participant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -273,7 +273,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         participant.addFeature(feature);
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -287,7 +287,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         participant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -300,7 +300,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         participant.setStoichiometry(1);
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -313,7 +313,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         participant.setStoichiometry(new DefaultStoichiometry(1,4));
         elementCache.clear();
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 
@@ -327,7 +327,7 @@ public class CompactXml25ModelledParticipantWriterTest extends AbstractXml25Writ
         elementCache.extractIdForParticipant(new DefaultParticipant(new DefaultProtein("protein test")));
         elementCache.extractIdForParticipant(participant);
 
-        CompactXmlModelledParticipantWriter writer = new CompactXmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
+        XmlModelledParticipantWriter writer = new XmlModelledParticipantWriter(createStreamWriter(), this.elementCache);
         writer.write(participant);
         streamWriter.flush();
 

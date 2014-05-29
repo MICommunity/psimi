@@ -12,7 +12,6 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlPublicationWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAnnotationWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -42,10 +41,12 @@ public abstract class AbstractXmlPublicationWriter implements PsiXmlPublicationW
 
     public PsiXmlXrefWriter getXrefWriter() {
         if (this.xrefWriter == null){
-            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
+            initialiseXrefWriter();
         }
         return xrefWriter;
     }
+
+    protected abstract void initialiseXrefWriter();
 
     public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
         this.xrefWriter = xrefWriter;

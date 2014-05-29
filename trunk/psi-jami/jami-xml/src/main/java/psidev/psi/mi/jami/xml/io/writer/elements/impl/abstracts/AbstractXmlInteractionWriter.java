@@ -3,12 +3,13 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.analysis.graph.BindingSiteCliqueFinder;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultExperiment;
-import psidev.psi.mi.jami.model.impl.DefaultPublication;
+import psidev.psi.mi.jami.utils.InteractionUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlExperimentWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAnnotationWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlChecksumWriter;
+import psidev.psi.mi.jami.xml.model.extension.BibRef;
+import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -65,10 +66,12 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     public PsiXmlXrefWriter getXrefWriter() {
         if (this.xrefWriter == null){
-            this.xrefWriter = new XmlDbXrefWriter(streamWriter);
+            initialiseXrefWriter();
         }
         return xrefWriter;
     }
+
+    protected abstract void initialiseXrefWriter();
 
     public void setXrefWriter(PsiXmlXrefWriter xrefWriter) {
         this.xrefWriter = xrefWriter;
@@ -84,10 +87,12 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     public PsiXmlElementWriter<Set<Feature>> getInferredInteractionWriter() {
         if (this.inferredInteractionWriter == null){
-            this.inferredInteractionWriter = new XmlInferredInteractionWriter(streamWriter, objectIndex);
+            initialiseInferredInteractionWriter();
         }
         return inferredInteractionWriter;
     }
+
+    protected abstract void initialiseInferredInteractionWriter();
 
     public void setInferredInteractionWriter(PsiXmlElementWriter<Set<Feature>> inferredInteractionWriter) {
         this.inferredInteractionWriter = inferredInteractionWriter;
@@ -103,10 +108,12 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     public PsiXmlElementWriter<Experiment> getExperimentWriter() {
         if (this.experimentWriter == null){
-            this.experimentWriter = new XmlExperimentWriter(streamWriter, objectIndex);
+            initialiseExperimentWriter();
         }
         return experimentWriter;
     }
+
+    protected abstract void initialiseExperimentWriter();
 
     public PsiXmlElementWriter<Checksum> getChecksumWriter() {
         if (this.checksumWriter == null){
@@ -117,10 +124,12 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     public PsiXmlVariableNameWriter<CvTerm> getInteractionTypeWriter() {
         if (this.interactionTypeWriter == null){
-            this.interactionTypeWriter = new XmlCvTermWriter(streamWriter);
+            initialiseInteractionTypeWriter();
         }
         return interactionTypeWriter;
     }
+
+    protected abstract void initialiseInteractionTypeWriter();
 
     public PsiXmlElementWriter<Annotation> getAttributeWriter() {
         if (this.attributeWriter == null){
@@ -133,7 +142,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     public void write(T object) throws MIIOException {
         try {
             // write start
-            this.streamWriter.writeStartElement("interaction");
+            writeStartInteraction();
             // write id attribute
             int id = this.objectIndex.extractIdForInteraction(object);
             this.streamWriter.writeAttribute("id", Integer.toString(id));
@@ -173,6 +182,8 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             throw new MIIOException("Impossible to write the interaction : "+object.toString(), e);
         }
     }
+
+    protected abstract void writeStartInteraction() throws XMLStreamException;
 
     public Experiment getDefaultExperiment() {
         if (this.defaultExperiment == null){
@@ -232,16 +243,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         }
     }
 
-    protected void writeInferredInteractions(T object) throws XMLStreamException {
-        Collection<Set<Feature>> inferredInteractions = collectInferredInteractionsFrom(object);
-        if (inferredInteractions != null && !inferredInteractions.isEmpty()){
-            this.streamWriter.writeStartElement("inferredInteractionList");
-            for (Set<Feature> inferred : inferredInteractions){
-                getInferredInteractionWriter().write(inferred);
-            }
-            this.streamWriter.writeEndElement();
-        }
-    }
+    protected abstract void writeInferredInteractions(T object) throws XMLStreamException;
 
     protected void writeParticipants(T object) throws XMLStreamException {
         if (!object.getParticipants().isEmpty()){
@@ -269,7 +271,14 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     protected abstract void writeAvailability(T object) throws XMLStreamException;
     protected abstract void writeExperiments(T object) throws XMLStreamException;
     protected abstract void writeOtherAttributes(T object) throws XMLStreamException;
-    protected abstract void writeIntraMolecular(T object) throws XMLStreamException;
+    protected void writeIntraMolecular(T object) throws XMLStreamException{
+        if (InteractionUtils.findInteractionCategoryOf(object,true).equals(ComplexType.self_intra_molecular)){
+            getStreamWriter().writeStartElement("intraMolecular");
+            getStreamWriter().writeCharacters("true");
+            // write end intra molecular
+            getStreamWriter().writeEndElement();
+        }
+    }
     protected abstract void writeModelled(T object) throws XMLStreamException;
 
     protected void writeXref(T object) throws XMLStreamException {
@@ -373,7 +382,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     }
 
     protected void initialiseDefaultExperiment(){
-        this.defaultExperiment = new DefaultExperiment(new DefaultPublication("Mock publication for interactions that do not have experimental details.",(String)null,(Date)null));
+        this.defaultExperiment = new XmlExperiment(new BibRef("Mock publication for interactions that do not have experimental details.",(String)null,(Date)null));
     }
 
     protected void writeAttribute(String name, String nameAc) throws XMLStreamException {
@@ -388,7 +397,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         this.streamWriter.writeEndElement();
     }
 
-    private Collection<Set<Feature>> collectInferredInteractionsFrom(T object){
+    protected Collection<Set<Feature>> collectInferredInteractionsFrom(T object){
         BindingSiteCliqueFinder<T,Feature> cliqueFinder = new BindingSiteCliqueFinder<T, Feature>(object);
         return cliqueFinder.getAllMaximalCliques();
     }

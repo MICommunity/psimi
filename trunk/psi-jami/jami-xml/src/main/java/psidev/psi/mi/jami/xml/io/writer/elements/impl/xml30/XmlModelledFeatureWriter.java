@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXml30FeatureWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml30.AbstractXmlFeatureWriter;
 
 import javax.xml.stream.XMLStreamWriter;
 
@@ -14,7 +14,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>13/11/13</pre>
  */
 
-public class XmlModelledFeatureWriter extends AbstractXml30FeatureWriter<ModelledFeature> {
+public class XmlModelledFeatureWriter extends AbstractXmlFeatureWriter<ModelledFeature> {
     public XmlModelledFeatureWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }

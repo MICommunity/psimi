@@ -3,9 +3,8 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -73,10 +72,12 @@ public abstract class AbstractXmlPositionWriter implements PsiXmlElementWriter<P
 
     public PsiXmlVariableNameWriter<CvTerm> getStatusWriter() {
         if (this.statusWriter == null){
-            this.statusWriter = new XmlCvTermWriter(this.streamWriter);
+            initialiseStatusWriter();
         }
         return statusWriter;
     }
+
+    protected abstract void initialiseStatusWriter();
 
     public void setStatusWriter(PsiXmlVariableNameWriter<CvTerm> statusWriter) {
         this.statusWriter = statusWriter;

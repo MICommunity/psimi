@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlSourceWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;

@@ -8,7 +8,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Xml 2.5 writer for open cv terms
+ * Xml writer for open cv terms
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

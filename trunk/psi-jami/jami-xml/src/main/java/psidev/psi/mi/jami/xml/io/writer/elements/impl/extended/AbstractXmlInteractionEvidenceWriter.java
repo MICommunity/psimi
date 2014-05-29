@@ -3,22 +3,23 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlParameterWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAvailabilityWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
-import psidev.psi.mi.jami.xml.model.extension.BibRef;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlExperimentWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParameterWriter;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
-import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
+import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
 /**
- * Abstract class for interaction evidence writers that write extended interactions (having modelled, intramolecular properties, list
+ * Abstract class for interaction evidence writers that write expanded interactions (having modelled, intramolecular properties, list
  * of experiments, list of interaction types, etc.)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -26,77 +27,140 @@ import java.util.List;
  * @since <pre>18/11/13</pre>
  */
 
-public abstract class AbstractXmlInteractionEvidenceWriter<I extends InteractionEvidence, P extends ParticipantEvidence> extends AbstractXmlInteractionWriter<I,P> {
-    private PsiXmlElementWriter<String> availabilityWriter;
-    private PsiXmlElementWriter<Confidence> confidenceWriter;
-    private PsiXmlParameterWriter parameterWriter;
+public abstract class AbstractXmlInteractionEvidenceWriter<I extends InteractionEvidence>
+        extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlInteractionEvidenceWriter<I>
+        implements PsiXmlExtendedInteractionWriter<I> {
+
+    private PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter;
+    private PsiXmlElementWriter<Alias> aliasWriter;
 
     public AbstractXmlInteractionEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
 
     }
 
-    public PsiXmlElementWriter<String> getAvailabilityWriter() {
-        if (this.availabilityWriter == null){
-            this.availabilityWriter = new XmlAvailabilityWriter(getStreamWriter(), getObjectIndex());
+    public PsiXmlElementWriter<InferredInteraction> getXmlInferredInteractionWriter() {
+        if (this.inferredInteractionWriter == null){
+            this.inferredInteractionWriter = new XmlInferredInteractionWriter(getStreamWriter(), getObjectIndex());
         }
-        return availabilityWriter;
+        return inferredInteractionWriter;
     }
 
-    public void setAvailabilityWriter(PsiXmlElementWriter<String> availabilityWriter) {
-        this.availabilityWriter = availabilityWriter;
+    public void setXmlInferredInteractionWriter(PsiXmlElementWriter<InferredInteraction> inferredInteractionWriter) {
+        this.inferredInteractionWriter = inferredInteractionWriter;
     }
 
-    public PsiXmlElementWriter<Confidence> getConfidenceWriter() {
-        if (this.confidenceWriter == null){
-            this.confidenceWriter = new XmlConfidenceWriter(getStreamWriter());
+    public PsiXmlElementWriter<Alias> getAliasWriter() {
+        if (this.aliasWriter == null){
+            this.aliasWriter =  new XmlAliasWriter(getStreamWriter());
         }
-        return confidenceWriter;
+        return aliasWriter;
     }
 
-    public void setConfidenceWriter(PsiXmlElementWriter<Confidence> confidenceWriter) {
-        this.confidenceWriter = confidenceWriter;
-    }
-
-    public PsiXmlParameterWriter getParameterWriter() {
-        if (this.parameterWriter == null){
-            this.parameterWriter = new XmlParameterWriter(getStreamWriter(), getObjectIndex());
-        }
-        return parameterWriter;
-    }
-
-    public void setParameterWriter(PsiXmlParameterWriter parameterWriter) {
-        this.parameterWriter = parameterWriter;
-    }
-
-    @Override
-    protected void initialiseDefaultExperiment() {
-        super.setDefaultExperiment(new XmlExperiment(new BibRef("Mock publication for interactions that do not have experimental details.", (String) null, (Date) null)));
-        getParameterWriter().setDefaultExperiment(getDefaultExperiment());
-    }
-
-    @Override
-    public void setDefaultExperiment(Experiment defaultExperiment) {
-        super.setDefaultExperiment(defaultExperiment);
-        getParameterWriter().setDefaultExperiment(defaultExperiment);
-    }
-
-    @Override
-    public Experiment extractDefaultExperimentFrom(I interaction) {
-        Experiment exp = interaction.getExperiment();
-        return exp != null ? exp : getDefaultExperiment() ;
+    public void setAliasWriter(PsiXmlElementWriter<Alias> aliasWriter) {
+        this.aliasWriter = aliasWriter;
     }
 
     @Override
     public List<Experiment> extractDefaultExperimentsFrom(I interaction) {
-        List<Experiment> exp = ((ExtendedPsiXmlInteractionEvidence)interaction).getExperiments();
-        return !exp.isEmpty() ? exp : Collections.singletonList(getDefaultExperiment());
+        if (interaction instanceof ExtendedPsiXmlInteractionEvidence){
+            List<Experiment> exp = ((ExtendedPsiXmlInteractionEvidence)interaction).getExperiments();
+            return !exp.isEmpty() ? exp : Collections.singletonList(getDefaultExperiment());
+        }
+        else{
+            return Collections.singletonList(getDefaultExperiment());
+        }
     }
 
     @Override
-    protected void writeExperiments(I object) throws XMLStreamException {
-        if (object.getExperiment() != null){
-            setDefaultExperiment(object.getExperiment());
+    protected void initialiseInferredInteractionWriter() {
+        super.setInferredInteractionWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlInferredInteractionWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void initialiseInteractionTypeWriter() {
+        super.setInteractionTypeWriter(new XmlCvTermWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseXrefWriter(){
+        super.setXrefWriter(new XmlDbXrefWriter(getStreamWriter()));
+    }
+
+    @Override
+    protected void initialiseExperimentWriter(){
+        super.setExperimentWriter(new XmlExperimentWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void initialiseConfidenceWriter(){
+        super.setConfidenceWriter(new XmlConfidenceWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void initialiseParameterWriter(){
+        super.setParameterWriter(new XmlParameterWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void writeNames(I object) throws XMLStreamException {
+        if (object instanceof NamedInteraction){
+            NamedInteraction namedInteraction = (NamedInteraction) object;
+            // write names
+            PsiXmlUtils.writeCompleteNamesElement(namedInteraction.getShortName(),
+                    namedInteraction.getFullName(), namedInteraction.getAliases(), getStreamWriter(),
+                    getAliasWriter());
+        }
+        else{
+            super.writeNames(object);
+        }
+    }
+
+    @Override
+    protected void writeIntraMolecular(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteraction){
+            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
+            if (xmlInteraction.isIntraMolecular()){
+                getStreamWriter().writeStartElement("intraMolecular");
+                getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));
+                // write end intra molecular
+                getStreamWriter().writeEndElement();
+            }
+        }
+        else{
+            super.writeIntraMolecular(object);
+        }
+    }
+
+    @Override
+    protected void writeInteractionType(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteraction){
+            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
+            if (!xmlInteraction.getInteractionTypes().isEmpty()){
+                for (Object type : xmlInteraction.getInteractionTypes()){
+                    getInteractionTypeWriter().write((CvTerm)type,"interactionType");
+                }
+            }
+        }
+        else{
+            super.writeInteractionType(object);
+        }
+    }
+
+    @Override
+    protected void writeInferredInteractions(I object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlInteraction){
+            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
+            if (!xmlInteraction.getInferredInteractions().isEmpty()){
+                getStreamWriter().writeStartElement("inferredInteractionList");
+                for (Object inferred : xmlInteraction.getInferredInteractions()){
+                    getXmlInferredInteractionWriter().write((InferredInteraction)inferred);
+                }
+                getStreamWriter().writeEndElement();
+            }
+        }
+        else{
+            super.writeInferredInteractions(object);
         }
     }
 
@@ -144,72 +208,4 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
         }
     }
 
-    @Override
-    protected void writeOtherAttributes(I object) throws XMLStreamException {
-        // write IMEx id
-        if (object.getImexId() != null){
-            getStreamWriter().writeAttribute("imexId", object.getImexId());
-        }
-    }
-
-    @Override
-    protected void writeModelled(I object) throws XMLStreamException {
-        if (object instanceof ExtendedPsiXmlInteractionEvidence){
-            ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
-            if (xmlInteraction.isModelled()){
-                getStreamWriter().writeStartElement("modelled");
-                getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isModelled()));
-                // write end modelled
-                getStreamWriter().writeEndElement();
-            }
-        }
-    }
-
-    @Override
-    protected void writeParameters(I object) throws XMLStreamException {
-        // write parameters
-        if (!object.getParameters().isEmpty()){
-            // write start parameter list
-            getStreamWriter().writeStartElement("parameterList");
-            for (Object ann : object.getParameters()){
-                getParameterWriter().write((Parameter)ann);
-            }
-            // write end parameterList
-            getStreamWriter().writeEndElement();
-        }
-    }
-
-    @Override
-    protected void writeConfidences(I object) throws XMLStreamException {
-        // write confidences
-        if (!object.getConfidences().isEmpty()){
-            // write start confidence list
-            getStreamWriter().writeStartElement("confidenceList");
-            for (Object ann : object.getConfidences()){
-                getConfidenceWriter().write((Confidence)ann);
-            }
-            // write end confidenceList
-            getStreamWriter().writeEndElement();
-        }
-    }
-
-    @Override
-    protected void writeNegative(I object) throws XMLStreamException {
-        if (object.isNegative()){
-            getStreamWriter().writeStartElement("negative");
-            getStreamWriter().writeCharacters(Boolean.toString(object.isNegative()));
-            // write end negative
-            getStreamWriter().writeEndElement();
-        }
-    }
-
-    protected void writeAvailabilityRef(String availability) throws XMLStreamException {
-        getStreamWriter().writeStartElement("availabilityRef");
-        getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForAvailability(availability)));
-        getStreamWriter().writeEndElement();
-    }
-
-    protected void writeAvailabilityDescription(String availability) throws XMLStreamException {
-        getAvailabilityWriter().write(availability);
-    }
 }

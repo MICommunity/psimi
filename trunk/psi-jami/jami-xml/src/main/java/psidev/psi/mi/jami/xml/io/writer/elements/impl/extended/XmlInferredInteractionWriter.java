@@ -11,7 +11,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * XML 2.5 writer for an extended inferred interaction
+ * XML 2.5 writer for an expanded inferred interaction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
