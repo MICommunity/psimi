@@ -185,7 +185,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         }
     }
 
-    protected abstract void writeOtherProperties(T object);
+    protected abstract void writeOtherProperties(T object) throws XMLStreamException;
 
     protected abstract void writeStartInteraction() throws XMLStreamException;
 

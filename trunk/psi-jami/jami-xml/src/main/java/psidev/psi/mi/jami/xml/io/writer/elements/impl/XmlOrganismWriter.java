@@ -20,6 +20,11 @@ public class XmlOrganismWriter extends AbstractXmlOrganismWriter {
     }
 
     @Override
+    protected void initialiseCvWriter() {
+        super.setCvWriter(new XmlOpenCvTermWriter(getStreamWriter()));
+    }
+
+    @Override
     protected void writeOtherProperties(Organism object) {
         // nothing to do
     }

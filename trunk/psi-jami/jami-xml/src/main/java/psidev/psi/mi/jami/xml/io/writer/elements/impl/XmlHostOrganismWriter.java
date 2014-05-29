@@ -25,6 +25,11 @@ public class XmlHostOrganismWriter extends AbstractXmlOrganismWriter {
     }
 
     @Override
+    protected void initialiseCvWriter() {
+        super.setCvWriter(new XmlOpenCvTermWriter(getStreamWriter()));
+    }
+
+    @Override
     protected void writeStartOrganism() throws XMLStreamException {
         getStreamWriter().writeStartElement("hostOrganism");
     }

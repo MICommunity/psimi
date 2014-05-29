@@ -87,10 +87,14 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
 
     public PsiXmlElementWriter<Organism> getOrganismWriter() {
         if (this.organismWriter == null){
-            this.organismWriter = new XmlOrganismWriter(streamWriter);
+            initialiseOrganismWriter();
 
         }
         return organismWriter;
+    }
+
+    protected void initialiseOrganismWriter() {
+        this.organismWriter = new XmlOrganismWriter(streamWriter);
     }
 
     public void setOrganismWriter(PsiXmlElementWriter<Organism> organismWriter) {
