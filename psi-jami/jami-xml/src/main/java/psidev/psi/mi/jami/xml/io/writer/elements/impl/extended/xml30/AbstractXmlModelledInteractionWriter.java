@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.InteractionUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCausalRelationshipWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlOrganismWriter;
@@ -31,10 +33,26 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     private PsiXmlElementWriter<Organism> organismWriter;
     private PsiXmlElementWriter<Preassembly> preAssemblyWriter;
     private PsiXmlElementWriter<Allostery> allosteryWriter;
+    private PsiXmlCausalRelationshipWriter causalRelationshipWriter;
 
     public AbstractXmlModelledInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
 
+    }
+
+    public PsiXmlCausalRelationshipWriter getCausalRelationshipWriter() {
+        if (this.causalRelationshipWriter == null){
+            initialiseCausalRelationshipWriter();
+        }
+        return causalRelationshipWriter;
+    }
+
+    protected void initialiseCausalRelationshipWriter() {
+        this.causalRelationshipWriter = new XmlCausalRelationshipWriter(getStreamWriter(), getObjectIndex());
+    }
+
+    public void setCausalRelationshipWriter(PsiXmlCausalRelationshipWriter causalRelationshipWriter) {
+        this.causalRelationshipWriter = causalRelationshipWriter;
     }
 
     public PsiXmlElementWriter<Preassembly> getPreAssemblyWriter() {
@@ -172,6 +190,25 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
         writeEvidenceType(object);
         // write cooperative effects
         writeCooperativeEffects(object);
+        // write causal relationships
+        writeCausalRelationships(object);
+    }
+
+    protected void writeCausalRelationships(I object) throws XMLStreamException {
+
+        Collection<Participant> participants = InteractionUtils.extractParticipantWithCausalRelationships(object);
+        if (!participants.isEmpty()){
+            getStreamWriter().writeStartElement("causalRelationshipList");
+
+            for (Participant p : participants){
+                for (Object cr : p.getCausalRelationships()){
+                    getCausalRelationshipWriter().write((CausalRelationship)cr, p);
+                }
+            }
+
+            // end list
+            getStreamWriter().writeEndElement();
+        }
     }
 
     protected void writeCooperativeEffects(I object) throws XMLStreamException {

@@ -1153,7 +1153,7 @@
             <xs:documentation>The causal relationship between a participant source and a participant target.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="SourceParticipantRef" type="xs:int" minOccurs="1" maxOccurs="1">
+            <xs:element name="sourceParticipantRef" type="xs:int" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>Refers to the participant that is the source of the causality statement.</xs:documentation>
                 </xs:annotation>
@@ -1164,7 +1164,7 @@
                         root term id MI:xxxx.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="TargetParticipantRef" type="xs:int" minOccurs="1" maxOccurs="1">
+            <xs:element name="targetParticipantRef" type="xs:int" minOccurs="1" maxOccurs="1">
                 <xs:annotation>
                     <xs:documentation>Refers to the participant that is the target of the causality statement.</xs:documentation>
                 </xs:annotation>
