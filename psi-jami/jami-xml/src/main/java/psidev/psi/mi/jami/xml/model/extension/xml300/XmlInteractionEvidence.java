@@ -5,6 +5,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
+import psidev.psi.mi.jami.model.CausalRelationship;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.VariableParameterValueSet;
 import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractionEvidence;
@@ -24,9 +25,10 @@ import java.util.List;
  */
 @XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence{
+public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence implements ExtendedPsiXmlInteractionEvidence{
 
     private JAXBVariableParameterValueSetWrapper jaxbVariableParameterValueSetWrapper;
+    private JAXBCausalRelationshipWrapper jaxbCausalRelationshipWrapper;
 
     public XmlInteractionEvidence() {
         super();
@@ -48,9 +50,22 @@ public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence{
         return this.jaxbVariableParameterValueSetWrapper.variableValueSets;
     }
 
+    @Override
+    public List<ExtendedPsiXmlCausalRelationship> getCausalRelationships() {
+        if (this.jaxbCausalRelationshipWrapper == null){
+            this.jaxbCausalRelationshipWrapper = new JAXBCausalRelationshipWrapper();
+        }
+        return this.jaxbCausalRelationshipWrapper.causalRelationships;
+    }
+
     @XmlElement(name = "experimentalVariableValueList")
     public void setJAXBVariableParameterValueSetWrapper(JAXBVariableParameterValueSetWrapper jaxbVariableValueList) {
         this.jaxbVariableParameterValueSetWrapper = jaxbVariableValueList;
+    }
+
+    @XmlElement(name="causalRelationshipList")
+    public void setJAXBCausalRelationshipWrapper(JAXBCausalRelationshipWrapper jaxbCausalRelationshipWrapper) {
+        this.jaxbCausalRelationshipWrapper = jaxbCausalRelationshipWrapper;
     }
 
     ////////////////////////////////////////////////////////////////// classes
@@ -105,6 +120,55 @@ public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence{
         @Override
         public String toString() {
             return "Experimental Variable parameter values : "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="causalRelationshipWrapper")
+    public static class JAXBCausalRelationshipWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<ExtendedPsiXmlCausalRelationship> causalRelationships;
+
+        public JAXBCausalRelationshipWrapper(){
+            initialiseCausalRelationships();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(name = "causalRelationship", type = XmlCausalRelationship.class, required = true)
+        public List<ExtendedPsiXmlCausalRelationship> getJAXBCausalRelationships() {
+            return this.causalRelationships;
+        }
+
+        protected void initialiseCausalRelationships(){
+            this.causalRelationships = new ArrayList<ExtendedPsiXmlCausalRelationship>();
+        }
+
+        @Override
+        public String toString() {
+            return "CausalRelationship List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

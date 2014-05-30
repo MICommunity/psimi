@@ -37,6 +37,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     private CvTerm evidenceType;
     private JAXBBindingFeaturesWrapper jaxbBindingFeaturesWrapper;
     private JAXBCooperativeEffectWrapper jaxbCooperativeEffectWrapper;
+    private JAXBCausalRelationshipWrapper jaxbCausalRelationshipWrapper;
     private Organism organism;
     private CvTerm interactorType;
 
@@ -258,6 +259,14 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         return jaxbBindingFeaturesWrapper.bindingFeatures;
     }
 
+    @Override
+    public List<ExtendedPsiXmlCausalRelationship> getCausalRelationships() {
+        if (this.jaxbCausalRelationshipWrapper == null){
+             this.jaxbCausalRelationshipWrapper = new JAXBCausalRelationshipWrapper();
+        }
+        return this.jaxbCausalRelationshipWrapper.causalRelationships;
+    }
+
     @XmlElement(name = "names")
     public void setJAXBNames(ComplexNamesContainer value) {
         super.setJAXBNames(value);
@@ -324,6 +333,11 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlElement(name="cooperativeEffectList")
     public void setJAXBCooperativeEffectWrapper(JAXBCooperativeEffectWrapper jaxbEffectWrapper) {
         this.jaxbCooperativeEffectWrapper = jaxbEffectWrapper;
+    }
+
+    @XmlElement(name="causalRelationshipList")
+    public void setJAXBCausalRelationshipWrapper(JAXBCausalRelationshipWrapper jaxbCausalRelationshipWrapper) {
+        this.jaxbCausalRelationshipWrapper = jaxbCausalRelationshipWrapper;
     }
 
     @XmlElement(name = "evidenceType")
@@ -521,8 +535,54 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         }
     }
 
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="causalRelationshipWrapper")
+    public static class JAXBCausalRelationshipWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<ExtendedPsiXmlCausalRelationship> causalRelationships;
 
-    ////////////////////////////////////////////////////////////////// classes
+        public JAXBCausalRelationshipWrapper(){
+            initialiseCausalRelationships();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(name = "causalRelationship", type = XmlCausalRelationship.class, required = true)
+        public List<ExtendedPsiXmlCausalRelationship> getJAXBCausalRelationships() {
+            return this.causalRelationships;
+        }
+
+        protected void initialiseCausalRelationships(){
+            this.causalRelationships = new ArrayList<ExtendedPsiXmlCausalRelationship>();
+        }
+
+        @Override
+        public String toString() {
+            return "CausalRelationship List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
 
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="bindingFeaturesWrapper")
