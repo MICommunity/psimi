@@ -1,10 +1,9 @@
-package psidev.psi.mi.jami.xml.model.extension;
+package psidev.psi.mi.jami.xml.model.extension.xml300;
 
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.NamedInteraction;
 import psidev.psi.mi.jami.xml.model.Entry;
-import psidev.psi.mi.jami.xml.model.extension.xml300.BindingFeatures;
 
 import java.util.List;
 
@@ -25,4 +24,6 @@ public interface ExtendedPsiXmlModelledInteraction extends NamedInteraction<Mode
     public void setId(int id);
     public boolean isIntraMolecular();
     public void setIntraMolecular(boolean intra);
+
+    public List<ExtendedPsiXmlCausalRelationship> getCausalRelationships();
 }
