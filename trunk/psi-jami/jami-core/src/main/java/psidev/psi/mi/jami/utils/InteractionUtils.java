@@ -10,7 +10,9 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 import psidev.psi.mi.jami.utils.clone.InteractionCloner;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Factory for experimental interactions
@@ -211,5 +213,25 @@ public class InteractionUtils {
         }
 
         return null;
+    }
+
+    /**
+     * This method can return all participants having causal relationships in an interaction
+     * @param interaction
+     * @return the collection of participants having causal relationships, empty collection if no participants with causal relationships
+     */
+    public static Collection<Participant> extractParticipantWithCausalRelationships(Interaction interaction){
+
+        if (interaction != null && !interaction.getParticipants().isEmpty()){
+            Collection<Participant> participants = new ArrayList<Participant>(interaction.getParticipants().size());
+            for (Object o : interaction.getParticipants()){
+                Participant participant = (Participant) o;
+                if (!participant.getCausalRelationships().isEmpty()){
+                    participants.add(participant);
+                }
+            }
+            return participants;
+        }
+        return Collections.EMPTY_LIST;
     }
 }
