@@ -141,6 +141,20 @@ public class InMemoryPsiXmlCache implements PsiXmlIdCache {
         return null;
     }
 
+    @Override
+    public void registerVariableParameterValue(int id, VariableParameterValue object) {
+        this.mapOfReferencedObjects.put(id, object);
+    }
+
+    @Override
+    public VariableParameterValue getVariableParameterValue(int id) {
+        Object object = this.mapOfReferencedObjects.get(id);
+        if (object instanceof VariableParameterValue){
+            return (VariableParameterValue)object;
+        }
+        return null;
+    }
+
 
     @Override
     public void clear() {
