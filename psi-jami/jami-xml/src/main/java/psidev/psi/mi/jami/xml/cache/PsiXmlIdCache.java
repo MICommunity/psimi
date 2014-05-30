@@ -119,6 +119,20 @@ public interface PsiXmlIdCache {
     public Complex getComplex(int id);
 
     /**
+     * Register a variable parameter value with an id
+     * @param id
+     * @param object
+     */
+    public void registerVariableParameterValue(int id, VariableParameterValue object);
+
+    /**
+     *
+     * @param id
+     * @return the variable parameter value registered with this id, null if it does not exist
+     */
+    public VariableParameterValue getVariableParameterValue(int id);
+
+    /**
      * Clear all existing records
      */
     public void clear();

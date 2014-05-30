@@ -125,6 +125,12 @@ public class XmlEntryContext {
         }
     }
 
+    public void registerVariableParameterValue(int id, VariableParameterValue o){
+        if (this.elementCache != null){
+            this.elementCache.registerVariableParameterValue(id, o);
+        }
+    }
+
     public void registerComplex(int id, Complex o){
         if (this.elementCache != null){
             this.elementCache.registerComplex(id, o);
