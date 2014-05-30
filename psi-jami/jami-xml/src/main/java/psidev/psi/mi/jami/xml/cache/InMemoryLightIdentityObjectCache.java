@@ -61,6 +61,11 @@ public class InMemoryLightIdentityObjectCache implements PsiXmlObjectCache {
     }
 
     @Override
+    public int extractIdForVariableParameterValue(VariableParameterValue o) {
+        return extractIdFor(o);
+    }
+
+    @Override
     public int extractIdForComplex(Complex o) {
         return extractIdFor(o);
     }

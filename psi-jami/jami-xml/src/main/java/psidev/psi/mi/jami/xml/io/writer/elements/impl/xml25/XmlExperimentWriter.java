@@ -30,6 +30,11 @@ public class XmlExperimentWriter extends AbstractXmlExperimentWriter {
     }
 
     @Override
+    protected void writeVariableParameters(Experiment object) throws XMLStreamException {
+        // nothing to do here
+    }
+
+    @Override
     protected void writeOtherAttributes(Experiment object, boolean needToWriteAttributeList) throws XMLStreamException {
         // write annotations from publication
         if (object.getPublication() != null){

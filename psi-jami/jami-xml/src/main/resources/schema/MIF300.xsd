@@ -872,14 +872,14 @@
                         This element is controlled by the PSI-MI controlled vocabulary "feature detection method", root term id MI:0003.</xs:documentation>
                 </xs:annotation>
             </xs:element>
-            <xs:element name="variableParameterList" type="mif:variableParameterList" minOccurs="0">
-                <xs:annotation>
-                    <xs:documentation>A list of variable parameters used in this experiment - eg - variable concentration of a specific drug.</xs:documentation>
-                </xs:annotation>
-            </xs:element>
             <xs:element name="confidenceList" type="mif:confidenceList" minOccurs="0">
                 <xs:annotation>
                     <xs:documentation>Confidence in this experiment.  Usually a statistical measure.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="variableParameterList" type="mif:variableParameterList" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>A list of variable parameters used in this experiment - eg - variable concentration of a specific drug.</xs:documentation>
                 </xs:annotation>
             </xs:element>
             <xs:element name="attributeList" type="mif:attributeList" minOccurs="0">

@@ -60,6 +60,14 @@ public interface PsiXmlObjectCache {
      * @param o
      * @return the id assigned to this object
      */
+    public int extractIdForVariableParameterValue(VariableParameterValue o);
+
+    /**
+     * This method will extract the id for this object if it is already registered,
+     * assign an id and register the object if not already registered
+     * @param o
+     * @return the id assigned to this object
+     */
     public int extractIdForFeature(Feature o);
 
     /**
