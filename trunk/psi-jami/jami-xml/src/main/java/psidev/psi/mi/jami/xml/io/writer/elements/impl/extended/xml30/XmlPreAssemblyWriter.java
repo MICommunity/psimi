@@ -13,9 +13,9 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>12/11/13</pre>
  */
 
-public class XmlPreAssemblyWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml30.XmlPreAssemblyWriter {
+public class XmlPreAssemblyWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlPreAssemblyWriter {
 
-    protected XmlPreAssemblyWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public XmlPreAssemblyWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 

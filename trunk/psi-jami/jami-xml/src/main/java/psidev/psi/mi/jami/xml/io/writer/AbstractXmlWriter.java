@@ -24,7 +24,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Abstract class for XML 2.5 writer of interactions
+ * Abstract class for XML writer of interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -159,7 +159,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
             }
         }
         else if (!isInitialised){
-            throw new IllegalArgumentException("The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalArgumentException("The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
         if (options.containsKey(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION)){
@@ -190,7 +190,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
     @Override
     public void end() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML writer was not initialised. The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         started = false;
         // write end of entrySet
@@ -210,13 +210,13 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
     @Override
     public void start() throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML writer was not initialised. The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         // write start of document (by default, version = 1 and encoding = UTL-8)
         try {
             this.streamWriter.writeStartDocument();
         } catch (XMLStreamException e) {
-            throw new MIIOException("Cannot write the start document of this XML 2.5 output.", e);
+            throw new MIIOException("Cannot write the start document of this PSI-XML output.", e);
         }
         // write start of entrySet
         try {
@@ -224,36 +224,16 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
 
             switch (this.version){
                 case v2_5_4:
-                    this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml254_NAMESPACE_URI);
-                    this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
-                    this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, PsiXmlUtils.PSI_SCHEMA_254_LOCATION);
-                    this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"2");
-                    this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"5");
-                    this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"4");
+                    writeEntrySetAttributes("2", "5", "4", PsiXmlUtils.Xml254_NAMESPACE_URI, PsiXmlUtils.PSI_SCHEMA_254_LOCATION);
                     break;
                 case v2_5_3:
-                    this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml253_NAMESPACE_URI);
-                    this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
-                    this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, PsiXmlUtils.PSI_SCHEMA_253_LOCATION);
-                    this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"2");
-                    this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"5");
-                    this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"3");
+                    writeEntrySetAttributes("2", "5", "3", PsiXmlUtils.Xml253_NAMESPACE_URI, PsiXmlUtils.PSI_SCHEMA_253_LOCATION);
                     break;
                 case v3_0_0:
-                    this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml300_NAMESPACE_URI);
-                    this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
-                    this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, PsiXmlUtils.PSI_SCHEMA_300_LOCATION);
-                    this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"3");
-                    this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"0");
-                    this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"0");
+                    writeEntrySetAttributes("3", "0", "0", PsiXmlUtils.Xml300_NAMESPACE_URI, PsiXmlUtils.PSI_SCHEMA_300_LOCATION);
                     break;
                 default:
-                    this.streamWriter.writeDefaultNamespace(PsiXmlUtils.Xml254_NAMESPACE_URI);
-                    this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
-                    this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, PsiXmlUtils.PSI_SCHEMA_254_LOCATION);
-                    this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,"2");
-                    this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,"5");
-                    this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,"4");
+                    writeEntrySetAttributes("2", "5", "4", PsiXmlUtils.Xml254_NAMESPACE_URI, PsiXmlUtils.PSI_SCHEMA_254_LOCATION);
                     break;
             }
         } catch (XMLStreamException e) {
@@ -261,10 +241,19 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
         }
     }
 
+    protected void writeEntrySetAttributes(String level, String version, String minorVersion, String namespaceURI, String schemaLocation) throws XMLStreamException {
+        this.streamWriter.writeDefaultNamespace(namespaceURI);
+        this.streamWriter.writeNamespace(PsiXmlUtils.XML_SCHEMA_PREFIX, PsiXmlUtils.XML_SCHEMA);
+        this.streamWriter.writeAttribute(PsiXmlUtils.XML_SCHEMA, PsiXmlUtils.SCHEMA_LOCATION_ATTRIBUTE, schemaLocation);
+        this.streamWriter.writeAttribute(PsiXmlUtils.LEVEL_ATTRIBUTE,level);
+        this.streamWriter.writeAttribute(PsiXmlUtils.VERSION_ATTRIBUTE,version);
+        this.streamWriter.writeAttribute(PsiXmlUtils.MINOR_VERSION_ATTRIBUTE,minorVersion);
+    }
+
     @Override
     public void write(T interaction) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML writer was not initialised. The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         registerInteractionForEntry(interaction);
         writeInteractionListContent();
@@ -273,7 +262,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
     @Override
     public void write(Collection<? extends T> interactions) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML writer was not initialised. The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         registerInteractionsForEntry(interactions);
         writeInteractionListContent();
@@ -282,7 +271,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
     @Override
     public void write(Iterator<? extends T> interactions) throws MIIOException {
         if (!isInitialised){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML writer was not initialised. The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         registerInteractionsForEntry(interactions);
         writeInteractionListContent();
@@ -294,7 +283,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
             try {
                 this.streamWriter.flush();
             } catch (XMLStreamException e) {
-                throw new MIIOException("Impossible to flush the PSI-XML 2.5 writer", e);
+                throw new MIIOException("Impossible to flush the PSI-XML writer", e);
             }
         }
     }
@@ -304,7 +293,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
             try {
                 this.streamWriter.flush();
             } catch (XMLStreamException e) {
-                throw new MIIOException("Impossible to flush the PSI-XML 2.5 writer", e);
+                throw new MIIOException("Impossible to flush the PSI-XML writer", e);
             } finally {
                 this.isInitialised = false;
                 this.streamWriter = null;
@@ -320,7 +309,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
             try {
                 this.streamWriter.flush();
             } catch (XMLStreamException e) {
-                throw new MIIOException("Impossible to flush the PSI-XML 2.5 writer", e);
+                throw new MIIOException("Impossible to flush the PSI-XML writer", e);
             } finally {
                 isInitialised = false;
                 this.streamWriter = null;

@@ -1,7 +1,8 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml30;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.model.Preassembly;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml30.AbstractXmlCooperativeEffectWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -16,7 +17,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class XmlPreAssemblyWriter extends AbstractXmlCooperativeEffectWriter<Preassembly> {
 
-    protected XmlPreAssemblyWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public XmlPreAssemblyWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 
