@@ -1,7 +1,9 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.VariableParameter;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter;
@@ -21,13 +23,43 @@ import javax.xml.stream.XMLStreamWriter;
 
 public class XmlExperimentWriter extends AbstractXmlExperimentWriter {
 
+    private PsiXmlElementWriter<VariableParameter> variableParameterWriter;
+
     public XmlExperimentWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex){
         super(writer, objectIndex);
+    }
+
+    public PsiXmlElementWriter<VariableParameter> getVariableParameterWriter() {
+        if (this.variableParameterWriter == null){
+            initialiseVariableParameterWriter();
+        }
+        return variableParameterWriter;
+    }
+
+    protected void initialiseVariableParameterWriter() {
+        this.variableParameterWriter = new XmlVariableParameterWriter(getStreamWriter(), getObjectIndex());
+    }
+
+    public void setVariableParameterWriter(PsiXmlElementWriter<VariableParameter> variableParameterWriter) {
+        this.variableParameterWriter = variableParameterWriter;
     }
 
     @Override
     protected void writeOtherAttributes(Experiment object, boolean needToWriteAttributeList) throws XMLStreamException {
         // does not write publication attributes as everything should be in bibref attribute
+    }
+
+    @Override
+    protected void writeVariableParameters(Experiment object) throws XMLStreamException {
+        if (!object.getVariableParameters().isEmpty()){
+            // write parameter list
+            getStreamWriter().writeStartElement("variableParameterList");
+            for (VariableParameter param : object.getVariableParameters()){
+                getVariableParameterWriter().write(param);
+            }
+            // write end variable parameter list
+            getStreamWriter().writeEndElement();
+        }
     }
 
     @Override

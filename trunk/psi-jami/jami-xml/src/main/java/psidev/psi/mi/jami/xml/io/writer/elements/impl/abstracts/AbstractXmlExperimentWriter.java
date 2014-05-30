@@ -140,6 +140,8 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
             writeOtherProperties(object);
             // write confidences
             writeConfidences(object);
+            // write variable parameters
+            writeVariableParameters(object);
             // write attribute list
             writeAttributes(object);
 
@@ -150,6 +152,8 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
             throw new MIIOException("Impossible to write the experiment : "+object.toString(), e);
         }
     }
+
+    protected abstract void writeVariableParameters(Experiment object) throws XMLStreamException;
 
     protected void writeOtherProperties(Experiment object) throws XMLStreamException {
         // nothing to do here

@@ -97,4 +97,9 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
     protected void initialiseDetectionMethodWriter() {
         super.setDetectionMethodWriter(new XmlCvTermWriter(getStreamWriter()));
     }
+
+    @Override
+    protected void initialiseVariableParameterWriter() {
+        super.setVariableParameterWriter(new XmlVariableParameterWriter(getStreamWriter(), getObjectIndex()));
+    }
 }
