@@ -962,14 +962,14 @@
             <xs:documentation>A list of experimental parameter/condition values for which the interaction occurs.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="variableValues" minOccurs="1" maxOccurs="unbounded" type="mif:variableValues">
+            <xs:element name="experimentalVariableValues" minOccurs="1" maxOccurs="unbounded" type="mif:experimentalVariableValues">
                 <xs:annotation>
                     <xs:documentation>A set of experimental parameter/conditions values applied together and for which this interaction occurs.</xs:documentation>
                 </xs:annotation>
             </xs:element>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="variableValues">
+    <xs:complexType name="experimentalVariableValues">
         <xs:annotation>
             <xs:documentation>A set of experimental parameter/conditions values applied together and for which this interaction occurs.</xs:documentation>
         </xs:annotation>
