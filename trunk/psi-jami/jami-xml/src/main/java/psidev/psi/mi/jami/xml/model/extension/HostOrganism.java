@@ -121,7 +121,7 @@ public class HostOrganism extends XmlOrganism{
 
         @Override
         public String toString() {
-            return "Host Organism: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+            return "Host Organism experiment list: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
 
         //////////////////////////////////////////////////////////////

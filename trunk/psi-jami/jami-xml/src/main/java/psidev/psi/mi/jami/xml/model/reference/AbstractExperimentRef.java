@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 
 public abstract class AbstractExperimentRef extends AbstractXmlIdReference implements ExtendedPsiXmlExperiment {
-    private static final Logger logger = Logger.getLogger("AbstractFeatureRef");
+    private static final Logger logger = Logger.getLogger("AbstractExperimentRef");
     private ExtendedPsiXmlExperiment delegate;
 
     public AbstractExperimentRef(int ref) {
