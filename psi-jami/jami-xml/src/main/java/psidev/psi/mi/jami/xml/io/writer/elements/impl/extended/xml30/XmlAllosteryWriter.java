@@ -13,9 +13,9 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>12/11/13</pre>
  */
 
-public class XmlAllosteryWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml30.XmlAllosteryWriter {
+public class XmlAllosteryWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlAllosteryWriter {
 
-    protected XmlAllosteryWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
+    public XmlAllosteryWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
 

@@ -133,7 +133,7 @@ public abstract class AbstractExpandedXmlMixWriter<I extends Interaction, M exte
     @Override
     public void write(Iterator<? extends I> interactions) throws MIIOException {
         if (this.modelledWriter == null || this.evidenceWriter == null || this.lightWriter == null){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML writer was not initialised. The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         List<E> evidences = new ArrayList<E>();
         List<M> modelledList = new ArrayList<M>();
@@ -204,7 +204,7 @@ public abstract class AbstractExpandedXmlMixWriter<I extends Interaction, M exte
     @Override
     public void write(I interaction) throws MIIOException {
         if (this.modelledWriter == null || this.evidenceWriter == null || this.lightWriter == null){
-            throw new IllegalStateException("The PSI-XML 2.5 writer was not initialised. The options for the PSI-XML 2.5 writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+            throw new IllegalStateException("The PSI-XML writer was not initialised. The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
         if (this.evidenceWriter.getInteractionType() != null && this.evidenceWriter.getInteractionType().isAssignableFrom(interaction.getClass())){
             this.evidenceWriter.write((E)interaction);

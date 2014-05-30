@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;

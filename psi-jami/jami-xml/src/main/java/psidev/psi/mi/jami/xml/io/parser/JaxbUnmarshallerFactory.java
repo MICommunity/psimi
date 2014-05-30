@@ -1,8 +1,7 @@
-package psidev.psi.mi.jami.xml.io;
+package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
-import psidev.psi.mi.jami.xml.model.extension.xml300.XmlModelledInteraction;
 import psidev.psi.mi.jami.xml.model.xml25.*;
 import psidev.psi.mi.jami.xml.model.xml30.Xml300EntrySet;
 

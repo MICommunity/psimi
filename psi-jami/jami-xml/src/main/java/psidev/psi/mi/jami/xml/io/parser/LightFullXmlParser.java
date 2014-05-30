@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.xml.io.parser;
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.xml.io.JaxbUnmarshallerFactory;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;

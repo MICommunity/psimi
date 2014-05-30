@@ -8,11 +8,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlOrganismWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlCausalRelationshipWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlBindingFeaturesWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlExperimentWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlModelledConfidenceWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlModelledParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.*;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
