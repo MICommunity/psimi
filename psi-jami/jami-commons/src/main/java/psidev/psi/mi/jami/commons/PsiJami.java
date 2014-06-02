@@ -87,7 +87,7 @@ public class PsiJami {
         supportedOptions4.put(InteractionWriterOptions.COMPLEX_TYPE_OPTION_KEY, complexType);
         supportedOptions4.put(PsiXmlWriterOptions.XML_TYPE_OPTION, type);
         supportedOptions4.put(PsiXmlWriterOptions.XML_EXTENDED_OPTION, extended);
-        supportedOptions4.put(PsiXmlWriterOptions.XML25_NAMES_OPTION, writeNames);
+        supportedOptions4.put(PsiXmlWriterOptions.XML_NAMES_OPTION, writeNames);
         supportedOptions4.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, null);
         switch (type){
             case compact:
