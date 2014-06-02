@@ -62,7 +62,7 @@ public class XmlParticipantEvidenceWriter extends psidev.psi.mi.jami.xml.io.writ
 
     @Override
     protected void initialiseCvWriter() {
-        super.setCvWriter(new XmlExperimentalCvTermWriter(getStreamWriter(), getObjectIndex()));
+        super.setExperimentalCvWriter(new XmlExperimentalCvTermWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class XmlParticipantEvidenceWriter extends psidev.psi.mi.jami.xml.io.writ
             ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
             getStreamWriter().writeStartElement("experimentalRoleList");
             for (CvTerm expRole : xmlParticipant.getExperimentalRoles()){
-                getCvWriter().write(expRole, "experimentalRole");
+                getExperimentalCvWriter().write(expRole, "experimentalRole");
             }
             getStreamWriter().writeEndElement();
         }

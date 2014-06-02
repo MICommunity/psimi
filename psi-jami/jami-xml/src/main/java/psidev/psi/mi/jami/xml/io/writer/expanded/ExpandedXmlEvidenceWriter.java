@@ -145,7 +145,7 @@ public class ExpandedXmlEvidenceWriter extends AbstractExpandedXmlWriter<Interac
         writer.setHostOrganismWriter(organismWriter);
         writer.setParameterWriter(parameterWriter);
         writer.setConfidenceWriter(confidenceWriter);
-        writer.setCvWriter(bioRoleWriter);
+        writer.setExperimentalCvWriter(bioRoleWriter);
         return (PsiXmlParticipantWriter<P>) writer;
     }
 

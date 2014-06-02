@@ -59,7 +59,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter
 
     @Override
     protected void initialiseCvWriter() {
-        super.setCvWriter(new XmlCvTermWriter(getStreamWriter()));
+        super.setExperimentalCvWriter(new XmlCvTermWriter(getStreamWriter()));
     }
 
     @Override

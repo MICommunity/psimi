@@ -56,7 +56,7 @@ public class XmlParticipantEvidenceWriter extends AbstractXmlParticipantEvidence
             ExtendedPsiXmlParticipantEvidence xmlParticipant = (ExtendedPsiXmlParticipantEvidence)object;
             getStreamWriter().writeStartElement("experimentalRoleList");
             for (CvTerm expRole : xmlParticipant.getExperimentalRoles()){
-                getCvWriter().write(expRole,"experimentalRole");
+                getExperimentalCvWriter().write(expRole,"experimentalRole");
             }
             getStreamWriter().writeEndElement();
         }
