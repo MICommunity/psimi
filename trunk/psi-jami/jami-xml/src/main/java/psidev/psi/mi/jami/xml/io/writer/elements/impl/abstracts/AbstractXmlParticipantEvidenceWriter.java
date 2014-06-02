@@ -27,7 +27,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter
         super(writer, objectIndex);
     }
 
-    public PsiXmlVariableNameWriter<CvTerm> getCvWriter() {
+    public PsiXmlVariableNameWriter<CvTerm> getExperimentalCvWriter() {
         if (this.cvWriter == null){
             initialiseCvWriter();
         }
@@ -36,7 +36,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter
 
     protected abstract void initialiseCvWriter();
 
-    public void setCvWriter(PsiXmlVariableNameWriter<CvTerm> cvWriter) {
+    public void setExperimentalCvWriter(PsiXmlVariableNameWriter<CvTerm> cvWriter) {
         this.cvWriter = cvWriter;
     }
 
@@ -85,7 +85,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter
         if (!object.getExperimentalPreparations().isEmpty()){
             getStreamWriter().writeStartElement("experimentalPreparationList");
             for (CvTerm prep : object.getExperimentalPreparations()){
-                getCvWriter().write(prep,"experimentalPreparation");
+                getExperimentalCvWriter().write(prep, "experimentalPreparation");
             }
             getStreamWriter().writeEndElement();
         }
@@ -94,7 +94,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter
     @Override
     protected void writeExperimentalRoles(ParticipantEvidence object) throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentalRoleList");
-        getCvWriter().write(object.getExperimentalRole(),"experimentalRole");
+        getExperimentalCvWriter().write(object.getExperimentalRole(), "experimentalRole");
         getStreamWriter().writeEndElement();
     }
 
@@ -103,7 +103,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter
         if (!object.getIdentificationMethods().isEmpty()){
             getStreamWriter().writeStartElement("participantIdentificationMethodList");
             for (CvTerm method : object.getIdentificationMethods()){
-                getCvWriter().write(method,"participantIdentificationMethod");
+                getExperimentalCvWriter().write(method, "participantIdentificationMethod");
             }
             getStreamWriter().writeEndElement();
         }

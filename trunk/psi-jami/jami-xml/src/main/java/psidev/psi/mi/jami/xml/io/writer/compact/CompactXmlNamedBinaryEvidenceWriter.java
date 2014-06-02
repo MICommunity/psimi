@@ -162,7 +162,7 @@ public class CompactXmlNamedBinaryEvidenceWriter extends AbstractCompactXmlWrite
         writer.setHostOrganismWriter(organismWriter);
         writer.setParameterWriter(parameterWriter);
         writer.setConfidenceWriter(confidenceWriter);
-        writer.setCvWriter(bioRoleWriter);
+        writer.setExperimentalCvWriter(bioRoleWriter);
         return (PsiXmlParticipantWriter<P>) writer;
     }
 

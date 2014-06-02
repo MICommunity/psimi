@@ -155,7 +155,7 @@ public class CompactXmlBinaryEvidenceWriter extends AbstractCompactXmlWriter<Bin
         writer.setInteractorWriter(interactorWriter);
         writer.setBiologicalRoleWriter(bioRoleWriter);
         writer.setFeatureWriter(featureWriter);
-        writer.setCvWriter(bioRoleWriter);
+        writer.setExperimentalCvWriter(bioRoleWriter);
         writer.setHostOrganismWriter(organismWriter);
         writer.setParameterWriter(parameterWriter);
         writer.setConfidenceWriter(confidenceWriter);

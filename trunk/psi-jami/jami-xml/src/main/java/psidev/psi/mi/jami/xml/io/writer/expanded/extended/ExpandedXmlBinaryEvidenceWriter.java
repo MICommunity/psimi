@@ -165,7 +165,7 @@ public class ExpandedXmlBinaryEvidenceWriter extends AbstractExpandedXmlWriter<B
         writer.setHostOrganismWriter(organismWriter);
         writer.setParameterWriter(parameterWriter);
         writer.setConfidenceWriter(confidenceWriter);
-        writer.setCvWriter(expRoleWriter);
+        writer.setExperimentalCvWriter(expRoleWriter);
         writer.setExperimentalInteractorWriter(new XmlExperimentalInteractorWriter(getStreamWriter(), getElementCache()));
         return (PsiXmlParticipantWriter<P>) writer;
     }
