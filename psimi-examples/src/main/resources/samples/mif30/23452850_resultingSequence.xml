@@ -7,7 +7,8 @@
     b. a multiple point mutation construct in which  Thr-188, Cys-193, Lys-211 and Thr-223 are converted to Val, Ala, Leu Trp respectively
 
 thr188val_cys193ala_lys211leu_thr223trp [188-188, 193-193, 213-213, 223-223] mutation increasing strength -->
-<entrySet level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd" xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<entrySet level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd"
+          xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <entry>
         <source releaseDate="2014-03-10Z">
             <names>

@@ -25,7 +25,8 @@ sites of Spc24/25 for the Mis12 complex and CENP-T partially overlap.
 Interaction: EBI-9077845
 Description: However, phospho-mimetic human CENP-T showed increased binding to the Ndc80Bonsai complex based on gel filtration (Supplementary 
 Figure S2A and B) and bound to the human Spc24131–197/Spc25129–224 complex with a KD of 150 nM by ITC (Supplementary Figure S1).-->
-<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd">
     <entry>
         <source releaseDate="2014-04-30+01:00">
             <names>

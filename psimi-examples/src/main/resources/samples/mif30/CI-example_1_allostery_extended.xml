@@ -6,7 +6,8 @@ sites on Pygo are distinct and binding of BCL9 is communicated to the H3K4me-bin
 is induced by binding of BCL9 (the allosteric effector) to Pygo (the allosteric molecule) and regulates the interaction between Pygo (in complex with BCL9)
 and H3K4me. Binding affinities of Pygo for H3K4me have been determined in the absence and presence of BCL9, hence the extent of the cooperative effect of
 BCL9 can be determined by calculating the fold-change of the affinity. -->
-<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="0" version="0" level="3" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="0" version="0" level="3"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd">
     <entry>
         <experimentList>
             <experimentDescription id="539974">
