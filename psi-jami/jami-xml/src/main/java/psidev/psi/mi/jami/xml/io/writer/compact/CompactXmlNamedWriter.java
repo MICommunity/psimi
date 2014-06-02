@@ -11,7 +11,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Compact PSI-XML 2.5 writer for a mix of named interactions
+ * Compact PSI-XML writer for a mix of named interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

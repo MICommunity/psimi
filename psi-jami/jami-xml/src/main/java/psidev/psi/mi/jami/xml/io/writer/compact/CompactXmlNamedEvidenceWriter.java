@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Compact PSI-XML 2.5 writer for named interaction evidences (full experimental evidences)
+ * Compact PSI-XML writer for named interaction evidences (full experimental evidences)
  * Participants, features and experiments also have expanded names to write
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)

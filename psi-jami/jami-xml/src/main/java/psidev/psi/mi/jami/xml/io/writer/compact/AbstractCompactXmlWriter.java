@@ -19,7 +19,7 @@ import java.io.Writer;
 import java.util.*;
 
 /**
- * Abstract class for Compact XML 2.5 writers.
+ * Abstract class for Compact XML writers.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -202,7 +202,10 @@ public abstract class AbstractCompactXmlWriter<T extends Interaction> extends Ab
 
     protected void registerAllInteractorsAndExperimentsFrom(ModelledInteraction interaction){
         // register default experiment
-        this.experiments.add(getComplexWriter().extractDefaultExperimentFrom(interaction));
+        Experiment modelledExp = getComplexWriter().extractDefaultExperimentFrom(interaction);
+        if (modelledExp != null){
+            this.experiments.add(modelledExp);
+        }
 
         for (Object o : interaction.getParticipants()){
             Participant participant = (Participant)o;

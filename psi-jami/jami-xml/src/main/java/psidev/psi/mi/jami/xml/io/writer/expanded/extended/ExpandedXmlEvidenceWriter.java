@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Expanded PSI-XML 2.5 writer for expanded interaction evidences (full experimental evidences)
+ * Expanded PSI-XML writer for expanded interaction evidences (full experimental evidences)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

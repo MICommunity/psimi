@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Compact PSI-XML 2.5 writer for named modelled binary interactions (no experimental evidences).
+ * Compact PSI-XML writer for named modelled binary interactions (no experimental evidences).
  * Participants, features, experiments also have expanded names
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -60,7 +60,10 @@ public class CompactXmlNamedModelledBinaryWriter extends AbstractCompactXmlWrite
 
     @Override
     protected void registerExperiment(ModelledBinaryInteraction interaction) {
-        getExperiments().add(getInteractionWriter().extractDefaultExperimentFrom(interaction));
+        Experiment exp = getInteractionWriter().extractDefaultExperimentFrom(interaction);
+        if (exp != null){
+            getExperiments().add(exp);
+        }
     }
 
     @Override

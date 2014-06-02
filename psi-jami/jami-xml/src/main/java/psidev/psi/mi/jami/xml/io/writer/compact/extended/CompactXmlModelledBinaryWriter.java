@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXmlType;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.compact.AbstractCompactXmlWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlExtendedInteractionWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 
 import javax.xml.stream.XMLStreamException;
@@ -15,7 +16,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Compact PSI-XML 2.5 writer for modelled binary interactions (no experimental evidences)
+ * Compact PSI-XML writer for modelled binary interactions (no experimental evidences)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -61,7 +62,7 @@ public class CompactXmlModelledBinaryWriter extends AbstractCompactXmlWriter<Mod
 
     @Override
     protected void registerExperiment(ModelledBinaryInteraction interaction) {
-        getExperiments().add(getInteractionWriter().extractDefaultExperimentFrom(interaction));
+        getExperiments().addAll(((PsiXmlExtendedInteractionWriter)getInteractionWriter()).extractDefaultExperimentsFrom(interaction));
     }
 
     @Override
