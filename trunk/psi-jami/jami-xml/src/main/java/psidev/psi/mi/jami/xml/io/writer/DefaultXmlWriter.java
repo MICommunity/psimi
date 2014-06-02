@@ -66,6 +66,12 @@ public class DefaultXmlWriter implements InteractionWriter {
                 extended = (Boolean)value;
             }
         }
+        if (options.containsKey(PsiXmlWriterOptions.XML_NAMES_OPTION)){
+            Object value = options.get(PsiXmlWriterOptions.XML_NAMES_OPTION);
+            if (value != null){
+                named = (Boolean)value;
+            }
+        }
         if (options.containsKey(PsiXmlWriterOptions.XML_TYPE_OPTION)){
             Object value = options.get(PsiXmlWriterOptions.XML_TYPE_OPTION);
             if (value instanceof PsiXmlType){
@@ -73,7 +79,7 @@ public class DefaultXmlWriter implements InteractionWriter {
             }
         }
 
-        this.delegate = factory.createPsiXmlWriter(category, type, xmlType, version, extended, named);
+        this.delegate = factory.createPsiXmlWriter(category, type, xmlType, extended, named);
         this.delegate.initialiseContext(options);
     }
 

@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.xml.PsiXmlType;
-import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.io.writer.compact.*;
 import psidev.psi.mi.jami.xml.io.writer.compact.extended.LightCompactXmlBinaryWriter;
 import psidev.psi.mi.jami.xml.io.writer.expanded.*;
@@ -29,17 +28,17 @@ public class PsiXmlWriterFactory {
     }
 
     public InteractionWriter createPsiXmlWriter(InteractionCategory interactionCategory, ComplexType complexType,
-                                                PsiXmlType type, PsiXmlVersion version, boolean extended, boolean named){
+                                                PsiXmlType type, boolean extended, boolean named){
         switch (complexType){
             case binary:
-                return createPsiXmlBinaryWriter(interactionCategory, type, version, extended, named);
+                return createPsiXmlBinaryWriter(interactionCategory, type, extended, named);
             default:
-                return createPsiXmlWriter(interactionCategory, type, version, extended, named);
+                return createPsiXmlWriter(interactionCategory, type, extended, named);
         }
     }
 
     public InteractionWriter createPsiXmlBinaryWriter(InteractionCategory interactionCategory,
-                                                      PsiXmlType type, PsiXmlVersion version, boolean extended, boolean named){
+                                                      PsiXmlType type, boolean extended, boolean named){
         if (interactionCategory == null){
             interactionCategory = InteractionCategory.mixed;
         }
@@ -125,7 +124,7 @@ public class PsiXmlWriterFactory {
     }
 
     public InteractionWriter createPsiXmlWriter(InteractionCategory interactionCategory, PsiXmlType type,
-                                                PsiXmlVersion version, boolean extended, boolean named){
+                                                boolean extended, boolean named){
         if (interactionCategory == null){
             interactionCategory = InteractionCategory.mixed;
         }
