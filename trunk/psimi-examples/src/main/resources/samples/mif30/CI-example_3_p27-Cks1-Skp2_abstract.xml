@@ -221,12 +221,12 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                         <stoichiometry value="1"/>
 					</participant>
 				</participantList>
-				<bindingFeatureList>
-					<bindingFeature>
+				<bindingFeaturesList>
+					<bindingFeatures>
 						<participantFeatureRef>31</participantFeatureRef>
 						<participantFeatureRef>32</participantFeatureRef>
-					</bindingFeature>
-				</bindingFeatureList>
+					</bindingFeatures>
+				</bindingFeaturesList>
 				<interactionType>
 					<names>
 						<shortLabel>direct interaction</shortLabel>
@@ -310,7 +310,9 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
 								</evidenceMethodList>
 							</cooperativityEvidenceDescription>
 						</cooperativityEvidenceList>
-						<affectedInteraction>12</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteractionRef>12</affectedInteractionRef>
+                        </affectedInteractionList>
 						<cooperativeEffectOutcome>
 							<names>
 								<shortLabel>positive cooperative effect</shortLabel>
@@ -529,12 +531,12 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
 						<stoichiometry value="1"/>
 					</participant>
 				</participantList>
-				<bindingFeatureList>
-					<bindingFeature>
+				<bindingFeaturesList>
+					<bindingFeatures>
 						<participantFeatureRef>33</participantFeatureRef>
 						<participantFeatureRef>34</participantFeatureRef>
-					</bindingFeature>
-				</bindingFeatureList>
+					</bindingFeatures>
+				</bindingFeaturesList>
 				<interactionType>
 					<names>
 						<shortLabel>direct interaction</shortLabel>

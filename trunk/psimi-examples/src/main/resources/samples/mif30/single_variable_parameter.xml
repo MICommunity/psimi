@@ -763,9 +763,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1000</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3B, 3E, 4B</attribute>
@@ -901,9 +901,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1001</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3B, 4B</attribute>
@@ -1038,9 +1038,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1002</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3B, 4B</attribute>
@@ -1241,9 +1241,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1003</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3B,4B</attribute>
@@ -1444,9 +1444,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1004</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3B, 4B</attribute>
@@ -1647,9 +1647,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1005</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3B, 4B</attribute>
@@ -1784,9 +1784,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1000</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3C</attribute>
@@ -1921,9 +1921,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1001</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3C</attribute>
@@ -2025,9 +2025,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1003</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3C</attribute>
@@ -2129,9 +2129,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1004</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3C</attribute>
@@ -2233,9 +2233,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1005</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3C</attribute>
@@ -2370,9 +2370,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1001</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3D</attribute>
@@ -2507,9 +2507,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1004</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3D</attribute>
@@ -2644,9 +2644,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1001</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="comment" nameAc="MI:0612">Interaction between ADP-ribose and Clock observed in parp1 -/- cells. Clock remained associated with ADP-ribose even under harsh denaturing conditions (1% SDS) which removed PARP1</attribute>
@@ -2748,9 +2748,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1000</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3I</attribute>
@@ -2851,9 +2851,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1001</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3I</attribute>
@@ -2954,9 +2954,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1002</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3I</attribute>
@@ -3057,9 +3057,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1003</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3I</attribute>
@@ -3160,9 +3160,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1004</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3I</attribute>
@@ -3263,9 +3263,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1005</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Figs. 3I</attribute>
@@ -3367,9 +3367,9 @@
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1002</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3C</attribute>

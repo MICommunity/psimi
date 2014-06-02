@@ -272,7 +272,9 @@
 								</evidenceMethodList>
 							</cooperativityEvidenceDescription>
 						</cooperativityEvidenceList>
-						<affectedInteraction>12</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteractionRef>12</affectedInteractionRef>
+                        </affectedInteractionList>
 						<cooperativeEffectOutcome>
 							<names>
 								<shortLabel>negative cooperative effect</shortLabel>
@@ -371,7 +373,9 @@
 								</evidenceMethodList>
 							</cooperativityEvidenceDescription>
 						</cooperativityEvidenceList>
-						<affectedInteraction>13</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteractionRef>13</affectedInteractionRef>
+                        </affectedInteractionList>
 						<cooperativeEffectOutcome>
 							<names>
 								<shortLabel>positive cooperative effect</shortLabel>
@@ -567,12 +571,12 @@
 						<stoichiometry value="1"/>
 					</participant>
 				</participantList>
-				<bindingFeatureList>
-					<bindingFeature>
+				<bindingFeaturesList>
+					<bindingFeatures>
 						<participantFeatureRef>32</participantFeatureRef>
 						<participantFeatureRef>34</participantFeatureRef>
-					</bindingFeature>
-				</bindingFeatureList>
+					</bindingFeatures>
+				</bindingFeaturesList>
 				<interactionType>
 					<names>
 						<shortLabel>direct interaction</shortLabel>
@@ -775,12 +779,12 @@
 						<stoichiometry value="1"/>
 					</participant>
 				</participantList>
-				<bindingFeatureList>
-					<bindingFeature>
+				<bindingFeaturesList>
+					<bindingFeatures>
 						<participantFeatureRef>35</participantFeatureRef>
 						<participantFeatureRef>37</participantFeatureRef>
-					</bindingFeature>
-				</bindingFeatureList>
+					</bindingFeatures>
+				</bindingFeaturesList>
 				<interactionType>
 					<names>
 						<shortLabel>direct interaction</shortLabel>
@@ -847,7 +851,9 @@
 								</evidenceMethodList>
 							</cooperativityEvidenceDescription>
 						</cooperativityEvidenceList>
-						<affectedInteraction>12</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteractionRef>12</affectedInteractionRef>
+                        </affectedInteractionList>
 						<cooperativeEffectOutcome>
 							<names>
 								<shortLabel>negative cooperative effect</shortLabel>

@@ -336,7 +336,9 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
 								</evidenceMethodList>
 							</cooperativityEvidenceDescription>
 						</cooperativityEvidenceList>
-						<affectedInteraction>12</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteractionRef>12</affectedInteractionRef>
+                        </affectedInteractionList>
 						<cooperativeEffectOutcome>
 							<names>
 								<shortLabel>positive cooperative effect</shortLabel>
