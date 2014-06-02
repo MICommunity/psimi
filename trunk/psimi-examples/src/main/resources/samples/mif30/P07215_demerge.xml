@@ -2,7 +2,8 @@
 <!-- Interaction evidence from a large scale experiment (two hybrid array) in intAct curated publication 14690591.
 
 It refers to a demerged uniprot entry : P07215 (MTCU_YEAST) which has been demerged into P0CX80 and P0CX81 but we don't know which one it is.-->
-<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd">
     <entry>
         <source releaseDate="2014-04-29+01:00">
             <names>

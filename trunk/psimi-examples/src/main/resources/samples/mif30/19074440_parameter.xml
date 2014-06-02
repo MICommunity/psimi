@@ -2,7 +2,8 @@
 <!-- One entry for one publication from IntAct database (19074440) registered in IMEx central-->
 <!-- 3 experiments : 1 anti-bait coimmunoprecipitations, 1 crosslink and 1 fps -->
 <!-- 5 interactions. 2 of them have parameters from fps experiment-->
-<entrySet level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd" xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<entrySet level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd"
+          xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <entry>
         <source releaseDate="2012-02-11Z">
             <names>

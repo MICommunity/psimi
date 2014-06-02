@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <!-- Curated IntAct publication 20832105 registered in IMEx central. The variable parameter is Zeitgeber time (ZT) and
 6 different values were used : 0, 4, 8, 12, 14, 16, 18 and 20.-->
-<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd">
     <entry>
         <source releaseDate="2010-12-15Z">
             <names>

@@ -2,7 +2,8 @@
 <!-- Interaction evidence from a large experiment (anti bait coimmunoprecipitation) in intAct curated publication 22682247, registered in IMEx central.
 
 It refers to a mass spec peptide that could map to GSK3 human protein but did not determine if it was the GSK3 alpha or beta : P49840 or P49841.-->
-<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" level="3" version="0" minorVersion="0"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd">
     <entry>
         <source releaseDate="2014-04-30+01:00">
             <names>

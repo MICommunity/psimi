@@ -5,7 +5,8 @@
  of Ataxin-1, a phosphorylation site that overlaps both motifs. In the unphosphorylated state, Ataxin-1 binds to U2AF65 but not to 14-3-3Z. However,
  upon phosphorylation of Ataxin-1 at serine 775 by Akt1, Ataxin-1 can bind 14-3-3Z with low-micromolar affinity, while its affinity for U2AF65 is weakened,
  allowing 14-3-3Z to outcompete U2AF65. Hence, phosphorylation of Ataxin-1 at serine 775 by Akt1 switches the specificity of Ataxin-1 from U2AF65 to 14-3-3Z. -->
-<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="0" version="0" level="3" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd">
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="0" version="0" level="3"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd">
 	<entry>
 		<interactorList>
 			<interactor id="1">

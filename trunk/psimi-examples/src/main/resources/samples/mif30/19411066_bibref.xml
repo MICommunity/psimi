@@ -2,7 +2,8 @@
 <!-- One entry for one publication from IntAct database (19411066) registered in IMEx central-->
 <!-- 5 experiments : 3 anti-bait coimmunoprecipitations and 2 nucleic acid uv cross-linking assay -->
 <!-- 7 interactions -->
-<entrySet level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.sourceforge.net/mi/rel30/src/MIF300.xsd" xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<entrySet level="3" version="0" minorVersion="0" xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd"
+          xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <entry>
         <source releaseDate="2010-03-19Z">
             <names>
