@@ -1,16 +1,16 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact;
 
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlExperimentalInteractorWriter;
-import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Compact XML 2.5 writer of experimental interactors
+ * Compact XML writer of experimental interactors
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
