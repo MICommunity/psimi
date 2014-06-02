@@ -298,7 +298,9 @@
                                 </evidenceMethodList>
                             </cooperativityEvidenceDescription>
                         </cooperativityEvidenceList>
-                        <affectedInteraction>12</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteraction>12</affectedInteraction>
+                        </affectedInteractionList>
                         <cooperativeEffectOutcome>
                             <names>
                                 <shortLabel>negative cooperative effect</shortLabel>
@@ -397,7 +399,9 @@
                                 </evidenceMethodList>
                             </cooperativityEvidenceDescription>
                         </cooperativityEvidenceList>
-                        <affectedInteraction>13</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteraction>13</affectedInteraction>
+                        </affectedInteractionList>
                         <cooperativeEffectOutcome>
                             <names>
                                 <shortLabel>positive cooperative effect</shortLabel>
@@ -876,7 +880,9 @@
                                 </evidenceMethodList>
                             </cooperativityEvidenceDescription>
                         </cooperativityEvidenceList>
-                        <affectedInteraction>12</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteractionRef>12</affectedInteractionRef>
+                        </affectedInteractionList>
                         <cooperativeEffectOutcome>
                             <names>
                                 <shortLabel>negative cooperative effect</shortLabel>

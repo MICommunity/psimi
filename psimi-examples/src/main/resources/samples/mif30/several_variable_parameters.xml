@@ -842,10 +842,10 @@ and Piceatannol (uM) with two different values 0 and 40.-->
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1000</variableValueRef>
                         <variableValueRef>2000</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3A, 3J.</attribute>
@@ -981,10 +981,10 @@ and Piceatannol (uM) with two different values 0 and 40.-->
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1001</variableValueRef>
                         <variableValueRef>2001</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3A, 3J -2</attribute>
@@ -1120,10 +1120,10 @@ and Piceatannol (uM) with two different values 0 and 40.-->
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1001</variableValueRef>
                         <variableValueRef>2000</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3A, 3J -3</attribute>
@@ -1259,10 +1259,10 @@ and Piceatannol (uM) with two different values 0 and 40.-->
                 <intraMolecular>false</intraMolecular>
                 <negative>false</negative>
                 <experimentalVariableValueList>
-                    <variableValues>
+                    <experimentalVariableValues>
                         <variableValueRef>1000</variableValueRef>
                         <variableValueRef>2001</variableValueRef>
-                    </variableValues>
+                    </experimentalVariableValues>
                 </experimentalVariableValueList>
                 <attributeList>
                     <attribute name="figure legend" nameAc="MI:0599">Fig. 3A, 3J -2</attribute>

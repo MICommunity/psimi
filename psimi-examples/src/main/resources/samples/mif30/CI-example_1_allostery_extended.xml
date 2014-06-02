@@ -321,7 +321,9 @@ BCL9 can be determined by calculating the fold-change of the affinity. -->
                                 </evidenceMethodList>
                             </cooperativityEvidenceDescription>
                         </cooperativityEvidenceList>
-                        <affectedInteraction>12</affectedInteraction>
+                        <affectedInteractionList>
+                            <affectedInteractionRef>12</affectedInteractionRef>
+                        </affectedInteractionList>
                         <cooperativeEffectOutcome>
                             <names>
                                 <shortLabel>positive cooperative effect</shortLabel>
@@ -338,8 +340,8 @@ BCL9 can be determined by calculating the fold-change of the affinity. -->
                                 <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1162" refType="identity" refTypeAc="MI:0356"/>
                             </xref>
                         </cooperativeEffectResponse>
-                        <allostericMolecule>21</allostericMolecule>
-                        <allostericEffector>22</allostericEffector>
+                        <allostericMoleculeRef>21</allostericMoleculeRef>
+                        <allostericEffectorRef>22</allostericEffectorRef>
                         <allostericMechanism>
                             <names>
                                 <shortLabel>allosteric change in structure</shortLabel>
