@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded;
 
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
@@ -12,7 +12,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
- * Expanded XML 2.5 writer of experimental interactors
+ * Expanded XML writer of experimental interactors
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
