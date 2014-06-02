@@ -25,11 +25,11 @@ import java.util.Iterator;
  * @since <pre>06/11/13</pre>
  */
 
-public class Xml25InteractionParserTest {
+public class XmlInteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
         PsiXmlParser<Interaction<? extends Participant>> parser = new LightXmlParser(stream);
 
@@ -125,7 +125,7 @@ public class Xml25InteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
         PsiXmlParser<Interaction<? extends Participant>> parser = new LightXmlParser(stream);
 
@@ -221,7 +221,7 @@ public class Xml25InteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
         PsiXmlParser<Interaction<? extends Participant>> parser = new LightXmlParser(stream);
 
@@ -272,7 +272,7 @@ public class Xml25InteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
         PsiXmlParser<Interaction<? extends Participant>> parser = new LightXmlParser(stream);
 
@@ -342,7 +342,7 @@ public class Xml25InteractionParserTest {
 
     @Test
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
         PsiXmlParser<Interaction<? extends Participant>> parser = new LightXmlParser(stream);
 
         Interaction<? extends Participant> interaction = parser.parseNextInteraction();

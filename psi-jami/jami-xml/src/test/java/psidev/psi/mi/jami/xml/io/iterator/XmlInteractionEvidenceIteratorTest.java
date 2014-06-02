@@ -4,11 +4,10 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.io.parser.LightXmlParser;
-import psidev.psi.mi.jami.xml.io.parser.Xml25InteractionEvidenceParserTest;
+import psidev.psi.mi.jami.xml.io.parser.XmlEvidenceParser;
+import psidev.psi.mi.jami.xml.io.parser.XmlInteractionEvidenceParserTest;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
@@ -18,23 +17,23 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit tester for XmlInteractionIterator
+ * Unit tester for XmlInteractionEvidenceIterator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>08/11/13</pre>
  */
 
-public class Xml25InteractionIteratorTest {
+public class XmlInteractionEvidenceIteratorTest {
 
     @Test
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        Iterator<Interaction<? extends Participant>> iterator = new XmlInteractionIterator(new LightXmlParser(stream));
+        Iterator<InteractionEvidence> iterator = new XmlInteractionEvidenceIterator(new XmlEvidenceParser(stream));
         int index = 0;
         while(iterator.hasNext()){
-            Interaction<? extends Participant> interaction = iterator.next();
+            InteractionEvidence interaction = iterator.next();
             Assert.assertNotNull(interaction);
             index++;
         }
@@ -48,10 +47,10 @@ public class Xml25InteractionIteratorTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        Iterator<Interaction<? extends Participant>> iterator = new XmlInteractionIterator(new LightXmlParser(stream));
+        Iterator<InteractionEvidence> iterator = new XmlInteractionEvidenceIterator(new XmlEvidenceParser(stream));
         int index = 0;
         while(iterator.hasNext()){
-            Interaction<? extends Participant> interaction = iterator.next();
+            InteractionEvidence interaction = iterator.next();
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             index++;
@@ -63,12 +62,13 @@ public class Xml25InteractionIteratorTest {
 
     @Test
     public void test_read_valid_xml25_nary() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
 
-        Iterator<Interaction<? extends Participant>> iterator = new XmlInteractionIterator(new LightXmlParser(stream));
+        Iterator<InteractionEvidence> iterator = new XmlInteractionEvidenceIterator(new XmlEvidenceParser(stream));
+
         int index = 0;
         while(iterator.hasNext()){
-            Interaction<? extends Participant> interaction = iterator.next();
+            InteractionEvidence interaction = iterator.next();
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             index++;

@@ -3,8 +3,6 @@ package psidev.psi.mi.jami.xml.io.parser;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
@@ -30,15 +28,15 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public class FullXml25BinaryInteractionEvidenceParserTest {
+public class XmlInteractionEvidenceParserTest {
 
     @Test
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
-        PsiXmlParser<BinaryInteractionEvidence> parser = new FullXmlBinaryEvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
 
-        BinaryInteractionEvidence interaction = parser.parseNextInteraction();
+        InteractionEvidence interaction = parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
 
         Assert.assertNotNull(interaction);
@@ -151,7 +149,8 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
 
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
-        ParticipantEvidence p1 = interaction.getParticipantA();
+        Iterator<ParticipantEvidence> partIterator = interaction.getParticipants().iterator();
+        ParticipantEvidence p1 = partIterator.next();
         Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipantEvidence) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
@@ -246,11 +245,11 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
 
     @Test
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
-        PsiXmlParser<BinaryInteractionEvidence> parser = new FullXmlBinaryEvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
 
-        BinaryInteractionEvidence interaction = parser.parseNextInteraction();
+        InteractionEvidence interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -363,7 +362,8 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
 
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
-        ParticipantEvidence p1 = interaction.getParticipantA();
+        Iterator<ParticipantEvidence> partIterator = interaction.getParticipants().iterator();
+        ParticipantEvidence p1 = partIterator.next();
         Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipantEvidence) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
@@ -458,11 +458,11 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
 
     @Test
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
-        PsiXmlParser<BinaryInteractionEvidence> parser = new FullXmlBinaryEvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
 
-        BinaryInteractionEvidence interaction = parser.parseNextInteraction();
+        InteractionEvidence interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -490,7 +490,8 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
 
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
-        ParticipantEvidence p1 = interaction.getParticipantA();
+        Iterator<ParticipantEvidence> partIterator = interaction.getParticipants().iterator();
+        ParticipantEvidence p1 = partIterator.next();
         Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipantEvidence) p1).getShortName());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
@@ -542,7 +543,8 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
 
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
-        p1 = interaction.getParticipantA();
+        partIterator = interaction.getParticipants().iterator();
+         p1 = partIterator.next();
         Assert.assertEquals("n/a", ((ExtendedPsiXmlParticipantEvidence) p1).getShortName());
         // features
         Assert.assertEquals(2, p1.getFeatures().size());
@@ -566,12 +568,12 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         parser.close();
     }
 
-    @Test(expected = PsiXmlParserException.class)
+    @Test
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
-        PsiXmlParser<BinaryInteractionEvidence> parser = new FullXmlBinaryEvidenceParser(stream);
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
 
-        BinaryInteractionEvidence interaction = parser.parseNextInteraction();
+        InteractionEvidence interaction = parser.parseNextInteraction();
 
         // read first interaction
         Assert.assertNull(interaction);
@@ -580,19 +582,20 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
 
     @Test
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        PsiXmlParser<BinaryInteractionEvidence> parser = new FullXmlBinaryEvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
-            BinaryInteractionEvidence interaction = parser.parseNextInteraction();
+            InteractionEvidence interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             if (index == 1){
-                ParticipantEvidence p1 = interaction.getParticipantA();
+                Iterator<ParticipantEvidence> pIterator = interaction.getParticipants().iterator();
+                ParticipantEvidence p1 = pIterator.next();
                 FeatureEvidence f1 = p1.getFeatures().iterator().next();
                 Assert.assertEquals(1, f1.getLinkedFeatures().size());
-                ParticipantEvidence p2 = interaction.getParticipantB();
+                ParticipantEvidence p2 = pIterator.next();
                 FeatureEvidence f2 = p2.getFeatures().iterator().next();
                 Assert.assertEquals(1, f2.getLinkedFeatures().size());
                 Assert.assertEquals(f1.getLinkedFeatures().iterator().next(), f2);
@@ -612,10 +615,10 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXmlParser<BinaryInteractionEvidence> parser = new FullXmlBinaryEvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
-            BinaryInteractionEvidence interaction = parser.parseNextInteraction();
+            InteractionEvidence interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             index++;
@@ -627,27 +630,24 @@ public class FullXml25BinaryInteractionEvidenceParserTest {
         parser.close();
     }
 
-    @Test
-    public void test_read_valid_xml25_nary() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
+    /*@Test
+    @Ignore
+    public void test_read_valid_xml25_3() throws JAXBException, XMLStreamException, IOException {
+        InputStream stream = new FileInputStream("/home/marine/Downloads/BIOGRID-ALL-3.2.97.psi25.xml");
 
-        PsiXmlParser<BinaryInteractionEvidence> parser = new FullXmlBinaryEvidenceParser(stream);
-
+        System.out.println("Start"+System.currentTimeMillis());
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
         int index = 0;
-        int numberOfExpanded=0;
         while(!parser.hasFinished()){
-            BinaryInteractionEvidence interaction = parser.parseNextInteraction();
-            Assert.assertNotNull(interaction);
-            Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
-            if (interaction.getComplexExpansion() != null && ComplexExpansionMethod.SPOKE_EXPANSION_MI.equals(interaction.getComplexExpansion().getMIIdentifier())){
-                numberOfExpanded++;
+            InteractionEvidence interaction = parser.parseNextInteraction();
+            if (interaction != null){
+                index++;
             }
-            index++;
         }
+        System.out.println("End"+System.currentTimeMillis());
 
-        Assert.assertTrue(parser.hasFinished());
-        Assert.assertEquals(15, index);
-        Assert.assertEquals(5, numberOfExpanded);
+        System.out.println("Read "+index+" interactions");
+
         parser.close();
-    }
+    }*/
 }

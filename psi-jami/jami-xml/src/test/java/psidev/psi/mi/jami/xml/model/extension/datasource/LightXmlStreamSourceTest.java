@@ -20,7 +20,7 @@ import java.util.Map;
  * @since <pre>11/11/13</pre>
  */
 
-public class LightXml25StreamSourceTest {
+public class LightXmlStreamSourceTest {
     @Test(expected = IllegalStateException.class)
     public void test_validate_fails_not_initialised(){
         LightXmlStreamSource dataSource = new LightXmlStreamSource();
@@ -35,12 +35,12 @@ public class LightXml25StreamSourceTest {
 
     @Test
     public void validate_valid_file(){
-        LightXmlStreamSource dataSource = new LightXmlStreamSource(LightXml25StreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        LightXmlStreamSource dataSource = new LightXmlStreamSource(LightXmlStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         Assert.assertTrue(dataSource.validateSyntax());
 
         dataSource = new LightXmlStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, LightXml25StreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, LightXmlStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
 
@@ -49,12 +49,12 @@ public class LightXml25StreamSourceTest {
 
     @Test
     public void validate_invalid_file(){
-        LightXmlStreamSource dataSource = new LightXmlStreamSource(LightXml25StreamSourceTest.class.getResourceAsStream("/samples/empty.xml"));
+        LightXmlStreamSource dataSource = new LightXmlStreamSource(LightXmlStreamSourceTest.class.getResourceAsStream("/samples/empty.xml"));
         Assert.assertFalse(dataSource.validateSyntax());
 
         dataSource = new LightXmlStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, LightXml25StreamSourceTest.class.getResourceAsStream("/samples/empty.xml"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, LightXmlStreamSourceTest.class.getResourceAsStream("/samples/empty.xml"));
         dataSource.initialiseContext(options);
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
@@ -62,7 +62,7 @@ public class LightXml25StreamSourceTest {
 
     @Test
     public void parse_valid_file() throws IOException {
-        LightXmlStreamSource dataSource = new LightXmlStreamSource(new File(LightXml25StreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        LightXmlStreamSource dataSource = new LightXmlStreamSource(new File(LightXmlStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
@@ -72,7 +72,7 @@ public class LightXml25StreamSourceTest {
 
         dataSource = new LightXmlStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(LightXml25StreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(LightXmlStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         i1 = iterator.next();
@@ -84,7 +84,7 @@ public class LightXml25StreamSourceTest {
 
     @Test
     public void iterate_invalid_file(){
-        LightXmlStreamSource dataSource = new LightXmlStreamSource(new File(LightXml25StreamSourceTest.class.getResource("/samples/empty.xml").getFile()));
+        LightXmlStreamSource dataSource = new LightXmlStreamSource(new File(LightXmlStreamSourceTest.class.getResource("/samples/empty.xml").getFile()));
         Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
@@ -92,7 +92,7 @@ public class LightXml25StreamSourceTest {
 
         dataSource = new LightXmlStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(LightXml25StreamSourceTest.class.getResource("/samples/empty.xml").getFile()));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(LightXmlStreamSourceTest.class.getResource("/samples/empty.xml").getFile()));
         dataSource.initialiseContext(options);
         iterator = dataSource.getInteractionsIterator();
         Assert.assertFalse(iterator.hasNext());
@@ -102,7 +102,7 @@ public class LightXml25StreamSourceTest {
 
     @Test(expected = RuntimeException.class)
     public void test_validate_datasource_impossible_to_reinit(){
-        LightXmlStreamSource dataSource = new LightXmlStreamSource(LightXml25StreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        LightXmlStreamSource dataSource = new LightXmlStreamSource(LightXmlStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
     }
@@ -112,7 +112,7 @@ public class LightXml25StreamSourceTest {
 
         LightXmlStreamSource dataSource = new LightXmlStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, LightXml25StreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, LightXmlStreamSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
@@ -120,7 +120,7 @@ public class LightXml25StreamSourceTest {
 
     @Test
     public void test_validate_datasource_reinit() throws IOException {
-        LightXmlStreamSource dataSource = new LightXmlStreamSource(new File(LightXml25StreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        LightXmlStreamSource dataSource = new LightXmlStreamSource(new File(LightXmlStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
@@ -136,7 +136,7 @@ public class LightXml25StreamSourceTest {
 
         LightXmlStreamSource dataSource = new LightXmlStreamSource();
         Map<String, Object> options = new HashMap<String, Object>();
-        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(LightXml25StreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
+        options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(LightXmlStreamSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
         Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
