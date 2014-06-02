@@ -59,7 +59,7 @@ public class PsiXmlWriterOptions extends InteractionWriterOptions{
      * It has to be a boolean value.
      * If this option is not provided, it will be set to false by default.
      */
-    public static final String XML25_NAMES_OPTION = "xml25_names_key";
+    public static final String XML_NAMES_OPTION = "xml25_names_key";
 
     /**
      * The option to choose the PSI-XML version. It has to be an enum of type PsiXmlVersion.
