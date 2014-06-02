@@ -67,17 +67,39 @@ public class XmlElementWriterFactory {
         else{
             return createDefaultPsiXmlInteractionWriters(streamWriter, objectIndex, version, xmlType, interactionCategory, complexType,
                     aliasWriter, attributeWriter, primaryRefWriter, modelledConfidenceWriter, checksumWriter, interactionTypeWriter,
-                    experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter);
+                    experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter);
         }
     }
 
-    private static PsiXmlInteractionWriter[] createDefaultPsiXmlInteractionWriters(XMLStreamWriter streamWriter, PsiXmlObjectCache objectIndex, PsiXmlVersion version, PsiXmlType xmlType, InteractionCategory interactionCategory, ComplexType complexType, PsiXmlElementWriter<Alias> aliasWriter, PsiXmlElementWriter<Annotation> attributeWriter, PsiXmlXrefWriter primaryRefWriter, PsiXmlElementWriter<Confidence> modelledConfidenceWriter, PsiXmlElementWriter<Checksum> checksumWriter, PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter, PsiXmlExperimentWriter experimentWriter, PsiXmlElementWriter<String> availabilityWriter, PsiXmlParameterWriter[] parameterWriters, PsiXmlParticipantWriter[] participantWriters, PsiXmlElementWriter inferredInteractionWriter) {
+    private static PsiXmlInteractionWriter[] createDefaultPsiXmlInteractionWriters(XMLStreamWriter streamWriter, PsiXmlObjectCache objectIndex,
+                                                                                   PsiXmlVersion version, PsiXmlType xmlType,
+                                                                                   InteractionCategory interactionCategory, ComplexType complexType,
+                                                                                   PsiXmlElementWriter<Alias> aliasWriter,
+                                                                                   PsiXmlElementWriter<Annotation> attributeWriter,
+                                                                                   PsiXmlXrefWriter primaryRefWriter,
+                                                                                   PsiXmlElementWriter<Confidence> modelledConfidenceWriter,
+                                                                                   PsiXmlElementWriter<Checksum> checksumWriter,
+                                                                                   PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
+                                                                                   PsiXmlExperimentWriter experimentWriter,
+                                                                                   PsiXmlElementWriter<String> availabilityWriter,
+                                                                                   PsiXmlParameterWriter[] parameterWriters,
+                                                                                   PsiXmlParticipantWriter[] participantWriters,
+                                                                                   PsiXmlElementWriter inferredInteractionWriter,
+                                                                                   PsiXmlPublicationWriter publicationWriter) {
         switch (version){
             case v3_0_0:
                 switch (xmlType){
                     case compact:
+                        PsiXmlElementWriter<Set<Feature>> bindingFeaturesWriter = createBindingFeaturesWriter(streamWriter,  objectIndex);
+                        PsiXmlCausalRelationshipWriter relationshipWriter = createCausalRelationshipWriter(streamWriter,false,  objectIndex,
+                                interactionTypeWriter);
+                        PsiXmlElementWriter<Preassembly> preassemblyWriter = createPreassemblyWriter(streamWriter, false, objectIndex, interactionTypeWriter,
+                                attributeWriter, publicationWriter);
+                        PsiXmlElementWriter<Allostery> allosteryWriter = createAllosteryWriter(streamWriter, false, objectIndex, interactionTypeWriter,
+                                attributeWriter, publicationWriter);
                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlModelledInteractionWriter modelledWriter2 =
                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlModelledInteractionWriter(streamWriter, objectIndex);
+
                         modelledWriter2.setAliasWriter(aliasWriter);
                         modelledWriter2.setAttributeWriter(attributeWriter);
                         modelledWriter2.setXrefWriter(primaryRefWriter);
@@ -88,6 +110,10 @@ public class XmlElementWriterFactory {
                         modelledWriter2.setChecksumWriter(checksumWriter);
                         modelledWriter2.setExperimentWriter(experimentWriter);
                         modelledWriter2.setParameterWriter(parameterWriters[1]);
+                        modelledWriter2.setBindingFeaturesWriter(bindingFeaturesWriter);
+                        modelledWriter2.setCausalRelationshipWriter(relationshipWriter);
+                        modelledWriter2.setAllosteryWriter(allosteryWriter);
+                        modelledWriter2.setPreAssemblyWriter(preassemblyWriter);
 
                         switch (complexType){
                             case binary:
@@ -105,6 +131,10 @@ public class XmlElementWriterFactory {
                                         modelledWriter4.setChecksumWriter(checksumWriter);
                                         modelledWriter4.setExperimentWriter(experimentWriter);
                                         modelledWriter4.setParameterWriter(parameterWriters[1]);
+                                        modelledWriter4.setBindingFeaturesWriter(bindingFeaturesWriter);
+                                        modelledWriter4.setAllosteryWriter(allosteryWriter);
+                                        modelledWriter4.setPreAssemblyWriter(preassemblyWriter);
+                                        modelledWriter4.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter2};
                                     default:
@@ -120,6 +150,8 @@ public class XmlElementWriterFactory {
                                         writer2.setExperimentWriter(experimentWriter);
                                         writer2.setParameterWriter(parameterWriters[0]);
                                         writer2.setAvailabilityWriter(availabilityWriter);
+                                        writer2.setVariableParameterValueSetWriter(createVariableParameterValueSetWriter(streamWriter, objectIndex));
+                                        writer2.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{writer2, modelledWriter2};
                                 }
@@ -140,15 +172,25 @@ public class XmlElementWriterFactory {
                                         writer2.setExperimentWriter(experimentWriter);
                                         writer2.setParameterWriter(parameterWriters[0]);
                                         writer2.setAvailabilityWriter(availabilityWriter);
+                                        writer2.setVariableParameterValueSetWriter(createVariableParameterValueSetWriter(streamWriter, objectIndex));
+                                        writer2.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{writer2, modelledWriter2};
                                 }
                         }
 
                     default:
+                        bindingFeaturesWriter = createBindingFeaturesWriter(streamWriter,  objectIndex);
+                        relationshipWriter = createCausalRelationshipWriter(streamWriter,false,  objectIndex,
+                                interactionTypeWriter);
+                        preassemblyWriter = createPreassemblyWriter(streamWriter, false, objectIndex, interactionTypeWriter,
+                                attributeWriter, publicationWriter);
+                        allosteryWriter = createAllosteryWriter(streamWriter, false, objectIndex, interactionTypeWriter,
+                                attributeWriter, publicationWriter);
                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlModelledInteractionWriter modelledWriter3 =
                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlModelledInteractionWriter(streamWriter, objectIndex);
                         modelledWriter3.setAliasWriter(aliasWriter);
+
                         modelledWriter3.setAttributeWriter(attributeWriter);
                         modelledWriter3.setXrefWriter(primaryRefWriter);
                         modelledWriter3.setInteractionTypeWriter(interactionTypeWriter);
@@ -158,6 +200,10 @@ public class XmlElementWriterFactory {
                         modelledWriter3.setChecksumWriter(checksumWriter);
                         modelledWriter3.setExperimentWriter(experimentWriter);
                         modelledWriter3.setParameterWriter(parameterWriters[1]);
+                        modelledWriter3.setBindingFeaturesWriter(bindingFeaturesWriter);
+                        modelledWriter3.setCausalRelationshipWriter(relationshipWriter);
+                        modelledWriter3.setAllosteryWriter(allosteryWriter);
+                        modelledWriter3.setPreAssemblyWriter(preassemblyWriter);
 
                         switch (complexType){
                             case binary:
@@ -175,6 +221,10 @@ public class XmlElementWriterFactory {
                                         modelledWriter4.setChecksumWriter(checksumWriter);
                                         modelledWriter4.setExperimentWriter(experimentWriter);
                                         modelledWriter4.setParameterWriter(parameterWriters[1]);
+                                        modelledWriter4.setBindingFeaturesWriter(bindingFeaturesWriter);
+                                        modelledWriter4.setCausalRelationshipWriter(relationshipWriter);
+                                        modelledWriter4.setAllosteryWriter(allosteryWriter);
+                                        modelledWriter4.setPreAssemblyWriter(preassemblyWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter3};
                                     default:
@@ -190,6 +240,8 @@ public class XmlElementWriterFactory {
                                         writer2.setExperimentWriter(experimentWriter);
                                         writer2.setParameterWriter(parameterWriters[0]);
                                         writer2.setAvailabilityWriter(availabilityWriter);
+                                        writer2.setVariableParameterValueSetWriter(createVariableParameterValueSetWriter(streamWriter, objectIndex));
+                                        writer2.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{writer2, modelledWriter3};
                                 }
@@ -210,6 +262,8 @@ public class XmlElementWriterFactory {
                                         writer2.setExperimentWriter(experimentWriter);
                                         writer2.setParameterWriter(parameterWriters[0]);
                                         writer2.setAvailabilityWriter(availabilityWriter);
+                                        writer2.setVariableParameterValueSetWriter(createVariableParameterValueSetWriter(streamWriter, objectIndex));
+                                        writer2.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{writer2, modelledWriter3};
                                 }
@@ -1347,30 +1401,30 @@ public class XmlElementWriterFactory {
         }
     }
 
-    public static PsiXmlElementWriter<Preassembly> createPreassemblyWriter(XMLStreamWriter streamWriter, boolean expanded,
+    public static PsiXmlElementWriter<Preassembly> createPreassemblyWriter(XMLStreamWriter streamWriter, boolean extended,
                                                                            PsiXmlObjectCache objectIndex, PsiXmlVariableNameWriter<CvTerm> cvWriter,
                                                                            PsiXmlElementWriter<Annotation> attributeWriter,
                                                                            PsiXmlPublicationWriter publicationWriter) {
-        if (expanded){
+        if (extended){
             psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlPreAssemblyWriter writer =
                     new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlPreAssemblyWriter(streamWriter, objectIndex);
             writer.setCvWriter(cvWriter);
             writer.setAttributeWriter(attributeWriter);
-            writer.setCooperativityEvidenceWriter(createCooperativityEvidenceWriter(streamWriter, expanded, cvWriter, publicationWriter));
+            writer.setCooperativityEvidenceWriter(createCooperativityEvidenceWriter(streamWriter, extended, cvWriter, publicationWriter));
             return writer;
         }
         else{
             XmlPreAssemblyWriter writer = new XmlPreAssemblyWriter(streamWriter, objectIndex);
             writer.setCvWriter(cvWriter);
             writer.setAttributeWriter(attributeWriter);
-            writer.setCooperativityEvidenceWriter(createCooperativityEvidenceWriter(streamWriter, expanded, cvWriter, publicationWriter));
+            writer.setCooperativityEvidenceWriter(createCooperativityEvidenceWriter(streamWriter, extended, cvWriter, publicationWriter));
             return writer;
         }
     }
 
-    public static PsiXmlCausalRelationshipWriter createCausalRelationshipWriter(XMLStreamWriter streamWriter, boolean expanded,
+    public static PsiXmlCausalRelationshipWriter createCausalRelationshipWriter(XMLStreamWriter streamWriter, boolean extended,
                                                                                 PsiXmlObjectCache objectIndex, PsiXmlVariableNameWriter<CvTerm> cvWriter) {
-        if (expanded){
+        if (extended){
             psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlCausalRelationshipWriter writer =
                     new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlCausalRelationshipWriter(streamWriter, objectIndex);
             writer.setCausalStatementWriter(cvWriter);
