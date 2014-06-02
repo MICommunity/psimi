@@ -33,7 +33,14 @@
         <dependency>
             <groupId>uk.ac.ebi.intact.tools</groupId>
             <artifactId>protein-mapping</artifactId>
-            <version>1.0.3-SNAPSHOT</version>
+            <version>1.0.3</version>
+        </dependency>
+
+        <!-- Uniprot service -->
+        <dependency>
+            <groupId>uk.ac.ebi.uniprot.kraken</groupId>
+            <artifactId>uniprotjapi</artifactId>
+            <version>LATEST</version>
         </dependency>
 
     </dependencies>
