@@ -3,12 +3,12 @@ package psidev.psi.mi.jami.xml.io.iterator;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.io.parser.XmlBinaryEvidenceParser;
-import psidev.psi.mi.jami.xml.io.parser.Xml25InteractionEvidenceParserTest;
+import psidev.psi.mi.jami.xml.io.parser.XmlInteractionEvidenceParserTest;
+import psidev.psi.mi.jami.xml.io.parser.XmlModelledBinaryParser;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
@@ -18,23 +18,23 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit testser for XmlBinaryInteractionEvidenceIterator
+ * Unit tester for Xml25ModelledBiaryInteractionIterator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>08/11/13</pre>
  */
 
-public class Xml25BinaryInteractionEvidenceIteratorTest {
+public class XmlModelledBinaryInteractionIteratorTest {
 
     @Test
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        Iterator<BinaryInteractionEvidence> iterator = new XmlBinaryInteractionEvidenceIterator(new XmlBinaryEvidenceParser(stream));
+        Iterator<ModelledBinaryInteraction> iterator = new XmlModelledBinaryInteractionIterator(new XmlModelledBinaryParser(stream));
         int index = 0;
         while(iterator.hasNext()){
-            BinaryInteractionEvidence interaction = iterator.next();
+            ModelledBinaryInteraction interaction = iterator.next();
             Assert.assertNotNull(interaction);
             index++;
         }
@@ -48,29 +48,28 @@ public class Xml25BinaryInteractionEvidenceIteratorTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        Iterator<BinaryInteractionEvidence> iterator = new XmlBinaryInteractionEvidenceIterator(new XmlBinaryEvidenceParser(stream));
+        Iterator<ModelledBinaryInteraction> iterator = new XmlModelledBinaryInteractionIterator(new XmlModelledBinaryParser(stream));
         int index = 0;
         while(iterator.hasNext()){
-            BinaryInteractionEvidence interaction = iterator.next();
+            ModelledBinaryInteraction interaction = iterator.next();
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             index++;
         }
         System.out.println("End"+System.currentTimeMillis());
 
-        Assert.assertEquals(2000, index);
+        Assert.assertEquals(2000,index);
     }
 
     @Test
     public void test_read_valid_xml25_nary() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = Xml25InteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
+        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
 
-        Iterator<BinaryInteractionEvidence> iterator = new XmlBinaryInteractionEvidenceIterator(new XmlBinaryEvidenceParser(stream));
-
+        Iterator<ModelledBinaryInteraction> iterator = new XmlModelledBinaryInteractionIterator(new XmlModelledBinaryParser(stream));
         int index = 0;
         int numberOfExpanded=0;
         while(iterator.hasNext()){
-            BinaryInteractionEvidence interaction = iterator.next();
+            ModelledBinaryInteraction interaction = iterator.next();
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             if (interaction.getComplexExpansion() != null && ComplexExpansionMethod.SPOKE_EXPANSION_MI.equals(interaction.getComplexExpansion().getMIIdentifier())){
