@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Compact PSI-XML 2.5 writer for light interactions (no experimental evidences)
+ * Compact PSI-XML writer for light interactions (no experimental evidences)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

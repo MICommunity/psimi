@@ -15,7 +15,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Expanded PSI-XML 2.5 writer for named modelled binary interactions (no experimental evidences).
+ * Expanded PSI-XML writer for named modelled binary interactions (no experimental evidences).
  * Participants, features, experiments also have expanded names
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)

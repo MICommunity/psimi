@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Compact PSI-XML 2.5 writer for light binary interactions (no experimental evidences) having names.
+ * Compact PSI-XML writer for light binary interactions (no experimental evidences) having names.
  * Participants, experiments and features are also assumed to have expanded names
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)

@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * Expanded PSI-XML 2.5 writer for light interactions (no experimental evidences) having names.
+ * Expanded PSI-XML writer for light interactions (no experimental evidences) having names.
  * Participants, experiments and features are also assumed to have expanded names
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
