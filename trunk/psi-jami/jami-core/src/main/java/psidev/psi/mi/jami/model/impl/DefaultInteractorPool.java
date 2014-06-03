@@ -65,42 +65,42 @@ public class DefaultInteractorPool extends DefaultInteractor implements Interact
     }
 
     public DefaultInteractorPool(String name) {
-        super(name);
+        super(name, CvTermUtils.createMoleculeSetType());
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorPool(String name, String fullName) {
-        super(name, fullName);
+        super(name, fullName, CvTermUtils.createMoleculeSetType());
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorPool(String name, Organism organism) {
-        super(name, organism);
+        super(name, CvTermUtils.createMoleculeSetType(), organism);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorPool(String name, String fullName, Organism organism) {
-        super(name, fullName, organism);
+        super(name, fullName, CvTermUtils.createMoleculeSetType(), organism);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorPool(String name, Xref uniqueId) {
-        super(name, uniqueId);
+        super(name, CvTermUtils.createMoleculeSetType(), uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorPool(String name, String fullName, Xref uniqueId) {
-        super(name, fullName, uniqueId);
+        super(name, fullName, CvTermUtils.createMoleculeSetType(), uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorPool(String name, Organism organism, Xref uniqueId) {
-        super(name, organism, uniqueId);
+        super(name, CvTermUtils.createMoleculeSetType(), organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
     public DefaultInteractorPool(String name, String fullName, Organism organism, Xref uniqueId) {
-        super(name, fullName, organism, uniqueId);
+        super(name, fullName, CvTermUtils.createMoleculeSetType(), organism, uniqueId);
         initialiseInteractorCandidatesSet();
     }
 
