@@ -19,7 +19,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class XmlOpenCvTermWriterTest extends AbstractXml25WriterTest {
+public class XmlOpenCvTermWriterTest extends AbstractXmlWriterTest {
 
     private String cv = "<cellType>\n" +
             "  <names>\n" +

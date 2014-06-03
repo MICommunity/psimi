@@ -16,7 +16,7 @@ import java.io.StringWriter;
  * @since <pre>21/11/13</pre>
  */
 
-public abstract class AbstractXml25WriterTest {
+public abstract class AbstractXmlWriterTest {
     protected StringWriter output;
     protected XMLStreamWriter streamWriter;
 

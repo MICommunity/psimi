@@ -8,8 +8,8 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalCvTerm;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class XmlExperimentalCvTermWriterTest extends AbstractXml25WriterTest {
+public class XmlExperimentalCvTermWriterTest extends AbstractXmlWriterTest {
 
     private String expRole = "<experimentalRole>\n" +
             "  <names>\n" +

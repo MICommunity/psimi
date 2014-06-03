@@ -18,7 +18,7 @@ import java.io.IOException;
  * @since <pre>20/11/13</pre>
  */
 
-public class XmlDbXrefWriterTest extends AbstractXml25WriterTest{
+public class XmlDbXrefWriterTest extends AbstractXmlWriterTest {
 
     private String xref_no_database_ac ="<primaryRef db=\"uniprotkb\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>";
     private String xref_no_reftype ="<primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\"/>";

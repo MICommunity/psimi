@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlFeatureWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -24,7 +25,7 @@ import java.io.IOException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25FeatureWriterTest extends AbstractXml25WriterTest {
+public class XmlFeatureWriterTest extends AbstractXmlWriterTest {
 
     private String feature = "<feature id=\"1\">\n" +
             "  <featureRangeList>\n" +

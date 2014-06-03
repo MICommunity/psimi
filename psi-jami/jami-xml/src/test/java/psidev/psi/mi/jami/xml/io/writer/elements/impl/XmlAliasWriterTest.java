@@ -18,7 +18,7 @@ import java.io.IOException;
  * @since <pre>20/11/13</pre>
  */
 
-public class Xml25AliasWriterTest extends AbstractXml25WriterTest{
+public class XmlAliasWriterTest extends AbstractXmlWriterTest {
     private String alias_no_type="<alias>BRCA2</alias>";
     private String alias_not_type_ac="<alias type=\"gene name\">BRCA2</alias>";
     private String alias_with_full_type="<alias type=\"gene name\" typeAc=\"MI:0301\">BRCA2</alias>";

@@ -21,7 +21,7 @@ import java.util.Set;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest {
+public class XmlInferredInteractionWriterTest extends AbstractXmlWriterTest {
     private String inferredInteraction = "<inferredInteraction>\n" +
             "  <participant>\n" +
             "    <participantFeatureRef>1</participantFeatureRef>\n" +

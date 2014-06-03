@@ -1,9 +1,11 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25;
 
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Position;
 import psidev.psi.mi.jami.utils.PositionUtils;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlBeginPositionWriter;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -16,7 +18,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25BeginPositionWriterTest extends AbstractXml25WriterTest{
+public class XmlBeginPositionWriterTest extends AbstractXmlWriterTest {
     private String begin_position ="<startStatus>\n" +
             "  <names>\n" +
             "    <shortLabel>certain</shortLabel>\n"+

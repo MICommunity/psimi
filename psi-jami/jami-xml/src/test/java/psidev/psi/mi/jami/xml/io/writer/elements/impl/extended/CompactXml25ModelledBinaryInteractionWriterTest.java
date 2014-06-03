@@ -12,10 +12,10 @@ import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlModelledBinaryInteractionWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.binary.XmlModelledBinaryInteraction;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -29,7 +29,7 @@ import java.math.BigDecimal;
  * @since <pre>26/11/13</pre>
  */
 
-public class CompactXml25ModelledBinaryInteractionWriterTest extends AbstractXml25WriterTest {
+public class CompactXml25ModelledBinaryInteractionWriterTest extends AbstractXmlWriterTest {
 
     private String interaction = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +

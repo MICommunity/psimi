@@ -11,13 +11,13 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlBinaryInteractionEvidenceWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
 import psidev.psi.mi.jami.xml.model.extension.XmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteractionEvidence;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -31,7 +31,7 @@ import java.math.BigDecimal;
  * @since <pre>26/11/13</pre>
  */
 
-public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXml25WriterTest {
+public class ExpandedXml25BinaryInteractionEvidenceWriterTest extends AbstractXmlWriterTest {
 
     private String interaction = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +

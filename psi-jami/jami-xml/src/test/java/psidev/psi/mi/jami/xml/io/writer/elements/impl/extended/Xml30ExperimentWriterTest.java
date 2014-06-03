@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlExperimentWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -29,7 +29,7 @@ import java.text.ParseException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml30ExperimentWriterTest extends AbstractXml25WriterTest {
+public class Xml30ExperimentWriterTest extends AbstractXmlWriterTest {
 
     private String experiment_imex ="<experimentDescription id=\"1\">\n" +
             "  <bibref>\n" +

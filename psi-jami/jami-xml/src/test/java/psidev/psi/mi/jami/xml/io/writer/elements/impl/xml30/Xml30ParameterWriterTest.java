@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultParameter;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlParameterWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.math.BigDecimal;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
+public class Xml30ParameterWriterTest extends AbstractXmlWriterTest {
     private String parameter = "<parameter term=\"kd\" base=\"10\" " +
             "exponent=\"0\" factor=\"5\"/>";
     private String parameterTermAc = "<parameter term=\"kd\" termAc=\"MI:xxxx\" base=\"10\" " +

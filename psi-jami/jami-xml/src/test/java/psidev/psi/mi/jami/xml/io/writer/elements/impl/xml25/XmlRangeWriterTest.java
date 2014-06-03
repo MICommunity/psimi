@@ -1,10 +1,11 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25;
 
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.RangeUtils;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlRangeWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -18,7 +19,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25RangeWriterTest extends AbstractXml25WriterTest {
+public class XmlRangeWriterTest extends AbstractXmlWriterTest {
     private String range = "<featureRange>\n" +
             "  <startStatus>\n" +
             "    <names>\n" +

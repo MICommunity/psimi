@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlNamedExperimentWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -21,7 +22,7 @@ import java.text.ParseException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25NamedExperimentWriterTest extends AbstractXml25WriterTest {
+public class XmlNamedExperimentWriterTest extends AbstractXmlWriterTest {
     private String experiment = "<experimentDescription id=\"1\">\n" +
             "  <bibref>\n" +
             "    <xref>\n" +

@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlParameterWriter;
 import psidev.psi.mi.jami.xml.model.extension.XmlParameter;
 
@@ -25,7 +25,7 @@ import java.math.BigDecimal;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml30ParameterWriterTest extends AbstractXml25WriterTest {
+public class Xml30ParameterWriterTest extends AbstractXmlWriterTest {
     private String parameter = "<parameter term=\"kd\" base=\"10\" " +
             "exponent=\"0\" factor=\"5\"/>";
     private String parameterTermAc = "<parameter term=\"kd\" termAc=\"MI:xxxx\" base=\"10\" " +
