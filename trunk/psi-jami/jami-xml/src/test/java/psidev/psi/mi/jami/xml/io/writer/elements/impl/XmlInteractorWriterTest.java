@@ -20,7 +20,7 @@ import java.io.IOException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25InteractorWriterTest extends AbstractXml25WriterTest {
+public class XmlInteractorWriterTest extends AbstractXmlWriterTest {
 
     private String interactor = "<interactor id=\"1\">\n" +
             "  <names>\n" +

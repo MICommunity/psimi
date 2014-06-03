@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.model.impl.DefaultXref;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlPublicationWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -24,13 +24,16 @@ import java.text.ParseException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
+public class XmlPublicationWriterTest extends AbstractXmlWriterTest {
     private String bibRef_xref_pubmed ="<bibref>\n" +
             "  <xref>\n" +
             "    <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
             "    <secondaryRef db=\"test\" id=\"12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    <secondaryRef db=\"test2\" id=\"12346\"/>\n" +
             "  </xref>\n"+
+            "  <attributeList>\n" +
+            "    <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
+            "  </attributeList>\n"+
             "</bibref>";
     private String bibRef_xref_pubmed_primary ="<bibref>\n" +
             "  <xref>\n" +
@@ -38,6 +41,9 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
             "    <secondaryRef db=\"test\" id=\"12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    <secondaryRef db=\"test2\" id=\"12346\"/>\n" +
             "  </xref>\n"+
+            "  <attributeList>\n" +
+            "    <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
+            "  </attributeList>\n"+
             "</bibref>";
     private String bibRef_xref_doi ="<bibref>\n" +
             "  <xref>\n" +
@@ -45,6 +51,9 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
             "    <secondaryRef db=\"test\" id=\"12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    <secondaryRef db=\"test2\" id=\"12346\"/>\n" +
             "  </xref>\n"+
+            "  <attributeList>\n" +
+            "    <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
+            "  </attributeList>\n"+
             "</bibref>";
     private String bibRef_xref_doi_primary ="<bibref>\n" +
             "  <xref>\n" +
@@ -52,6 +61,9 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
             "    <secondaryRef db=\"test\" id=\"12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    <secondaryRef db=\"test2\" id=\"12346\"/>\n" +
             "  </xref>\n"+
+            "  <attributeList>\n" +
+            "    <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
+            "  </attributeList>\n"+
             "</bibref>";
     private String bibRef_xref_first_identifier ="<bibref>\n" +
             "  <xref>\n" +
@@ -59,6 +71,9 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
             "    <secondaryRef db=\"test\" id=\"12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    <secondaryRef db=\"test2\" id=\"12346\"/>\n" +
             "  </xref>\n"+
+            "  <attributeList>\n" +
+            "    <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
+            "  </attributeList>\n"+
             "</bibref>";
     private String bibRef_xref_first_identifier_add_qualifier ="<bibref>\n" +
             "  <xref>\n" +
@@ -66,8 +81,16 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
             "    <secondaryRef db=\"test\" id=\"12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    <secondaryRef db=\"test2\" id=\"12346\"/>\n" +
             "  </xref>\n"+
+            "  <attributeList>\n" +
+            "    <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
+            "  </attributeList>\n"+
             "</bibref>";
     private String bibRef_attributes ="<bibref>\n" +
+            "  <xref>\n" +
+            "    <primaryRef db=\"test\" id=\"xxxxxx\" refType=\"see-also\"/>\n" +
+            "    <secondaryRef db=\"test\" id=\"12345\"/>\n" +
+            "    <secondaryRef db=\"test2\" id=\"12346\"/>\n" +
+            "  </xref>\n"+
             "  <attributeList>\n" +
             "    <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
             "    <attribute name=\"journal\" nameAc=\"MI:0885\">test journal</attribute>\n"+
@@ -94,7 +117,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
             "</bibref>";
 
     @Test
-    public void test_write_publication_pubmed() throws XMLStreamException, IOException {
+    public void test_write_publication_pubmed_and_title() throws XMLStreamException, IOException {
         Publication pub = new DefaultPublication("xxxxxx");
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"),"12346"));
@@ -108,7 +131,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
     }
 
     @Test
-    public void test_write_publication_pubmed_primary() throws XMLStreamException, IOException {
+    public void test_write_publication_pubmed_primary_and_title() throws XMLStreamException, IOException {
         Publication pub = new DefaultPublication();
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm(Xref.PUBMED, Xref.PUBMED_MI), "xxxxxx"));
@@ -123,7 +146,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
     }
 
     @Test
-    public void test_write_publication_doi() throws XMLStreamException, IOException {
+    public void test_write_publication_doi_and_title() throws XMLStreamException, IOException {
         Publication pub = new DefaultPublication();
         pub.setDoi("xxxxxx");
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
@@ -138,7 +161,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
     }
 
     @Test
-    public void test_write_publication_doi_primary() throws XMLStreamException, IOException {
+    public void test_write_publication_doi_primary_and_title() throws XMLStreamException, IOException {
         Publication pub = new DefaultPublication();
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm(Xref.DOI, Xref.DOI_MI), "xxxxxx"));
@@ -153,7 +176,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
     }
 
     @Test
-    public void test_write_publication_first_identifier() throws XMLStreamException, IOException {
+    public void test_write_publication_first_identifier_and_title() throws XMLStreamException, IOException {
         Publication pub = new DefaultPublication();
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"), "xxxxxx", new DefaultCvTerm("secondary")));
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
@@ -168,7 +191,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
     }
 
     @Test
-    public void test_write_publication_first_identifier_identity() throws XMLStreamException, IOException {
+    public void test_write_publication_first_identifier_identity_and_title() throws XMLStreamException, IOException {
         Publication pub = new DefaultPublication();
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"), "xxxxxx"));
         pub.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
@@ -183,7 +206,7 @@ public class Xml25PublicationWriterTest extends AbstractXml25WriterTest {
     }
 
     @Test
-    public void test_write_publication_attributes() throws XMLStreamException, IOException, ParseException {
+    public void test_write_publication_attributes_and_xref() throws XMLStreamException, IOException, ParseException {
         Publication pub = new DefaultPublication();
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxxxx", new DefaultCvTerm("see-also")));
         pub.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));

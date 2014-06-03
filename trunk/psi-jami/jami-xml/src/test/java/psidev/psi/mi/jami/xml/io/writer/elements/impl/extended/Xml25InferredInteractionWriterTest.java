@@ -9,9 +9,9 @@ import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteractionParticipant;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.io.IOException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25InferredInteractionWriterTest extends AbstractXml25WriterTest {
+public class Xml25InferredInteractionWriterTest extends AbstractXmlWriterTest {
     private String inferredInteraction = "<inferredInteraction>\n" +
             "  <participant>\n" +
             "    <participantFeatureRef>1</participantFeatureRef>\n" +

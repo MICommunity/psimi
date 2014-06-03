@@ -17,7 +17,7 @@ import java.io.IOException;
  * @since <pre>20/11/13</pre>
  */
 
-public class Xml25AnnotationWriterTest extends AbstractXml25WriterTest{
+public class XmlAnnotationWriterTest extends AbstractXmlWriterTest {
     private String attribute_no_value ="<attribute name=\"imex curation\" nameAc=\"MI:0959\"/>";
     private String attribute_not_topic_ac ="<attribute name=\"imex curation\">test attribute</attribute>";
     private String attribute ="<attribute name=\"imex curation\" nameAc=\"MI:0959\">test attribute</attribute>";

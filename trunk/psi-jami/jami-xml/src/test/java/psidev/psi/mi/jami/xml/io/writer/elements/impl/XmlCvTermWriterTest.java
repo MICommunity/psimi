@@ -18,7 +18,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class XmlCvTermWriterTest extends AbstractXml25WriterTest {
+public class XmlCvTermWriterTest extends AbstractXmlWriterTest {
 
     private String type = "<featureType>\n" +
             "  <names>\n" +

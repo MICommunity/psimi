@@ -18,7 +18,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
+public class XmlHostOrganismWriterTest extends AbstractXmlWriterTest {
 
     private String organism = "<hostOrganism ncbiTaxId=\"9606\"/>";
     private String organismShortName = "<hostOrganism ncbiTaxId=\"9606\">\n" +

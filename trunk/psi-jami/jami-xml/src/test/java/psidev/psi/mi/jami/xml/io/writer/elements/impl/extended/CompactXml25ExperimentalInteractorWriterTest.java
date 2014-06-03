@@ -7,9 +7,9 @@ import psidev.psi.mi.jami.model.impl.DefaultProtein;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.XmlExperimentalInteractorWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import java.io.IOException;
  * @since <pre>22/11/13</pre>
  */
 
-public class CompactXml25ExperimentalInteractorWriterTest extends AbstractXml25WriterTest{
+public class CompactXml25ExperimentalInteractorWriterTest extends AbstractXmlWriterTest {
 
     private String experimentalInteractor = "<experimentalInteractor>\n" +
             "  <interactorRef>1</interactorRef>\n" +

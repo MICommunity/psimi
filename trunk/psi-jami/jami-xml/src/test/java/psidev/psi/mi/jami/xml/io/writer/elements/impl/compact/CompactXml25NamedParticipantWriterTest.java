@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedParticipantWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlParticipantWriter;
 
@@ -27,7 +27,7 @@ import java.io.IOException;
  * @since <pre>25/11/13</pre>
  */
 
-public class CompactXml25NamedParticipantWriterTest extends AbstractXml25WriterTest {
+public class CompactXml25NamedParticipantWriterTest extends AbstractXmlWriterTest {
 
     private String participant = "<participant id=\"1\">\n" +
             "  <interactorRef>2</interactorRef>\n" +

@@ -16,7 +16,7 @@ import java.io.IOException;
  * @since <pre>20/11/13</pre>
  */
 
-public class Xml25AvailabilityWriterTest extends AbstractXml25WriterTest{
+public class XmlAvailabilityWriterTest extends AbstractXmlWriterTest {
     private String availability ="<availability id=\"1\">copyright</availability>";
     private String availability2 ="<availability id=\"2\">copyright</availability>";
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();

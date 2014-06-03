@@ -20,7 +20,7 @@ import java.io.IOException;
  * @since <pre>20/11/13</pre>
  */
 
-public class XmlDbXrefWriterTest extends AbstractXml25WriterTest {
+public class XmlDbXrefWriterTest extends AbstractXmlWriterTest {
 
     private String xref ="<secondaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\"/>";
     private String xref_secondary ="<secondaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"identity\" refTypeAc=\"MI:0356\" secondary=\"P12346\"/>";

@@ -17,7 +17,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25ChecksumWriterTest extends AbstractXml25WriterTest {
+public class XmlChecksumWriterTest extends AbstractXmlWriterTest {
     private String attribute_not_topic_ac ="<attribute name=\"rogid\">xxxxxxxxx1</attribute>";
     private String attribute ="<attribute name=\"rogid\" nameAc=\"MI:xxxx\">xxxxxxxxx1</attribute>";
 

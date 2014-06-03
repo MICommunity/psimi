@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlBasicInteractionWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -27,7 +27,7 @@ import java.io.IOException;
  * @since <pre>25/11/13</pre>
  */
 
-public class ExpandedXml25BasicInteractionWriterTest extends AbstractXml25WriterTest {
+public class ExpandedXml25BasicInteractionWriterTest extends AbstractXmlWriterTest {
 
     private String interaction = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +

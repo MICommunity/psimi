@@ -1,9 +1,10 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25;
 
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlSourceWriter;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -20,7 +21,7 @@ import java.text.ParseException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25SourceWriterTest extends AbstractXml25WriterTest {
+public class XmlSourceWriterTest extends AbstractXmlWriterTest {
     private String source ="<source releaseDate=\"2013-09-02Z\">\n" +
             "  <names>\n" +
             "    <shortLabel>intact</shortLabel>\n"+

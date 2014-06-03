@@ -10,8 +10,8 @@ import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.model.extension.HostOrganism;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -24,7 +24,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25HostOrganismWriterTest extends AbstractXml25WriterTest {
+public class Xml25HostOrganismWriterTest extends AbstractXmlWriterTest {
 
     private String organism = "<hostOrganism ncbiTaxId=\"9606\"/>";
     private String organismShortName = "<hostOrganism ncbiTaxId=\"9606\">\n" +

@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXml25WriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlModelledParticipantWriter;
 
 import javax.xml.stream.XMLStreamException;
@@ -24,7 +24,7 @@ import java.io.IOException;
  * @since <pre>25/11/13</pre>
  */
 
-public class ExpandedXml25ModelledParticipantWriterTest extends AbstractXml25WriterTest {
+public class ExpandedXml25ModelledParticipantWriterTest extends AbstractXmlWriterTest {
 
     private String participant = "<participant id=\"1\">\n" +
             "  <interactor id=\"2\">\n" +

@@ -6,6 +6,8 @@ import psidev.psi.mi.jami.model.Confidence;
 import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
 import psidev.psi.mi.jami.model.impl.DefaultConfidence;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlConfidenceWriter;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
@@ -18,7 +20,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25ConfidenceWriterTest extends AbstractXml25WriterTest {
+public class XmlConfidenceWriterTest extends AbstractXmlWriterTest {
     private String confidence = "<confidence>\n" +
             "  <unit>\n" +
             "    <names>\n" +
