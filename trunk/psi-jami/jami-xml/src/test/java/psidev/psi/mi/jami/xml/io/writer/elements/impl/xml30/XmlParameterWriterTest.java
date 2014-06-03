@@ -22,7 +22,7 @@ import java.math.BigDecimal;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml30ParameterWriterTest extends AbstractXmlWriterTest {
+public class XmlParameterWriterTest extends AbstractXmlWriterTest {
     private String parameter = "<parameter term=\"kd\" base=\"10\" " +
             "exponent=\"0\" factor=\"5\"/>";
     private String parameterTermAc = "<parameter term=\"kd\" termAc=\"MI:xxxx\" base=\"10\" " +

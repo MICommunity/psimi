@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import java.text.ParseException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25ExperimentWriterTest extends AbstractXmlWriterTest {
+public class XmlExperimentWriterTest extends AbstractXmlWriterTest {
     private String experiment = "<experimentDescription id=\"1\">\n" +
             "  <bibref>\n" +
             "    <xref>\n" +

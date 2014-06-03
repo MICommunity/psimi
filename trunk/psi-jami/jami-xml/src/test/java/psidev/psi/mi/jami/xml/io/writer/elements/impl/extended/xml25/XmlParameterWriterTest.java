@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -25,7 +25,7 @@ import java.math.BigDecimal;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25ParameterWriterTest extends AbstractXmlWriterTest {
+public class XmlParameterWriterTest extends AbstractXmlWriterTest {
     private String parameter = "<parameter term=\"kd\" base=\"10\" " +
             "exponent=\"0\" factor=\"5\">\n" +
             "  <experimentRef>1</experimentRef>\n" +

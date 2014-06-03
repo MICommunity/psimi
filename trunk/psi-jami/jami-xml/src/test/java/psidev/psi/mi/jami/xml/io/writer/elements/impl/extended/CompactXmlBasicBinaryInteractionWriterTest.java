@@ -31,7 +31,7 @@ import java.io.IOException;
  * @since <pre>25/11/13</pre>
  */
 
-public class CompactXml25BasicBinaryInteractionWriterTest extends AbstractXmlWriterTest {
+public class CompactXmlBasicBinaryInteractionWriterTest extends AbstractXmlWriterTest {
 
     private String interaction = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +

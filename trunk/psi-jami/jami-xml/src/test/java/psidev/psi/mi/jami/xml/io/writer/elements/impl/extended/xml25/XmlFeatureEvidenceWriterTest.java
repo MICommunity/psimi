@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -27,7 +27,7 @@ import java.io.IOException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25FeatureEvidenceWriterTest extends AbstractXmlWriterTest {
+public class XmlFeatureEvidenceWriterTest extends AbstractXmlWriterTest {
 
     private String feature = "<feature id=\"1\">\n" +
             "  <featureRangeList>\n" +

@@ -13,7 +13,7 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlModelledBinaryInteractionWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlModelledBinaryInteractionWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.binary.XmlModelledBinaryInteraction;
 
@@ -29,41 +29,15 @@ import java.math.BigDecimal;
  * @since <pre>26/11/13</pre>
  */
 
-public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXmlWriterTest {
+public class CompactXmlModelledBinaryInteractionWriterTest extends AbstractXmlWriterTest {
 
     private String interaction = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -78,70 +52,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
 
     private String interaction_complex = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
             "      <interactionRef>4</interactionRef>\n" +
-            "      <biologicalRole>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified role</shortLabel>\n" +
-            "        </names>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "        </xref>\n" +
-            "      </biologicalRole>\n" +
-            "    </participant>\n"+
-            "  </participantList>\n" +
-            "</interaction>";
-
-    private String interaction_complexAsInteractor ="<interaction id=\"1\">\n" +
-            "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
-            "  </experimentList>\n" +
-            "  <participantList>\n" +
-            "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>test complex</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>complex</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0314\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -159,37 +74,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "    <shortLabel>interaction test</shortLabel>\n"+
             "  </names>\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -207,37 +96,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "    <fullName>interaction test</fullName>\n"+
             "  </names>\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -256,37 +119,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "    <alias>test</alias>\n"+
             "  </names>\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -305,37 +142,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "    <secondaryRef db=\"test\" id=\"xxxx1\"/>\n"+
             "  </xref>\n"+
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -353,37 +164,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "    <secondaryRef db=\"test\" id=\"xxxx1\"/>\n"+
             "  </xref>\n"+
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -397,37 +182,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "</interaction>";
     private String interaction_inferred = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -472,19 +231,7 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "      </featureList>\n" +
             "    </participant>\n"+
             "    <participant id=\"6\">\n" +
-            "      <interactor id=\"7\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test2</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>7</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -542,37 +289,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "</interaction>";
     private String interaction_type =  "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -594,37 +315,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "</interaction>";
     private String interaction_attributes =  "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -643,37 +338,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "</interaction>";
     private String interaction_registered = "<interaction id=\"2\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"3\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>3</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"4\">\n" +
-            "      <interactor id=\"5\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>5</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -688,37 +357,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
 
     private String interaction_confidence = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -743,37 +386,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
 
     private String interaction_parameter = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -793,37 +410,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
 
     private String interaction_preAssembly = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -844,37 +435,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
 
     private String interaction_allostery = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -898,37 +463,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
             "</interaction>";
     private String interaction_intra = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
-            "    <experimentDescription id=\"2\">\n" +
-            "      <bibref>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </bibref>\n"+
-            "      <interactionDetectionMethod>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified method</shortLabel>\n"+
-            "        </names>\n"+
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "        </xref>\n"+
-            "      </interactionDetectionMethod>\n"+
-            "    </experimentDescription>\n"+
+            "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
             "  <participantList>\n" +
             "    <participant id=\"3\">\n" +
-            "      <interactor id=\"4\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>protein test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>4</interactorRef>\n" +
             "      <biologicalRole>\n" +
             "        <names>\n" +
             "          <shortLabel>unspecified role</shortLabel>\n" +
@@ -947,12 +486,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -969,7 +507,6 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -986,12 +523,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
         streamWriter.flush();
 
-        Assert.assertEquals(this.interaction_complexAsInteractor, output.toString());
+        Assert.assertEquals(this.interaction, output.toString());
     }
 
     @Test
@@ -1003,22 +539,20 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
-        Assert.assertEquals(this.interaction_complexAsInteractor, output.toString());
+        Assert.assertEquals(this.interaction, output.toString());
     }
 
     @Test
     public void test_write_interaction_shortName() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction("interaction test");
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1029,12 +563,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     public void test_write_interaction_fullName() throws XMLStreamException, IOException, IllegalRangeException {
         NamedInteraction interaction = new XmlModelledBinaryInteraction();
         interaction.setFullName("interaction test");
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write((ModelledBinaryInteraction)interaction);
         streamWriter.flush();
 
@@ -1046,12 +579,11 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
         NamedInteraction interaction = new XmlModelledBinaryInteraction();
         interaction.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "interaction synonym"));
         interaction.getAliases().add(new DefaultAlias("test"));
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write((ModelledBinaryInteraction)interaction);
         streamWriter.flush();
 
@@ -1061,14 +593,13 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_identifier() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("intact"), "EBI-xxx"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1078,14 +609,13 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_xref() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1096,8 +626,8 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Ignore
     public void test_write_interaction_inferred() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
-        ModelledParticipant participant2 = new DefaultModelledParticipant(new DefaultProtein("protein test2"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ModelledParticipant participant2 = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         // two inferred interactiosn f1, f2, f3 and f3,f4
         ModelledFeature f1 = new DefaultModelledFeature();
         f1.getRanges().add(RangeUtils.createRangeFromString("1-4"));
@@ -1112,7 +642,6 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1122,13 +651,12 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_type() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1138,7 +666,7 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_attributes() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
@@ -1146,7 +674,6 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1156,14 +683,13 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_registered() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
         elementCache.extractIdForInteraction(new DefaultInteraction());
         elementCache.extractIdForInteraction(interaction);
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1173,13 +699,12 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_parameter() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getModelledParameters().add(new DefaultModelledParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1189,13 +714,12 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_confidence() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getModelledConfidences().add(new DefaultModelledConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1205,7 +729,7 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_preassembly() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
         assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
@@ -1214,7 +738,6 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1224,17 +747,16 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_preassembly_defaultExperiment() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
         assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
         assembly.getAffectedInteractions().add(new DefaultModelledInteraction());
-        assembly.getCooperativityEvidences().add(new DefaultCooperativityEvidence(new DefaultPublication("xxxxxx")));
+        assembly.getCooperativityEvidences().add(new DefaultCooperativityEvidence(new DefaultPublication("12345")));
         interaction.getCooperativeEffects().add(assembly);
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("12345")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1244,7 +766,7 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_allostery() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         Allostery allostery = new DefaultAllostery(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"),
                 participant, new DefaultMoleculeEffector(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor())));
@@ -1256,7 +778,6 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write(interaction);
         streamWriter.flush();
 
@@ -1266,13 +787,12 @@ public class ExpandedXml25ModelledBinaryInteractionWriterTest extends AbstractXm
     @Test
     public void test_write_interaction_intraMolecular() throws XMLStreamException, IOException, IllegalRangeException {
         ExtendedPsiXmlInteraction interaction = new XmlModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(new DefaultProtein("protein test"));
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setIntraMolecular(true);
         elementCache.clear();
 
         XmlModelledBinaryInteractionWriter writer = new XmlModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("xxxxxx")));
         writer.write((ModelledBinaryInteraction)interaction);
         streamWriter.flush();
 

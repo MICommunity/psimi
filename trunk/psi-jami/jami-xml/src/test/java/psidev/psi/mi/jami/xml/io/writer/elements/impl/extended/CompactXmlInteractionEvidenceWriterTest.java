@@ -12,23 +12,25 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlModelledInteractionWriter;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
-import psidev.psi.mi.jami.xml.model.extension.XmlModelledInteraction;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlInteractionEvidenceWriter;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.XmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
+import psidev.psi.mi.jami.xml.model.extension.XmlParticipantEvidence;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
 /**
- * Unit tester for XmlModelledInteractionWriter
+ * Unit tester for XmlInteractionEvidenceWriter
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>26/11/13</pre>
  */
 
-public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriterTest {
+public class CompactXmlInteractionEvidenceWriterTest extends AbstractXmlWriterTest {
 
     private String interaction = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
@@ -45,6 +47,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "</interaction>";
@@ -64,6 +76,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "</interaction>";
@@ -86,6 +108,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "</interaction>";
@@ -108,6 +140,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "</interaction>";
@@ -131,6 +173,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "</interaction>";
@@ -154,6 +206,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "</interaction>";
@@ -176,6 +238,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "</interaction>";
@@ -194,16 +266,18 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "      <featureList>\n" +
             "        <feature id=\"5\">\n" +
-            "          <featureType>\n" +
-            "            <names>\n" +
-            "              <shortLabel>biological feature</shortLabel>\n" +
-            "            </names>\n" +
-            "            <xref>\n" +
-            "              <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "            </xref>\n" +
-            "          </featureType>\n" +
             "          <featureRangeList>\n" +
             "            <featureRange>\n" +
             "              <startStatus>\n" +
@@ -239,16 +313,18 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "      <featureList>\n" +
             "        <feature id=\"8\">\n" +
-            "          <featureType>\n" +
-            "            <names>\n" +
-            "              <shortLabel>biological feature</shortLabel>\n" +
-            "            </names>\n" +
-            "            <xref>\n" +
-            "              <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "            </xref>\n" +
-            "          </featureType>\n" +
             "          <featureRangeList>\n" +
             "            <featureRange>\n" +
             "              <startStatus>\n" +
@@ -284,16 +360,18 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "      <featureList>\n" +
             "        <feature id=\"11\">\n" +
-            "          <featureType>\n" +
-            "            <names>\n" +
-            "              <shortLabel>biological feature</shortLabel>\n" +
-            "            </names>\n" +
-            "            <xref>\n" +
-            "              <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "            </xref>\n" +
-            "          </featureType>\n" +
             "          <featureRangeList>\n" +
             "            <featureRange>\n" +
             "              <startStatus>\n" +
@@ -329,16 +407,18 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "      <featureList>\n" +
             "        <feature id=\"14\">\n" +
-            "          <featureType>\n" +
-            "            <names>\n" +
-            "              <shortLabel>biological feature</shortLabel>\n" +
-            "            </names>\n" +
-            "            <xref>\n" +
-            "              <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0252\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "            </xref>\n" +
-            "          </featureType>\n" +
             "          <featureRangeList>\n" +
             "            <featureRange>\n" +
             "              <startStatus>\n" +
@@ -402,6 +482,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "  <interactionType>\n" +
@@ -428,6 +518,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "  <attributeList>\n" +
@@ -450,8 +550,78 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
+            "</interaction>";
+
+    private String interaction_availability = "<interaction id=\"1\">\n" +
+            "  <availabilityRef>2</availabilityRef>\n" +
+            "  <experimentList>\n" +
+            "    <experimentRef>3</experimentRef>\n"+
+            "  </experimentList>\n" +
+            "  <participantList>\n" +
+            "    <participant id=\"4\">\n" +
+            "      <interactorRef>5</interactorRef>\n" +
+            "      <biologicalRole>\n" +
+            "        <names>\n" +
+            "          <shortLabel>unspecified role</shortLabel>\n" +
+            "        </names>\n" +
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "        </xref>\n" +
+            "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
+            "    </participant>\n"+
+            "  </participantList>\n" +
+            "</interaction>";
+
+    private String interaction_negative = "<interaction id=\"1\">\n" +
+            "  <experimentList>\n" +
+            "    <experimentRef>2</experimentRef>\n"+
+            "  </experimentList>\n" +
+            "  <participantList>\n" +
+            "    <participant id=\"3\">\n" +
+            "      <interactorRef>4</interactorRef>\n" +
+            "      <biologicalRole>\n" +
+            "        <names>\n" +
+            "          <shortLabel>unspecified role</shortLabel>\n" +
+            "        </names>\n" +
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "        </xref>\n" +
+            "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
+            "    </participant>\n"+
+            "  </participantList>\n" +
+            "  <negative>true</negative>\n"+
             "</interaction>";
 
     private String interaction_confidence = "<interaction id=\"1\">\n" +
@@ -469,6 +639,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "  <confidenceList>\n" +
@@ -483,7 +663,7 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "  </confidenceList>\n" +
             "</interaction>";
 
-    private String interaction_parameter = "<interaction id=\"1\">\n" +
+    private String interaction_parameters = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
             "    <experimentRef>2</experimentRef>\n"+
             "  </experimentList>\n" +
@@ -498,6 +678,16 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "  <parameterList>\n" +
@@ -505,60 +695,6 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "      <experimentRef>2</experimentRef>\n" +
             "    </parameter>\n"+
             "  </parameterList>\n" +
-            "</interaction>";
-
-    private String interaction_preAssembly = "<interaction id=\"1\">\n" +
-            "  <experimentList>\n" +
-            "    <experimentRef>2</experimentRef>\n"+
-            "  </experimentList>\n" +
-            "  <participantList>\n" +
-            "    <participant id=\"3\">\n" +
-            "      <interactorRef>4</interactorRef>\n" +
-            "      <biologicalRole>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified role</shortLabel>\n" +
-            "        </names>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "        </xref>\n" +
-            "      </biologicalRole>\n" +
-            "    </participant>\n"+
-            "  </participantList>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"pre-assembly\" nameAc=\"MI:1158\"/>\n" +
-            "    <attribute name=\"positive cooperative effect\" nameAc=\"MI:1154\"/>\n" +
-            "    <attribute name=\"configurational pre-organization\" nameAc=\"MI:1174\"/>\n"+
-            "    <attribute name=\"affected interaction\" nameAc=\"MI:1150\">5</attribute>\n" +
-            "  </attributeList>\n" +
-            "</interaction>";
-
-    private String interaction_allostery = "<interaction id=\"1\">\n" +
-            "  <experimentList>\n" +
-            "    <experimentRef>2</experimentRef>\n"+
-            "  </experimentList>\n" +
-            "  <participantList>\n" +
-            "    <participant id=\"3\">\n" +
-            "      <interactorRef>4</interactorRef>\n" +
-            "      <biologicalRole>\n" +
-            "        <names>\n" +
-            "          <shortLabel>unspecified role</shortLabel>\n" +
-            "        </names>\n" +
-            "        <xref>\n" +
-            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "        </xref>\n" +
-            "      </biologicalRole>\n" +
-            "    </participant>\n"+
-            "  </participantList>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"allostery\" nameAc=\"MI:1157\"/>\n" +
-            "    <attribute name=\"allosteric molecule\" nameAc=\"MI:1159\">3</attribute>\n" +
-            "    <attribute name=\"allosteric effector\" nameAc=\"MI:1160\">5</attribute>\n" +
-            "    <attribute name=\"heterotropic allostery\" nameAc=\"MI:1168\"/>\n" +
-            "    <attribute name=\"allosteric change in structure\" nameAc=\"MI:1165\"/>\n" +
-            "    <attribute name=\"positive cooperative effect\" nameAc=\"MI:1154\"/>\n" +
-            "    <attribute name=\"allosteric v-type response\" nameAc=\"MI:1163\"/>\n" +
-            "    <attribute name=\"affected interaction\" nameAc=\"MI:1150\">6</attribute>\n" +
-            "  </attributeList>\n" +
             "</interaction>";
     private String interaction_intra = "<interaction id=\"1\">\n" +
             "  <experimentList>\n" +
@@ -575,21 +711,60 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
             "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "        </xref>\n" +
             "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
             "  <intraMolecular>true</intraMolecular>\n" +
+            "</interaction>";
+    private String interaction_modelled = "<interaction id=\"1\">\n" +
+            "  <experimentList>\n" +
+            "    <experimentRef>2</experimentRef>\n"+
+            "  </experimentList>\n" +
+            "  <participantList>\n" +
+            "    <participant id=\"3\">\n" +
+            "      <interactorRef>4</interactorRef>\n" +
+            "      <biologicalRole>\n" +
+            "        <names>\n" +
+            "          <shortLabel>unspecified role</shortLabel>\n" +
+            "        </names>\n" +
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "        </xref>\n" +
+            "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
+            "    </participant>\n"+
+            "  </participantList>\n" +
+            "  <modelled>true</modelled>\n" +
             "</interaction>";
 
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
     public void test_write_interaction() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -598,14 +773,14 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_participant_complex() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        complex.getParticipants().add(new XmlModelledParticipant(new DefaultProtein("test protein")));
+        ParticipantEvidence participant = new XmlParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -614,14 +789,14 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_participant_complex_as_interactor() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        complex.getParticipants().add(new DefaultModelledParticipant(new DefaultProtein("test protein")));
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        complex.getParticipants().add(new XmlModelledParticipant(new DefaultProtein("test protein")));
+        ParticipantEvidence participant = new XmlParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.setComplexAsInteractor(true);
         writer.write(interaction);
         streamWriter.flush();
@@ -631,13 +806,13 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_participant_complex_no_participants() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
         Complex complex = new DefaultComplex("test complex");
-        ModelledParticipant participant = new DefaultModelledParticipant(complex);
+        ParticipantEvidence participant = new XmlParticipantEvidence(complex);
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -646,12 +821,12 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_interaction_shortName() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction("interaction test");
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence("interaction test");
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -660,14 +835,14 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_interaction_fullName() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedInteraction interaction = new XmlModelledInteraction();
+        NamedInteraction interaction = new XmlInteractionEvidence();
         interaction.setFullName("interaction test");
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.write((ModelledInteraction)interaction);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write((InteractionEvidence)interaction);
         streamWriter.flush();
 
         Assert.assertEquals(this.interaction_fullName, output.toString());
@@ -675,15 +850,15 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_interaction_alias() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedInteraction interaction = new XmlModelledInteraction();
+        NamedInteraction interaction = new XmlInteractionEvidence();
         interaction.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "interaction synonym"));
         interaction.getAliases().add(new DefaultAlias("test"));
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.write((ModelledInteraction)interaction);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write((InteractionEvidence)interaction);
         streamWriter.flush();
 
         Assert.assertEquals(this.interaction_aliases, output.toString());
@@ -691,14 +866,14 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_interaction_identifier() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getIdentifiers().add(new DefaultXref(new DefaultCvTerm("intact"), "EBI-xxx"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -707,14 +882,14 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_interaction_xref() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
         interaction.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -724,19 +899,19 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
     @Test
     @Ignore
     public void test_write_interaction_inferred() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
-        ModelledParticipant participant2 = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
-        ModelledParticipant participant3 = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
-        ModelledParticipant participant4 = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant2 = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant3 = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        ParticipantEvidence participant4 = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         // two inferred interactiosn f1, f2, f3 and f3,f4
-        ModelledFeature f1 = new DefaultModelledFeature();
+        FeatureEvidence f1 = new DefaultFeatureEvidence();
         f1.getRanges().add(RangeUtils.createRangeFromString("1-4"));
-        ModelledFeature f2 = new DefaultModelledFeature();
+        FeatureEvidence f2 = new DefaultFeatureEvidence();
         f2.getRanges().add(RangeUtils.createRangeFromString("1-4"));
-        ModelledFeature f3 = new DefaultModelledFeature();
+        FeatureEvidence f3 = new DefaultFeatureEvidence();
         f3.getRanges().add(RangeUtils.createRangeFromString("1-4"));
-        ModelledFeature f4 = new DefaultModelledFeature();
+        FeatureEvidence f4 = new DefaultFeatureEvidence();
         f4.getRanges().add(RangeUtils.createRangeFromString("1-4"));
         f1.getLinkedFeatures().add(f2);
         f1.getLinkedFeatures().add(f3);
@@ -756,7 +931,7 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
         interaction.addParticipant(participant4);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -765,13 +940,13 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_interaction_type() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setInteractionType(CvTermUtils.createMICvTerm("association", "MI:0914"));
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -780,14 +955,14 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_interaction_attributes() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         interaction.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -796,14 +971,14 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
 
     @Test
     public void test_write_interaction_registered() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         elementCache.clear();
         elementCache.extractIdForInteraction(new DefaultInteraction());
         elementCache.extractIdForInteraction(interaction);
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -811,29 +986,29 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
     }
 
     @Test
-    public void test_write_interaction_parameter() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+    public void test_write_interaction_negative() throws XMLStreamException, IOException, IllegalRangeException {
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
-        interaction.getModelledParameters().add(new DefaultModelledParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
+        interaction.setNegative(true);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
-        Assert.assertEquals(this.interaction_parameter, output.toString());
+        Assert.assertEquals(this.interaction_negative, output.toString());
     }
 
     @Test
-    public void test_write_interaction_confidence() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+    public void test_write_interaction_confidences() throws XMLStreamException, IOException, IllegalRangeException {
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
-        interaction.getModelledConfidences().add(new DefaultModelledConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
+        interaction.getConfidences().add(new DefaultConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
@@ -841,75 +1016,62 @@ public class CompactXml25ModelledInteractionWriterTest extends AbstractXmlWriter
     }
 
     @Test
-    public void test_write_interaction_preassembly() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+    public void test_write_interaction_parameters() throws XMLStreamException, IOException, IllegalRangeException {
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
-        Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
-        assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
-        assembly.getAffectedInteractions().add(new DefaultModelledInteraction());
-        interaction.getCooperativeEffects().add(assembly);
+        interaction.getParameters().add(new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
         writer.write(interaction);
         streamWriter.flush();
 
-        Assert.assertEquals(this.interaction_preAssembly, output.toString());
-    }
-
-    @Test
-    public void test_write_interaction_preassembly_defaultExperiment() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
-        interaction.addParticipant(participant);
-        Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
-        assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
-        assembly.getAffectedInteractions().add(new DefaultModelledInteraction());
-        assembly.getCooperativityEvidences().add(new DefaultCooperativityEvidence(new DefaultPublication("12345")));
-        interaction.getCooperativeEffects().add(assembly);
-        elementCache.clear();
-
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.write(interaction);
-        streamWriter.flush();
-
-        Assert.assertEquals(this.interaction_preAssembly, output.toString());
-    }
-
-    @Test
-    public void test_write_interaction_allostery() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
-        interaction.addParticipant(participant);
-        Allostery allostery = new DefaultAllostery(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"),
-                participant, new DefaultMoleculeEffector(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor())));
-        allostery.setResponse(CvTermUtils.createMICvTerm("allosteric v-type response", "MI:1163"));
-        allostery.getAffectedInteractions().add(new DefaultModelledInteraction());
-        allostery.setAllostericMechanism(CvTermUtils.createMICvTerm("allosteric change in structure", "MI:1165"));
-        allostery.setAllosteryType(CvTermUtils.createMICvTerm("heterotropic allostery", "MI:1168"));
-        interaction.getCooperativeEffects().add(allostery);
-        elementCache.clear();
-
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.write(interaction);
-        streamWriter.flush();
-
-        Assert.assertEquals(this.interaction_allostery, output.toString());
+        Assert.assertEquals(this.interaction_parameters, output.toString());
     }
 
     @Test
     public void test_write_interaction_intraMolecular() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsiXmlInteraction interaction = new XmlModelledInteraction();
-        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         interaction.addParticipant(participant);
         interaction.setIntraMolecular(true);
         elementCache.clear();
 
-        XmlModelledInteractionWriter writer = new XmlModelledInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.write((ModelledInteraction)interaction);
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write(interaction);
         streamWriter.flush();
 
         Assert.assertEquals(this.interaction_intra, output.toString());
+    }
+
+    @Test
+    public void test_write_interaction_modelled() throws XMLStreamException, IOException, IllegalRangeException {
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        interaction.addParticipant(participant);
+        interaction.setModelled(true);
+        elementCache.clear();
+
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write(interaction);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.interaction_modelled, output.toString());
+    }
+
+    @Test
+    public void test_write_interaction_availability() throws XMLStreamException, IOException, IllegalRangeException {
+        ExtendedPsiXmlInteractionEvidence interaction = new XmlInteractionEvidence();
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
+        interaction.addParticipant(participant);
+        interaction.setAvailability("copyright");
+        elementCache.clear();
+
+        XmlInteractionEvidenceWriter writer = new XmlInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write(interaction);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.interaction_availability, output.toString());
     }
 }

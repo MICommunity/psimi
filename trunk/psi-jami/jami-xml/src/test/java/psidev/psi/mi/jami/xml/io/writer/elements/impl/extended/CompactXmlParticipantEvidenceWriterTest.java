@@ -5,11 +5,12 @@ import org.junit.Test;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
+import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlParticipantEvidenceWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlParticipantEvidenceWriter;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlFeatureEvidence;
@@ -27,22 +28,10 @@ import java.math.BigDecimal;
  * @since <pre>25/11/13</pre>
  */
 
-public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWriterTest {
+public class CompactXmlParticipantEvidenceWriterTest extends AbstractXmlWriterTest {
 
     private String participant = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -85,58 +74,12 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </experimentalRoleList>\n" +
             "</participant>";
 
-    private String participant_complex = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>test complex</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>complex</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0314\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
-            "  <biologicalRole>\n" +
-            "    <names>\n" +
-            "      <shortLabel>unspecified role</shortLabel>\n" +
-            "    </names>\n" +
-            "    <xref>\n" +
-            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "    </xref>\n" +
-            "  </biologicalRole>\n" +
-            "  <experimentalRoleList>\n" +
-            "    <experimentalRole>\n" +
-            "      <names>\n" +
-            "        <shortLabel>unspecified role</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </experimentalRole>\n" +
-            "  </experimentalRoleList>\n" +
-            "</participant>";
-
     private String participant_aliases ="<participant id=\"1\">\n" +
             "  <names>\n" +
             "    <alias type=\"synonym\">participant synonym</alias>\n"+
             "    <alias>test</alias>\n"+
             "  </names>\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -162,19 +105,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "    <alias type=\"synonym\">participant synonym</alias>\n"+
             "    <alias>test</alias>\n"+
             "  </names>\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -201,19 +132,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "    <alias type=\"synonym\">participant synonym</alias>\n"+
             "    <alias>test</alias>\n"+
             "  </names>\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -238,19 +157,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "    <primaryRef db=\"test2\" id=\"xxxx2\"/>\n" +
             "    <secondaryRef db=\"test\" id=\"xxxx1\"/>\n"+
             "  </xref>\n"+
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -271,19 +178,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </experimentalRoleList>\n" +
             "</participant>";
     private String participant_feature = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -330,19 +225,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </featureList>\n"+
             "</participant>";
     private String participant_attributes =  "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -367,19 +250,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </attributeList>\n"+
             "</participant>";
     private String participant_stoichiometry =  "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -403,19 +274,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </attributeList>\n"+
             "</participant>";
     private String participant_stoichiometry_range =  "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -439,19 +298,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </attributeList>\n"+
             "</participant>";
     private String participant_registered = "<participant id=\"2\">\n" +
-            "  <interactor id=\"3\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>3</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -472,19 +319,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </experimentalRoleList>\n" +
             "</participant>";
     private String participant_identification = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <participantIdentificationMethodList>\n" +
             "    <participantIdentificationMethod>\n" +
             "      <names>\n" +
@@ -515,19 +350,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </experimentalRoleList>\n" +
             "</participant>";
     private String participant_exp_preparation = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -558,19 +381,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </experimentalPreparationList>\n" +
             "</participant>";
     private String participant_expressed_in = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -598,19 +409,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </hostOrganismList>\n" +
             "</participant>";
     private String participant_parameters = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -636,19 +435,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </parameterList>\n" +
             "</participant>";
     private String participant_confidences = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -679,19 +466,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </confidenceList>\n" +
             "</participant>";
     private String participant_exp_interactor = "<participant id=\"1\">\n" +
-            "  <interactor id=\"2\">\n" +
-            "    <names>\n" +
-            "      <shortLabel>protein test</shortLabel>\n" +
-            "    </names>\n" +
-            "    <interactorType>\n" +
-            "      <names>\n" +
-            "        <shortLabel>protein</shortLabel>\n" +
-            "      </names>\n" +
-            "      <xref>\n" +
-            "        <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "      </xref>\n" +
-            "    </interactorType>\n" +
-            "  </interactor>\n" +
+            "  <interactorRef>2</interactorRef>\n" +
             "  <biologicalRole>\n" +
             "    <names>\n" +
             "      <shortLabel>unspecified role</shortLabel>\n" +
@@ -712,19 +487,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
             "  </experimentalRoleList>\n" +
             "  <experimentalInteractorList>\n" +
             "    <experimentalInteractor>\n" +
-            "      <interactor id=\"3\">\n" +
-            "        <names>\n" +
-            "          <shortLabel>experimental test</shortLabel>\n" +
-            "        </names>\n" +
-            "        <interactorType>\n" +
-            "          <names>\n" +
-            "            <shortLabel>protein</shortLabel>\n" +
-            "          </names>\n" +
-            "          <xref>\n" +
-            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
-            "          </xref>\n" +
-            "        </interactorType>\n" +
-            "      </interactor>\n" +
+            "      <interactorRef>3</interactorRef>\n" +
             "    </experimentalInteractor>\n"+
             "  </experimentalInteractorList>\n" +
             "</participant>";
@@ -733,7 +496,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         elementCache.clear();
 
         XmlParticipantEvidenceWriter writer = new XmlParticipantEvidenceWriter(createStreamWriter(), this.elementCache);
@@ -769,7 +532,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
         writer.write(participant);
         streamWriter.flush();
 
-        Assert.assertEquals(this.participant_complex, output.toString());
+        Assert.assertEquals(this.participant, output.toString());
     }
 
     @Test
@@ -782,12 +545,12 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
         writer.write(participant);
         streamWriter.flush();
 
-        Assert.assertEquals(this.participant_complex, output.toString());
+        Assert.assertEquals(this.participant, output.toString());
     }
 
     @Test
     public void test_write_participant_aliases() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "participant synonym"));
         participant.getAliases().add(new DefaultAlias("test"));
         elementCache.clear();
@@ -801,7 +564,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_shortName() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedParticipant participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        NamedParticipant participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "participant synonym"));
         participant.getAliases().add(new DefaultAlias("test"));
         participant.setShortName("participant test");
@@ -816,7 +579,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_fullName() throws XMLStreamException, IOException, IllegalRangeException {
-        NamedParticipant participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        NamedParticipant participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getAliases().add(new DefaultAlias(new DefaultCvTerm("synonym"), "participant synonym"));
         participant.getAliases().add(new DefaultAlias("test"));
         participant.setFullName("participant test");
@@ -831,7 +594,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_xref() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test2"), "xxxx2"));
         participant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxx1"));
         elementCache.clear();
@@ -845,7 +608,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_feature() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         FeatureEvidence feature = new XmlFeatureEvidence();
         feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
         participant.addFeature(feature);
@@ -860,7 +623,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_attributes() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test2")));
         participant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         elementCache.clear();
@@ -874,7 +637,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_stoichiometry() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.setStoichiometry(1);
         elementCache.clear();
 
@@ -887,7 +650,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_stoichiometry_range() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.setStoichiometry(new DefaultStoichiometry(1,4));
         elementCache.clear();
 
@@ -900,7 +663,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_registered() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         elementCache.clear();
         elementCache.extractIdForParticipant(new DefaultParticipant(new DefaultProtein("protein test")));
         elementCache.extractIdForParticipant(participant);
@@ -914,7 +677,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_identification() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getIdentificationMethods().add(new DefaultCvTerm("inference", "MI:0362"));
         elementCache.clear();
 
@@ -927,7 +690,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_exp_preparation() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getExperimentalPreparations().add(new DefaultCvTerm("sample process","MI:0342"));
         elementCache.clear();
 
@@ -940,7 +703,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_expressed_in() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.setExpressedInOrganism(new DefaultOrganism(9606, "human"));
         elementCache.clear();
 
@@ -953,7 +716,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_parameters() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getParameters().add(new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
         elementCache.clear();
 
@@ -966,7 +729,7 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_confidence() throws XMLStreamException, IOException, IllegalRangeException {
-        ParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         participant.getConfidences().add(new DefaultConfidence(new DefaultCvTerm("intact-miscore"), "0.8"));
         elementCache.clear();
 
@@ -979,9 +742,9 @@ public class ExpandedXml25ParticipantEvidenceWriterTest extends AbstractXmlWrite
 
     @Test
     public void test_write_participant_experimental_interactor() throws XMLStreamException, IOException, IllegalRangeException {
-        ExtendedPsiXmlParticipantEvidence participant = new XmlParticipantEvidence(new DefaultProtein("protein test"));
+        ExtendedPsiXmlParticipantEvidence participant = new XmlParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         ExperimentalInteractor interactor = new ExperimentalInteractor();
-        interactor.setInteractor(new DefaultProtein("experimental test"));
+        interactor.setInteractor(new DefaultProtein("p12345"));
         participant.getExperimentalInteractors().add(interactor);
         elementCache.clear();
 
