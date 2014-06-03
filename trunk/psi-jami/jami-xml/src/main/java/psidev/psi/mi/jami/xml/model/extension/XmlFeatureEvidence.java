@@ -31,8 +31,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     @XmlTransient
     private Locator locator;
     private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;
-
-    private Collection<Parameter> parameters;
+    private JAXBParameterWrapper jaxbParameterWrapper;
 
     public XmlFeatureEvidence() {
     }
@@ -126,6 +125,11 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
         this.jaxbExperimentRefWrapper = wrapper;
     }
 
+    @XmlElement(name="parameterList", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBParameterWrapper(JAXBParameterWrapper wrapper) {
+        this.jaxbParameterWrapper = wrapper;
+    }
+
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
@@ -146,10 +150,10 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
 
     @Override
     public Collection<Parameter> getParameters() {
-        if (this.parameters == null){
-           this.parameters = new ArrayList<Parameter>();
+        if (this.jaxbParameterWrapper == null){
+           this.jaxbParameterWrapper = new JAXBParameterWrapper();
         }
-        return this.parameters;
+        return this.jaxbParameterWrapper.parameters;
     }
 
     protected void initialiseDetectionMethods(){
@@ -327,6 +331,55 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
             public void setSourceLocator(FileSourceLocator locator) {
                 throw new UnsupportedOperationException("Cannot set the source locator of an experiment ref");
             }
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="featureParameterWrapper", namespace = "http://psi.hupo.org/mi/mif300")
+    public static class JAXBParameterWrapper implements Locatable, FileSourceContext {
+        private PsiXmLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private List<Parameter> parameters;
+
+        public JAXBParameterWrapper(){
+            initialiseParameters();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else{
+                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        @XmlElement(type= XmlParameter.class, name="parameter", required = true)
+        public List<Parameter> getJAXBParameters() {
+            return this.parameters;
+        }
+
+        protected void initialiseParameters(){
+            this.parameters = new ArrayList<Parameter>();
+        }
+
+        @Override
+        public String toString() {
+            return "Feature Parameter List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }
