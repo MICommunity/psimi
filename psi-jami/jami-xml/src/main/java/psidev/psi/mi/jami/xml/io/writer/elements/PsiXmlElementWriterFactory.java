@@ -1875,7 +1875,8 @@ public class PsiXmlElementWriterFactory {
                                                                           InteractionCategory category, PsiXmlElementWriter<Alias> aliasWriter,
                                                                           PsiXmlElementWriter<Annotation> attributeWriter,
                                                                           PsiXmlXrefWriter primaryRefWriter,
-                                                                          PsiXmlVariableNameWriter<CvTerm> featureTypeWriter){
+                                                                          PsiXmlVariableNameWriter<CvTerm> featureTypeWriter,
+                                                                          PsiXmlParameterWriter parameterWriter){
         PsiXmlElementWriter<Range> rangeWriter = createRangeWriter(streamWriter, extended, objectIndex, version, primaryRefWriter,
                 featureTypeWriter);
 
@@ -1901,6 +1902,7 @@ public class PsiXmlElementWriterFactory {
                             writer.setFeatureTypeWriter(featureTypeWriter);
                             writer.setRangeWriter(rangeWriter);
                             writer.setXrefWriter(primaryRefWriter);
+                            writer.setParameterWriter(parameterWriter);
 
                             return new PsiXmlElementWriter[]{writer, modelledWriter};
                     }
@@ -1962,6 +1964,7 @@ public class PsiXmlElementWriterFactory {
                             writer.setFeatureTypeWriter(featureTypeWriter);
                             writer.setRangeWriter(rangeWriter);
                             writer.setXrefWriter(primaryRefWriter);
+                            writer.setParameterWriter(parameterWriter);
 
                             return new PsiXmlElementWriter[]{writer, modelledWriter};
                     }
@@ -2016,7 +2019,7 @@ public class PsiXmlElementWriterFactory {
                                                                      PsiXmlParameterWriter parameterWriter){
 
         PsiXmlElementWriter[] featureWriters = createFeatureWriter(streamWriter, extended, objectIndex, version, category, aliasWriter,
-                attributeWriter, primaryRefWriter, cvWriter);
+                attributeWriter, primaryRefWriter, cvWriter, parameterWriter);
         PsiXmlVariableNameWriter<CvTerm> experimentalCvWriter = createExperimentalCvWriter(streamWriter, extended, objectIndex, aliasWriter,
                 primaryRefWriter);
 
