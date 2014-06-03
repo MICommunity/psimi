@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -151,9 +151,7 @@ public class XmlModelledParticipantWriterTest extends AbstractXmlWriterTest {
             "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </biologicalRole>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"comment\" nameAc=\"MI:0612\">stoichiometry: 1</attribute>\n"+
-            "  </attributeList>\n"+
+            "  <stoichiometry value=\"1\"/>\n" +
             "</participant>";
     private String participant_stoichiometry_range =  "<participant id=\"1\">\n" +
             "  <interactorRef>2</interactorRef>\n" +
@@ -165,9 +163,7 @@ public class XmlModelledParticipantWriterTest extends AbstractXmlWriterTest {
             "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
             "    </xref>\n" +
             "  </biologicalRole>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"comment\" nameAc=\"MI:0612\">stoichiometry: 1 - 4</attribute>\n"+
-            "  </attributeList>\n"+
+            "  <stoichiometryRange minValue=\"1\" maxValue=\"4\"/>\n" +
             "</participant>";
     private String participant_registered = "<participant id=\"2\">\n" +
             "  <interactorRef>3</interactorRef>\n" +
