@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.InteractorPool;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.*;
@@ -164,6 +165,41 @@ public class XmlInteractorWriterTest extends AbstractXmlWriterTest {
             "    </xref>\n" +
             "  </interactorType>\n" +
             "</interactor>";
+    private String interactorPool = "<interactor id=\"1\">\n" +
+            "  <names>\n" +
+            "    <shortLabel>pool test</shortLabel>\n" +
+            "  </names>\n" +
+            "  <xref>\n" +
+            "    <primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"set member\" refTypeAc=\"MI:1341\"/>\n" +
+            "    <secondaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12346\" refType=\"set member\" refTypeAc=\"MI:1341\"/>\n" +
+            "  </xref>\n" +
+            "  <interactorType>\n" +
+            "    <names>\n" +
+            "      <shortLabel>molecule set</shortLabel>\n" +
+            "    </names>\n" +
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:1304\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "    </xref>\n" +
+            "  </interactorType>\n" +
+            "</interactor>";
+    private String interactorPool_sequences = "<interactor id=\"1\">\n" +
+            "  <names>\n" +
+            "    <shortLabel>pool test</shortLabel>\n" +
+            "  </names>\n" +
+            "  <xref>\n" +
+            "    <primaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12345\" refType=\"set member\" refTypeAc=\"MI:1341\"/>\n" +
+            "    <secondaryRef db=\"uniprotkb\" dbAc=\"MI:0486\" id=\"P12346\" refType=\"set member\" refTypeAc=\"MI:1341\"/>\n" +
+            "  </xref>\n" +
+            "  <interactorType>\n" +
+            "    <names>\n" +
+            "      <shortLabel>molecule set</shortLabel>\n" +
+            "    </names>\n" +
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:1304\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "    </xref>\n" +
+            "  </interactorType>\n" +
+            "  <sequence>AAGGLLA</sequence>\n" +
+            "</interactor>";
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
     @Test
@@ -258,6 +294,66 @@ public class XmlInteractorWriterTest extends AbstractXmlWriterTest {
         streamWriter.flush();
 
         Assert.assertEquals(interactorSequence, output.toString());
+    }
+
+    @Test
+    public void test_write_interactor_pool() throws XMLStreamException, IOException {
+        InteractorPool interactor = new DefaultInteractorPool("pool test");
+        Protein protein1 = new DefaultProtein("protein test");
+        protein1.setUniprotkb("P12345");
+        Protein protein2 = new DefaultProtein("protein test2");
+        protein2.setUniprotkb("P12346");
+        interactor.add(protein1);
+        interactor.add(protein2);
+        elementCache.clear();
+
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
+        writer.write(interactor);
+        streamWriter.flush();
+
+        Assert.assertEquals(interactorPool, output.toString());
+    }
+
+    @Test
+    public void test_write_interactor_pool_sequence() throws XMLStreamException, IOException {
+        InteractorPool interactor = new DefaultInteractorPool("pool test");
+        Protein protein1 = new DefaultProtein("protein test");
+        protein1.setUniprotkb("P12345");
+        Protein protein2 = new DefaultProtein("protein test2");
+        protein2.setUniprotkb("P12346");
+        interactor.add(protein1);
+        interactor.add(protein2);
+        // same sequences, will be written
+        protein1.setSequence("AAGGLLA");
+        protein2.setSequence("AAGGLLA");
+        elementCache.clear();
+
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
+        writer.write(interactor);
+        streamWriter.flush();
+
+        Assert.assertEquals(interactorPool_sequences, output.toString());
+    }
+
+    @Test
+    public void test_write_interactor_pool_no_sequence() throws XMLStreamException, IOException {
+        InteractorPool interactor = new DefaultInteractorPool("pool test");
+        Protein protein1 = new DefaultProtein("protein test");
+        protein1.setUniprotkb("P12345");
+        Protein protein2 = new DefaultProtein("protein test2");
+        protein2.setUniprotkb("P12346");
+        interactor.add(protein1);
+        interactor.add(protein2);
+        // different sequences, will not be written
+        protein1.setSequence("AAGGLLA");
+        protein2.setSequence("AAGG");
+        elementCache.clear();
+
+        XmlInteractorWriter writer = new XmlInteractorWriter(createStreamWriter(), this.elementCache);
+        writer.write(interactor);
+        streamWriter.flush();
+
+        Assert.assertEquals(interactorPool, output.toString());
     }
 
     @Test
