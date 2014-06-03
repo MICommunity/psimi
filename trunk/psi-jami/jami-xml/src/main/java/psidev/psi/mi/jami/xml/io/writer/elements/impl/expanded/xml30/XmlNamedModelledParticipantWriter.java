@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30;
 
-import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.NamedParticipant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml25.XmlModelledFeatureWriter;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -22,47 +22,16 @@ public class XmlNamedModelledParticipantWriter extends XmlModelledParticipantWri
     }
 
     @Override
-    protected void initialiseFeatureWriter() {
-        super.setFeatureWriter(new XmlModelledFeatureWriter(getStreamWriter(), getObjectIndex()));
-    }
-
-    @Override
-    protected void writeMolecule(Interactor interactor) throws XMLStreamException {
-        super.writeMoleculeDescription(interactor);
-    }
-
-    @Override
-    protected void writeExperimentalPreparations(ModelledParticipant object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeExperimentalRoles(ModelledParticipant object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeParticipantIdentificationMethods(ModelledParticipant object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeExperimentalInteractor(ModelledParticipant object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeHostOrganisms(ModelledParticipant object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeConfidences(ModelledParticipant object) {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeParameters(ModelledParticipant object) {
-        // nothing to do
+    protected void writeNames(ModelledParticipant object) throws XMLStreamException {
+        if (object instanceof NamedParticipant){
+            NamedParticipant xmlParticipant = (NamedParticipant) object;
+            // write names
+            PsiXmlUtils.writeCompleteNamesElement(xmlParticipant.getShortName(),
+                    xmlParticipant.getFullName(), xmlParticipant.getAliases(), getStreamWriter(),
+                    getAliasWriter());
+        }
+        else{
+            super.writeNames(object);
+        }
     }
 }
