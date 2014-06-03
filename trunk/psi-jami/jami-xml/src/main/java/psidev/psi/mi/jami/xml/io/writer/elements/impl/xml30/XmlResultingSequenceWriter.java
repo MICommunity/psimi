@@ -51,17 +51,17 @@ public class XmlResultingSequenceWriter implements PsiXmlElementWriter<Resulting
             // write start
             this.streamWriter.writeStartElement("resultingSequence");
             // write original sequence
-            this.streamWriter.writeStartElement("originalSequence");
             if (object.getOriginalSequence() != null){
+                this.streamWriter.writeStartElement("originalSequence");
                 this.streamWriter.writeCharacters(object.getOriginalSequence());
+                this.streamWriter.writeEndElement();
             }
-            this.streamWriter.writeEndElement();
             // write new sequence
-            this.streamWriter.writeStartElement("newSequence");
             if (object.getNewSequence() != null){
+                this.streamWriter.writeStartElement("newSequence");
                 this.streamWriter.writeCharacters(object.getNewSequence());
+                this.streamWriter.writeEndElement();
             }
-            this.streamWriter.writeEndElement();
             // write Xref
             writeXref(object);
             // write end resulting sequence
