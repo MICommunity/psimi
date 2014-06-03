@@ -247,9 +247,14 @@ public class XmlFeatureEvidenceWriterTest extends AbstractXmlWriterTest {
             "      <end position=\"4\"/>\n"+
             "    </featureRange>\n"+
             "  </featureRangeList>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"decreasing-ptm\" nameAc=\"MI:1223\"/>\n"+
-            "  </attributeList>\n"+
+            "  <featureRole>\n" +
+            "    <names>\n" +
+            "      <shortLabel>decreasing-ptm</shortLabel>\n" +
+            "    </names>\n" +
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:1223\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "    </xref>\n" +
+            "  </featureRole>\n"+
             "</feature>";
 
     private String feature_interactionDependency = "<feature id=\"1\">\n" +
@@ -275,9 +280,14 @@ public class XmlFeatureEvidenceWriterTest extends AbstractXmlWriterTest {
             "      <end position=\"4\"/>\n"+
             "    </featureRange>\n"+
             "  </featureRangeList>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"resulting-ptm\" nameAc=\"MI:0639\"/>\n"+
-            "  </attributeList>\n"+
+            "  <featureRole>\n" +
+            "    <names>\n" +
+            "      <shortLabel>resulting-ptm</shortLabel>\n" +
+            "    </names>\n" +
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0639\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "    </xref>\n" +
+            "  </featureRole>\n"+
             "</feature>";
 
     private String feature_participantRef = "<feature id=\"1\">\n" +
