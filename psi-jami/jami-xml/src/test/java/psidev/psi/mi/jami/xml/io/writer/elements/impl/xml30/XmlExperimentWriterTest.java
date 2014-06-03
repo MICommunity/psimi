@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import junit.framework.Assert;
 import org.junit.Test;
@@ -6,15 +6,10 @@ import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Publication;
-import psidev.psi.mi.jami.model.impl.DefaultAnnotation;
-import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
-import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
+import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlExperimentWriter;
-import psidev.psi.mi.jami.xml.model.extension.XmlExperiment;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -29,8 +24,7 @@ import java.text.ParseException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml30ExperimentWriterTest extends AbstractXmlWriterTest {
-
+public class XmlExperimentWriterTest extends AbstractXmlWriterTest {
     private String experiment_imex ="<experimentDescription id=\"1\">\n" +
             "  <bibref>\n" +
             "    <xref>\n" +
@@ -60,7 +54,7 @@ public class Xml30ExperimentWriterTest extends AbstractXmlWriterTest {
             "  <bibref>\n" +
             "    <xref>\n" +
             "      <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
-            "    </xref>\n"+
+            "    </xref>\n" +
             "    <attributeList>\n" +
             "      <attribute name=\"test3\"/>\n" +
             "    </attributeList>\n"+
@@ -118,7 +112,7 @@ public class Xml30ExperimentWriterTest extends AbstractXmlWriterTest {
 
     @Test
     public void test_write_experiment_imex() throws XMLStreamException, IOException {
-        Experiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
+        Experiment exp = new DefaultExperiment(new DefaultPublication("xxxxxx"));
         exp.getPublication().assignImexId("IM-1");
         exp.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"), "xxxxxx"));
         exp.getXrefs().add(new DefaultXref(new DefaultCvTerm("test"),"12345"));
@@ -134,7 +128,7 @@ public class Xml30ExperimentWriterTest extends AbstractXmlWriterTest {
 
     @Test
     public void test_write_experiment_attributes() throws XMLStreamException, IOException, ParseException {
-        Experiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
+        Experiment exp = new DefaultExperiment(new DefaultPublication("xxxxxx"));
         Publication pub = exp.getPublication();
         pub.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
         exp.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test3")));
@@ -156,7 +150,7 @@ public class Xml30ExperimentWriterTest extends AbstractXmlWriterTest {
 
     @Test
     public void test_write_experiment_pub_attributes() throws XMLStreamException, IOException, ParseException {
-        Experiment exp = new XmlExperiment(new DefaultPublication("xxxxxx"));
+        Experiment exp = new DefaultExperiment(new DefaultPublication("xxxxxx"));
         Publication pub = exp.getPublication();
         pub.setTitle("test title");
         pub.setJournal("test journal");
@@ -175,5 +169,4 @@ public class Xml30ExperimentWriterTest extends AbstractXmlWriterTest {
 
         Assert.assertEquals(experiment_pub_attributes, output.toString());
     }
-
 }

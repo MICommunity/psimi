@@ -22,7 +22,7 @@ import java.io.IOException;
  * @since <pre>22/11/13</pre>
  */
 
-public class CompactXml25ExperimentalInteractorWriterTest extends AbstractXmlWriterTest {
+public class CompactXmlExperimentalInteractorWriterTest extends AbstractXmlWriterTest {
 
     private String experimentalInteractor = "<experimentalInteractor>\n" +
             "  <interactorRef>1</interactorRef>\n" +

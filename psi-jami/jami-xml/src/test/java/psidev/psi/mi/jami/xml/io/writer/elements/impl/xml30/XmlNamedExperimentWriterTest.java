@@ -21,7 +21,7 @@ import java.text.ParseException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml30NamedExperimentWriterTest extends AbstractXmlWriterTest {
+public class XmlNamedExperimentWriterTest extends AbstractXmlWriterTest {
 
     private String experiment_imex ="<experimentDescription id=\"1\">\n" +
             "  <bibref>\n" +

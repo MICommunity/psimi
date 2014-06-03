@@ -24,7 +24,7 @@ import java.io.IOException;
  * @since <pre>22/11/13</pre>
  */
 
-public class Xml25InferredInteractionWriterTest extends AbstractXmlWriterTest {
+public class XmlInferredInteractionWriterTest extends AbstractXmlWriterTest {
     private String inferredInteraction = "<inferredInteraction>\n" +
             "  <participant>\n" +
             "    <participantFeatureRef>1</participantFeatureRef>\n" +

@@ -24,7 +24,7 @@ import java.io.IOException;
  * @since <pre>21/11/13</pre>
  */
 
-public class Xml25ConfidenceWriterTest extends AbstractXmlWriterTest {
+public class XmlConfidenceWriterTest extends AbstractXmlWriterTest {
     private String confidence = "<confidence>\n" +
             "  <unit>\n" +
             "    <names>\n" +
