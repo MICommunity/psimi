@@ -126,6 +126,31 @@ public class XmlNamedExperimentWriterTest extends AbstractXmlWriterTest {
             "    </xref>\n"+
             "  </interactionDetectionMethod>\n"+
             "</experimentDescription>";
+    private String experiment_variable_parameter = "<experimentDescription id=\"1\">\n" +
+            "  <bibref>\n" +
+            "    <xref>\n" +
+            "      <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    </xref>\n"+
+            "  </bibref>\n"+
+            "  <interactionDetectionMethod>\n" +
+            "    <names>\n" +
+            "      <shortLabel>unspecified method</shortLabel>\n"+
+            "    </names>\n"+
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    </xref>\n"+
+            "  </interactionDetectionMethod>\n"+
+            "  <variableParameterList>\n" +
+            "    <variableParameter>\n" +
+            "      <description>test description</description>\n" +
+            "      <variableValueList>\n" +
+            "        <variableValue id=\"2\">\n" +
+            "          <value>0.5</value>\n" +
+            "        </variableValue>\n"+
+            "      </variableValueList>\n" +
+            "    </variableParameter>\n"+
+            "  </variableParameterList>\n" +
+            "</experimentDescription>";
 
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
@@ -204,5 +229,21 @@ public class XmlNamedExperimentWriterTest extends AbstractXmlWriterTest {
         streamWriter.flush();
 
         Assert.assertEquals(experiment_names, output.toString());
+    }
+
+    @Test
+    public void test_write_experiment_variable_parameter() throws XMLStreamException, IOException {
+        Experiment exp = new DefaultNamedExperiment(new DefaultPublication("xxxxxx"));
+        VariableParameter param = new DefaultVariableParameter("test description");
+        VariableParameterValue value = new DefaultVariableParameterValue("0.5", param);
+        param.getVariableValues().add(value);
+        exp.getVariableParameters().add(param);
+        elementCache.clear();
+
+        XmlNamedExperimentWriter writer = new XmlNamedExperimentWriter(createStreamWriter(), elementCache);
+        writer.write(exp);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.experiment_variable_parameter, output.toString());
     }
 }
