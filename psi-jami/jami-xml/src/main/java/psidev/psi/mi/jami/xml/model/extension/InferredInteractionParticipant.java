@@ -136,12 +136,9 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Participant obj = parsedObjects.getParticipant(this.ref);
-                if (obj != null){
-                    participant = obj;
-                    return true;
-                }
+            if (parsedObjects.containsParticipant(this.ref)){
+                participant = parsedObjects.getParticipant(this.ref);
+                return true;
             }
             return false;
         }
@@ -173,12 +170,9 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Feature obj = parsedObjects.getFeature(this.ref);
-                if (obj != null){
-                    feature = obj;
-                    return true;
-                }
+            if (parsedObjects.containsFeature(this.ref)){
+                feature = parsedObjects.getFeature(this.ref);
+                return true;
             }
             return false;
         }

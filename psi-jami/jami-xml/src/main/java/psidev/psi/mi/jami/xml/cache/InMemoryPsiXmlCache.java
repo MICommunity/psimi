@@ -15,110 +15,84 @@ import java.util.Map;
  */
 
 public class InMemoryPsiXmlCache implements PsiXmlIdCache {
-    private Map<Integer, Object> mapOfReferencedObjects;
     private Map<Integer, Complex> mapOfReferencedComplexes;
+    private Map<Integer, Interaction> mapOfReferencedInteractions;
+    private Map<Integer, Experiment> mapOfReferencedExperiments;
+    private Map<Integer, Interactor> mapOfReferencedInteractors;
+    private Map<Integer, Participant> mapOfReferencedParticipants;
+    private Map<Integer, Feature> mapOfReferencedFeatures;
+    private Map<Integer, VariableParameterValue> mapOfReferencedVariableParameterValues;
+    private Map<Integer, AbstractAvailability> mapOfReferencedAvailabilities;
 
     public InMemoryPsiXmlCache(){
-        this.mapOfReferencedObjects = new HashMap<Integer, Object>();
+        this.mapOfReferencedAvailabilities = new HashMap<Integer, AbstractAvailability>();
+        this.mapOfReferencedExperiments = new HashMap<Integer, Experiment>();
+        this.mapOfReferencedFeatures = new HashMap<Integer, Feature>();
+        this.mapOfReferencedInteractions = new HashMap<Integer, Interaction>();
+        this.mapOfReferencedInteractors = new HashMap<Integer, Interactor>();
+        this.mapOfReferencedParticipants = new HashMap<Integer, Participant>();
+        this.mapOfReferencedVariableParameterValues = new HashMap<Integer, VariableParameterValue>();
         this.mapOfReferencedComplexes = new HashMap<Integer, Complex>();
     }
 
     @Override
-    public Object get(int id) {
-        Object obj = this.mapOfReferencedObjects.get(id);
-        if (obj == null){
-            obj = this.mapOfReferencedComplexes.get(id);
-        }
-        return obj;
-    }
-
-    @Override
     public void registerAvailability(int id, AbstractAvailability object) {
-        this.mapOfReferencedObjects.put(id, object);
+        this.mapOfReferencedAvailabilities.put(id, object);
     }
 
     @Override
     public AbstractAvailability getAvailability(int id) {
-        Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof AbstractAvailability){
-            return (AbstractAvailability)object;
-        }
-        return null;
+        return this.mapOfReferencedAvailabilities.get(id);
     }
 
     @Override
     public void registerExperiment(int id, Experiment object) {
-        this.mapOfReferencedObjects.put(id, object);
+        this.mapOfReferencedExperiments.put(id, object);
     }
 
     @Override
     public Experiment getExperiment(int id) {
-        Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof Experiment){
-            return (Experiment)object;
-        }
-        return null;
+        return this.mapOfReferencedExperiments.get(id);
     }
 
     @Override
     public void registerInteraction(int id, Interaction object) {
-        this.mapOfReferencedObjects.put(id, object);
+        this.mapOfReferencedInteractions.put(id, object);
     }
 
     @Override
     public Interaction getInteraction(int id) {
-        Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof Interaction){
-            return (Interaction)object;
-        }
-        else if (object == null){
-            return this.mapOfReferencedComplexes.get(id);
-        }
-        return null;
+        return this.mapOfReferencedInteractions.get(id);
     }
 
     @Override
     public void registerInteractor(int id, Interactor object) {
-        this.mapOfReferencedObjects.put(id, object);
+        this.mapOfReferencedInteractors.put(id, object);
     }
 
     @Override
     public Interactor getInteractor(int id) {
-        Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof Interactor){
-            return (Interactor)object;
-        }
-        else if (object == null){
-            return this.mapOfReferencedComplexes.get(id);
-        }
-        return null;    }
+        return this.mapOfReferencedInteractors.get(id);
+    }
 
     @Override
     public void registerParticipant(int id, Participant object) {
-        this.mapOfReferencedObjects.put(id, object);
+        this.mapOfReferencedParticipants.put(id, object);
     }
 
     @Override
     public Participant getParticipant(int id) {
-        Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof Participant){
-            return (Participant)object;
-        }
-        return null;
+        return this.mapOfReferencedParticipants.get(id);
     }
 
     @Override
     public void registerFeature(int id, Feature object) {
-        this.mapOfReferencedObjects.put(id, object);
+        this.mapOfReferencedFeatures.put(id, object);
     }
 
     @Override
     public Feature getFeature(int id) {
-        Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof Feature){
-            return (Feature)object;
-        }
-        return null;
+        return this.mapOfReferencedFeatures.get(id);
     }
 
     @Override
@@ -133,7 +107,7 @@ public class InMemoryPsiXmlCache implements PsiXmlIdCache {
             return object;
         }
         else{
-            Object object2 = this.mapOfReferencedObjects.get(id);
+            Interaction object2 = this.mapOfReferencedInteractions.get(id);
             if (object2 instanceof Complex){
                 return (Complex)object2;
             }
@@ -143,30 +117,64 @@ public class InMemoryPsiXmlCache implements PsiXmlIdCache {
 
     @Override
     public void registerVariableParameterValue(int id, VariableParameterValue object) {
-        this.mapOfReferencedObjects.put(id, object);
+        this.mapOfReferencedVariableParameterValues.put(id, object);
     }
 
     @Override
     public VariableParameterValue getVariableParameterValue(int id) {
-        Object object = this.mapOfReferencedObjects.get(id);
-        if (object instanceof VariableParameterValue){
-            return (VariableParameterValue)object;
-        }
-        return null;
+        return this.mapOfReferencedVariableParameterValues.get(id);
     }
 
 
     @Override
     public void clear() {
-        this.mapOfReferencedObjects.clear();
+        this.mapOfReferencedVariableParameterValues.clear();
+        this.mapOfReferencedFeatures.clear();
+        this.mapOfReferencedParticipants.clear();
+        this.mapOfReferencedInteractions.clear();
+        this.mapOfReferencedInteractors.clear();
+        this.mapOfReferencedAvailabilities.clear();
+        this.mapOfReferencedExperiments.clear();
         this.mapOfReferencedComplexes.clear();
     }
 
     @Override
-    public boolean contains(int id) {
-        if(this.mapOfReferencedObjects.containsKey(id)){
-            return true;
-        }
+    public boolean containsExperiment(int id) {
+        return this.mapOfReferencedExperiments.containsKey(id);
+    }
+
+    @Override
+    public boolean containsAvailability(int id) {
+        return this.mapOfReferencedAvailabilities.containsKey(id);
+    }
+
+    @Override
+    public boolean containsInteraction(int id) {
+        return this.mapOfReferencedInteractions.containsKey(id);
+    }
+
+    @Override
+    public boolean containsInteractor(int id) {
+        return this.mapOfReferencedInteractors.containsKey(id);
+    }
+
+    @Override
+    public boolean containsParticipant(int id) {
+        return this.mapOfReferencedParticipants.containsKey(id);
+    }
+
+    @Override
+    public boolean containsFeature(int id) {
+        return this.mapOfReferencedFeatures.containsKey(id);
+    }
+
+    @Override
+    public boolean containsVariableParameter(int id) {
+        return this.mapOfReferencedVariableParameterValues.containsKey(id);
+    }
+
+    @Override
+    public boolean containsComplex(int id) {
         return this.mapOfReferencedComplexes.containsKey(id);
     }
 }

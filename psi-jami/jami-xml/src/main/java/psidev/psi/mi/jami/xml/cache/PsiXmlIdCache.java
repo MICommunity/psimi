@@ -14,13 +14,6 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
 public interface PsiXmlIdCache {
 
     /**
-     * Retrieves an object given its id
-     * @param id
-     * @return
-     */
-    public Object get(int id);
-
-    /**
      * Register an availability with an id
      * @param id
      * @param object
@@ -142,5 +135,54 @@ public interface PsiXmlIdCache {
      * @param id
      * @return
      */
-    public boolean contains(int id);
+    public boolean containsExperiment(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsAvailability(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsInteraction(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsInteractor(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsParticipant(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsFeature(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsVariableParameter(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsComplex(int id);
 }

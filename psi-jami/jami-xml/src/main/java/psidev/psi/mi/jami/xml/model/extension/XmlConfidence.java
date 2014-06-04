@@ -178,13 +178,11 @@ public class XmlConfidence extends AbstractXmlConfidence{
             }
 
             public boolean resolve(PsiXmlIdCache parsedObjects) {
-                if (parsedObjects.contains(this.ref)){
+                if (parsedObjects.containsExperiment(this.ref)){
                     Experiment obj = parsedObjects.getExperiment(this.ref);
-                    if (obj != null){
-                        experiments.remove(this);
-                        experiments.add(obj);
-                        return true;
-                    }
+                    experiments.remove(this);
+                    experiments.add(obj);
+                    return true;
                 }
                 return false;
             }

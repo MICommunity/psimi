@@ -533,12 +533,9 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInter
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                AbstractAvailability obj = parsedObjects.getAvailability(this.ref);
-                if (obj != null){
-                    availability = obj;
-                    return true;
-                }
+            if (parsedObjects.containsAvailability(this.ref)){
+                availability = parsedObjects.getAvailability(this.ref);
+                return true;
             }
             return false;
         }
@@ -701,8 +698,8 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInter
                 }
 
                 public boolean resolve(PsiXmlIdCache parsedObjects) {
-                    if (parsedObjects.contains(this.ref)){
-                        Object obj = parsedObjects.get(this.ref);
+                    if (parsedObjects.containsExperiment(this.ref)){
+                        Experiment obj = parsedObjects.getExperiment(this.ref);
                         if (obj instanceof ExtendedPsiXmlExperiment){
                             ExtendedPsiXmlExperiment exp = (ExtendedPsiXmlExperiment)obj;
                             experiments.remove(this);
@@ -712,12 +709,11 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInter
                             exp.getInteractionEvidences().add(parent);
                             return true;
                         }
-                        else if (obj instanceof Experiment){
-                            Experiment exp = (Experiment)obj;
+                        else {
                             experiments.remove(this);
-                            experiments.add(exp);
+                            experiments.add(obj);
 
-                            exp.getInteractionEvidences().add(parent);
+                            obj.getInteractionEvidences().add(parent);
                             return true;
                         }
                     }

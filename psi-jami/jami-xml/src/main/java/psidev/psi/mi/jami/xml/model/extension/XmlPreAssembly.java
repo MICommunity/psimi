@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.model.extension;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.impl.DefaultPreassemby;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
@@ -65,8 +66,12 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Object object = parsedObjects.get(this.ref);
+            if (parsedObjects.containsComplex(this.ref)){
+                getAffectedInteractions().remove(this);
+                getAffectedInteractions().add(parsedObjects.getComplex(this.ref));
+            }
+            if (parsedObjects.containsInteraction(this.ref)){
+                Interaction object = parsedObjects.getInteraction(this.ref);
                 // convert interaction evidence in a complex
                 if (object instanceof AbstractXmlInteractionEvidence){
                     ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((AbstractXmlInteractionEvidence)object);
@@ -78,6 +83,7 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
                 else if (object instanceof ModelledInteraction){
                     getAffectedInteractions().remove(this);
                     getAffectedInteractions().add((ModelledInteraction)object);
+                    return true;
                 }
                 // wrap basic interaction
                 else if (object instanceof AbstractXmlBasicInteraction){

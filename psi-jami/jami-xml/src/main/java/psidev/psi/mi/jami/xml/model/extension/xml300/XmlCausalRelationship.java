@@ -135,7 +135,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
+            if (parsedObjects.containsParticipant(this.ref)){
                 Participant object = parsedObjects.getParticipant(this.ref);
                 target = object;
             }
@@ -183,12 +183,9 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
+            if (parsedObjects.containsParticipant(this.ref)){
                 Participant object = parsedObjects.getParticipant(this.ref);
-
-                if (object != null){
-                    object.getCausalRelationships().add(XmlCausalRelationship.this);
-                }
+                object.getCausalRelationships().add(XmlCausalRelationship.this);
             }
             return false;
         }

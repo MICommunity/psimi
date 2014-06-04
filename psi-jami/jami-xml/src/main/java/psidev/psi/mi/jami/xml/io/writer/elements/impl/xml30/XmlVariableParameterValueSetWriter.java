@@ -34,7 +34,7 @@ public class XmlVariableParameterValueSetWriter implements PsiXmlElementWriter<V
     }
     @Override
     public void write(VariableParameterValueSet object) throws MIIOException {
-        if (object != null){
+        if (object != null && !object.isEmpty()){
             try {
                 // write start
                 this.streamWriter.writeStartElement("experimentalVariableValues");

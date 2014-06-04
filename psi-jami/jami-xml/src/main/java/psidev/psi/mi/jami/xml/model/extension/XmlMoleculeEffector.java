@@ -67,8 +67,8 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Object object = parsedObjects.get(this.ref);
+            if (parsedObjects.containsParticipant(this.ref)){
+                Participant object = parsedObjects.getParticipant(this.ref);
                 // convert participant evidence in a modelled participant
                 if (object instanceof ParticipantEvidence){
                     participant = new XmlParticipantEvidenceWrapper((ParticipantEvidence)object, null);
@@ -77,10 +77,11 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
                 // use modelled participant
                 else if (object instanceof ModelledParticipant){
                     participant = (ModelledParticipant)object;
+                    return true;
                 }
                 // wrap basic participant
-                else if (object instanceof Participant){
-                    participant = new XmlParticipantWrapper((Participant)object, null);
+                else {
+                    participant = new XmlParticipantWrapper(object, null);
                     return true;
                 }
             }
