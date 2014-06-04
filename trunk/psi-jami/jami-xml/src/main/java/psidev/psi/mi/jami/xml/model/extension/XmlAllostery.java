@@ -121,8 +121,8 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Object object = parsedObjects.get(this.ref);
+            if (parsedObjects.containsParticipant(this.ref)){
+                Participant object = parsedObjects.getParticipant(this.ref);
                 // convert participant evidence in a complex
                 if (object instanceof ParticipantEvidence){
                     ModelledParticipant participant = new XmlParticipantEvidenceWrapper((ParticipantEvidence)object, null);
@@ -134,8 +134,8 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
                     setAllostericMolecule((ModelledParticipant) object);
                 }
                 // wrap basic interaction
-                else if (object instanceof Participant){
-                    ModelledParticipant participant = new XmlParticipantWrapper((Participant)object, null);
+                else {
+                    ModelledParticipant participant = new XmlParticipantWrapper(object, null);
                     setAllostericMolecule(participant);
                     return true;
                 }
@@ -209,8 +209,12 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Object object = parsedObjects.get(this.ref);
+            if (parsedObjects.containsComplex(this.ref)){
+                getAffectedInteractions().remove(this);
+                getAffectedInteractions().add(parsedObjects.getComplex(this.ref));
+            }
+            if (parsedObjects.containsInteraction(this.ref)){
+                Interaction object = parsedObjects.getInteraction(this.ref);
                 // convert interaction evidence in a complex
                 if (object instanceof AbstractXmlInteractionEvidence){
                     ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((AbstractXmlInteractionEvidence)object);
@@ -222,6 +226,7 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
                 else if (object instanceof ModelledInteraction){
                     getAffectedInteractions().remove(this);
                     getAffectedInteractions().add((ModelledInteraction)object);
+                    return true;
                 }
                 // wrap basic interaction
                 else if (object instanceof AbstractXmlBasicInteraction){

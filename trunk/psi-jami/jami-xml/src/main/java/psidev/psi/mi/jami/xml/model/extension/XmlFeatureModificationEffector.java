@@ -67,8 +67,8 @@ public class XmlFeatureModificationEffector implements FeatureModificationEffect
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Object object = parsedObjects.get(this.ref);
+            if (parsedObjects.containsFeature(this.ref)){
+                Feature object = parsedObjects.getFeature(this.ref);
                 // convert feature evidence in a modelled feature
                 if (object instanceof FeatureEvidence){
                     feature = new XmlFeatureEvidenceWrapper((FeatureEvidence)object, null);
@@ -77,10 +77,11 @@ public class XmlFeatureModificationEffector implements FeatureModificationEffect
                 // use modelled feature
                 else if (object instanceof ModelledFeature){
                     feature = (ModelledFeature)object;
+                    return true;
                 }
                 // wrap basic feature
-                else if (object instanceof Feature){
-                    feature = new XmlFeatureWrapper((Feature)object, null);
+                else {
+                    feature = new XmlFeatureWrapper(object, null);
                     return true;
                 }
             }

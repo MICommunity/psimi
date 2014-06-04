@@ -465,7 +465,7 @@ public abstract class AbstractXmlModelledInteraction extends AbstractPsiXmlInter
                 }
 
                 public boolean resolve(PsiXmlIdCache parsedObjects) {
-                    if (parsedObjects.contains(this.ref)){
+                    if (parsedObjects.containsExperiment(this.ref)){
                         Experiment obj = parsedObjects.getExperiment(this.ref);
                         if (obj != null){
                             experiments.remove(this);

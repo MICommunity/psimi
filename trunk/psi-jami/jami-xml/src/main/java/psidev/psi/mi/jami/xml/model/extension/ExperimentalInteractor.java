@@ -266,13 +266,11 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
             }
 
             public boolean resolve(PsiXmlIdCache parsedObjects) {
-                if (parsedObjects.contains(this.ref)){
+                if (parsedObjects.containsExperiment(this.ref)){
                     Experiment obj = parsedObjects.getExperiment(this.ref);
-                    if (obj != null){
-                        experiments.remove(this);
-                        experiments.add(obj);
-                        return true;
-                    }
+                    experiments.remove(this);
+                    experiments.add(obj);
+                    return true;
                 }
                 return false;
             }
@@ -299,13 +297,9 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
         @Override
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Interactor obj = parsedObjects.getInteractor(this.ref);
-                if (obj != null){
-                    interactor = obj;
-                    return true;
-                }
-                return false;
+            if (parsedObjects.containsInteractor(this.ref)){
+                interactor = parsedObjects.getInteractor(this.ref);
+                return true;
             }
             return false;
         }

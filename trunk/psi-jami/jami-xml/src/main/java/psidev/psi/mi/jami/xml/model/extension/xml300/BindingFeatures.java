@@ -208,13 +208,11 @@ public class BindingFeatures implements FileSourceContext, Locatable {
             }
 
             public boolean resolve(PsiXmlIdCache parsedObjects) {
-                if (parsedObjects.contains(this.ref)){
+                if (parsedObjects.containsFeature(this.ref)){
                     Feature obj = parsedObjects.getFeature(this.ref);
-                    if (obj instanceof ModelledFeature){
-                        linkedFeatures.remove(this);
-                        linkedFeatures.add((ModelledFeature)obj);
-                        return true;
-                    }
+                    linkedFeatures.remove(this);
+                    linkedFeatures.add((ModelledFeature)obj);
+                    return true;
                 }
                 return false;
             }

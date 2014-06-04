@@ -73,11 +73,9 @@ public class XmlParameter extends AbstractXmlParameter{
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.contains(this.ref)){
-                Experiment obj = parsedObjects.getExperiment(this.ref);
-                if (obj != null){
-                    experiment = obj;
-                }
+            if (parsedObjects.containsExperiment(this.ref)){
+                experiment = parsedObjects.getExperiment(this.ref);
+                return true;
             }
             return false;
         }
