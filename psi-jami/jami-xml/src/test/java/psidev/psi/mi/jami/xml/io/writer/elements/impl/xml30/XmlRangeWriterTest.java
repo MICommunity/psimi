@@ -3,9 +3,12 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.ResultingSequence;
+import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 import psidev.psi.mi.jami.model.impl.DefaultResultingSequence;
+import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
@@ -114,6 +117,48 @@ public class XmlRangeWriterTest extends AbstractXmlWriterTest {
             "    </xref>\n"+
             "  </resultingSequence>\n"+
             "</featureRange>";
+    private String range_participant_ref = "<featureRange>\n" +
+            "  <startStatus>\n" +
+            "    <names>\n" +
+            "      <shortLabel>certain</shortLabel>\n"+
+            "    </names>\n"+
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    </xref>\n"+
+            "  </startStatus>\n" +
+            "  <begin position=\"1\"/>\n"+
+            "  <endStatus>\n" +
+            "    <names>\n" +
+            "      <shortLabel>certain</shortLabel>\n"+
+            "    </names>\n"+
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    </xref>\n"+
+            "  </endStatus>\n" +
+            "  <end position=\"4\"/>\n"+
+            "  <participantRef>1</participantRef>\n"+
+            "</featureRange>";
+    private String range_participant_ref_already_registered = "<featureRange>\n" +
+            "  <startStatus>\n" +
+            "    <names>\n" +
+            "      <shortLabel>certain</shortLabel>\n"+
+            "    </names>\n"+
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    </xref>\n"+
+            "  </startStatus>\n" +
+            "  <begin position=\"1\"/>\n"+
+            "  <endStatus>\n" +
+            "    <names>\n" +
+            "      <shortLabel>certain</shortLabel>\n"+
+            "    </names>\n"+
+            "    <xref>\n" +
+            "      <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "    </xref>\n"+
+            "  </endStatus>\n" +
+            "  <end position=\"4\"/>\n"+
+            "  <participantRef>2</participantRef>\n"+
+            "</featureRange>";
 
     @Test
     public void test_write_range() throws XMLStreamException, IOException, IllegalRangeException {
@@ -160,5 +205,34 @@ public class XmlRangeWriterTest extends AbstractXmlWriterTest {
         streamWriter.flush();
 
         Assert.assertEquals(this.range_resulting_sequence, output.toString());
+    }
+
+    @Test
+    public void test_write_range_participant() throws XMLStreamException, IOException, IllegalRangeException {
+        Range range = RangeUtils.createRangeFromString("1-4");
+        range.setParticipant(new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor()));
+
+        XmlRangeWriter writer = new XmlRangeWriter(createStreamWriter(), this.elementCache);
+        writer.write(range);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.range_participant_ref, output.toString());
+    }
+
+    @Test
+    public void test_write_range_participant_registered() throws XMLStreamException, IOException, IllegalRangeException {
+        Participant participant = new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor());
+        this.elementCache.clear();
+        this.elementCache.extractIdForParticipant(new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        this.elementCache.extractIdForParticipant(participant);
+
+        Range range = RangeUtils.createRangeFromString("1-4");
+        range.setParticipant(participant);
+
+        XmlRangeWriter writer = new XmlRangeWriter(createStreamWriter(), this.elementCache);
+        writer.write(range);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.range_participant_ref_already_registered, output.toString());
     }
 }
