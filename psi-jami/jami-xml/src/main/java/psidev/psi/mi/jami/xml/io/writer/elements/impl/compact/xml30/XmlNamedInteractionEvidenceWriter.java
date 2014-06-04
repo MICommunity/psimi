@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.NamedInteraction;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlAliasWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlNamedExperimentWriter;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -29,6 +30,11 @@ public class XmlNamedInteractionEvidenceWriter extends XmlInteractionEvidenceWri
     @Override
     protected void initialiseParticipantWriter() {
         super.setParticipantWriter(new XmlNamedParticipantEvidenceWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
+    protected void initialiseExperimentWriter() {
+        super.setExperimentWriter(new XmlNamedExperimentWriter(getStreamWriter(), getObjectIndex()));
     }
 
     public PsiXmlElementWriter<Alias> getAliasWriter() {

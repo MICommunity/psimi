@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30;
 
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.XmlNamedExperimentWriter;
 
 import javax.xml.stream.XMLStreamWriter;
 
@@ -18,6 +19,11 @@ public class XmlNamedModelledBinaryInteractionWriter extends XmlModelledBinaryIn
 
     public XmlNamedModelledBinaryInteractionWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
+    }
+
+    @Override
+    protected void initialiseExperimentWriter() {
+        super.setExperimentWriter(new XmlNamedExperimentWriter(getStreamWriter(), getObjectIndex()));
     }
 
     @Override
