@@ -32,6 +32,16 @@ public class XmlModelledBinaryInteractionWriter extends AbstractXmlModelledInter
     }
 
     @Override
+    protected void writeOtherProperties(ModelledBinaryInteraction object) throws XMLStreamException {
+        // write evidence type
+        writeEvidenceType(object);
+        // write cooperative effects
+        writeCooperativeEffects(object);
+        // write causal relationships
+        writeCausalRelationships(object);
+    }
+
+    @Override
     protected void writeAttributes(ModelledBinaryInteraction object) throws XMLStreamException {
         // write attributes
         if (!object.getAnnotations().isEmpty()){

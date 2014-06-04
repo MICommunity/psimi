@@ -263,22 +263,6 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     }
 
     @Override
-    protected void writeIntraMolecular(I object) throws XMLStreamException {
-        if (object instanceof ExtendedPsiXmlInteraction){
-            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
-            if (xmlInteraction.isIntraMolecular()){
-                getStreamWriter().writeStartElement("intraMolecular");
-                getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));
-                // write end intra molecular
-                getStreamWriter().writeEndElement();
-            }
-        }
-        else {
-            super.writeIntraMolecular(object);
-        }
-    }
-
-    @Override
     protected void writeStartInteraction() throws XMLStreamException {
         getStreamWriter().writeStartElement("interaction");
     }

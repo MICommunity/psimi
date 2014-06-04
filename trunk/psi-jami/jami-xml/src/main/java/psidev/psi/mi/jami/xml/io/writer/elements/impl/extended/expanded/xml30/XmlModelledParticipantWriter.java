@@ -16,7 +16,7 @@ import javax.xml.stream.XMLStreamWriter;
  * @since <pre>14/11/13</pre>
  */
 
-public class XmlModelledParticipantWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlNamedModelledParticipantWriter {
+public class XmlModelledParticipantWriter extends psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlNamedModelledParticipantWriter {
     public XmlModelledParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
     }
