@@ -79,7 +79,7 @@ public class XmlCausalRelationshipWriter implements PsiXmlCausalRelationshipWrit
     }
 
     protected void writeCausalStatement(CausalRelationship object) {
-        getCausalStatementWriter().write(object.getRelationType(), "causalStatement");
+        getCausalStatementWriter().write(object.getRelationType(), "causalityStatement");
     }
 
     protected void writeSource(CausalRelationship object, Participant source) throws XMLStreamException {
