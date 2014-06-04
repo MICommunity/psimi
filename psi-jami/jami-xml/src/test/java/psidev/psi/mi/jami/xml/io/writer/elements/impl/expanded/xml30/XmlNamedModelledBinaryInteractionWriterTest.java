@@ -571,12 +571,33 @@ public class XmlNamedModelledBinaryInteractionWriterTest extends AbstractXmlWrit
             "      </biologicalRole>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"pre-assembly\" nameAc=\"MI:1158\"/>\n" +
-            "    <attribute name=\"positive cooperative effect\" nameAc=\"MI:1154\"/>\n" +
-            "    <attribute name=\"configurational pre-organization\" nameAc=\"MI:1174\"/>\n"+
-            "    <attribute name=\"affected interaction\" nameAc=\"MI:1150\">5</attribute>\n" +
-            "  </attributeList>\n" +
+            "  <cooperativeEffectList>\n" +
+            "    <preassembly>\n" +
+            "      <cooperativityEvidenceList>\n" +
+            "        <cooperativityEvidenceDescription>\n" +
+            "          <bibref>\n" +
+            "            <xref>\n" +
+            "              <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "            </xref>\n"+
+            "            <attributeList>\n" +
+            "              <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
+            "            </attributeList>\n"+
+            "          </bibref>\n"+
+            "        </cooperativityEvidenceDescription>\n"+
+            "      </cooperativityEvidenceList>\n" +
+            "      <affectedInteractionList>\n" +
+            "        <affectedInteractionRef>4</affectedInteractionRef>\n" +
+            "      </affectedInteractionList>\n"+
+            "      <cooperativeEffectOutcome>\n" +
+            "        <names>\n" +
+            "          <shortLabel>positive cooperative effect</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:1154\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </cooperativeEffectOutcome>\n"+
+            "    </preassembly>\n"+
+            "  </cooperativeEffectList>\n" +
             "</abstractInteraction>";
 
     private String interaction_allostery = "<abstractInteraction id=\"1\">\n" +
@@ -605,16 +626,35 @@ public class XmlNamedModelledBinaryInteractionWriterTest extends AbstractXmlWrit
             "      </biologicalRole>\n" +
             "    </participant>\n"+
             "  </participantList>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"allostery\" nameAc=\"MI:1157\"/>\n" +
-            "    <attribute name=\"allosteric molecule\" nameAc=\"MI:1159\">3</attribute>\n" +
-            "    <attribute name=\"allosteric effector\" nameAc=\"MI:1160\">5</attribute>\n" +
-            "    <attribute name=\"heterotropic allostery\" nameAc=\"MI:1168\"/>\n" +
-            "    <attribute name=\"allosteric change in structure\" nameAc=\"MI:1165\"/>\n" +
-            "    <attribute name=\"positive cooperative effect\" nameAc=\"MI:1154\"/>\n" +
-            "    <attribute name=\"allosteric v-type response\" nameAc=\"MI:1163\"/>\n" +
-            "    <attribute name=\"affected interaction\" nameAc=\"MI:1150\">6</attribute>\n" +
-            "  </attributeList>\n" +
+            "  <cooperativeEffectList>\n" +
+            "    <allostery>\n" +
+            "      <cooperativityEvidenceList>\n" +
+            "        <cooperativityEvidenceDescription>\n" +
+            "          <bibref>\n" +
+            "            <xref>\n" +
+            "              <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "            </xref>\n"+
+            "            <attributeList>\n" +
+            "              <attribute name=\"publication title\" nameAc=\"MI:1091\">test title</attribute>\n"+
+            "            </attributeList>\n"+
+            "          </bibref>\n"+
+            "        </cooperativityEvidenceDescription>\n"+
+            "      </cooperativityEvidenceList>\n" +
+            "      <affectedInteractionList>\n" +
+            "        <affectedInteractionRef>4</affectedInteractionRef>\n" +
+            "      </affectedInteractionList>\n"+
+            "      <cooperativeEffectOutcome>\n" +
+            "        <names>\n" +
+            "          <shortLabel>positive cooperative effect</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:1154\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </cooperativeEffectOutcome>\n" +
+            "      <allostericMoleculeRef>5</allostericMoleculeRef>\n" +
+            "      <allostericEffectorRef>6</allostericEffectorRef>\n" +
+            "    </allostery>\n"+
+            "  </cooperativeEffectList>\n" +
             "</abstractInteraction>";
 
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
@@ -882,10 +922,12 @@ public class XmlNamedModelledBinaryInteractionWriterTest extends AbstractXmlWrit
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
-        Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
-        assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
-        assembly.getAffectedInteractions().add(new DefaultModelledInteraction());
-        interaction.getCooperativeEffects().add(assembly);
+        Preassembly effect = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect","MI:1154"));
+        CooperativityEvidence ev = new DefaultCooperativityEvidence(new DefaultPublication("xxxxxx"));
+        ev.getPublication().setTitle("test title");
+        effect.getCooperativityEvidences().add(ev);
+        effect.getAffectedInteractions().add(new DefaultModelledInteraction());
+        interaction.getCooperativeEffects().add(effect);
         elementCache.clear();
 
         XmlNamedModelledBinaryInteractionWriter writer = new XmlNamedModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
@@ -897,37 +939,18 @@ public class XmlNamedModelledBinaryInteractionWriterTest extends AbstractXmlWrit
     }
 
     @Test
-    public void test_write_interaction_preassembly_defaultExperiment() throws XMLStreamException, IOException, IllegalRangeException {
-        ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
-        ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
-        interaction.addParticipant(participant);
-        Preassembly assembly = new DefaultPreassemby(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"));
-        assembly.setResponse(CvTermUtils.createMICvTerm("configurational pre-organization", "MI:1174"));
-        assembly.getAffectedInteractions().add(new DefaultModelledInteraction());
-        assembly.getCooperativityEvidences().add(new DefaultCooperativityEvidence(new DefaultPublication("xxxxxx")));
-        interaction.getCooperativeEffects().add(assembly);
-        elementCache.clear();
-
-        XmlNamedModelledBinaryInteractionWriter writer = new XmlNamedModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
-        writer.setDefaultExperiment(new DefaultExperiment(new DefaultPublication("12345")));
-        writer.write(interaction);
-        streamWriter.flush();
-
-        Assert.assertEquals(this.interaction_preAssembly, output.toString());
-    }
-
-    @Test
     public void test_write_interaction_allostery() throws XMLStreamException, IOException, IllegalRangeException {
         ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
         ModelledParticipant participant = new DefaultNamedModelledParticipant(new DefaultProtein("protein test"));
         interaction.addParticipant(participant);
-        Allostery allostery = new DefaultAllostery(CvTermUtils.createMICvTerm("positive cooperative effect", "MI:1154"),
-                participant, new DefaultMoleculeEffector(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor())));
-        allostery.setResponse(CvTermUtils.createMICvTerm("allosteric v-type response", "MI:1163"));
-        allostery.getAffectedInteractions().add(new DefaultModelledInteraction());
-        allostery.setAllostericMechanism(CvTermUtils.createMICvTerm("allosteric change in structure", "MI:1165"));
-        allostery.setAllosteryType(CvTermUtils.createMICvTerm("heterotropic allostery", "MI:1168"));
-        interaction.getCooperativeEffects().add(allostery);
+        Allostery effect = new DefaultAllostery(CvTermUtils.createMICvTerm("positive cooperative effect","MI:1154"),
+                new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()),
+                new DefaultMoleculeEffector(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor())));
+        CooperativityEvidence ev = new DefaultCooperativityEvidence(new DefaultPublication("xxxxxx"));
+        ev.getPublication().setTitle("test title");
+        effect.getCooperativityEvidences().add(ev);
+        effect.getAffectedInteractions().add(new DefaultModelledInteraction());
+        interaction.getCooperativeEffects().add(effect);
         elementCache.clear();
 
         XmlNamedModelledBinaryInteractionWriter writer = new XmlNamedModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
