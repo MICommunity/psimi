@@ -91,9 +91,7 @@ public class XmlCooperativityEvidenceWriter implements PsiXmlElementWriter<Coope
     }
 
     protected void writePublication(CooperativityEvidence object) throws XMLStreamException {
-        if (object.getPublication() != null){
-            getPublicationWriter().write(object.getPublication());
-        }
+        getPublicationWriter().write(object.getPublication());
     }
 
     protected XMLStreamWriter getStreamWriter() {
