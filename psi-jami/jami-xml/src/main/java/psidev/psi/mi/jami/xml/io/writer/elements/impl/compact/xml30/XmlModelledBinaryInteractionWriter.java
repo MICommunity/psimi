@@ -37,6 +37,16 @@ public class XmlModelledBinaryInteractionWriter extends psidev.psi.mi.jami.xml.i
     }
 
     @Override
+    protected void writeOtherProperties(ModelledBinaryInteraction object) throws XMLStreamException {
+        // write evidence type
+        writeEvidenceType(object);
+        // write cooperative effects
+        writeCooperativeEffects(object);
+        // write causal relationships
+        writeCausalRelationships(object);
+    }
+
+    @Override
     protected void writeAttributes(ModelledBinaryInteraction object) throws XMLStreamException {
         // write attributes
         if (!object.getAnnotations().isEmpty()){
