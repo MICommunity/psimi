@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25;
+package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30;
 
 import junit.framework.Assert;
 import org.junit.Ignore;
@@ -692,9 +692,7 @@ public class XmlBinaryInteractionEvidenceWriterTest extends AbstractXmlWriterTes
             "    </participant>\n"+
             "  </participantList>\n" +
             "  <parameterList>\n" +
-            "    <parameter term=\"kd\" base=\"10\" exponent=\"0\" factor=\"5\">\n" +
-            "      <experimentRef>2</experimentRef>\n" +
-            "    </parameter>\n"+
+            "    <parameter term=\"kd\" base=\"10\" exponent=\"0\" factor=\"5\"/>\n" +
             "  </parameterList>\n" +
             "</interaction>";
     private String interaction_intra = "<interaction id=\"1\">\n" +
@@ -754,6 +752,39 @@ public class XmlBinaryInteractionEvidenceWriterTest extends AbstractXmlWriterTes
             "    </participant>\n"+
             "  </participantList>\n" +
             "  <modelled>true</modelled>\n" +
+            "</interaction>";
+    private String interaction_variable_parameters = "<interaction id=\"1\">\n" +
+            "  <experimentList>\n" +
+            "    <experimentRef>2</experimentRef>\n"+
+            "  </experimentList>\n" +
+            "  <participantList>\n" +
+            "    <participant id=\"3\">\n" +
+            "      <interactorRef>4</interactorRef>\n" +
+            "      <biologicalRole>\n" +
+            "        <names>\n" +
+            "          <shortLabel>unspecified role</shortLabel>\n" +
+            "        </names>\n" +
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "        </xref>\n" +
+            "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
+            "    </participant>\n"+
+            "  </participantList>\n" +
+            "  <experimentalVariableValueList>\n" +
+            "    <experimentalVariableValues>\n" +
+            "      <variableValueRef>5</variableValueRef>\n" +
+            "    </experimentalVariableValues>\n"+
+            "  </experimentalVariableValueList>\n" +
             "</interaction>";
 
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
@@ -1067,6 +1098,24 @@ public class XmlBinaryInteractionEvidenceWriterTest extends AbstractXmlWriterTes
         streamWriter.flush();
 
         Assert.assertEquals(this.interaction_availability, output.toString());
+    }
+
+    @Test
+    public void test_write_interaction_variable_parameters() throws XMLStreamException, IOException, IllegalRangeException {
+        BinaryInteractionEvidence interaction = new XmlBinaryInteractionEvidence();
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
+        interaction.addParticipant(participant);
+        VariableParameterValueSet valueSet = new DefaultVariableParameterValueSet();
+        valueSet.add(new DefaultVariableParameterValue("test", null));
+        interaction.getVariableParameterValues().add(valueSet);
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
+        elementCache.clear();
+
+        XmlBinaryInteractionEvidenceWriter writer = new XmlBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write(interaction);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.interaction_variable_parameters, output.toString());
     }
 }
 

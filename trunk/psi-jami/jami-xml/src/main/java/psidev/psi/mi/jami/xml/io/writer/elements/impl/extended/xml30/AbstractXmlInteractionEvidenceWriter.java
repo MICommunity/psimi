@@ -61,6 +61,11 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     }
 
     @Override
+    protected void initialiseParameterWriter() {
+        super.setParameterWriter(new XmlParameterWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
     protected void initialiseExperimentWriter(){
         super.setExperimentWriter(new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30.XmlExperimentWriter(getStreamWriter(), getObjectIndex()));
     }
