@@ -342,11 +342,9 @@ public class XmlFeatureEvidenceWriterTest extends AbstractXmlWriterTest {
             "        </xref>\n"+
             "      </endStatus>\n" +
             "      <end position=\"4\"/>\n"+
-            "    </featureRange>\n"+
+            "      <participantRef>2</participantRef>\n"+
+            "    </featureRange>\n" +
             "  </featureRangeList>\n" +
-            "  <attributeList>\n" +
-            "    <attribute name=\"participant-ref\" nameAc=\"MI:1151\">2</attribute>\n"+
-            "  </attributeList>\n"+
             "</feature>";
 
     private String feature_registered = "<feature id=\"2\">\n" +
