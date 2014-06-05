@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.ParameterValue;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -15,6 +16,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 /**
  * Unit tester for XmlFeatureEvidenceWriter
@@ -381,6 +383,33 @@ public class XmlFeatureEvidenceWriterTest extends AbstractXmlWriterTest {
             "    </featureRange>\n"+
             "  </featureRangeList>\n" +
             "</feature>";
+    private String feature_parameters = "<feature id=\"1\">\n" +
+            "  <featureRangeList>\n" +
+            "    <featureRange>\n" +
+            "      <startStatus>\n" +
+            "        <names>\n" +
+            "          <shortLabel>certain</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </startStatus>\n" +
+            "      <begin position=\"1\"/>\n"+
+            "      <endStatus>\n" +
+            "        <names>\n" +
+            "          <shortLabel>certain</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0335\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </endStatus>\n" +
+            "      <end position=\"4\"/>\n"+
+            "    </featureRange>\n"+
+            "  </featureRangeList>\n" +
+            "  <parameterList>\n" +
+            "    <parameter term=\"kd\" base=\"10\" exponent=\"0\" factor=\"5\"/>\n" +
+            "  </parameterList>\n" +
+            "</feature>";
 
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
@@ -562,5 +591,19 @@ public class XmlFeatureEvidenceWriterTest extends AbstractXmlWriterTest {
         streamWriter.flush();
 
         Assert.assertEquals(this.feature_detectionMethod, output.toString());
+    }
+
+    @Test
+    public void test_write_feature_parameters() throws XMLStreamException, IOException, IllegalRangeException {
+        FeatureEvidence feature = new DefaultFeatureEvidence();
+        feature.getRanges().add(RangeUtils.createRangeFromString("1-4"));
+        feature.getParameters().add(new DefaultParameter(new DefaultCvTerm("kd"), new ParameterValue(new BigDecimal(5))));
+        elementCache.clear();
+
+        XmlFeatureEvidenceWriter writer = new XmlFeatureEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write(feature);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.feature_parameters, output.toString());
     }
 }

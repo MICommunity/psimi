@@ -41,7 +41,7 @@ public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.e
     @Override
     protected void writeOtherProperties(FeatureEvidence object) throws XMLStreamException {
         // write detection method
-        writeFeatureDetectionMethod(object);
+        super.writeOtherProperties(object);
         if (object instanceof ExtendedPsiXmlFeatureEvidence){
             ExtendedPsiXmlFeatureEvidence extendedFeature = (ExtendedPsiXmlFeatureEvidence)object;
             // write experiment refs
@@ -55,7 +55,6 @@ public class XmlFeatureEvidenceWriter extends psidev.psi.mi.jami.xml.io.writer.e
                 getStreamWriter().writeEndElement();
             }
         }
-        writeParameters(object);
     }
 
     @Override

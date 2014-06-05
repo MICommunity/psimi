@@ -125,6 +125,8 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
                 writeRanges(object);
                 // write feature role
                 writeFeatureRole(object);
+                // parameters
+                writeParameters(object);
                 // write attributes
                 writeAttributes(object);
                 // write end feature
@@ -135,6 +137,8 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> implements Psi
             }
         }
     }
+
+    protected abstract void writeParameters(F object) throws XMLStreamException;
 
     protected abstract void writeFeatureRole(F object) throws XMLStreamException;
 
