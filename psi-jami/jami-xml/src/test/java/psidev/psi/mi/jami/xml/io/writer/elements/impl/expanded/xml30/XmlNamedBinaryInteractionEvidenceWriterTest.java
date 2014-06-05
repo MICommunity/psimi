@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
@@ -1219,6 +1220,74 @@ public class XmlNamedBinaryInteractionEvidenceWriterTest extends AbstractXmlWrit
             "    </experimentalVariableValues>\n"+
             "  </experimentalVariableValueList>\n" +
             "</interaction>";
+    private String interaction_causal_relationship = "<interaction id=\"1\">\n" +
+            "  <experimentList>\n" +
+            "    <experimentDescription id=\"2\">\n" +
+            "      <bibref>\n" +
+            "        <xref>\n" +
+            "          <primaryRef db=\"pubmed\" dbAc=\"MI:0446\" id=\"xxxxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </bibref>\n"+
+            "      <interactionDetectionMethod>\n" +
+            "        <names>\n" +
+            "          <shortLabel>unspecified method</shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0686\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </interactionDetectionMethod>\n"+
+            "    </experimentDescription>\n"+
+            "  </experimentList>\n" +
+            "  <participantList>\n" +
+            "    <participant id=\"3\">\n" +
+            "      <interactor id=\"4\">\n" +
+            "        <names>\n" +
+            "          <shortLabel>protein test</shortLabel>\n" +
+            "        </names>\n" +
+            "        <interactorType>\n" +
+            "          <names>\n" +
+            "            <shortLabel>protein</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0326\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </interactorType>\n" +
+            "      </interactor>\n" +
+            "      <biologicalRole>\n" +
+            "        <names>\n" +
+            "          <shortLabel>unspecified role</shortLabel>\n" +
+            "        </names>\n" +
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "        </xref>\n" +
+            "      </biologicalRole>\n" +
+            "      <experimentalRoleList>\n" +
+            "        <experimentalRole>\n" +
+            "          <names>\n" +
+            "            <shortLabel>unspecified role</shortLabel>\n" +
+            "          </names>\n" +
+            "          <xref>\n" +
+            "            <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "          </xref>\n" +
+            "        </experimentalRole>\n" +
+            "      </experimentalRoleList>\n" +
+            "    </participant>\n"+
+            "  </participantList>\n" +
+            "  <causalRelationshipList>\n" +
+            "    <causalRelationship>\n" +
+            "      <sourceParticipantRef>3</sourceParticipantRef>\n" +
+            "      <causalityStatement>\n" +
+            "        <names>\n" +
+            "          <shortLabel>increases RNA expression of </shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:xxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </causalityStatement>\n"+
+            "      <targetParticipantRef>5</targetParticipantRef>\n" +
+            "    </causalRelationship>\n"+
+            "  </causalRelationshipList>\n"+
+            "</interaction>";
 
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
@@ -1536,5 +1605,23 @@ public class XmlNamedBinaryInteractionEvidenceWriterTest extends AbstractXmlWrit
         streamWriter.flush();
 
         Assert.assertEquals(this.interaction_variable_parameters, output.toString());
+    }
+
+    @Test
+    public void test_write_interaction_causal_relationship() throws XMLStreamException, IOException, IllegalRangeException {
+        BinaryInteractionEvidence interaction = new DefaultNamedBinaryInteractionEvidence();
+        ParticipantEvidence participant = new DefaultNamedParticipantEvidence(new DefaultProtein("protein test"));
+        interaction.addParticipant(participant);
+        CausalRelationship rel = new DefaultCausalRelationship(CvTermUtils.createMICvTerm("increases RNA expression of ","MI:xxxx"),
+                new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        participant.getCausalRelationships().add(rel);
+        interaction.setExperiment(new DefaultNamedExperiment(new DefaultPublication("xxxxxx")));
+        elementCache.clear();
+
+        XmlNamedBinaryInteractionEvidenceWriter writer = new XmlNamedBinaryInteractionEvidenceWriter(createStreamWriter(), this.elementCache);
+        writer.write(interaction);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.interaction_causal_relationship, output.toString());
     }
 }

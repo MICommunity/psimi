@@ -447,6 +447,35 @@ public class XmlNamedModelledBinaryInteractionWriterTest extends AbstractXmlWrit
             "    </allostery>\n"+
             "  </cooperativeEffectList>\n" +
             "</abstractInteraction>";
+    private String interaction_causal_relationship = "<abstractInteraction id=\"1\">\n" +
+            "  <participantList>\n" +
+            "    <participant id=\"2\">\n" +
+            "      <interactorRef>3</interactorRef>\n" +
+            "      <biologicalRole>\n" +
+            "        <names>\n" +
+            "          <shortLabel>unspecified role</shortLabel>\n" +
+            "        </names>\n" +
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:0499\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n" +
+            "        </xref>\n" +
+            "      </biologicalRole>\n" +
+            "    </participant>\n"+
+            "  </participantList>\n" +
+            "  <causalRelationshipList>\n" +
+            "    <causalRelationship>\n" +
+            "      <sourceParticipantRef>2</sourceParticipantRef>\n" +
+            "      <causalityStatement>\n" +
+            "        <names>\n" +
+            "          <shortLabel>increases RNA expression of </shortLabel>\n"+
+            "        </names>\n"+
+            "        <xref>\n" +
+            "          <primaryRef db=\"psi-mi\" dbAc=\"MI:0488\" id=\"MI:xxxx\" refType=\"identity\" refTypeAc=\"MI:0356\"/>\n"+
+            "        </xref>\n"+
+            "      </causalityStatement>\n"+
+            "      <targetParticipantRef>4</targetParticipantRef>\n" +
+            "    </causalRelationship>\n"+
+            "  </causalRelationshipList>\n"+
+            "</abstractInteraction>";
 
     private PsiXmlObjectCache elementCache = new InMemoryIdentityObjectCache();
 
@@ -733,5 +762,22 @@ public class XmlNamedModelledBinaryInteractionWriterTest extends AbstractXmlWrit
         streamWriter.flush();
 
         Assert.assertEquals(this.interaction_allostery, output.toString());
+    }
+
+    @Test
+    public void test_write_interaction_causal_relationship() throws XMLStreamException, IOException, IllegalRangeException {
+        ModelledBinaryInteraction interaction = new DefaultNamedModelledBinaryInteraction();
+        ModelledParticipant participant = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
+        interaction.addParticipant(participant);
+        CausalRelationship rel = new DefaultCausalRelationship(CvTermUtils.createMICvTerm("increases RNA expression of ","MI:xxxx"),
+                new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()));
+        participant.getCausalRelationships().add(rel);
+        elementCache.clear();
+
+        XmlNamedModelledBinaryInteractionWriter writer = new XmlNamedModelledBinaryInteractionWriter(createStreamWriter(), this.elementCache);
+        writer.write(interaction);
+        streamWriter.flush();
+
+        Assert.assertEquals(this.interaction_causal_relationship, output.toString());
     }
 }
