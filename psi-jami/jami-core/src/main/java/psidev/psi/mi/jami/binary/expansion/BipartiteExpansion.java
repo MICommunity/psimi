@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
+import psidev.psi.mi.jami.factory.InteractorFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultParticipant;
 
@@ -54,5 +56,19 @@ public class BipartiteExpansion extends AbstractBipartiteExpansion<Interaction<?
         else {
             return super.expand(interaction);
         }
+    }
+
+    @Override
+    public void setInteractorFactory(InteractorFactory interactorFactory) {
+        super.setInteractorFactory(interactorFactory);
+        this.interactionEvidenceExpansion.setInteractorFactory(interactorFactory);
+        this.modelledInteractionExpansion.setInteractorFactory(interactorFactory);
+    }
+
+    @Override
+    public void setBinaryInteractionFactory(BinaryInteractionFactory factory) {
+        super.setBinaryInteractionFactory(factory);
+        this.interactionEvidenceExpansion.setBinaryInteractionFactory(factory);
+        this.modelledInteractionExpansion.setBinaryInteractionFactory(factory);
     }
 }

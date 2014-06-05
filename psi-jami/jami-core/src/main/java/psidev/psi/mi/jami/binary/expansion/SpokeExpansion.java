@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
@@ -56,4 +57,13 @@ public class SpokeExpansion extends AbstractSpokeExpansion<Interaction<? extends
     protected Participant collectBestBaitForSpokeExpansion(Interaction interaction) {
         return ParticipantUtils.collectBestBaitParticipantForSpokeExpansion(interaction.getParticipants());
     }
+
+    @Override
+    public void setBinaryInteractionFactory(BinaryInteractionFactory factory) {
+        super.setBinaryInteractionFactory(factory);
+        this.interactionEvidenceExpansion.setBinaryInteractionFactory(factory);
+        this.modelledInteractionExpansion.setBinaryInteractionFactory(factory);
+    }
+
+
 }
