@@ -26,7 +26,7 @@ import java.util.*;
  * @since <pre>25/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSourceContext, Locatable{
+public abstract class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private ExperimentXrefContainer xrefContainer;
@@ -330,11 +330,11 @@ public class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSour
                     publication.setReleasedDate(entry.getSource().getReleaseDate().toGregorianCalendar().getTime());
                 }
             }
-            if (getFullName() == null && publication.getTitle() != null){
-                setFullName(publication.getTitle());
-            }
+            initialiseFullNameFromPublication(publication);
         }
     }
+
+    protected abstract void initialiseFullNameFromPublication(BibRef publication);
 
     /**
      * Sets the value of the xref property.
@@ -911,7 +911,7 @@ public class AbstractXmlExperiment implements ExtendedPsiXmlExperiment, FileSour
             }
         }
 
-        @XmlElement(type=XmlModelledConfidence.class, name="confidence", required = true)
+        @XmlElement(type=XmlConfidence.class, name="confidence", required = true)
         public List<Confidence> getJAXBConfidences() {
             return this.confidences;
         }

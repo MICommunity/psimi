@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "defaultExperiment")
-public class XmlExperiment extends AbstractXmlExperiment{
+public class XmlExperiment extends AbstractXmlExperiment {
 
     public XmlExperiment() {
     }
@@ -32,5 +32,12 @@ public class XmlExperiment extends AbstractXmlExperiment{
 
     public XmlExperiment(Publication publication, CvTerm interactionDetectionMethod, Organism organism) {
         super(publication, interactionDetectionMethod, organism);
+    }
+
+    @Override
+    protected void initialiseFullNameFromPublication(BibRef publication) {
+        if (getFullName() == null && publication.getTitle() != null) {
+            setFullName(publication.getTitle());
+        }
     }
 }

@@ -29,7 +29,7 @@ public class XmlModelledInteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
         PsiXmlParser<ModelledInteraction> parser = new XmlModelledParser(stream);
 
@@ -146,7 +146,7 @@ public class XmlModelledInteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
         PsiXmlParser<ModelledInteraction> parser = new XmlModelledParser(stream);
 
@@ -263,7 +263,7 @@ public class XmlModelledInteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
         PsiXmlParser<ModelledInteraction> parser = new XmlModelledParser(stream);
 
@@ -314,7 +314,7 @@ public class XmlModelledInteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
         PsiXmlParser<ModelledInteraction> parser = new XmlModelledParser(stream);
 
@@ -409,7 +409,7 @@ public class XmlModelledInteractionParserTest {
 
     @Test
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
         PsiXmlParser<ModelledInteraction> parser = new XmlModelledParser(stream);
 
         ModelledInteraction interaction = parser.parseNextInteraction();
@@ -421,7 +421,7 @@ public class XmlModelledInteractionParserTest {
 
     @Test
     public void test_read_valid_dynamic_interactions() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/S1.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/S1.xml");
 
         PsiXmlParser<ModelledInteraction> parser = new XmlModelledParser(stream);
 

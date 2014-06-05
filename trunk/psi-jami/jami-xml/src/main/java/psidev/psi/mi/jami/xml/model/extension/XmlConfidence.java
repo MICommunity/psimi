@@ -23,9 +23,6 @@ import java.util.List;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso({
-        XmlModelledConfidence.class
-})
 public class XmlConfidence extends AbstractXmlConfidence{
 
     private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;

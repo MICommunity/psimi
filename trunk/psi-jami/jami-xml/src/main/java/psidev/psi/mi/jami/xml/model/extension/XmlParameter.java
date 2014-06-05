@@ -10,7 +10,6 @@ import psidev.psi.mi.jami.xml.model.reference.AbstractExperimentRef;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlSeeAlso;
 import java.math.BigDecimal;
 
 /**
@@ -21,9 +20,6 @@ import java.math.BigDecimal;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso({
-        XmlModelledParameter.class
-})
 public class XmlParameter extends AbstractXmlParameter{
 
     private Experiment experiment;
