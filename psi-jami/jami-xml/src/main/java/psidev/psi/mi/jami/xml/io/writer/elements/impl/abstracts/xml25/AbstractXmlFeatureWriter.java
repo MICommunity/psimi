@@ -29,6 +29,11 @@ public abstract class AbstractXmlFeatureWriter<F extends Feature> extends psidev
     }
 
     @Override
+    protected void writeParameters(F object) throws XMLStreamException {
+        // nothing to write
+    }
+
+    @Override
     protected void initialiseXrefWriter() {
         super.setXrefWriter(new XmlDbXrefWriter(getStreamWriter()));
     }

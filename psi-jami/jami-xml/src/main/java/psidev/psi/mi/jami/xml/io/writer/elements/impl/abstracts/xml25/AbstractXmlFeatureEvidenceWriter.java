@@ -21,6 +21,11 @@ public class AbstractXmlFeatureEvidenceWriter extends AbstractXmlFeatureWriter<F
     }
 
     @Override
+    protected void writeParameters(FeatureEvidence object) throws XMLStreamException{
+        // nothing to write
+    }
+
+    @Override
     protected void writeOtherProperties(FeatureEvidence object) throws XMLStreamException {
         // write feature detection method
         writeFeatureDetectionMethod(object);
