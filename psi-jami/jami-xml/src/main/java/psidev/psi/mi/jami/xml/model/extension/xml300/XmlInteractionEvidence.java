@@ -5,7 +5,6 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.CausalRelationship;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.VariableParameterValueSet;
 import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractionEvidence;
@@ -124,7 +123,7 @@ public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence imple
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="causalRelationshipWrapper")
+    @XmlType(name="experimentalCausalRelationshipWrapper")
     public static class JAXBCausalRelationshipWrapper implements Locatable, FileSourceContext {
         private PsiXmLocator sourceLocator;
         @XmlLocation

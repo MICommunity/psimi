@@ -3,8 +3,6 @@ package psidev.psi.mi.jami.xml.io.parser;
 import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
@@ -20,28 +18,27 @@ import java.net.URL;
 import java.util.Iterator;
 
 /**
- * Unit tester for LightXmlBinaryParser
+ * Unit tester for XmlEvidenceParser
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
- * @since <pre>06/11/13</pre>
+ * @since <pre>17/10/13</pre>
  */
 
-public class FullXmlBinaryInteractionParserTest {
+public class FullXmlModelledParserTest {
 
     @Test
     public void test_read_valid_xml25_compact() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/10049915.xml");
 
-        PsiXmlParser<BinaryInteraction> parser = new LightFullXmlBinaryParser(stream);
+        PsiXmlParser<ModelledInteraction> parser = new FullXmlModelledParser(stream);
 
-        BinaryInteraction<? extends Participant> interaction = parser.parseNextInteraction();
+        ModelledInteraction interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
         Assert.assertEquals("rad53-dbf4", interaction.getShortName());
         Assert.assertEquals(2, interaction.getIdentifiers().size());
-        Assert.assertNull(interaction.getComplexExpansion());
 
         // identifiers
         Iterator<Xref> identifierIterator = interaction.getIdentifiers().iterator();
@@ -58,6 +55,18 @@ public class FullXmlBinaryInteractionParserTest {
         Assert.assertEquals("identity", intact.getQualifier().getShortName());
         Assert.assertEquals("MI:0356", intact.getQualifier().getMIIdentifier());
         Assert.assertEquals(0, interaction.getXrefs().size());
+
+        // source
+        Assert.assertNotNull(interaction.getSource());
+        Source source = interaction.getSource();
+        Assert.assertEquals("MINT", source.getShortName());
+        Assert.assertEquals("MINT, Dpt of Biology, University of Rome Tor Vergata", source.getFullName());
+        Assert.assertEquals(0, source.getSynonyms().size());
+        Assert.assertEquals("MI:0471", source.getMIIdentifier());
+        Assert.assertEquals(2, source.getIdentifiers().size());
+        Assert.assertEquals(0, source.getXrefs().size());
+        Assert.assertEquals(2, source.getAnnotations().size());
+        Assert.assertEquals("http://mint.bio.uniroma2.it/mint", source.getUrl());
 
         // attributes
         Assert.assertEquals(1, interaction.getAnnotations().size());
@@ -80,7 +89,8 @@ public class FullXmlBinaryInteractionParserTest {
 
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
-        Participant p1 = interaction.getParticipantA();
+        Iterator<ModelledParticipant> partIterator = interaction.getParticipants().iterator();
+        ModelledParticipant p1 = partIterator.next();
         Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipant) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
@@ -97,14 +107,14 @@ public class FullXmlBinaryInteractionParserTest {
         Assert.assertEquals(1, method.getXrefs().size());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
-        Feature f = (Feature)p1.getFeatures().iterator().next();
+        ModelledFeature f = p1.getFeatures().iterator().next();
         Assert.assertEquals("tagged molecule", f.getShortName());
         Assert.assertEquals(2, f.getIdentifiers().size());
         Assert.assertEquals(0, f.getXrefs().size());
         Assert.assertNotNull(f.getType());
         Assert.assertEquals(0, f.getAnnotations().size());
         Assert.assertEquals(1, f.getRanges().size());
-        Assert.assertEquals("?-?", RangeUtils.convertRangeToString((Range)f.getRanges().iterator().next()));
+        Assert.assertEquals("?-?", RangeUtils.convertRangeToString(f.getRanges().iterator().next()));
         // interactor
         Assert.assertNotNull(p1.getInteractor());
         Assert.assertEquals("rad53_yeast", p1.getInteractor().getShortName());
@@ -119,6 +129,15 @@ public class FullXmlBinaryInteractionParserTest {
         Assert.assertEquals("MENITQPTQQSTQATQRFLIEKFSQEQIGENIVCRVICTTGQIPIRDLSADISQVLKEKRSIKKVWTFGRNPACDYHLGNISRLSNKHFQILLGEDGNLLLNDISTNGTWLNGQKVEKNSNQLLSQGDEITVGVGVESDILSLVIFINDKFKQCLEQNKVDRIRSNLKNTSKIASPGLTSSTASSMVANKTGIFKDFSIIDEVVGQGAFATVKKAIERTTGKTFAVKIISKRKVIGNMDGVTRELEVLQKLNHPRIVRLKGFYEDTESYYMVMEFVSGGDLMDFVAAHGAVGEDAGREISRQILTAIKYIHSMGISHRDLKPDNILIEQDDPVLVKITDFGLAKVQGNGSFMKTFCGTLAYVAPEVIRGKDTSVSPDEYEERNEYSSLVDMWSMGCLVYVILTGHLPFSGSTQDQLYKQIGRGSYHEGPLKDFRISEEARDFIDSLLQVDPNNRSTAAKALNHPWIKMSPLGSQSYGDFSQISLSQSLSQQKLLENMDDAQYEFVKAQRKLQMEQQLQEQDQEDQDGKIQGFKIPAHAPIRYTQPKSIEAETREQKLLHSNNTENVKSSKKKGNGRFLTLKPLPDSIIQESLEIQQGVNPFFIGRSEDCNCKIEDNRLSRVHCFIFKKRHAVGKSMYESPAQGLDDIWYCHTGTNVSYLNNNRMIQGTKFLLQDGDEIKIIWDKNNKFVIGFKVEINDTTGLFNEGLGMLQEQRVVLKQTAEEKDLVKKLTQMMAAQRANQPSASSSSMSAKKPPVSDTNNNGNNSVLNDLVESPINANTGNILKRIHSVSLSQSQIDPSKKVKRAKLDQTSKGPENLQFS", prot.getSequence());
         Assert.assertNotNull(prot.getOrganism());
         Assert.assertEquals(559292, prot.getOrganism().getTaxId());
+
+        Assert.assertEquals(1, interaction.getModelledConfidences().size());
+        ModelledConfidence conf = interaction.getModelledConfidences().iterator().next();
+        Assert.assertEquals("intact-miscore", conf.getType().getShortName());
+        Assert.assertEquals("0.8", conf.getValue());
+        Assert.assertEquals(1, interaction.getModelledParameters().size());
+        Parameter param = interaction.getModelledParameters().iterator().next();
+        Assert.assertEquals("kd", param.getType().getShortName());
+        Assert.assertEquals("5", param.getValue().toString());
 
         Assert.assertTrue(parser.hasFinished());
 
@@ -127,11 +146,11 @@ public class FullXmlBinaryInteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
-        PsiXmlParser<BinaryInteraction> parser = new LightFullXmlBinaryParser(stream);
+        PsiXmlParser<ModelledInteraction> parser = new FullXmlModelledParser(stream);
 
-        BinaryInteraction<? extends Participant> interaction = parser.parseNextInteraction();
+        ModelledInteraction interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -154,6 +173,18 @@ public class FullXmlBinaryInteractionParserTest {
         Assert.assertEquals("MI:0356", intact.getQualifier().getMIIdentifier());
         Assert.assertEquals(0, interaction.getXrefs().size());
 
+        // source
+        Assert.assertNotNull(interaction.getSource());
+        Source source = interaction.getSource();
+        Assert.assertEquals("MINT", source.getShortName());
+        Assert.assertEquals("MINT, Dpt of Biology, University of Rome Tor Vergata", source.getFullName());
+        Assert.assertEquals(0, source.getSynonyms().size());
+        Assert.assertEquals("MI:0471", source.getMIIdentifier());
+        Assert.assertEquals(2, source.getIdentifiers().size());
+        Assert.assertEquals(0, source.getXrefs().size());
+        Assert.assertEquals(2, source.getAnnotations().size());
+        Assert.assertEquals("http://mint.bio.uniroma2.it/mint", source.getUrl());
+
         // attributes
         Assert.assertEquals(1, interaction.getAnnotations().size());
         Annotation comment = interaction.getAnnotations().iterator().next();
@@ -175,7 +206,8 @@ public class FullXmlBinaryInteractionParserTest {
 
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
-        Participant p1 = interaction.getParticipantA();
+        Iterator<ModelledParticipant> partIterator = interaction.getParticipants().iterator();
+        ModelledParticipant p1 = partIterator.next();
         Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipant) p1).getShortName());
         Assert.assertEquals(2, p1.getXrefs().size());
         Assert.assertNotNull(p1.getStoichiometry());
@@ -192,14 +224,14 @@ public class FullXmlBinaryInteractionParserTest {
         Assert.assertEquals(1, method.getXrefs().size());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
-        Feature f = (Feature)p1.getFeatures().iterator().next();
+        ModelledFeature f = p1.getFeatures().iterator().next();
         Assert.assertEquals("tagged molecule", f.getShortName());
         Assert.assertEquals(2, f.getIdentifiers().size());
         Assert.assertEquals(0, f.getXrefs().size());
         Assert.assertNotNull(f.getType());
         Assert.assertEquals(0, f.getAnnotations().size());
         Assert.assertEquals(1, f.getRanges().size());
-        Assert.assertEquals("?-?", RangeUtils.convertRangeToString((Range)f.getRanges().iterator().next()));
+        Assert.assertEquals("?-?", RangeUtils.convertRangeToString(f.getRanges().iterator().next()));
         // interactor
         Assert.assertNotNull(p1.getInteractor());
         Assert.assertEquals("rad53_yeast", p1.getInteractor().getShortName());
@@ -215,6 +247,15 @@ public class FullXmlBinaryInteractionParserTest {
         Assert.assertNotNull(prot.getOrganism());
         Assert.assertEquals(559292, prot.getOrganism().getTaxId());
 
+        Assert.assertEquals(1, interaction.getModelledConfidences().size());
+        ModelledConfidence conf = interaction.getModelledConfidences().iterator().next();
+        Assert.assertEquals("intact-miscore", conf.getType().getShortName());
+        Assert.assertEquals("0.8", conf.getValue());
+        Assert.assertEquals(1, interaction.getModelledParameters().size());
+        Parameter param = interaction.getModelledParameters().iterator().next();
+        Assert.assertEquals("kd", param.getType().getShortName());
+        Assert.assertEquals("5", param.getValue().toString());
+
         Assert.assertTrue(parser.hasFinished());
 
         parser.close();
@@ -222,22 +263,22 @@ public class FullXmlBinaryInteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
-        PsiXmlParser<BinaryInteraction> parser = new LightFullXmlBinaryParser(stream);
+        PsiXmlParser<ModelledInteraction> parser = new FullXmlModelledParser(stream);
 
         int index = 0;
         while(!parser.hasFinished()){
-            BinaryInteraction<? extends Participant> interaction = parser.parseNextInteraction();
+            ModelledInteraction interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             if (index == 1){
-                Iterator<? extends Participant> pIterator = interaction.getParticipants().iterator();
-                Participant p1 = pIterator.next();
-                Feature f1 = (Feature)p1.getFeatures().iterator().next();
+                Iterator<ModelledParticipant> pIterator = interaction.getParticipants().iterator();
+                ModelledParticipant p1 = pIterator.next();
+                ModelledFeature f1 = p1.getFeatures().iterator().next();
                 Assert.assertEquals(1, f1.getLinkedFeatures().size());
-                Participant p2 = pIterator.next();
-                Feature f2 = (Feature)p2.getFeatures().iterator().next();
+                ModelledParticipant p2 = pIterator.next();
+                ModelledFeature f2 = p2.getFeatures().iterator().next();
                 Assert.assertEquals(1, f2.getLinkedFeatures().size());
                 Assert.assertEquals(f1.getLinkedFeatures().iterator().next(), f2);
                 Assert.assertEquals(f2.getLinkedFeatures().iterator().next(), f1);
@@ -256,10 +297,10 @@ public class FullXmlBinaryInteractionParserTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXmlParser<BinaryInteraction> parser = new LightFullXmlBinaryParser(stream);
+        PsiXmlParser<ModelledInteraction> parser = new FullXmlModelledParser(stream);
         int index = 0;
         while(!parser.hasFinished()){
-            BinaryInteraction<? extends Participant> interaction = parser.parseNextInteraction();
+            ModelledInteraction interaction = parser.parseNextInteraction();
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             index++;
@@ -273,24 +314,36 @@ public class FullXmlBinaryInteractionParserTest {
 
     @Test
     public void test_read_valid_xml25_several_entries() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/10049915-several-entries.xml");
 
-        PsiXmlParser<BinaryInteraction> parser = new LightFullXmlBinaryParser(stream);
+        PsiXmlParser<ModelledInteraction> parser = new FullXmlModelledParser(stream);
 
-        BinaryInteraction<? extends Participant> interaction = parser.parseNextInteraction();
+        ModelledInteraction interaction = parser.parseNextInteraction();
 
         Assert.assertNotNull(interaction);
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
         Assert.assertEquals("rad53-dbf4", interaction.getShortName());
 
+        // source
+        Assert.assertNotNull(interaction.getSource());
+        Source source = interaction.getSource();
+        Assert.assertEquals("MINT", source.getShortName());
+        Assert.assertEquals("MINT, Dpt of Biology, University of Rome Tor Vergata", source.getFullName());
+        Assert.assertEquals(0, source.getSynonyms().size());
+        Assert.assertEquals("MI:0471", source.getMIIdentifier());
+        Assert.assertEquals(2, source.getIdentifiers().size());
+        Assert.assertEquals(0, source.getXrefs().size());
+        Assert.assertEquals(2, source.getAnnotations().size());
+        Assert.assertEquals("http://mint.bio.uniroma2.it/mint", source.getUrl());
+
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
-        Iterator<? extends Participant> partIterator = interaction.getParticipants().iterator();
-        Participant p1 = partIterator.next();
+        Iterator<ModelledParticipant> partIterator = interaction.getParticipants().iterator();
+        ModelledParticipant p1 = partIterator.next();
         Assert.assertEquals("rad53_yeast", ((ExtendedPsiXmlParticipant) p1).getShortName());
         // features
         Assert.assertEquals(1, p1.getFeatures().size());
-        Feature f = (Feature)p1.getFeatures().iterator().next();
+        ModelledFeature f = p1.getFeatures().iterator().next();
         Assert.assertEquals("tagged molecule", f.getShortName());
         // interactor
         Assert.assertNotNull(p1.getInteractor());
@@ -314,6 +367,19 @@ public class FullXmlBinaryInteractionParserTest {
         Assert.assertNotNull(interaction);
         Assert.assertEquals("trp-inad-2", interaction.getShortName());
 
+        // source
+        Assert.assertNotNull(interaction.getSource());
+        source = interaction.getSource();
+        Assert.assertEquals("IntAct", source.getShortName());
+        Assert.assertEquals("European Bioinformatics Institute", source.getFullName());
+        Assert.assertEquals(0, source.getSynonyms().size());
+        Assert.assertEquals("MI:0469", source.getMIIdentifier());
+        Assert.assertEquals(2, source.getIdentifiers().size());
+        Assert.assertEquals(1, source.getXrefs().size());
+        Assert.assertEquals(3, source.getAnnotations().size());
+        Assert.assertEquals("http://www.ebi.ac.uk/", source.getUrl());
+        Assert.assertEquals("European Bioinformatics Institute; Wellcome Trust Genome Campus; Hinxton, Cambridge; CB10 1SD; United Kingdom", source.getPostalAddress());
+
         // participants
         Assert.assertEquals(2, interaction.getParticipants().size());
         partIterator = interaction.getParticipants().iterator();
@@ -321,7 +387,7 @@ public class FullXmlBinaryInteractionParserTest {
         Assert.assertEquals("n/a", ((ExtendedPsiXmlParticipant) p1).getShortName());
         // features
         Assert.assertEquals(2, p1.getFeatures().size());
-        f = (Feature)p1.getFeatures().iterator().next();
+        f = p1.getFeatures().iterator().next();
         Assert.assertEquals("gb1 tag region", f.getShortName());
         // interactor
         Assert.assertNotNull(p1.getInteractor());
@@ -343,37 +409,13 @@ public class FullXmlBinaryInteractionParserTest {
 
     @Test(expected = PsiXmlParserException.class)
     public void test_empty_file() throws JAXBException, XMLStreamException, PsiXmlParserException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
-        PsiXmlParser<BinaryInteraction> parser = new LightFullXmlBinaryParser(stream);
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/empty.xml");
+        PsiXmlParser<ModelledInteraction> parser = new FullXmlModelledParser(stream);
 
-        BinaryInteraction<? extends Participant> interaction = parser.parseNextInteraction();
+        ModelledInteraction interaction = parser.parseNextInteraction();
 
         // read first interaction
         Assert.assertNull(interaction);
         Assert.assertTrue(parser.hasFinished());
-    }
-
-    @Test
-    public void test_read_valid_xml25_nary() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
-
-        PsiXmlParser<BinaryInteraction> parser = new LightFullXmlBinaryParser(stream);
-
-        int index = 0;
-        int numberOfExpanded=0;
-        while(!parser.hasFinished()){
-            BinaryInteraction<? extends Participant> interaction = parser.parseNextInteraction();
-            Assert.assertNotNull(interaction);
-            Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
-            if (interaction.getComplexExpansion() != null && ComplexExpansionMethod.SPOKE_EXPANSION_MI.equals(interaction.getComplexExpansion().getMIIdentifier())){
-               numberOfExpanded++;
-            }
-            index++;
-        }
-
-        Assert.assertTrue(parser.hasFinished());
-        Assert.assertEquals(15, index);
-        Assert.assertEquals(5, numberOfExpanded);
-        parser.close();
     }
 }

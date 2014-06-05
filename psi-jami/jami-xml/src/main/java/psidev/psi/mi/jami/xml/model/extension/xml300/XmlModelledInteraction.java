@@ -386,7 +386,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="modelledConfidenceWrapper")
+    @XmlType(name="modelledConfidenceWrapper30")
     public static class JAXBConfidenceWrapper implements Locatable, FileSourceContext {
         private PsiXmLocator sourceLocator;
         @XmlLocation
@@ -536,7 +536,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     }
 
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="causalRelationshipWrapper")
+    @XmlType(name="modelledCausalRelationshipWrapper")
     public static class JAXBCausalRelationshipWrapper implements Locatable, FileSourceContext {
         private PsiXmLocator sourceLocator;
         @XmlLocation

@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.extension.AbstractXmlExperiment;
+import psidev.psi.mi.jami.xml.model.extension.BibRef;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
@@ -50,6 +51,11 @@ public class XmlExperiment extends AbstractXmlExperiment{
                 param.setExperiment(this);
             }
         }
+    }
+
+    @Override
+    protected void initialiseFullNameFromPublication(BibRef publication) {
+        // does nothing
     }
 
     //////////////////////////////////////////////////

@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.io.parser.LightXmlParser;
-import psidev.psi.mi.jami.xml.io.parser.XmlInteractionEvidenceParserTest;
+import psidev.psi.mi.jami.xml.io.parser.XmlEvidenceParserTest;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
@@ -29,7 +29,7 @@ public class XmlInteractionIteratorTest {
 
     @Test
     public void test_read_valid_xml25_inferred() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/21703451.xml");
 
         Iterator<Interaction<? extends Participant>> iterator = new XmlInteractionIterator(new LightXmlParser(stream));
         int index = 0;
@@ -63,7 +63,7 @@ public class XmlInteractionIteratorTest {
 
     @Test
     public void test_read_valid_xml25_nary() throws PsiXmlParserException, JAXBException, XMLStreamException {
-        InputStream stream = XmlInteractionEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/15144954.xml");
 
         Iterator<Interaction<? extends Participant>> iterator = new XmlInteractionIterator(new LightXmlParser(stream));
         int index = 0;
