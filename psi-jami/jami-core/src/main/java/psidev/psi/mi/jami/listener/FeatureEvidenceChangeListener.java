@@ -13,4 +13,8 @@ public interface FeatureEvidenceChangeListener extends FeatureChangeListener<Fea
     public void onAddedDetectionMethod(FeatureEvidence feature, CvTerm added);
 
     public void onRemovedDetectionMethod(FeatureEvidence feature, CvTerm removed);
+
+    public void onAddedParameter(FeatureEvidence feature, Parameter added);
+
+    public void onRemovedParameter(FeatureEvidence feature, Parameter removed);
 }
