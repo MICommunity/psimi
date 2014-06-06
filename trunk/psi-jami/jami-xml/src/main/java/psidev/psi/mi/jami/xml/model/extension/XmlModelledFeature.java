@@ -90,7 +90,7 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledParticipant, 
     }
 
     @Override
-    @XmlElement(name = "featureRole", namespace = "http://psi.hupo.org/mi/mif300")
+    @XmlElement(name = "featureRole")
     public void setJAXBFeatureRole(XmlCvTerm role) {
         super.setJAXBFeatureRole(role);
     }
