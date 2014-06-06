@@ -361,7 +361,7 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInter
         return jaxbExperimentWrapper;
     }
 
-    protected List<ExtendedPsiXmlExperiment> getOriginalExperiments(){
+    public List<ExtendedPsiXmlExperiment> getOriginalExperiments(){
         return jaxbExperimentWrapper != null ? jaxbExperimentWrapper.jaxbExperiments : Collections.EMPTY_LIST;
     }
 
@@ -572,7 +572,7 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInter
         private Locator locator;
         private List<Experiment> experiments;
         private JAXBExperimentRefList jaxbExperimentRefList;
-        private AbstractXmlInteractionEvidence parent;
+        private ExtendedPsiXmlInteractionEvidence parent;
 
         public JAXBExperimentWrapper(){
             this.experiments = new ArrayList<Experiment>();

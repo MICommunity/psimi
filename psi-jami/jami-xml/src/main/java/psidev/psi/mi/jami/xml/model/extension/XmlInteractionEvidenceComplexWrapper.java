@@ -24,7 +24,7 @@ import java.util.List;
  */
 
 public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
-    private AbstractXmlInteractionEvidence interactionEvidence;
+    private ExtendedPsiXmlInteractionEvidence interactionEvidence;
     private Organism organism;
     private CvTerm interactorType;
     private Collection<InteractionEvidence> interactionEvidences;
@@ -34,7 +34,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     private Collection<ModelledParticipant> modelledParticipants;
     private CvTerm evidenceType;
 
-    public XmlInteractionEvidenceComplexWrapper(AbstractXmlInteractionEvidence interaction){
+    public XmlInteractionEvidenceComplexWrapper(ExtendedPsiXmlInteractionEvidence interaction){
         if (interaction == null){
             throw new IllegalArgumentException("The complex wrapper needs a non null basic interaction");
         }
@@ -347,7 +347,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     }
 
     @Override
-    public List<Alias> getAliases() {
+    public Collection<Alias> getAliases() {
         return this.interactionEvidence.getAliases();
     }
 

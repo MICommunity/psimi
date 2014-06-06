@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.extension.*;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
 
 import javax.xml.bind.annotation.*;
@@ -400,8 +401,8 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
                 else if (parsedObjects.containsInteraction(this.ref)){
                     Interaction object = parsedObjects.getInteraction(this.ref);
                     // convert interaction evidence in a complex
-                    if (object instanceof AbstractXmlInteractionEvidence){
-                        ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((AbstractXmlInteractionEvidence)object);
+                    if (object instanceof ExtendedPsiXmlInteractionEvidence){
+                        ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
                         affectedInteractions.remove(this);
                         affectedInteractions.add(interaction);
                         return true;
@@ -413,8 +414,8 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
                         return true;
                     }
                     // wrap basic interaction
-                    else if (object instanceof AbstractXmlBasicInteraction){
-                        ModelledInteraction interaction = new XmlBasicInteractionComplexWrapper((AbstractXmlBasicInteraction)object);
+                    else if (object instanceof ExtendedPsiXmlInteraction){
+                        ModelledInteraction interaction = new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object);
                         affectedInteractions.remove(this);
                         affectedInteractions.add(interaction);
                         return true;

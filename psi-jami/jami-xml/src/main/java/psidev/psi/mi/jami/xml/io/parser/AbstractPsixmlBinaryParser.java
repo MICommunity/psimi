@@ -3,11 +3,13 @@ package psidev.psi.mi.jami.xml.io.parser;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.model.extension.factory.XmlBinaryInteractionFactory;
+import psidev.psi.mi.jami.xml.model.extension.factory.xml25.XmlBinaryInteractionFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import java.util.ArrayList;
@@ -96,18 +98,37 @@ public abstract class AbstractPsixmlBinaryParser<T extends Interaction<? extends
     public void setExpansionMethod(ComplexExpansionMethod<T, B> expansionMethod) {
         this.expansionMethod = expansionMethod;
         if (expansionMethod != null){
-            this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
+            BinaryInteractionFactory binaryFactory = instantiateInteractionFactory();
+            this.expansionMethod.setBinaryInteractionFactory(binaryFactory);
         }
+    }
+
+    protected BinaryInteractionFactory instantiateInteractionFactory() {
+        BinaryInteractionFactory binaryFactory;
+        switch (this.delegateParser.getVersion()){
+            case v3_0_0:
+                binaryFactory = new psidev.psi.mi.jami.xml.model.extension.factory.xml30.XmlBinaryInteractionFactory();
+                break;
+            default:
+                binaryFactory = new XmlBinaryInteractionFactory();
+                break;
+        }
+        return binaryFactory;
     }
 
     public void setCacheOfObjects(PsiXmlIdCache indexOfObjects) {
         this.delegateParser.setCacheOfObjects(indexOfObjects);
     }
 
+    @Override
+    public PsiXmlVersion getVersion() {
+        return this.delegateParser.getVersion();
+    }
+
     protected ComplexExpansionMethod<T,B> getExpansionMethod(){
         if (expansionMethod == null){
             this.expansionMethod = initialiseDefaultExpansionMethod();
-            this.expansionMethod.setBinaryInteractionFactory(new XmlBinaryInteractionFactory());
+            this.expansionMethod.setBinaryInteractionFactory(instantiateInteractionFactory());
         }
         return this.expansionMethod;
     }

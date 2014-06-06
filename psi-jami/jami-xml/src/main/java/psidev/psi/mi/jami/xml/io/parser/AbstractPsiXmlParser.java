@@ -852,7 +852,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         skipNextElement();
     }
 
-    protected PsiXmlVersion getVersion() {
+    public PsiXmlVersion getVersion() {
         return version;
     }
 

@@ -167,7 +167,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
         }
 
         if (originalParticipant != null){
-            AbstractXmlInteractionEvidence interaction = originalParticipant.getOriginalInteraction();
+            ExtendedPsiXmlInteractionEvidence interaction = originalParticipant.getOriginalInteraction();
             if (interaction != null){
                 List<ExtendedPsiXmlExperiment> originalExperiments = interaction.getOriginalExperiments();
                 if (originalExperiments != null && !originalExperiments.isEmpty()){

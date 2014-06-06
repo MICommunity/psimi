@@ -1,14 +1,13 @@
-package psidev.psi.mi.jami.xml.model.extension.binary;
+package psidev.psi.mi.jami.xml.model.extension.binary.xml30;
 
-import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.impl.BinaryInteractionWrapper;
+import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
+import psidev.psi.mi.jami.binary.impl.ModelledBinaryInteractionWrapper;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.Entry;
-import psidev.psi.mi.jami.xml.model.extension.AbstractXmlBasicInteraction;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
-import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.model.extension.xml300.BindingFeatures;
+import psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlCausalRelationship;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
@@ -16,40 +15,41 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Wrapper for ModelledBinaryInteraction
+ * Wrapper for Xml binary interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participant>, FileSourceContext, ExtendedPsiXmlInteraction<Participant> {
-    private AbstractXmlBasicInteraction wrappedInteraction;
-    private BinaryInteractionWrapper binaryWrapper;
+public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryInteraction, FileSourceContext,
+        psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction {
+    private psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction wrappedInteraction;
+    private ModelledBinaryInteractionWrapper binaryWrapper;
 
-    public XmlBinaryInteractionWrapper(AbstractXmlBasicInteraction interaction){
+    public XmlModelledBinaryInteractionWrapper(psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction interaction){
         this.wrappedInteraction = interaction;
-        this.binaryWrapper = new BinaryInteractionWrapper(interaction);
+        this.binaryWrapper = new ModelledBinaryInteractionWrapper(interaction);
     }
 
-    public XmlBinaryInteractionWrapper(AbstractXmlBasicInteraction interaction, CvTerm complexExpansion){
+    public XmlModelledBinaryInteractionWrapper(psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction interaction, CvTerm complexExpansion){
         this(interaction);
-        this.binaryWrapper = new BinaryInteractionWrapper(interaction, complexExpansion);
+        this.binaryWrapper = new ModelledBinaryInteractionWrapper(interaction, complexExpansion);
     }
 
-    public Participant getParticipantA() {
+    public ModelledParticipant getParticipantA() {
         return this.binaryWrapper.getParticipantA();
     }
 
-    public Participant getParticipantB() {
+    public ModelledParticipant getParticipantB() {
         return this.binaryWrapper.getParticipantB();
     }
 
-    public void setParticipantA(Participant participantA) {
+    public void setParticipantA(ModelledParticipant participantA) {
         this.binaryWrapper.setParticipantA(participantA);
     }
 
-    public void setParticipantB(Participant participantB) {
+    public void setParticipantB(ModelledParticipant participantB) {
         this.binaryWrapper.setParticipantB(participantB);
     }
 
@@ -67,7 +67,7 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
      * @return
      */
     @Override
-    public Collection<Participant> getParticipants() {
+    public Collection<ModelledParticipant> getParticipants() {
         return this.binaryWrapper.getParticipants();
     }
 
@@ -79,7 +79,7 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
      * @throws IllegalArgumentException if this Binary interaction already contains two participants
      */
     @Override
-    public boolean addParticipant(Participant part) {
+    public boolean addParticipant(ModelledParticipant part) {
         return this.binaryWrapper.addParticipant(part);
     }
 
@@ -89,7 +89,7 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
      * @return
      */
     @Override
-    public boolean removeParticipant(Participant part) {
+    public boolean removeParticipant(ModelledParticipant part) {
         return this.binaryWrapper.removeParticipant(part);
     }
 
@@ -101,12 +101,12 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
      * @throws IllegalArgumentException if this Binary interaction already contains two participants or the given participants contains more than two participants
      */
     @Override
-    public boolean addAllParticipants(Collection<? extends Participant> participants) {
+    public boolean addAllParticipants(Collection<? extends ModelledParticipant> participants) {
         return this.binaryWrapper.addAllParticipants(participants);
     }
 
     @Override
-    public boolean removeAllParticipants(Collection<? extends Participant> participants) {
+    public boolean removeAllParticipants(Collection<? extends ModelledParticipant> participants) {
         return this.binaryWrapper.removeAllParticipants(participants);
     }
 
@@ -121,13 +121,53 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
     }
 
     @Override
-    public List<Alias> getAliases() {
+    public Xref getPreferredIdentifier() {
+        return this.wrappedInteraction.getPreferredIdentifier();
+    }
+
+    @Override
+    public Organism getOrganism() {
+        return this.wrappedInteraction.getOrganism();
+    }
+
+    @Override
+    public void setOrganism(Organism organism) {
+        this.wrappedInteraction.setOrganism(organism);
+    }
+
+    @Override
+    public CvTerm getInteractorType() {
+        return this.wrappedInteraction.getInteractorType();
+    }
+
+    @Override
+    public void setInteractorType(CvTerm type) {
+         this.wrappedInteraction.setInteractorType(type);
+    }
+
+    @Override
+    public List<BindingFeatures> getBindingFeatures() {
+        return this.wrappedInteraction.getBindingFeatures();
+    }
+
+    @Override
+    public List<ExtendedPsiXmlCausalRelationship> getCausalRelationships() {
+        return this.wrappedInteraction.getCausalRelationships();
+    }
+
+    @Override
+    public Collection<Alias> getAliases() {
         return this.wrappedInteraction.getAliases();
     }
 
     @Override
-    public List<CvTerm> getInteractionTypes() {
-        return this.wrappedInteraction.getInteractionTypes();
+    public boolean isIntraMolecular() {
+        return this.wrappedInteraction.isIntraMolecular();
+    }
+
+    @Override
+    public void setIntraMolecular(boolean intra) {
+        this.wrappedInteraction.setIntraMolecular(intra);
     }
 
     @Override
@@ -141,11 +181,6 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
     }
 
     @Override
-    public List<InferredInteraction> getInferredInteractions() {
-        return this.wrappedInteraction.getInferredInteractions();
-    }
-
-    @Override
     public int getId() {
         return this.wrappedInteraction.getId();
     }
@@ -153,16 +188,6 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
     @Override
     public void setId(int id) {
         this.wrappedInteraction.setId(id);
-    }
-
-    @Override
-    public boolean isIntraMolecular() {
-        return this.wrappedInteraction.isIntraMolecular();
-    }
-
-    @Override
-    public void setIntraMolecular(boolean intra) {
-        this.wrappedInteraction.setIntraMolecular(intra);
     }
 
     @Override
@@ -248,5 +273,75 @@ public class XmlBinaryInteractionWrapper implements BinaryInteraction<Participan
     @Override
     public String toString() {
         return this.wrappedInteraction.toString();
+    }
+
+    @Override
+    public Collection<InteractionEvidence> getInteractionEvidences() {
+        return this.wrappedInteraction.getInteractionEvidences();
+    }
+
+    @Override
+    public Source getSource() {
+        return this.wrappedInteraction.getSource();
+    }
+
+    @Override
+    public void setSource(Source source) {
+        this.wrappedInteraction.setSource(source);
+    }
+
+    @Override
+    public CvTerm getEvidenceType() {
+        return this.wrappedInteraction.getEvidenceType();
+    }
+
+    @Override
+    public void setEvidenceType(CvTerm eco) {
+        this.wrappedInteraction.setEvidenceType(eco);
+    }
+
+    @Override
+    public Collection<ModelledConfidence> getModelledConfidences() {
+        return this.wrappedInteraction.getModelledConfidences();
+    }
+
+    @Override
+    public Collection<ModelledParameter> getModelledParameters() {
+        return this.wrappedInteraction.getModelledParameters();
+    }
+
+    @Override
+    public Collection<CooperativeEffect> getCooperativeEffects() {
+        return this.wrappedInteraction.getCooperativeEffects();
+    }
+
+    @Override
+    public String getPhysicalProperties() {
+        return this.wrappedInteraction.getPhysicalProperties();
+    }
+
+    @Override
+    public void setPhysicalProperties(String properties) {
+        this.wrappedInteraction.setPhysicalProperties(properties);
+    }
+
+    @Override
+    public String getRecommendedName() {
+        return this.wrappedInteraction.getRecommendedName();
+    }
+
+    @Override
+    public void setRecommendedName(String name) {
+         this.wrappedInteraction.setRecommendedName(name);
+    }
+
+    @Override
+    public String getSystematicName() {
+        return this.wrappedInteraction.getSystematicName();
+    }
+
+    @Override
+    public void setSystematicName(String name) {
+         this.wrappedInteraction.setSystematicName(name);
     }
 }

@@ -1,7 +1,8 @@
-package psidev.psi.mi.jami.xml.model.extension.binary;
+package psidev.psi.mi.jami.xml.model.extension.binary.xml25;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.xml.model.extension.binary.AbstractExtendedXmlBinaryInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -13,7 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteraction extends AbstractXmlBinaryInteraction<Participant>{
+public class XmlBinaryInteraction extends AbstractExtendedXmlBinaryInteraction<Participant> {
 
     public XmlBinaryInteraction() {
     }

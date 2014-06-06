@@ -28,7 +28,7 @@ import java.util.*;
 
 public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
 
-    private AbstractXmlBasicInteraction interaction;
+    private ExtendedPsiXmlInteraction interaction;
     private SynchronizedModelledParticipantList modelledParticipants;
     private Collection<InteractionEvidence> interactionEvidences;
     private Collection<ModelledConfidence> modelledConfidences;
@@ -39,7 +39,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     private CvTerm interactorType;
     private CvTerm evidenceType;
 
-    public XmlBasicInteractionComplexWrapper(AbstractXmlBasicInteraction interaction){
+    public XmlBasicInteractionComplexWrapper(ExtendedPsiXmlInteraction<? extends Participant> interaction){
         if (interaction == null){
             throw new IllegalArgumentException("The complex wrapper needs a non null basic interaction");
         }
@@ -229,7 +229,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
 
     @Override
     public Xref getPreferredIdentifier() {
-        return !this.interaction.getIdentifiers().isEmpty()?this.interaction.getIdentifiers().iterator().next():null;
+        return !this.interaction.getIdentifiers().isEmpty()?(Xref)this.interaction.getIdentifiers().iterator().next():null;
     }
 
     @Override
@@ -323,7 +323,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     }
 
     @Override
-    public List<Alias> getAliases() {
+    public Collection<Alias> getAliases() {
         return this.interaction.getAliases();
     }
 
@@ -368,14 +368,14 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
         this.interaction.setSourceLocator(locator);
     }
 
-    public AbstractXmlBasicInteraction getWrappedInteraction(){
+    public ExtendedPsiXmlInteraction getWrappedInteraction(){
         return this.interaction;
     }
 
     protected void initialiseParticipants(){
         this.modelledParticipants = new SynchronizedModelledParticipantList();
-        for (Participant part : this.interaction.getParticipants()){
-            this.modelledParticipants.addOnly(new XmlParticipantWrapper(part, this));
+        for (Object part : this.interaction.getParticipants()){
+            this.modelledParticipants.addOnly(new XmlParticipantWrapper((Participant)part, this));
         }
     }
 

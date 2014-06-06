@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.model.extension.*;
-import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.binary.xml25.XmlBinaryInteractionEvidence;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

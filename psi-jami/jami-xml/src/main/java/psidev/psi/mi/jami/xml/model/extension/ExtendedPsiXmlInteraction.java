@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.xml.model.Entry;
+import psidev.psi.mi.jami.model.Alias;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Participant;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -13,14 +15,9 @@ import java.util.List;
  * @since <pre>29/10/13</pre>
  */
 
-public interface ExtendedPsiXmlInteraction<T extends Participant> extends NamedInteraction<T> {
+public interface ExtendedPsiXmlInteraction<T extends Participant> extends PsiXmlInteraction<T> {
 
     public List<CvTerm> getInteractionTypes();
-    public Entry getEntry();
-    public void setEntry(Entry entry);
     public List<InferredInteraction> getInferredInteractions();
-    public int getId();
-    public void setId(int id);
-    public boolean isIntraMolecular();
-    public void setIntraMolecular(boolean intra);
+    public Collection<Alias> getAliases();
 }

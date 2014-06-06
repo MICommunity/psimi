@@ -58,12 +58,12 @@ public class XmlStoichiometryRange implements FileSourceContext, Stoichiometry, 
         return this.maxValue;
     }
 
-    @XmlAttribute(name = "minValue", required = true, namespace = "http://psi.hupo.org/mi/mif300")
+    @XmlAttribute(name = "minValue", required = true)
     public void setJAXBMinValue(int value){
         this.minValue = value;
     }
 
-    @XmlAttribute(name = "maxValue", required = true, namespace = "http://psi.hupo.org/mi/mif300")
+    @XmlAttribute(name = "maxValue", required = true)
     public void setJAXBMaxValue(int value){
         this.maxValue = value;
     }

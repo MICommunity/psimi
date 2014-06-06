@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.model.extension.binary;
+package psidev.psi.mi.jami.xml.model.extension.binary.xml25;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.impl.ModelledBinaryInteractionWrapper;
@@ -6,8 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.Entry;
-import psidev.psi.mi.jami.xml.model.extension.AbstractXmlModelledInteraction;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlModelledInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -23,16 +22,16 @@ import java.util.List;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryInteraction, FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
-    private AbstractXmlModelledInteraction wrappedInteraction;
+public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryInteraction, FileSourceContext, ExtendedPsiXmlModelledInteraction {
+    private ExtendedPsiXmlModelledInteraction wrappedInteraction;
     private ModelledBinaryInteractionWrapper binaryWrapper;
 
-    public XmlModelledBinaryInteractionWrapper(AbstractXmlModelledInteraction interaction){
+    public XmlModelledBinaryInteractionWrapper(ExtendedPsiXmlModelledInteraction interaction){
         this.wrappedInteraction = interaction;
         this.binaryWrapper = new ModelledBinaryInteractionWrapper(interaction);
     }
 
-    public XmlModelledBinaryInteractionWrapper(AbstractXmlModelledInteraction interaction, CvTerm complexExpansion){
+    public XmlModelledBinaryInteractionWrapper(ExtendedPsiXmlModelledInteraction interaction, CvTerm complexExpansion){
         this(interaction);
         this.binaryWrapper = new ModelledBinaryInteractionWrapper(interaction, complexExpansion);
     }
@@ -121,7 +120,7 @@ public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryIntera
     }
 
     @Override
-    public List<Alias> getAliases() {
+    public Collection<Alias> getAliases() {
         return this.wrappedInteraction.getAliases();
     }
 
@@ -288,5 +287,10 @@ public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryIntera
     @Override
     public Collection<CooperativeEffect> getCooperativeEffects() {
         return this.wrappedInteraction.getCooperativeEffects();
+    }
+
+    @Override
+    public List<Experiment> getExperiments() {
+        return this.wrappedInteraction.getExperiments();
     }
 }
