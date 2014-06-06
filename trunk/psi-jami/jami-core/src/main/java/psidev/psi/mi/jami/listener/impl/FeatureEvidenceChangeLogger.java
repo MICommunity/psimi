@@ -25,4 +25,12 @@ public class FeatureEvidenceChangeLogger extends FeatureChangeLogger<FeatureEvid
     public void onRemovedDetectionMethod(FeatureEvidence feature, CvTerm removed) {
         featureEvidenceChangeLogger.log(Level.INFO, "The detection method " + removed.toString() + " has been removed from the feature " + feature.toString());
     }
+
+    public void onAddedParameter(FeatureEvidence feature, Parameter added) {
+        featureEvidenceChangeLogger.log(Level.INFO, "The parameter " + added.toString() + " has been added to the feature " + feature.toString());
+    }
+
+    public void onRemovedParameter(FeatureEvidence feature, Parameter removed) {
+        featureEvidenceChangeLogger.log(Level.INFO, "The parameter " + removed.toString() + " has been removed from the feature " + feature.toString());
+    }
 }
