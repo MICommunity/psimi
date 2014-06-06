@@ -220,12 +220,12 @@ BCL9 can be determined by calculating the fold-change of the affinity. -->
                         <stoichiometry value="1"/>
 					</participant>
 				</participantList>
-				<bindingFeaturesList>
+				<bindingFeatureList>
 					<bindingFeatures>
 						<participantFeatureRef>31</participantFeatureRef>
 						<participantFeatureRef>32</participantFeatureRef>
 					</bindingFeatures>
-				</bindingFeaturesList>
+				</bindingFeatureList>
 				<interactionType>
 					<names>
 						<shortLabel>direct interaction</shortLabel>
@@ -513,12 +513,12 @@ BCL9 can be determined by calculating the fold-change of the affinity. -->
 						<stoichiometry value="1"/>
 					</participant>
 				</participantList>
-				<bindingFeaturesList>
+				<bindingFeatureList>
 					<bindingFeatures>
 						<participantFeatureRef>33</participantFeatureRef>
 						<participantFeatureRef>34</participantFeatureRef>
 					</bindingFeatures>
-				</bindingFeaturesList>
+				</bindingFeatureList>
 				<interactionType>
 					<names>
 						<shortLabel>direct interaction</shortLabel>
