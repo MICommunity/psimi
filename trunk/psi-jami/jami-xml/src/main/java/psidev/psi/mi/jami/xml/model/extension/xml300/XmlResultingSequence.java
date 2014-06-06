@@ -76,7 +76,7 @@ public class XmlResultingSequence implements ResultingSequence, FileSourceContex
         setOriginalSequence(sequence);
     }
 
-    @XmlElement(name = "xref")
+    @XmlElement(name = "xref", namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBXref(XrefContainer value) {
         this.xrefContainer = value;
     }

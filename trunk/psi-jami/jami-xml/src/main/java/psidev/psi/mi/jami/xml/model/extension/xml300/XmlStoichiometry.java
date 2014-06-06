@@ -58,7 +58,7 @@ public class XmlStoichiometry implements FileSourceContext, Stoichiometry, Locat
         return this.maxValue;
     }
 
-    @XmlAttribute(name = "minValue", required = true, namespace = "http://psi.hupo.org/mi/mif300")
+    @XmlAttribute(name = "value", required = true, namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBValue(int value){
         this.maxValue = value;
         this.minValue = value;
