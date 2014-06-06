@@ -366,7 +366,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
             }
         }
 
-        @XmlElement(type= XmlParameter.class, name="parameter", required = true)
+        @XmlElement(type= XmlParameter.class, name="parameter", required = true, namespace = "http://psi.hupo.org/mi/mif300")
         public List<Parameter> getJAXBParameters() {
             return this.parameters;
         }
