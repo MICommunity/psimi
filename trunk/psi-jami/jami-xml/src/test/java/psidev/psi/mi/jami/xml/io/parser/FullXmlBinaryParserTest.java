@@ -1003,4 +1003,52 @@ public class FullXmlBinaryParserTest {
 
         parser.close();
     }
+
+
+    @Test
+    public void test_read_valid_xml30_preassembly() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/CI-example_2_preassembly_abstract.xml");
+
+        PsiXmlParser<BinaryInteraction> parser = new FullXmlBinaryParser(stream);
+
+        ExtendedPsiXmlModelledInteraction interaction = (ExtendedPsiXmlModelledInteraction)parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+
+        Assert.assertNotNull(interaction);
+
+        Assert.assertNotNull(interaction.getInteractionType());
+
+        Assert.assertNotNull(interaction.getOrganism());
+        Assert.assertEquals(9606, interaction.getOrganism().getTaxId());
+
+        Assert.assertNotNull(interaction.getInteractorType());
+        Assert.assertEquals("complex", interaction.getInteractorType().getShortName());
+
+        Assert.assertNotNull(interaction.getEvidenceType());
+        Assert.assertEquals("experimental evidence", interaction.getEvidenceType().getShortName());
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        Assert.assertEquals(0, interaction.getBindingFeatures().size());
+
+        Assert.assertEquals(2, interaction.getCooperativeEffects().size());
+        Preassembly preassembly = (Preassembly)interaction.getCooperativeEffects().iterator().next();
+        Assert.assertEquals(1, preassembly.getCooperativityEvidences().size());
+        CooperativityEvidence ev = preassembly.getCooperativityEvidences().iterator().next();
+        Assert.assertEquals("20037628", ev.getPublication().getPubmedId());
+        Assert.assertEquals(3, ev.getEvidenceMethods().size());
+        Assert.assertEquals("itc", ev.getEvidenceMethods().iterator().next().getShortName());
+
+        Assert.assertEquals(1, preassembly.getAffectedInteractions().size());
+        Assert.assertTrue(preassembly.getAffectedInteractions().iterator().next() instanceof ExtendedPsiXmlModelledInteraction);
+
+        Assert.assertNotNull(preassembly.getOutCome());
+        Assert.assertEquals("negative cooperative effect", preassembly.getOutCome().getShortName());
+        Assert.assertNotNull(preassembly.getResponse());
+        Assert.assertEquals("altered physicochemical compatibility", preassembly.getResponse().getShortName());
+
+        Assert.assertFalse(parser.hasFinished());
+
+        parser.close();
+    }
 }

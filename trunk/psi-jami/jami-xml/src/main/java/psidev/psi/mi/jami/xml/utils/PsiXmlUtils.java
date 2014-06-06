@@ -47,7 +47,7 @@ public class PsiXmlUtils {
     public static final String ATTRIBUTE_TAG = "attribute";
 
     public static final String LINE_BREAK = "\n";
-    public static final int XML_BUFFER_SIZE = 512;
+    public static final int XML_BUFFER_SIZE = 2048;
 
     public final static String Xml300_NAMESPACE_URI = "http://psi.hupo.org/mi/mif300";
     public final static String Xml254_NAMESPACE_URI = "http://psi.hupo.org/mi/mif";
