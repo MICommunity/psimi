@@ -237,6 +237,15 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
 					</xref>
 				</interactionType>
                 <intraMolecular>false</intraMolecular>
+                <parameterList>
+                    <parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="0.006" uncertainty="0.001">
+                        <bibref>
+                            <xref>
+                                <primaryRef refType="primary-reference" db="pubmed" refTypeAc="MI:0358" dbAc="MI:0446" id="16209941"/>
+                            </xref>
+                        </bibref>
+                    </parameter>
+                </parameterList>
                 <interactorType>
                     <names>
                         <shortLabel>protein complex</shortLabel>
@@ -250,15 +259,6 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
 						<shortLabel>Human</shortLabel>
 					</names>
 				</organism>
-				<parameterList>
-					<parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="0.006" uncertainty="0.001">
-						<bibref>
-							<xref>
-								<primaryRef refType="primary-reference" db="pubmed" refTypeAc="MI:0358" dbAc="MI:0446" id="16209941"/>
-							</xref>
-						</bibref>
-					</parameter>
-				</parameterList>
                 <evidenceType>
                     <names>
                         <shortLabel>experimental evidence</shortLabel>
@@ -546,20 +546,20 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
 					</xref>
 				</interactionType>
 				<intraMolecular>false</intraMolecular>
+                <parameterList>
+                    <parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="7" uncertainty="1">
+                        <bibref>
+                            <xref>
+                                <primaryRef db="pubmed" dbAc="MI:0446" id="16209941" refType="primary-reference" refTypeAc="MI:0358"/>
+                            </xref>
+                        </bibref>
+                    </parameter>
+                </parameterList>
 				<organism ncbiTaxId="9606">
 					<names>
 						<shortLabel>Human</shortLabel>
 					</names>
 				</organism>
-				<parameterList>
-					<parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="7" uncertainty="1">
-						<bibref>
-							<xref>
-								<primaryRef db="pubmed" dbAc="MI:0446" id="16209941" refType="primary-reference" refTypeAc="MI:0358"/>
-							</xref>
-						</bibref>
-					</parameter>
-				</parameterList>
 			</abstractInteraction>
 		</interactionList>
 	</entry>
