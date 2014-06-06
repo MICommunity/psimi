@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<entrySet xmlns="http://psi.hupo.org/mi/mif300" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" minorVersion="0" version="0" level="3"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif300 http://psidev.cvs.sourceforge.net/viewvc/psidev/psi/mi/rel30/src/MIF300.xsd">
+	<entry>
+		<interactorList>
+			<interactor id="1">
+				<names>
+					<shortLabel>Pygo1</shortLabel>
+					<fullName>Pygopus homolog 1</fullName>
+                    <alias typeAc="MI:0301" type="gene name">PYGO1</alias>
+                    <alias type="display_short">Q9Y3Y4</alias>
+                    <alias type="display_long">pygo1_human</alias>
+				</names>
+				<xref>
+					<primaryRef db="uniprotkb" dbAc="MI:0486" id="Q9Y3Y4" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000171016" refType="gene product" refTypeAc="MI:0251"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_056432.1" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>Human</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="2">
+				<names>
+					<shortLabel>Bcl9</shortLabel>
+					<fullName>B-cell CLL/lymphoma 9 protein</fullName>
+					<alias typeAc="MI:0301" type="gene name">BCL9</alias>
+					<alias type="display_short">O00512</alias>
+					<alias type="display_long">bcl9_human</alias>
+				</names>
+				<xref>
+					<primaryRef db="uniprotkb" dbAc="MI:0486" id="O00512" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef db="ensembl" dbAc="MI:0476" id="ENSG00000116128" refType="gene product" refTypeAc="MI:0251"/>
+					<secondaryRef db="refseq" dbAc="MI:0481" id="NP_004317.2" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>Human</shortLabel>
+					</names>
+				</organism>
+			</interactor>
+			<interactor id="3">
+				<names>
+					<shortLabel>H3K4me2</shortLabel>
+					<fullName>Histone_h3_peptide_fragment</fullName>
+					<alias type="display_short">EBI-6146769</alias>
+                    <alias type="display_long">EBI-6146769</alias>
+				</names>
+				<xref>
+					<primaryRef db="intact" dbAc="MI:0469" id="EBI-6146769" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>peptide</shortLabel>
+						<fullName>peptide</fullName>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0327" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>Human</shortLabel>
+					</names>
+				</organism>
+				<sequence>ARTKQTARK</sequence>
+			</interactor>
+		</interactorList>
+		<interactionList>
+			<abstractInteraction id="11">
+				<names>
+					<shortLabel>Pygo1-Bcl9-1</shortLabel>
+					<fullName>B-cell CLL/lymphoma 9 protein-Pygopus homolog 1-1</fullName>
+					<alias type="display_short">O00512-Q9Y3Y4-1</alias>
+				</names>
+				<xref>
+					<primaryRef db="intact" dbAc="MI:0469" id="EBI-6142552" refType="exp-evidence"/>
+					<secondaryRef db="imex" dbAc="MI:0670" id="IM-17354-3" refType="exp-evidence"/>
+					<secondaryRef db="rcsb pdb" dbAc="MI:0469" id="2VPD" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<participantList>
+					<participant id="21">
+						<interactorRef>1</interactorRef>
+						<biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                        <featureList>
+                            <feature id="31">
+                            	<names>
+                                    <shortLabel>Znf_PHD-finger</shortLabel>
+                                    <fullName>Zinc finger, PHD-finger</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="interpro" dbAc="MI:0449" id="IPR019787" refType="identity" refTypeAc="MI:0356"/>
+                                </xref>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>sufficient binding region</shortLabel>
+                                        <fullName>sufficient binding region</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="333"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="398"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                        <stoichiometry value="1"/>
+					</participant>
+					<participant id="22">
+						<interactorRef>2</interactorRef>
+						<biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                        <featureList>
+                            <feature id="32">
+                            	<names>
+                                    <shortLabel>region</shortLabel>
+                                    <fullName>region</fullName>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>sufficient binding region</shortLabel>
+                                        <fullName>sufficient binding region</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="174"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="205"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                        <stoichiometry value="1"/>
+					</participant>
+				</participantList>
+				<bindingFeatureList>
+					<bindingFeatures>
+						<participantFeatureRef>31</participantFeatureRef>
+						<participantFeatureRef>32</participantFeatureRef>
+					</bindingFeatures>
+				</bindingFeatureList>
+				<interactionType>
+					<names>
+						<shortLabel>direct interaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+                <interactorType>
+                    <names>
+                        <shortLabel>protein complex</shortLabel>
+                        <fullName>protein complex</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0315" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </interactorType>
+				<intraMolecular>false</intraMolecular>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>Human</shortLabel>
+					</names>
+				</organism>
+                <evidenceType>
+                    <names>
+                        <shortLabel>experimental evidence</shortLabel>
+                    </names>
+                    <xref>
+                        <primaryRef db="evidence ontology" dbAc="MI:1331" id="ECO:0000006" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </evidenceType>
+				<cooperativeEffectList>
+					<allostery>
+						<cooperativityEvidenceList>
+							<cooperativityEvidenceDescription>
+								<bibref>
+									<xref>
+										<primaryRef db="pubmed" dbAc="MI:0446" id="18498752" refType="primary-reference" refTypeAc="MI:0358"/>
+									</xref>
+									<attributeList>
+                                    	<attribute name="author-list" nameAc="MI:0636">Fiedler M., Sanchez-Barrena M.J., Nekrasov M., Mieszczanek J., Rybin V., Mueller J., Evans P., Bienz M.</attribute>
+                                    	<attribute name="contact-email" nameAc="MI:0634">mb2@mrc-lmb.cam.ac.uk</attribute>
+                                    	<attribute name="journal" nameAc="MI:0885">Mol Cell. (507-518)</attribute>
+                                    	<attribute name="publication year" nameAc="MI:0886">2008</attribute>
+                                	</attributeList>
+								</bibref>
+								<evidenceMethodList>
+									<evidenceMethod>
+										<names>
+											<shortLabel>x-ray diffraction</shortLabel>
+										</names>
+										<xref>
+											<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0114" refType="identity" refTypeAc="MI:0356"/>
+										</xref>
+									</evidenceMethod>
+									<evidenceMethod>
+										<names>
+											<shortLabel>itc</shortLabel>
+										</names>
+										<xref>
+											<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0065" refType="identity" refTypeAc="MI:0356"/>
+										</xref>
+									</evidenceMethod>
+								</evidenceMethodList>
+							</cooperativityEvidenceDescription>
+						</cooperativityEvidenceList>
+                        <affectedInteractionList>
+                            <affectedInteractionRef>12</affectedInteractionRef>
+                        </affectedInteractionList>
+						<cooperativeEffectOutcome>
+							<names>
+								<shortLabel>positive cooperative effect</shortLabel>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1154" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</cooperativeEffectOutcome>
+						<cooperativeEffectResponse>
+							<names>
+								<shortLabel>allosteric k-type response</shortLabel>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1162" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</cooperativeEffectResponse>
+						<allostericMoleculeRef>21</allostericMoleculeRef>
+						<allostericEffectorRef>22</allostericEffectorRef>
+						<allostericMechanism>
+							<names>
+								<shortLabel>allosteric change in structure</shortLabel>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1165" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</allostericMechanism>
+						<allosteryType>
+							<names>
+								<shortLabel>heterotropic allostery</shortLabel>
+							</names>
+							<xref>
+								<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1168" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</allosteryType>
+					</allostery>
+				</cooperativeEffectList>
+			</abstractInteraction>
+			<abstractInteraction id="12">
+				<names>
+					<shortLabel>Pygo1_Bcl9-H3K4me2-1</shortLabel>
+					<fullName>B-cell CLL/lymphoma 9 protein_Pygopus homolog 1-Histone_h3_peptide_fragment-1</fullName>
+					<alias type="display_short">O00512_Q9Y3Y4-EBI-6146769-1</alias>
+				</names>
+				<xref>
+					<primaryRef db="intact" dbAc="MI:0469" id="EBI-6146771" refType="exp-evidence"/>
+					<secondaryRef db="imex" dbAc="MI:0670" id="IM-17354-4" refType="exp-evidence"/>
+					<secondaryRef db="rcsb pdb" dbAc="MI:0469" id="2VPE" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<participantList>
+					<participant id="23">
+                        <xref>
+                            <primaryRef refType="gene ontology term for cellular component" db="gene ontology" refTypeAc="MI:0354" dbAc="MI:0448" id="GO:0005634"/>
+                        </xref>
+						<interactionRef>11</interactionRef>
+						<biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                        <featureList>
+                            <feature id="33">
+                            	<names>
+                                    <shortLabel>Znf_PHD-finger</shortLabel>
+                                    <fullName>Zinc finger, PHD-finger</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="interpro" dbAc="MI:0449" id="IPR019787" refType="identity" refTypeAc="MI:0356"/>
+                                </xref>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>sufficient binding region</shortLabel>
+                                        <fullName>sufficient binding region</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="333"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="398"/>
+                                        <isLink>false</isLink>
+                                        <participantRef>21</participantRef>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+						<stoichiometry value="1"/>
+					</participant>
+					<participant id="24">
+                        <xref>
+                            <primaryRef refType="gene ontology term for cellular component" db="gene ontology" refTypeAc="MI:0354" dbAc="MI:0448" id="GO:0005634"/>
+                        </xref>
+						<interactorRef>3</interactorRef>
+						<biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity" refTypeAc="MI:0356"/>
+                            </xref>
+                        </biologicalRole>
+                        <featureList>
+                            <feature id="34">
+                            	<names>
+                                    <shortLabel>region</shortLabel>
+                                    <fullName>region</fullName>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>sufficient binding region</shortLabel>
+                                        <fullName>sufficient binding region</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0116" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="1"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="7"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                            <feature id="35">
+                            	<names>
+                                    <shortLabel>required-dimethyllys4</shortLabel>
+                                    <fullName>required-dimethyllys4</fullName>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>dimethylated residue</shortLabel>
+                                        <fullName>dimethylated residue</fullName>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mod" dbAc="MI:0897" id="MOD:00429" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="4"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>certain</shortLabel>
+                                                <fullName>certain sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0335" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="4"/>
+                                        <isLink>false</isLink>
+                                    </featureRange>
+                                </featureRangeList>
+                                <featureRole>
+									<names>
+										<shortLabel>prerequisite-ptm</shortLabel>
+									</names>
+									<xref>
+										<primaryRef refType="identical object" refTypeAc="MI:0356" db="psi-mi" dbAc="MI:0488" id="MI:0638"/>
+									</xref>
+								</featureRole>
+                            </feature>
+                        </featureList>
+						<stoichiometry value="1"/>
+					</participant>
+				</participantList>
+				<bindingFeatureList>
+					<bindingFeatures>
+						<participantFeatureRef>33</participantFeatureRef>
+						<participantFeatureRef>34</participantFeatureRef>
+					</bindingFeatures>
+				</bindingFeatureList>
+				<interactionType>
+					<names>
+						<shortLabel>direct interaction</shortLabel>
+					</names>
+					<xref>
+						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<parameterList>
+					<parameter term="Kd" termAc="MI:0646" unit="M" unitAc="MI:0648" base="10" exponent="-6" factor="11.4" uncertainty="1.1">
+						<bibref>
+							<xref>
+								<primaryRef db="pubmed" dbAc="MI:0446" id="18498752" refType="primary-reference" refTypeAc="MI:0358"/>
+							</xref>
+						</bibref>
+					</parameter>
+				</parameterList>
+			</abstractInteraction>
+		</interactionList>
+	</entry>
+</entrySet>
