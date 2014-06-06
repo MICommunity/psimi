@@ -42,6 +42,8 @@ public class FeatureCloner {
             target.getRanges().addAll(source.getRanges());
             target.getDetectionMethods().clear();
             target.getDetectionMethods().addAll(source.getDetectionMethods());
+            target.getParameters().clear();
+            target.getParameters().addAll(source.getParameters());
         }
     }
 
