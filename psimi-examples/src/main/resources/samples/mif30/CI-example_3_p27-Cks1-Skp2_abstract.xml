@@ -393,8 +393,8 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                                             </xref>
                                         </endStatus>
                                         <end position="424"/>
-                                        <participantRef>21</participantRef>
                                         <isLink>false</isLink>
+                                        <participantRef>21</participantRef>
                                     </featureRange>
                                     <featureRange>
                                         <startStatus>
@@ -417,8 +417,8 @@ binding phosphorylated p27Kip1 by forming a composite binding site for the degro
                                             </xref>
                                         </endStatus>
                                         <end position="73"/>
-                                        <participantRef>22</participantRef>
                                         <isLink>false</isLink>
+                                        <participantRef>22</participantRef>
                                     </featureRange>
                                 </featureRangeList>
                             </feature>
