@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
-import psidev.psi.mi.jami.enricher.listener.impl.writer.FeatureEnricherStatisticsWriter;
 import psidev.psi.mi.jami.listener.FeatureEvidenceChangeListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.Parameter;
 
 import java.io.File;
 import java.io.IOException;
@@ -66,6 +66,16 @@ public class FeatureEvidenceEnricherStatisticsWriter
 
     public void onRemovedDetectionMethod(FeatureEvidence feature, CvTerm removed) {
         checkObject(feature);
+        incrementRemovedCount();
+    }
+
+    public void onAddedParameter(FeatureEvidence o, Parameter added) {
+        checkObject(o);
+        incrementAdditionCount();
+    }
+
+    public void onRemovedParameter(FeatureEvidence o, Parameter removed) {
+        checkObject(o);
         incrementRemovedCount();
     }
 

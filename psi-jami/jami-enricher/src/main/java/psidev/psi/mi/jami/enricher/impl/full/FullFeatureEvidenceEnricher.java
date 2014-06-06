@@ -5,6 +5,8 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalFeatureEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.FeatureEvidenceEnricherListener;
+import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.*;
 
 /**
@@ -133,5 +135,18 @@ public class FullFeatureEvidenceEnricher extends FullFeatureEnricher<FeatureEvid
     @Override
     public void onEnrichmentError(Protein object, String message, Exception e) {
         this.minimalEnricher.onEnrichmentError(object, message, e);
+    }
+
+    @Override
+    protected void processOtherProperties(FeatureEvidence featureToEnrich, FeatureEvidence objectSource) throws EnricherException {
+        super.processOtherProperties(featureToEnrich, objectSource);
+
+        // process parameters
+        processParameters(featureToEnrich, objectSource);
+    }
+
+    protected void processParameters(FeatureEvidence featureToEnrich, FeatureEvidence objectSource) {
+        EnricherUtils.mergeParameters(featureToEnrich, objectSource.getParameters(), objectSource.getParameters(), false,
+                getFeatureEnricherListener() instanceof FeatureEvidenceEnricherListener ? (psidev.psi.mi.jami.listener.ParametersChangeListener<FeatureEvidence>)getFeatureEnricherListener() : null);
     }
 }
