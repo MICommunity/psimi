@@ -572,12 +572,12 @@
 						<stoichiometry value="1"/>
 					</participant>
 				</participantList>
-				<bindingFeaturesList>
+				<bindingFeatureList>
 					<bindingFeatures>
 						<participantFeatureRef>32</participantFeatureRef>
 						<participantFeatureRef>34</participantFeatureRef>
 					</bindingFeatures>
-				</bindingFeaturesList>
+				</bindingFeatureList>
 				<interactionType>
 					<names>
 						<shortLabel>direct interaction</shortLabel>
@@ -780,12 +780,12 @@
 						<stoichiometry value="1"/>
 					</participant>
 				</participantList>
-				<bindingFeaturesList>
+				<bindingFeatureList>
 					<bindingFeatures>
 						<participantFeatureRef>35</participantFeatureRef>
 						<participantFeatureRef>37</participantFeatureRef>
 					</bindingFeatures>
-				</bindingFeaturesList>
+				</bindingFeatureList>
 				<interactionType>
 					<names>
 						<shortLabel>direct interaction</shortLabel>
