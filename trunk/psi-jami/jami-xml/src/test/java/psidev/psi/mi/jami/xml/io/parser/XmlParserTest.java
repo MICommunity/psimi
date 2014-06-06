@@ -18,6 +18,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Iterator;
 
@@ -870,6 +871,38 @@ public class XmlParserTest {
         Assert.assertNotNull(p1.getStoichiometry());
         Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
         Assert.assertEquals(3, p1.getStoichiometry().getMaxValue());
+
+        Assert.assertTrue(parser.hasFinished());
+
+        parser.close();
+    }
+
+    @Test
+    public void test_read_valid_xml30_feature_parameters() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/23334297_feature_parameter.xml");
+
+        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+
+        InteractionEvidence interaction = (InteractionEvidence)parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+
+        Assert.assertNotNull(interaction);
+
+        // participants
+        Assert.assertEquals(3, interaction.getParticipants().size());
+        Iterator<ParticipantEvidence> pIterator = interaction.getParticipants().iterator();
+        pIterator.next();
+        pIterator.next();
+        ParticipantEvidence p3 = pIterator.next();
+        Assert.assertEquals(2, p3.getFeatures().size());
+        Iterator<FeatureEvidence> fIterator = p3.getFeatures().iterator();
+        fIterator.next();
+        FeatureEvidence f2 = fIterator.next();
+
+        Assert.assertEquals(1, f2.getParameters().size());
+        Parameter param = f2.getParameters().iterator().next();
+        Assert.assertEquals("kd", param.getType().getShortName());
+        Assert.assertEquals(new ParameterValue(new BigDecimal("150.0"),(short)10,(short)-9), param.getValue());
 
         Assert.assertTrue(parser.hasFinished());
 
