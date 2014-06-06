@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.enricher.listener.FeatureEvidenceEnricherListener;
 import psidev.psi.mi.jami.listener.FeatureEvidenceChangeListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.model.Parameter;
 
 /**
  * A manager for listeners which holds a list of listeners.
@@ -48,4 +49,19 @@ public class FeatureEvidenceEnricherListenerManager
         }
     }
 
+    public void onAddedParameter(FeatureEvidence o, Parameter added) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            if (listener instanceof FeatureEvidenceEnricherListener){
+                ((FeatureEvidenceEnricherListener)listener).onAddedParameter(o, added);
+            }
+        }
+    }
+
+    public void onRemovedParameter(FeatureEvidence o, Parameter removed) {
+        for(FeatureEnricherListener listener : getListenersList()){
+            if (listener instanceof FeatureEvidenceEnricherListener){
+                ((FeatureEvidenceEnricherListener)listener).onRemovedParameter(o, removed);
+            }
+        }
+    }
 }
