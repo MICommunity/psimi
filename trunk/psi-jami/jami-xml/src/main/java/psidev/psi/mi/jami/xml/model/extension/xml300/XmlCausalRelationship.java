@@ -24,7 +24,6 @@ import javax.xml.bind.annotation.*;
  * @since <pre>30/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
 public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,FileSourceContext,Locatable {
 
     private PsiXmLocator sourceLocator;

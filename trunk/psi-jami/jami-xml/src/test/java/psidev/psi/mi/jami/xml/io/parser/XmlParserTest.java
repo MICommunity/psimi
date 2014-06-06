@@ -8,10 +8,9 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipantEvidence;
+import psidev.psi.mi.jami.xml.model.extension.*;
+import psidev.psi.mi.jami.xml.model.extension.xml300.BindingFeatures;
+import psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
@@ -21,6 +20,7 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Unit tester for XmlEvidenceParser
@@ -903,6 +903,79 @@ public class XmlParserTest {
         Parameter param = f2.getParameters().iterator().next();
         Assert.assertEquals("kd", param.getType().getShortName());
         Assert.assertEquals(new ParameterValue(new BigDecimal("150.0"),(short)10,(short)-9), param.getValue());
+
+        Assert.assertTrue(parser.hasFinished());
+
+        parser.close();
+    }
+
+    @Test
+    public void test_read_valid_xml30_abstract() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/CI-example_1_allostery_abstract.xml");
+
+        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+
+        ExtendedPsiXmlModelledInteraction interaction = (ExtendedPsiXmlModelledInteraction)parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+
+        Assert.assertNotNull(interaction);
+
+        Assert.assertNotNull(interaction.getInteractionType());
+
+        Assert.assertNotNull(interaction.getOrganism());
+        Assert.assertEquals(9606, interaction.getOrganism().getTaxId());
+
+        Assert.assertNotNull(interaction.getInteractorType());
+        Assert.assertEquals("protein complex", interaction.getInteractorType().getShortName());
+
+        Assert.assertNotNull(interaction.getEvidenceType());
+        Assert.assertEquals("experimental evidence", interaction.getEvidenceType().getShortName());
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        Assert.assertEquals(1, interaction.getBindingFeatures().size());
+        List<BindingFeatures> bindingF = interaction.getBindingFeatures();
+
+        Assert.assertEquals(2, bindingF.iterator().next().getLinkedFeatures().size());
+        Assert.assertTrue(bindingF.iterator().next().getLinkedFeatures().iterator().next() instanceof XmlModelledFeature);
+
+        Assert.assertEquals(1, interaction.getCooperativeEffects().size());
+        Allostery allostery = (Allostery)interaction.getCooperativeEffects().iterator().next();
+        Assert.assertEquals(1, allostery.getCooperativityEvidences().size());
+        CooperativityEvidence ev = allostery.getCooperativityEvidences().iterator().next();
+        Assert.assertEquals("18498752", ev.getPublication().getPubmedId());
+        Assert.assertEquals(2, ev.getEvidenceMethods().size());
+        Assert.assertEquals("x-ray diffraction", ev.getEvidenceMethods().iterator().next().getShortName());
+
+        Assert.assertEquals(1, allostery.getAffectedInteractions().size());
+        Assert.assertTrue(allostery.getAffectedInteractions().iterator().next() instanceof ExtendedPsiXmlModelledInteraction);
+
+        Assert.assertNotNull(allostery.getOutCome());
+        Assert.assertEquals("positive cooperative effect", allostery.getOutCome().getShortName());
+        Assert.assertNotNull(allostery.getResponse());
+        Assert.assertEquals("allosteric k-type response", allostery.getResponse().getShortName());
+        Assert.assertNotNull(allostery.getAllostericMechanism());
+        Assert.assertEquals("allosteric change in structure", allostery.getAllostericMechanism().getShortName());
+        Assert.assertNotNull(allostery.getAllosteryType());
+        Assert.assertEquals("heterotropic allostery", allostery.getAllosteryType().getShortName());
+
+        Assert.assertTrue(allostery.getAllostericMolecule() instanceof XmlModelledParticipant);
+        Assert.assertTrue(((MoleculeEffector)allostery.getAllostericEffector()).getMolecule() instanceof XmlModelledParticipant);
+
+        // check feature role
+        interaction = (ExtendedPsiXmlModelledInteraction)parser.parseNextInteraction();
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        Iterator<ModelledParticipant> pIterator = interaction.getParticipants().iterator();
+        pIterator.next();
+
+        ModelledParticipant p2 = pIterator.next();
+        Assert.assertEquals(2, p2.getFeatures().size());
+        Iterator<ModelledFeature> fIterator = p2.getFeatures().iterator();
+        fIterator.next();
+        ModelledFeature f2 = fIterator.next();
+
+        Assert.assertNotNull(f2.getRole());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("prerequisite-ptm","MI:0638"), f2.getRole());
 
         Assert.assertTrue(parser.hasFinished());
 

@@ -29,7 +29,6 @@ import java.util.logging.Logger;
  * @since <pre>30/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
 public class XmlVariableParameterValueSet implements VariableParameterValueSet,FileSourceContext,Locatable {
 
     private PsiXmLocator sourceLocator;

@@ -27,7 +27,6 @@ import java.util.List;
  * @since <pre>30/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
 public class XmlVariableParameter implements VariableParameter,FileSourceContext,Locatable {
 
     private PsiXmLocator sourceLocator;

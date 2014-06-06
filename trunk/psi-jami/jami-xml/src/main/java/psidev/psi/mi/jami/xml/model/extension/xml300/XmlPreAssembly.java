@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.Preassembly;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
 
 /**
  * Xml 3.0 implementation of preassembly
@@ -15,7 +14,6 @@ import javax.xml.bind.annotation.XmlType;
  * @since <pre>15/11/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
 public class XmlPreAssembly extends AbstractXmlCooperativeEffect implements Preassembly{
 
     public XmlPreAssembly() {

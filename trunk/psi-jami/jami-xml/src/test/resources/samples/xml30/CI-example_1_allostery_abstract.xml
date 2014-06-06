@@ -227,6 +227,12 @@
 						<primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
 					</xref>
 				</interactionType>
+                <intraMolecular>false</intraMolecular>
+                <organism ncbiTaxId="9606">
+                    <names>
+                        <shortLabel>Human</shortLabel>
+                    </names>
+                </organism>
                 <interactorType>
                     <names>
                         <shortLabel>protein complex</shortLabel>
@@ -236,12 +242,6 @@
                         <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0315" refType="identity" refTypeAc="MI:0356"/>
                     </xref>
                 </interactorType>
-				<intraMolecular>false</intraMolecular>
-				<organism ncbiTaxId="9606">
-					<names>
-						<shortLabel>Human</shortLabel>
-					</names>
-				</organism>
                 <evidenceType>
                     <names>
                         <shortLabel>experimental evidence</shortLabel>
