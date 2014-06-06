@@ -26,7 +26,6 @@ import java.util.List;
  * @since <pre>15/11/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
 public class XmlCooperativityEvidence implements CooperativityEvidence, FileSourceContext, Locatable {
     private PsiXmLocator sourceLocator;
     private Publication publication;

@@ -325,7 +325,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
         setInteractionType(term);
     }
 
-    @XmlElement(name="bindingFeaturesList")
+    @XmlElement(name="bindingFeatureList")
     public void setJAXBBindingFeaturesWrapper(JAXBBindingFeaturesWrapper jaxbInferredWrapper) {
         this.jaxbBindingFeaturesWrapper = jaxbInferredWrapper;
     }
@@ -622,7 +622,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
             bindingFeatures = new ArrayList<BindingFeatures>();
         }
 
-        @XmlElement(name="bindingFeatures", type = BindingFeatures.class, required = true)
+        @XmlElement(name="bindingFeatures", required = true)
         public List<BindingFeatures> getJAXBBindingFeatures() {
             return bindingFeatures;
         }

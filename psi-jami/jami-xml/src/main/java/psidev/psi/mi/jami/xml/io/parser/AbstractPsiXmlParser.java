@@ -147,7 +147,8 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         // get xml entry context
         XmlEntryContext entryContext = XmlEntryContext.getInstance();
         // the next tag is an interaction, we parse the interaction.
-        if (PsiXmlUtils.INTERACTION_TAG.equals(currentElement) && hasReadEntry){
+        if ((PsiXmlUtils.INTERACTION_TAG.equals(currentElement) || PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(currentElement))
+                && hasReadEntry){
             T interaction = parseInteractionTag(entryContext);
             // check if last interaction and need to flush entry
             flushEntryIfNecessary(entryContext);
@@ -676,12 +677,16 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         // we already are parsing interactions
         try{
             this.currentElement = getNextPsiXmlStartElement();
-            boolean isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement);
+            boolean isReadingInteraction = this.currentElement != null &&
+                    (PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement) ||
+                    PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
             while(isReadingInteraction && this.currentElement != null){
                 this.loadedInteractions.add(unmarshallInteraction());
 
                 this.currentElement = getNextPsiXmlStartElement();
-                isReadingInteraction = this.currentElement != null && PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement);
+                isReadingInteraction = this.currentElement != null
+                        && (PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement)
+                              || PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
             }
 
             // get the current entry. It must exists
@@ -738,6 +743,8 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             // we have references to resolve, loads the all entry and keep in cache
             else{
                 loadEntry(entryContext,interaction);
+                // check if last interaction and need to flush entry
+                flushEntry(entryContext);
             }
 
             return interaction;
@@ -889,7 +896,8 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             flushEntry(entryContext);
         }
         // if this interaction is not followed by another interaction, we need to flush the entry
-        else if (!PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement)){
+        else if (!PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement)
+                && !PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement)){
             flushEntry(entryContext);
         }
     }

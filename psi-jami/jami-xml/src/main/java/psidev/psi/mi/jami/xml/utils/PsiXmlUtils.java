@@ -39,6 +39,7 @@ public class PsiXmlUtils {
     public static final String EXPERIMENT_TAG = "experimentDescription";
     public static final String INTERACTOR_TAG = "interactor";
     public static final String INTERACTION_TAG = "interaction";
+    public static final String ABSTRACT_INTERACTION_TAG = "abstractInteraction";
     public static final String SOURCE_TAG = "source";
     public static final String AVAILABILITYLIST_TAG = "availabilityList";
     public static final String AVAILABILITY_TAG = "availability";

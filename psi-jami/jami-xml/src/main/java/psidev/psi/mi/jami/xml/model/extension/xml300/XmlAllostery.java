@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlType;
 
 /**
  * XML 3.0 implementation of Allostery
@@ -19,7 +18,6 @@ import javax.xml.bind.annotation.XmlType;
  * @since <pre>15/11/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
 public class XmlAllostery extends AbstractXmlCooperativeEffect implements Allostery<AllostericEffector> {
     private PsiXmLocator sourceLocator;
     private CvTerm allostericMechanism;

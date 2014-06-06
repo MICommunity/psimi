@@ -40,7 +40,7 @@ public class XmlModelledParameter extends AbstractXmlParameter implements Modell
         this.publication = publication;
     }
 
-    @XmlElement(name="bibRef")
+    @XmlElement(name="bibref")
     public void setJAXBPublication(BibRef publication) {
         setPublication(publication);
     }
