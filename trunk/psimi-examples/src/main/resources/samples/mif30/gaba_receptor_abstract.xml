@@ -270,19 +270,6 @@
 <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
                             </xref>
                         </biologicalRole>
-                        <experimentalRoleList>
-                            <experimentalRole>
-<names>
-    <shortLabel>neutral component</shortLabel>
-    <fullName>neutral component</fullName>
-</names>
-<xref>
-    <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0497" refType="identity" refTypeAc="MI:0356"/>
-    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-55" refType="identity" refTypeAc="MI:0356"/>
-    <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
-</xref>
-                            </experimentalRole>
-                        </experimentalRoleList>
                         <stoichiometryRange minValue="1" maxValue="3"/>
                     </participant>
                     <participant id="15">
@@ -304,19 +291,6 @@
 <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
                             </xref>
                         </biologicalRole>
-                        <experimentalRoleList>
-                            <experimentalRole>
-<names>
-    <shortLabel>neutral component</shortLabel>
-    <fullName>neutral component</fullName>
-</names>
-<xref>
-    <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0497" refType="identity" refTypeAc="MI:0356"/>
-    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-55" refType="identity" refTypeAc="MI:0356"/>
-    <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
-</xref>
-                            </experimentalRole>
-                        </experimentalRoleList>
                         <stoichiometryRange minValue="1" maxValue="3"/>
                     </participant>
                     <participant id="16">
@@ -338,19 +312,6 @@
 <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
                             </xref>
                         </biologicalRole>
-                        <experimentalRoleList>
-                            <experimentalRole>
-<names>
-    <shortLabel>neutral component</shortLabel>
-    <fullName>neutral component</fullName>
-</names>
-<xref>
-    <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0497" refType="identity" refTypeAc="MI:0356"/>
-    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-55" refType="identity" refTypeAc="MI:0356"/>
-    <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference" refTypeAc="MI:0358"/>
-</xref>
-                            </experimentalRole>
-                        </experimentalRoleList>
                         <stoichiometryRange minValue="1" maxValue="3"/>
                     </participant>
                 </participantList>
