@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.extension.xml300.BindingFeatures;
+import psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlCausalRelationship;
 import psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -1063,6 +1064,59 @@ public class XmlParserTest {
         Assert.assertTrue(range.getParticipant() instanceof XmlModelledParticipant);
 
         Assert.assertTrue(parser.hasFinished());
+
+        parser.close();
+    }
+
+    @Test
+    public void test_read_valid_xml30_variable_parameters() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/several_variable_parameters.xml");
+
+        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+
+        psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEvidence interaction =
+                (psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEvidence)parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+
+        Assert.assertNotNull(interaction);
+
+        // variable parameters experiment
+        Assert.assertNotNull(interaction.getExperiment());
+        Assert.assertEquals(2, interaction.getExperiment().getVariableParameters().size());
+        VariableParameter p1 = interaction.getExperiment().getVariableParameters().iterator().next();
+        Assert.assertEquals("Curdlan (ug/ml)", p1.getDescription());
+        Assert.assertEquals(p1.getExperiment(), interaction.getExperiment());
+        Assert.assertEquals(2, p1.getVariableValues().size());
+        VariableParameterValue v1 = p1.getVariableValues().iterator().next();
+        Assert.assertEquals("10", v1.getValue());
+        Assert.assertNull(v1.getOrder());
+        Assert.assertNotNull(p1.getUnit());
+        Assert.assertEquals("ug/ml", p1.getUnit().getShortName());
+
+        // participants
+        Assert.assertEquals(5, interaction.getParticipants().size());
+
+        // variable parameter values
+        Assert.assertEquals(1, interaction.getVariableParameterValues().size());
+        VariableParameterValueSet set = interaction.getVariableParameterValues().iterator().next();
+        Assert.assertEquals(2, set.size());
+        Iterator<VariableParameterValue> vIterator = set.iterator();
+        VariableParameterValue v11 = vIterator.next();
+        VariableParameterValue v12 = vIterator.next();
+        Assert.assertTrue(v1 == v11 || v1 == v12);
+
+        // check causal relationships
+        Assert.assertEquals(1, interaction.getCausalRelationships().size());
+        ExtendedPsiXmlCausalRelationship c = interaction.getCausalRelationships().iterator().next();
+        Assert.assertTrue(c.getSource() == interaction.getParticipants().iterator().next());
+        Assert.assertNotNull(c.getRelationType());
+        Assert.assertEquals("increases RNA expression of ", c.getRelationType().getShortName());
+        Assert.assertTrue(c.getTarget() instanceof XmlParticipantEvidence);
+
+        Assert.assertEquals(1, c.getSource().getCausalRelationships().size());
+        Assert.assertTrue(c == c.getSource().getCausalRelationships().iterator().next());
+
+        Assert.assertFalse(parser.hasFinished());
 
         parser.close();
     }

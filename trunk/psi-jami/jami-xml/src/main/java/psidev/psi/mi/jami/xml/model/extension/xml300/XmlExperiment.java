@@ -5,13 +5,17 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.VariableParameter;
 import psidev.psi.mi.jami.xml.model.extension.AbstractXmlExperiment;
 import psidev.psi.mi.jami.xml.model.extension.BibRef;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -40,6 +44,14 @@ public class XmlExperiment extends AbstractXmlExperiment{
 
     public XmlExperiment(Publication publication, CvTerm interactionDetectionMethod, Organism organism) {
         super(publication, interactionDetectionMethod, organism);
+    }
+
+    @Override
+    public Collection<VariableParameter> getVariableParameters() {
+        if (this.jaxbVariableParameterWrapper == null){
+            this.jaxbVariableParameterWrapper = new JAXBVariableParameterWrapper();
+        }
+        return this.jaxbVariableParameterWrapper.variableParameters;
     }
 
     @XmlElement(name = "variableParameterList")
@@ -102,7 +114,7 @@ public class XmlExperiment extends AbstractXmlExperiment{
             this.variableParameters = new ArrayList<VariableParameter>();
         }
 
-        @XmlElement(type=XmlVariableParameterValue.class, name="variableParameter", required = true)
+        @XmlElement(type=XmlVariableParameter.class, name="variableParameter", required = true)
         public List<VariableParameter> getJAXBVariableParameters() {
             return this.variableParameters;
         }
