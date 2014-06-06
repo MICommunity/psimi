@@ -1039,4 +1039,31 @@ public class XmlParserTest {
 
         parser.close();
     }
+
+    @Test
+    public void test_read_valid_xml30_complex_binding_site() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/CI-example_3_p27-Cks1-Skp2_abstract.xml");
+
+        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        parser.parseNextInteraction();
+
+        ExtendedPsiXmlModelledInteraction interaction = (ExtendedPsiXmlModelledInteraction)parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+
+        Assert.assertNotNull(interaction);
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        ModelledParticipant p1 = interaction.getParticipants().iterator().next();
+
+        Assert.assertEquals(1, p1.getFeatures().size());
+        Assert.assertEquals(2, p1.getFeatures().iterator().next().getRanges().size());
+        Range range = p1.getFeatures().iterator().next().getRanges().iterator().next();
+
+        Assert.assertTrue(range.getParticipant() instanceof XmlModelledParticipant);
+
+        Assert.assertTrue(parser.hasFinished());
+
+        parser.close();
+    }
 }
