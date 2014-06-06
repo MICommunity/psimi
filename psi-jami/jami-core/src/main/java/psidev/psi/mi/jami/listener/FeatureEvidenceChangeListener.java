@@ -8,13 +8,9 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
  */
-public interface FeatureEvidenceChangeListener extends FeatureChangeListener<FeatureEvidence> {
+public interface FeatureEvidenceChangeListener extends FeatureChangeListener<FeatureEvidence>,ParametersChangeListener<FeatureEvidence> {
 
     public void onAddedDetectionMethod(FeatureEvidence feature, CvTerm added);
 
     public void onRemovedDetectionMethod(FeatureEvidence feature, CvTerm removed);
-
-    public void onAddedParameter(FeatureEvidence feature, Parameter added);
-
-    public void onRemovedParameter(FeatureEvidence feature, Parameter removed);
 }
