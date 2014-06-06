@@ -124,12 +124,12 @@ public class XmlVariableParameterValue implements VariableParameterValue,FileSou
         this.sourceLocator = sourceLocator;
     }
 
-    @XmlElement(name = "variableValue", required = true)
+    @XmlElement(name = "value", required = true)
     public void setJAXBValue(String value){
         this.value = value;
     }
 
-    @XmlElement(name = "id", required = true)
+    @XmlAttribute(name = "id", required = true)
     public void setJAXBId(int id){
         this.id = id;
         // register variable parameter value
