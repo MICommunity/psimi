@@ -83,7 +83,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
         this.interactionsWrapper = wrapper;
         if (this.interactionsWrapper != null){
             for (T interaction : this.interactionsWrapper.interactions){
-                ((ExtendedPsiXmlInteraction)interaction).setEntry(this);
+                ((PsiXmlInteraction)interaction).setEntry(this);
             }
         }
     }

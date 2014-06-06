@@ -1,11 +1,14 @@
-package psidev.psi.mi.jami.xml.model.extension.binary;
+package psidev.psi.mi.jami.xml.model.extension.binary.xml25;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlModelledInteraction;
+import psidev.psi.mi.jami.xml.model.extension.binary.AbstractExtendedXmlBinaryInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Xml implementation of ModelledInteraction
@@ -15,13 +18,15 @@ import java.util.Collection;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledBinaryInteraction extends AbstractXmlBinaryInteraction<ModelledParticipant> implements ModelledBinaryInteraction{
+public class XmlModelledBinaryInteraction extends AbstractExtendedXmlBinaryInteraction<ModelledParticipant> implements
+        ModelledBinaryInteraction, ExtendedPsiXmlModelledInteraction{
     private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
     private Collection<ModelledConfidence> modelledConfidences;
     private Collection<ModelledParameter> modelledParameters;
     private Collection<CooperativeEffect> cooperativeEffects;
     private CvTerm evidenceType;
+    private List<Experiment> experiments;
 
     public XmlModelledBinaryInteraction() {
     }
@@ -124,5 +129,13 @@ public class XmlModelledBinaryInteraction extends AbstractXmlBinaryInteraction<M
 
     public void setEvidenceType(CvTerm evidenceType) {
         this.evidenceType = evidenceType;
+    }
+
+    @Override
+    public List<Experiment> getExperiments() {
+        if (this.experiments == null){
+           this.experiments = new ArrayList<Experiment>();
+        }
+        return this.experiments;
     }
 }

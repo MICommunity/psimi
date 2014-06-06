@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
@@ -844,6 +845,54 @@ public class FullXmlBinaryParserTest {
         Assert.assertEquals("C", r1.getResultingSequence().getOriginalSequence());
         Assert.assertEquals("R", r1.getResultingSequence().getNewSequence());
         Assert.assertEquals(1, r1.getResultingSequence().getXrefs().size());
+
+        Assert.assertFalse(parser.hasFinished());
+
+        parser.close();
+    }
+
+    @Test
+    public void test_read_valid_xml30_stoichiometry() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/11779463_stoichiometry.xml");
+
+        PsiXmlParser<BinaryInteraction> parser = new FullXmlBinaryParser(stream);
+
+        BinaryInteractionEvidence interaction = (BinaryInteractionEvidence)parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+
+        Assert.assertNotNull(interaction);
+
+        // experiment
+        Assert.assertNotNull(interaction.getExperiment());
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        ParticipantEvidence p1 = interaction.getParticipantA();
+        Assert.assertNotNull(p1.getStoichiometry());
+        Assert.assertEquals(14, p1.getStoichiometry().getMinValue());
+
+        Assert.assertTrue(parser.hasFinished());
+
+        parser.close();
+    }
+
+    @Test
+    public void test_read_valid_xml30_stoichiometry_range() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/gaba_receptor_abstract.xml");
+
+        PsiXmlParser<BinaryInteraction> parser = new FullXmlBinaryParser(stream);
+
+        ModelledBinaryInteraction interaction = (ModelledBinaryInteraction)parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+
+        Assert.assertNotNull(interaction);
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        ModelledParticipant p1 = interaction.getParticipants().iterator().next();
+        Assert.assertNotNull(p1.getStoichiometry());
+        Assert.assertEquals(1, p1.getStoichiometry().getMinValue());
+        Assert.assertEquals(3, p1.getStoichiometry().getMaxValue());
 
         Assert.assertFalse(parser.hasFinished());
 

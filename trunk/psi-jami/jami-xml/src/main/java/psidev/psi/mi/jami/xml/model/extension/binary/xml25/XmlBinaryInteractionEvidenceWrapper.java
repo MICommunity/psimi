@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.model.extension.binary;
+package psidev.psi.mi.jami.xml.model.extension.binary.xml25;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.binary.impl.BinaryInteractionEvidenceWrapper;
@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.Entry;
-import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
-import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractionEvidence;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
-import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.model.extension.*;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
@@ -25,15 +22,15 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvidence,FileSourceContext,ExtendedPsiXmlInteractionEvidence {
-    private AbstractXmlInteractionEvidence wrappedInteraction;
+    private ExtendedPsiXmlInteractionEvidence wrappedInteraction;
     private BinaryInteractionEvidenceWrapper binaryWrapper;
 
-    public XmlBinaryInteractionEvidenceWrapper(AbstractXmlInteractionEvidence interaction){
+    public XmlBinaryInteractionEvidenceWrapper(ExtendedPsiXmlInteractionEvidence interaction){
         this.wrappedInteraction = interaction;
         this.binaryWrapper = new BinaryInteractionEvidenceWrapper(interaction);
     }
 
-    public XmlBinaryInteractionEvidenceWrapper(AbstractXmlInteractionEvidence interaction, CvTerm complexExpansion){
+    public XmlBinaryInteractionEvidenceWrapper(ExtendedPsiXmlInteractionEvidence interaction, CvTerm complexExpansion){
         this(interaction);
         this.binaryWrapper = new BinaryInteractionEvidenceWrapper(interaction, complexExpansion);
     }
@@ -122,7 +119,7 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     }
 
     @Override
-    public List<Alias> getAliases() {
+    public Collection<Alias> getAliases() {
         return this.wrappedInteraction.getAliases();
     }
 
@@ -277,6 +274,11 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     }
 
     @Override
+    public List<ExtendedPsiXmlExperiment> getOriginalExperiments() {
+        return this.wrappedInteraction.getOriginalExperiments();
+    }
+
+    @Override
     public String getImexId() {
         return this.wrappedInteraction.getImexId();
     }
@@ -344,5 +346,9 @@ public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvi
     @Override
     public void setNegative(boolean negative) {
         this.wrappedInteraction.setNegative(negative);
+    }
+
+    protected ExtendedPsiXmlInteractionEvidence getWrappedInteraction() {
+        return wrappedInteraction;
     }
 }

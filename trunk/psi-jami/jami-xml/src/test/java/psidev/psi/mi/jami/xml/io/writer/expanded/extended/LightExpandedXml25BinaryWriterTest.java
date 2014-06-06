@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.xml.model.extension.XmlComplex;
 import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
 import psidev.psi.mi.jami.xml.model.extension.XmlParticipant;
 import psidev.psi.mi.jami.xml.model.extension.XmlProtein;
-import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteraction;
+import psidev.psi.mi.jami.xml.model.extension.binary.xml25.XmlBinaryInteraction;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.StringWriter;

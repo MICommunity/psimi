@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.xml.model.extension.binary;
+package psidev.psi.mi.jami.xml.model.extension.binary.xml25;
 
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.*;
@@ -6,8 +6,10 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
+import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlExperiment;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlXref;
+import psidev.psi.mi.jami.xml.model.extension.binary.AbstractExtendedXmlBinaryInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
@@ -22,7 +24,8 @@ import java.util.List;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence, ExtendedPsiXmlInteractionEvidence {
+public class XmlBinaryInteractionEvidence extends AbstractExtendedXmlBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence,
+        ExtendedPsiXmlInteractionEvidence {
     private Xref imexId;
     private String availability;
     private Collection<Parameter> parameters;
@@ -33,6 +36,7 @@ public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<P
     private AbstractAvailability xmlAvailability;
     private Boolean isModelled;
     private List<Experiment> experiments;
+    private List<ExtendedPsiXmlExperiment> originalExperiments;
 
     public XmlBinaryInteractionEvidence() {
     }
@@ -247,6 +251,14 @@ public class XmlBinaryInteractionEvidence extends AbstractXmlBinaryInteraction<P
            experiments = new ArrayList<Experiment>();
         }
         return experiments;
+    }
+
+    @Override
+    public List<ExtendedPsiXmlExperiment> getOriginalExperiments() {
+        if (this.originalExperiments == null){
+            this.originalExperiments = new ArrayList<ExtendedPsiXmlExperiment>();
+        }
+        return originalExperiments;
     }
 
     /**

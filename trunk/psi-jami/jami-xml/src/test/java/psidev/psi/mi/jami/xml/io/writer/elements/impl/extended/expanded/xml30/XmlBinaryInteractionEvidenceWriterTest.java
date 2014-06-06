@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.xml.cache.InMemoryIdentityObjectCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.model.extension.*;
-import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.binary.xml25.XmlBinaryInteractionEvidence;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;

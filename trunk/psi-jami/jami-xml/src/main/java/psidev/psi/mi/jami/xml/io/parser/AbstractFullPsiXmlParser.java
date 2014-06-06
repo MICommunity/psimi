@@ -279,7 +279,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
         return new PsiXmlParserException(null, message, e);
     }
 
-    protected PsiXmlVersion getVersion() {
+    public PsiXmlVersion getVersion() {
         return version;
     }
 

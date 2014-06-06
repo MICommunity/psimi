@@ -1,9 +1,11 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
+import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,4 +23,7 @@ public interface ExtendedPsiXmlInteractionEvidence extends ExtendedPsiXmlInterac
     public boolean isModelled();
     public void setModelled(boolean modelled);
     public List<Experiment> getExperiments();
+    public List<ExtendedPsiXmlExperiment> getOriginalExperiments();
+    @Override
+    public Collection<Alias> getAliases();
 }

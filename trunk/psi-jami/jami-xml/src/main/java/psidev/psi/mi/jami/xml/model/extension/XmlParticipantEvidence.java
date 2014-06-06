@@ -31,7 +31,7 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @XmlTransient
     private Locator locator;
     private boolean initialisedMethods = false;
-    private AbstractXmlInteractionEvidence originalInteraction;
+    private ExtendedPsiXmlInteractionEvidence originalInteraction;
     private JAXBParticipantIdentificationWrapper jaxbParticipantionIdentificationWrapper;
     private JAXBExperimentalPreparationWrapper jaxbExperimentalPreparationWrapper;
     private JAXBExperimentalRoleWrapper jaxbExperimentalRoleWrapper;
@@ -366,12 +366,12 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         ((XmlFeatureEvidence)feature).setOriginalParticipant(this);
     }
 
-    protected void setOriginalXmlInteraction(AbstractXmlInteractionEvidence i){
+    protected void setOriginalXmlInteraction(ExtendedPsiXmlInteractionEvidence i){
         this.originalInteraction = i;
         setInteraction(i);
     }
 
-    protected AbstractXmlInteractionEvidence getOriginalInteraction() {
+    protected ExtendedPsiXmlInteractionEvidence getOriginalInteraction() {
         return originalInteraction;
     }
 

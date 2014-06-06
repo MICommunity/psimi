@@ -23,13 +23,13 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledInteractionComplexWrapper implements Complex, FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
+public class XmlModelledInteractionComplexWrapper implements Complex, FileSourceContext, ExtendedPsiXmlModelledInteraction {
 
-    private AbstractXmlModelledInteraction modelledInteraction;
+    private ExtendedPsiXmlModelledInteraction modelledInteraction;
     private Organism organism;
     private CvTerm interactorType;
 
-    public XmlModelledInteractionComplexWrapper(AbstractXmlModelledInteraction modelled){
+    public XmlModelledInteractionComplexWrapper(ExtendedPsiXmlModelledInteraction modelled){
         if (modelled == null){
             throw new IllegalArgumentException("The complex wrapper needs a non null xmlModelledInteraction");
         }
@@ -252,7 +252,7 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
     }
 
     @Override
-    public List<Alias> getAliases() {
+    public Collection<Alias> getAliases() {
         return this.modelledInteraction.getAliases();
     }
 
@@ -310,5 +310,10 @@ public class XmlModelledInteractionComplexWrapper implements Complex, FileSource
     @Override
     public void setEvidenceType(CvTerm eco) {
         this.modelledInteraction.setEvidenceType(eco);
+    }
+
+    @Override
+    public List<Experiment> getExperiments() {
+        return this.modelledInteraction.getExperiments();
     }
 }

@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.xml.model.extension.XmlComplex;
 import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
 import psidev.psi.mi.jami.xml.model.extension.XmlProtein;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
-import psidev.psi.mi.jami.xml.model.extension.binary.XmlModelledBinaryInteraction;
+import psidev.psi.mi.jami.xml.model.extension.binary.xml25.XmlModelledBinaryInteraction;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

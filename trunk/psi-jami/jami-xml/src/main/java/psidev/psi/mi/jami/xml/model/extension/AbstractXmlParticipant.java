@@ -488,18 +488,18 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
             else if (parsedObjects.containsInteraction(this.ref)){
                 Interaction object = parsedObjects.getInteraction(this.ref);
                 // convert interaction evidence in a complex
-                if (object instanceof AbstractXmlInteractionEvidence){
-                    interactor = new XmlInteractionEvidenceComplexWrapper((AbstractXmlInteractionEvidence)object);
+                if (object instanceof ExtendedPsiXmlInteractionEvidence){
+                    interactor = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
                     return true;
                 }
                 // wrap modelled interaction
-                else if (object instanceof AbstractXmlModelledInteraction){
-                    interactor = new XmlModelledInteractionComplexWrapper((AbstractXmlModelledInteraction)object);
+                else if (object instanceof ExtendedPsiXmlModelledInteraction){
+                    interactor = new XmlModelledInteractionComplexWrapper((ExtendedPsiXmlModelledInteraction)object);
                     return true;
                 }
                 // wrap basic interaction
-                else if (object instanceof AbstractXmlBasicInteraction){
-                    interactor = new XmlBasicInteractionComplexWrapper((AbstractXmlBasicInteraction)object);
+                else if (object instanceof ExtendedPsiXmlInteraction){
+                    interactor = new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object);
                     return true;
                 }
                 else{

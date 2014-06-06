@@ -183,8 +183,8 @@ public class XmlParticipantEvidenceWrapper implements ModelledParticipant{
 
     @Override
     public ModelledInteraction getInteraction() {
-        if (this.parent == null && this.participant.getInteraction() instanceof AbstractXmlInteractionEvidence){
-            this.parent = new XmlInteractionEvidenceComplexWrapper((AbstractXmlInteractionEvidence)this.participant.getInteraction());
+        if (this.parent == null && this.participant.getInteraction() instanceof ExtendedPsiXmlInteractionEvidence){
+            this.parent = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)this.participant.getInteraction());
         }
         return this.parent;
     }

@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.XmlParamete
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteraction;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlInteraction;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.stream.XMLStreamException;
@@ -134,8 +135,8 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
 
     @Override
     protected void writeIntraMolecular(I object) throws XMLStreamException {
-        if (object instanceof ExtendedPsiXmlInteraction){
-            ExtendedPsiXmlInteraction xmlInteraction = (ExtendedPsiXmlInteraction)object;
+        if (object instanceof PsiXmlInteraction){
+            PsiXmlInteraction xmlInteraction = (PsiXmlInteraction)object;
             if (xmlInteraction.isIntraMolecular()){
                 getStreamWriter().writeStartElement("intraMolecular");
                 getStreamWriter().writeCharacters(Boolean.toString(xmlInteraction.isIntraMolecular()));

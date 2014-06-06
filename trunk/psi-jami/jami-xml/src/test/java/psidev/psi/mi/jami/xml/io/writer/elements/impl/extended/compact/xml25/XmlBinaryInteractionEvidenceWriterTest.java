@@ -16,7 +16,7 @@ import psidev.psi.mi.jami.xml.io.writer.elements.impl.AbstractXmlWriterTest;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
 import psidev.psi.mi.jami.xml.model.extension.XmlParticipantEvidence;
-import psidev.psi.mi.jami.xml.model.extension.binary.XmlBinaryInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.binary.xml25.XmlBinaryInteractionEvidence;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
