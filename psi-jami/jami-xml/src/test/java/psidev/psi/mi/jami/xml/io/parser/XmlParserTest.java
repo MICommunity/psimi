@@ -5,6 +5,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
@@ -782,6 +783,45 @@ public class XmlParserTest {
         Assert.assertEquals(9606, prot.getOrganism().getTaxId());
 
         Assert.assertEquals(0, interaction.getConfidences().size());
+
+        Assert.assertFalse(parser.hasFinished());
+
+        parser.close();
+    }
+
+    @Test
+    public void test_read_valid_xml30_resulting_sequence() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/7566652_variant.xml");
+
+        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+
+        InteractionEvidence interaction = (InteractionEvidence)parser.parseNextInteraction();
+        Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+
+        Assert.assertNotNull(interaction);
+
+        // experiment
+        Assert.assertNotNull(interaction.getExperiment());
+
+        // participants
+        Assert.assertEquals(2, interaction.getParticipants().size());
+        Iterator<ParticipantEvidence> pIterator = interaction.getParticipants().iterator();
+        ParticipantEvidence p1 = pIterator.next();
+        ParticipantEvidence p2 = pIterator.next();
+        Assert.assertEquals(1, p2.getFeatures().size());
+
+        FeatureEvidence f1 = p2.getFeatures().iterator().next();
+        Assert.assertEquals("cys130arg", f1.getShortName());
+        Assert.assertEquals(CvTermUtils.createMICvTerm("variant", "MI:1241"), f1.getType());
+        Assert.assertTrue(f1.getDetectionMethods().isEmpty());
+        Assert.assertEquals(1, f1.getRanges().size());
+
+        Range r1 = f1.getRanges().iterator().next();
+        Assert.assertEquals("112-112", RangeUtils.convertRangeToString(r1));
+        Assert.assertNotNull(r1.getResultingSequence());
+        Assert.assertEquals("C", r1.getResultingSequence().getOriginalSequence());
+        Assert.assertEquals("R", r1.getResultingSequence().getNewSequence());
+        Assert.assertEquals(1, r1.getResultingSequence().getXrefs().size());
 
         Assert.assertFalse(parser.hasFinished());
 
