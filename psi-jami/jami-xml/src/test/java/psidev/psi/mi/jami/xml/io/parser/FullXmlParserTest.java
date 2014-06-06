@@ -1027,6 +1027,16 @@ public class FullXmlParserTest {
         Assert.assertNotNull(preassembly.getResponse());
         Assert.assertEquals("altered physicochemical compatibility", preassembly.getResponse().getShortName());
 
+        // check parameters
+        interaction = (ExtendedPsiXmlModelledInteraction)parser.parseNextInteraction();
+
+        Assert.assertEquals(1, interaction.getModelledParameters().size());
+        ModelledParameter parame = interaction.getModelledParameters().iterator().next();
+        Assert.assertNotNull(parame.getPublication());
+        Assert.assertEquals("20037628", parame.getPublication().getPubmedId());
+        Assert.assertEquals("Kd", parame.getType().getShortName());
+        Assert.assertEquals("M", parame.getUnit().getShortName());
+
         Assert.assertFalse(parser.hasFinished());
 
         parser.close();
