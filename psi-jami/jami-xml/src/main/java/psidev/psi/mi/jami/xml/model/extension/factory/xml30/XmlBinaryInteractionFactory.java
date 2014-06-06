@@ -148,5 +148,7 @@ public class XmlBinaryInteractionFactory implements BinaryInteractionFactory {
         binary.setEntry(xmlSource.getEntry());
         binary.setFullName(xmlSource.getFullName());
         binary.getAliases().addAll(xmlSource.getAliases());
+        binary.getCausalRelationships().clear();
+        binary.getCausalRelationships().addAll(xmlSource.getCausalRelationships());
     }
 }
