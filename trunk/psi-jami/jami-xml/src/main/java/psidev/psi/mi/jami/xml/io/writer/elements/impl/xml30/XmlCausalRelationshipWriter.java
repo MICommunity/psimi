@@ -1,11 +1,13 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30;
 
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CausalRelationship;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlCausalRelationshipWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlVariableNameWriter;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlOpenCvTermWriter;
 
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -44,7 +46,7 @@ public class XmlCausalRelationshipWriter implements PsiXmlCausalRelationshipWrit
     }
 
     protected void initialiseCausalStatementWriter() {
-        this.causalStatementWriter = new XmlCvTermWriter(this.streamWriter);
+        this.causalStatementWriter = new XmlOpenCvTermWriter(this.streamWriter);
     }
 
     public void setCausalStatementWriter(PsiXmlVariableNameWriter<CvTerm> causalStatementWriter) {

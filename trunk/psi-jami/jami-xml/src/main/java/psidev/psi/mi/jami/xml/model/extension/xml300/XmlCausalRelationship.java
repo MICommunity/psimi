@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
+import psidev.psi.mi.jami.xml.model.extension.XmlOpenCvTerm;
 import psidev.psi.mi.jami.xml.model.extension.XmlParticipant;
 import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -112,7 +113,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
     }
 
     @XmlElement(name = "causalityStatement", required = true)
-    public void setJAXBRelationType(XmlCvTerm value){
+    public void setJAXBRelationType(XmlOpenCvTerm value){
         this.relationType = value;
     }
 

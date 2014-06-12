@@ -56,17 +56,20 @@ public class PsiXmlElementWriterFactory {
         if (extended){
             return createExtendedPsiXmlInteractionWriters(streamWriter, objectIndex, version, xmlType, interactionCategory, complexType,
                     aliasWriter, attributeWriter, primaryRefWriter, modelledConfidenceWriter, checksumWriter, interactionTypeWriter,
-                    experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter);
+                    experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter,
+                    openCvWriter);
         }
         else if (named){
             return createNamedPsiXmlInteractionWriters(streamWriter, objectIndex, version, xmlType, interactionCategory, complexType,
                     aliasWriter, attributeWriter, primaryRefWriter, modelledConfidenceWriter, checksumWriter, interactionTypeWriter,
-                    experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter);
+                    experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter,
+                    openCvWriter);
         }
         else{
             return createDefaultPsiXmlInteractionWriters(streamWriter, objectIndex, version, xmlType, interactionCategory, complexType,
                     aliasWriter, attributeWriter, primaryRefWriter, modelledConfidenceWriter, checksumWriter, interactionTypeWriter,
-                    experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter);
+                    experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter,
+                    openCvWriter);
         }
     }
 
@@ -84,14 +87,15 @@ public class PsiXmlElementWriterFactory {
                                                                                    PsiXmlParameterWriter[] parameterWriters,
                                                                                    PsiXmlParticipantWriter[] participantWriters,
                                                                                    PsiXmlElementWriter inferredInteractionWriter,
-                                                                                   PsiXmlPublicationWriter publicationWriter) {
+                                                                                   PsiXmlPublicationWriter publicationWriter,
+                                                                                   PsiXmlVariableNameWriter<CvTerm> openCvWriter) {
         switch (version){
             case v3_0_0:
                 switch (xmlType){
                     case compact:
                         PsiXmlElementWriter<Set<Feature>> bindingFeaturesWriter = createBindingFeaturesWriter(streamWriter,  objectIndex);
                         PsiXmlCausalRelationshipWriter relationshipWriter = createCausalRelationshipWriter(streamWriter,false,  objectIndex,
-                                interactionTypeWriter);
+                                openCvWriter);
                         PsiXmlElementWriter<Preassembly> preassemblyWriter = createPreassemblyWriter(streamWriter, false, objectIndex, interactionTypeWriter,
                                 attributeWriter, publicationWriter);
                         PsiXmlElementWriter<Allostery> allosteryWriter = createAllosteryWriter(streamWriter, false, objectIndex, interactionTypeWriter,
@@ -181,7 +185,7 @@ public class PsiXmlElementWriterFactory {
                     default:
                         bindingFeaturesWriter = createBindingFeaturesWriter(streamWriter,  objectIndex);
                         relationshipWriter = createCausalRelationshipWriter(streamWriter,false,  objectIndex,
-                                interactionTypeWriter);
+                                openCvWriter);
                         preassemblyWriter = createPreassemblyWriter(streamWriter, false, objectIndex, interactionTypeWriter,
                                 attributeWriter, publicationWriter);
                         allosteryWriter = createAllosteryWriter(streamWriter, false, objectIndex, interactionTypeWriter,
@@ -477,14 +481,15 @@ public class PsiXmlElementWriterFactory {
                                                                                  PsiXmlParameterWriter[] parameterWriters,
                                                                                  PsiXmlParticipantWriter[] participantWriters,
                                                                                  PsiXmlElementWriter inferredInteractionWriter,
-                                                                                 PsiXmlPublicationWriter publicationWriter) {
+                                                                                 PsiXmlPublicationWriter publicationWriter,
+                                                                                 PsiXmlVariableNameWriter<CvTerm> openCvWriter) {
         switch (version){
             case v3_0_0:
                 switch (xmlType){
                     case compact:
                         PsiXmlElementWriter<Set<Feature>> bindingFeaturesWriter = createBindingFeaturesWriter(streamWriter,  objectIndex);
                         PsiXmlCausalRelationshipWriter relationshipWriter = createCausalRelationshipWriter(streamWriter,false,  objectIndex,
-                                interactionTypeWriter);
+                                openCvWriter);
                         PsiXmlElementWriter<Preassembly> preassemblyWriter = createPreassemblyWriter(streamWriter, false, objectIndex, interactionTypeWriter,
                                 attributeWriter, publicationWriter);
                         PsiXmlElementWriter<Allostery> allosteryWriter = createAllosteryWriter(streamWriter, false, objectIndex, interactionTypeWriter,
@@ -574,7 +579,7 @@ public class PsiXmlElementWriterFactory {
                     default:
                         bindingFeaturesWriter = createBindingFeaturesWriter(streamWriter,  objectIndex);
                         relationshipWriter = createCausalRelationshipWriter(streamWriter,false,  objectIndex,
-                                interactionTypeWriter);
+                                openCvWriter);
                         preassemblyWriter = createPreassemblyWriter(streamWriter, false, objectIndex, interactionTypeWriter,
                                 attributeWriter, publicationWriter);
                         allosteryWriter = createAllosteryWriter(streamWriter, false, objectIndex, interactionTypeWriter,
@@ -870,7 +875,8 @@ public class PsiXmlElementWriterFactory {
                                                                                     PsiXmlParameterWriter[] parameterWriters,
                                                                                     PsiXmlParticipantWriter[] participantWriters,
                                                                                     PsiXmlElementWriter inferredInteractionWriter,
-                                                                                    PsiXmlPublicationWriter publicationWriter) {
+                                                                                    PsiXmlPublicationWriter publicationWriter,
+                                                                                    PsiXmlVariableNameWriter<CvTerm> openCvWriter) {
         PsiXmlElementWriter<InferredInteraction> extendedInferredInteractionWriter = createExtendedInferredInteractionWriter(streamWriter,
                 objectIndex);
 
@@ -880,7 +886,7 @@ public class PsiXmlElementWriterFactory {
                     case compact:
                         PsiXmlElementWriter<Set<Feature>> bindingFeaturesWriter = createBindingFeaturesWriter(streamWriter,  objectIndex);
                         PsiXmlCausalRelationshipWriter relationshipWriter = createCausalRelationshipWriter(streamWriter,false,  objectIndex,
-                                interactionTypeWriter);
+                                openCvWriter);
                         PsiXmlElementWriter<Preassembly> preassemblyWriter = createPreassemblyWriter(streamWriter, false, objectIndex, interactionTypeWriter,
                                 attributeWriter, publicationWriter);
                         PsiXmlElementWriter<Allostery> allosteryWriter = createAllosteryWriter(streamWriter, false, objectIndex, interactionTypeWriter,
@@ -972,7 +978,7 @@ public class PsiXmlElementWriterFactory {
                     default:
                         bindingFeaturesWriter = createBindingFeaturesWriter(streamWriter,  objectIndex);
                         relationshipWriter = createCausalRelationshipWriter(streamWriter,false,  objectIndex,
-                                interactionTypeWriter);
+                                openCvWriter);
                         preassemblyWriter = createPreassemblyWriter(streamWriter, false, objectIndex, interactionTypeWriter,
                                 attributeWriter, publicationWriter);
                         allosteryWriter = createAllosteryWriter(streamWriter, false, objectIndex, interactionTypeWriter,
