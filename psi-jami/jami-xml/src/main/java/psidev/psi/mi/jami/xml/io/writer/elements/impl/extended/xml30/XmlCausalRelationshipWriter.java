@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml30;
 
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
-import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlCvTermWriter;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlOpenCvTermWriter;
 
 import javax.xml.stream.XMLStreamWriter;
 
@@ -21,6 +21,6 @@ public class XmlCausalRelationshipWriter extends psidev.psi.mi.jami.xml.io.write
 
     @Override
     protected void initialiseCausalStatementWriter() {
-        super.setCausalStatementWriter(new XmlCvTermWriter(getStreamWriter()));
+        super.setCausalStatementWriter(new XmlOpenCvTermWriter(getStreamWriter()));
     }
 }
