@@ -139,6 +139,11 @@ public class InMemoryPsiXmlCache implements PsiXmlIdCache {
     }
 
     @Override
+    public void close() {
+        clear();
+    }
+
+    @Override
     public boolean containsExperiment(int id) {
         return this.mapOfReferencedExperiments.containsKey(id);
     }

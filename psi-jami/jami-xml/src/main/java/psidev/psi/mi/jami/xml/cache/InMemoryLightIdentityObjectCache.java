@@ -77,6 +77,11 @@ public class InMemoryLightIdentityObjectCache implements PsiXmlObjectCache {
     }
 
     @Override
+    public void close() {
+        clear();
+    }
+
+    @Override
     public boolean contains(Object o) {
         return this.identityMap.containsKey(o);
     }

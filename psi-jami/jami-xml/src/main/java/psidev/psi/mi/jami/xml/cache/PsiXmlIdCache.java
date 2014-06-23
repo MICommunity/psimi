@@ -131,6 +131,12 @@ public interface PsiXmlIdCache {
     public void clear();
 
     /**
+     * Close cache
+     *
+     */
+    public void close();
+
+    /**
      * To know if it contains a specific id
      * @param id
      * @return

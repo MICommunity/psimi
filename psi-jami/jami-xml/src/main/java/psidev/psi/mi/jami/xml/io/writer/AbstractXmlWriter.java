@@ -302,6 +302,9 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
             } finally {
                 this.isInitialised = false;
                 this.streamWriter = null;
+                if (this.elementCache != null){
+                    this.elementCache.close();
+                }
                 this.elementCache = null;
                 this.interactionsToWrite.clear();
                 this.interactionsIterator = null;

@@ -183,7 +183,9 @@ public class XmlEntryContext {
                         listener.onUnresolvedReference(ref, "Cannot resolve a reference in the xml file");
                     }
                 }
-                refIterator.remove();
+                else{
+                    refIterator.remove();
+                }
             }
         }
     }

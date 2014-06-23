@@ -680,8 +680,11 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             boolean isReadingInteraction = this.currentElement != null &&
                     (PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement) ||
                     PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
-            while(isReadingInteraction && this.currentElement != null){
+            while(isReadingInteraction && this.currentElement != null && containsUnresolvedReferences(entryContext)){
                 this.loadedInteractions.add(unmarshallInteraction());
+
+                // resolve references here when possible
+                entryContext.resolveInteractorAndExperimentRefs();
 
                 this.currentElement = getNextPsiXmlStartElement();
                 isReadingInteraction = this.currentElement != null
@@ -737,20 +740,24 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             interaction = unmarshallInteraction();
 
             // no references, can return the interaction
-            if (!entryContext.hasInferredInteractions() && !entryContext.hasUnresolvedReferences()){
+            if (!containsUnresolvedReferences(entryContext)){
                 return interaction;
             }
             // we have references to resolve, loads the all entry and keep in cache
             else{
                 loadEntry(entryContext,interaction);
                 // check if last interaction and need to flush entry
-                flushEntry(entryContext);
+                flushEntryIfNecessary(entryContext);
             }
 
             return interaction;
         } catch (JAXBException e) {
             throw  createPsiXmlExceptionFrom("Impossible to parse the interaction", e);
         }
+    }
+
+    protected boolean containsUnresolvedReferences(XmlEntryContext entryContext) {
+        return entryContext.hasInferredInteractions() || entryContext.hasUnresolvedReferences();
     }
 
     protected T unmarshallInteraction() throws JAXBException{
@@ -955,6 +962,9 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         this.hasReadEntry = false;
         this.hasReadEntrySet = false;
         this.unmarshaller = null;
+        if (this.indexOfObjects != null){
+            this.indexOfObjects.close();
+        }
         this.indexOfObjects = null;
         this.useDefaultCache = true;
         this.version = null;
