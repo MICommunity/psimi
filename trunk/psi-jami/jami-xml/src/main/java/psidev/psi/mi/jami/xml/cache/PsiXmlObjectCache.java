@@ -84,6 +84,11 @@ public interface PsiXmlObjectCache {
     public void clear();
 
     /**
+     * Close cache
+     */
+    public void close();
+
+    /**
      * True if it contains this object
      * @param o
      * @return

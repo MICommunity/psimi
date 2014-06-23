@@ -138,6 +138,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
             if (parsedObjects.containsParticipant(this.ref)){
                 Participant object = parsedObjects.getParticipant(this.ref);
                 target = object;
+                return true;
             }
             return false;
         }
@@ -187,6 +188,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
                 Participant object = parsedObjects.getParticipant(this.ref);
                 object.getCausalRelationships().add(XmlCausalRelationship.this);
                 source = object;
+                return true;
             }
             return false;
         }

@@ -9,9 +9,9 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -326,7 +326,7 @@ public abstract class AbstractXmlExperiment implements ExtendedPsiXmlExperiment,
             Entry entry = context.getCurrentEntry();
             if (entry != null){
                 publication.setSource(entry.getSource());
-                if (entry.getSource() != null){
+                if (entry.getSource() != null && entry.getSource().getReleaseDate() != null){
                     publication.setReleasedDate(entry.getSource().getReleaseDate().toGregorianCalendar().getTime());
                 }
             }

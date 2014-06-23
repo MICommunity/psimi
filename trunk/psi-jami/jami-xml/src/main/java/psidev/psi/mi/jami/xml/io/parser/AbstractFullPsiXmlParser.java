@@ -158,6 +158,9 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
         this.entryIterator = null;
         this.unmarshaller = null;
         this.entrySet = null;
+        if (this.indexOfObjects != null){
+            this.indexOfObjects.close();
+        }
         this.indexOfObjects = null;
         this.useDefaultCache = true;
         this.version = null;
