@@ -703,7 +703,6 @@ Here is an example of CacheManager level resource tuning, which will use up to 4
             diskPersistent="false"
             diskExpiryThreadIntervalSeconds="120"
             memoryStoreEvictionPolicy="LRU">
-        <terracotta/>
     </defaultCache>
 
     <!--
