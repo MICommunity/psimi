@@ -36,13 +36,13 @@ public class PsiXmlObjectEhCache implements PsiXmlObjectCache {
         if (System.getProperty("ehcache.disk.store.dir") == null){
             System.setProperty("ehcache.disk.store.dir","java.io.tmpdir");
         }
-        this.cacheManager = new CacheManager(PsiXmlIdEhCache.class.getResource(EHCACHE_CONFIG_FILE));
+        this.cacheManager = CacheManager.create(PsiXmlIdEhCache.class.getResource(EHCACHE_CONFIG_FILE));
         this.cache = this.cacheManager.getCache(CACHE_NAME);
         this.complexes = new HashSet<ModelledInteraction>();
     }
 
     public PsiXmlObjectEhCache(URL cacheConfig, String cacheName){
-        this.cacheManager = new CacheManager(cacheConfig);
+        this.cacheManager = CacheManager.create(cacheConfig);
         this.cache = this.cacheManager.getCache(cacheName);
         this.complexes = new HashSet<ModelledInteraction>();
     }
@@ -50,7 +50,7 @@ public class PsiXmlObjectEhCache implements PsiXmlObjectCache {
     public PsiXmlObjectEhCache(String diskStoreLocation){
         System.setProperty("ehcache.disk.store.dir",diskStoreLocation);
 
-        this.cacheManager = new CacheManager(PsiXmlIdEhCache.class.getResource(EHCACHE_CONFIG_FILE));
+        this.cacheManager = CacheManager.create(PsiXmlIdEhCache.class.getResource(EHCACHE_CONFIG_FILE));
         this.cache = this.cacheManager.getCache(CACHE_NAME);
         this.complexes = new HashSet<ModelledInteraction>();
     }
