@@ -13,7 +13,6 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -27,7 +26,7 @@ import java.util.Collection;
 @XmlSeeAlso({
         HostOrganism.class
 })
-public class XmlOrganism implements Organism, FileSourceContext, Locatable, Serializable{
+public class XmlOrganism implements Organism, FileSourceContext, Locatable{
 
     private NamesContainer namesContainer;
     private int taxId;

@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractXmlModelledInteraction;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 
 /**
  * Xml implementation of ModelledInteraction
@@ -17,7 +16,7 @@ import java.io.Serializable;
  */
 @XmlRootElement(name = "interaction", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledInteraction extends AbstractXmlModelledInteraction implements Serializable {
+public class XmlModelledInteraction extends AbstractXmlModelledInteraction {
 
     public XmlModelledInteraction() {
     }

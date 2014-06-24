@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
 
 /**
  * Xml implementation of an Annotation
@@ -18,7 +17,7 @@ import java.io.Serializable;
  */
 @XmlType(name = "defaultAttribute")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlAnnotation extends AbstractXmlAnnotation implements Serializable {
+public class XmlAnnotation extends AbstractXmlAnnotation {
 
     public XmlAnnotation() {
     }

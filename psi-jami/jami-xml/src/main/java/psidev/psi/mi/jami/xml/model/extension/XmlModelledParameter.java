@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.model.Publication;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -18,7 +17,7 @@ import java.math.BigDecimal;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledParameter extends XmlParameter implements ModelledParameter, Serializable {
+public class XmlModelledParameter extends XmlParameter implements ModelledParameter {
     private Publication publication;
 
     public XmlModelledParameter() {

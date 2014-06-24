@@ -1,10 +1,12 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Polymer;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 
 /**
  * Xml implementation of Polymer
@@ -14,7 +16,7 @@ import java.io.Serializable;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlPolymer extends XmlMolecule implements Polymer, Serializable {
+public class XmlPolymer extends XmlMolecule implements Polymer {
 
     public XmlPolymer() {
     }

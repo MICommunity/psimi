@@ -6,11 +6,10 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -24,7 +23,7 @@ import java.util.List;
  * @since <pre>11/10/13</pre>
  */
 
-public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant>, Serializable {
+public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
     private ExtendedPsiXmlInteractionEvidence interactionEvidence;
     private Organism organism;
     private CvTerm interactorType;

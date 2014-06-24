@@ -680,11 +680,8 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             boolean isReadingInteraction = this.currentElement != null &&
                     (PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement) ||
                     PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
-            while(isReadingInteraction && this.currentElement != null && containsUnresolvedReferences(entryContext)){
+            while(isReadingInteraction && this.currentElement != null){
                 this.loadedInteractions.add(unmarshallInteraction());
-
-                // resolve references here when possible
-                entryContext.resolveInteractorAndExperimentRefs();
 
                 this.currentElement = getNextPsiXmlStartElement();
                 isReadingInteraction = this.currentElement != null
@@ -747,7 +744,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             else{
                 loadEntry(entryContext,interaction);
                 // check if last interaction and need to flush entry
-                flushEntryIfNecessary(entryContext);
+                flushEntry(entryContext);
             }
 
             return interaction;

@@ -5,7 +5,10 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Position;
+import psidev.psi.mi.jami.model.Range;
+import psidev.psi.mi.jami.model.ResultingSequence;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
@@ -17,7 +20,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 
 /**
  * Xml implementation of Range
@@ -29,7 +31,7 @@ import java.io.Serializable;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlRange implements Range, FileSourceContext, Locatable, Serializable {
+public class XmlRange implements Range, FileSourceContext, Locatable {
     private Position start;
     private Position end;
     private boolean isLink;

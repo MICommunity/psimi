@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.math.BigInteger;
 
 /**
@@ -21,7 +20,7 @@ import java.math.BigInteger;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlPosition extends AbstractXmlPosition implements Serializable {
+public class XmlPosition extends AbstractXmlPosition  {
 
     private long pos;
     @XmlLocation

@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
 
 /**
  * Xml implementation of interaction
@@ -16,7 +15,7 @@ import java.io.Serializable;
  */
 @XmlType(name = "defaultBasicInteraction")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlBasicInteraction extends AbstractXmlBasicInteraction implements Serializable {
+public class XmlBasicInteraction extends AbstractXmlBasicInteraction {
 
     public XmlBasicInteraction() {
         super();

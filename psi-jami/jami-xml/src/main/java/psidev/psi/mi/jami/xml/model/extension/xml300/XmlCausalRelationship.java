@@ -15,8 +15,10 @@ import psidev.psi.mi.jami.xml.model.extension.XmlParticipant;
 import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
-import javax.xml.bind.annotation.*;
-import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * XML 3.0 implementation of causal relationship
@@ -26,7 +28,7 @@ import java.io.Serializable;
  * @since <pre>30/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,FileSourceContext,Locatable, Serializable {
+public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,FileSourceContext,Locatable {
 
     private PsiXmLocator sourceLocator;
 

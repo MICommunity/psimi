@@ -22,7 +22,8 @@ import java.util.List;
  * @since <pre>29/10/13</pre>
  */
 
-public abstract class AbstractExtendedXmlBinaryInteraction<P extends Participant> extends AbstractBinaryInteraction<P> implements ExtendedPsiXmlInteraction<P>, FileSourceContext {
+public abstract class AbstractExtendedXmlBinaryInteraction<P extends Participant> extends AbstractBinaryInteraction<P> implements
+        ExtendedPsiXmlInteraction<P>, FileSourceContext {
 
     private PsiXmLocator sourceLocator;
     private String fullName;

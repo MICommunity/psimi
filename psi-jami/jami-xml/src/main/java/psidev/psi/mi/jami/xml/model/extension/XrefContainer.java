@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Xref;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,7 +25,7 @@ import java.util.List;
         CvTermXrefContainer.class, PublicationXrefContainer.class, InteractorXrefContainer.class, FeatureXrefContainer.class,
         ExperimentXrefContainer.class, InteractionXrefContainer.class
 })
-public class XrefContainer implements FileSourceContext, Locatable, Serializable{
+public class XrefContainer implements FileSourceContext, Locatable{
 
     private List<Xref> xrefs;
     private PsiXmLocator sourceLocator;

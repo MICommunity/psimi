@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
  * @since <pre>30/10/13</pre>
  */
 
-public class XmlParticipantWrapper implements ModelledParticipant, Serializable {
+public class XmlParticipantWrapper implements ModelledParticipant {
 
     private Participant<Interaction,Feature> participant;
     private ModelledInteraction parent;

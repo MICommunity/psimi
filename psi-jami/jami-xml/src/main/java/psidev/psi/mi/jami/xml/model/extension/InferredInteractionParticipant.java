@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 
 /**
  * Participant of the inferred interaction.
@@ -40,7 +39,7 @@ import java.io.Serializable;
  *
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class InferredInteractionParticipant implements FileSourceContext, Locatable, Serializable
+public class InferredInteractionParticipant implements FileSourceContext, Locatable
 {
 
     private Feature feature;

@@ -2,13 +2,15 @@ package psidev.psi.mi.jami.xml.model.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.BioactiveEntity;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.model.impl.DefaultBioactiveEntity;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 
 /**
  * Xml implementation of BioactiveEntity
@@ -18,7 +20,7 @@ import java.io.Serializable;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlBioactiveEntity extends DefaultBioactiveEntity implements ExtendedPsiXmlInteractor,FileSourceContext, Serializable {
+public class XmlBioactiveEntity extends DefaultBioactiveEntity implements ExtendedPsiXmlInteractor,FileSourceContext {
 
     private int id;
     private PsiXmLocator sourceLocator;

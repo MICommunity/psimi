@@ -11,7 +11,6 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractionEvidence;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence implements ExtendedPsiXmlInteractionEvidence, Serializable {
+public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence implements ExtendedPsiXmlInteractionEvidence {
 
     private JAXBVariableParameterValueSetWrapper jaxbVariableParameterValueSetWrapper;
     private JAXBCausalRelationshipWrapper jaxbCausalRelationshipWrapper;

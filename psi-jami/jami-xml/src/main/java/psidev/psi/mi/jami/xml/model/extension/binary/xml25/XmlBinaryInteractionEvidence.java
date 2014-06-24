@@ -12,7 +12,6 @@ import psidev.psi.mi.jami.xml.model.extension.XmlXref;
 import psidev.psi.mi.jami.xml.model.extension.binary.AbstractExtendedXmlBinaryInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlBinaryInteractionEvidence extends AbstractExtendedXmlBinaryInteraction<ParticipantEvidence> implements BinaryInteractionEvidence,
-        ExtendedPsiXmlInteractionEvidence, Serializable {
+        ExtendedPsiXmlInteractionEvidence {
     private Xref imexId;
     private String availability;
     private Collection<Parameter> parameters;

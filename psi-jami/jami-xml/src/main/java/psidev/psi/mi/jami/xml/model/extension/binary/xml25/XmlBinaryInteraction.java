@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.model.extension.binary.AbstractExtendedXmlBinaryInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 
 /**
  * Xml implementation of binary interaction
@@ -15,7 +14,7 @@ import java.io.Serializable;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteraction extends AbstractExtendedXmlBinaryInteraction<Participant> implements Serializable{
+public class XmlBinaryInteraction extends AbstractExtendedXmlBinaryInteraction<Participant> {
 
     public XmlBinaryInteraction() {
     }

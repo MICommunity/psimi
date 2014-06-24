@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.xml.model.extension.XmlOpenCvTerm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import java.io.Serializable;
 
 /**
  * Xml 3.0 implementation of ModelledConfidence
@@ -19,7 +18,7 @@ import java.io.Serializable;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledConfidence extends AbstractXmlConfidence implements ModelledConfidence, Serializable {
+public class XmlModelledConfidence extends AbstractXmlConfidence implements ModelledConfidence {
 
     private Publication publication;
 

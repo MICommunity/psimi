@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlModelledInteraction;
 import psidev.psi.mi.jami.xml.model.extension.binary.AbstractExtendedXmlBinaryInteraction;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -20,7 +19,7 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlModelledBinaryInteraction extends AbstractExtendedXmlBinaryInteraction<ModelledParticipant> implements
-        ModelledBinaryInteraction, ExtendedPsiXmlModelledInteraction, Serializable {
+        ModelledBinaryInteraction, ExtendedPsiXmlModelledInteraction {
     private Collection<InteractionEvidence> interactionEvidences;
     private Source source;
     private Collection<ModelledConfidence> modelledConfidences;

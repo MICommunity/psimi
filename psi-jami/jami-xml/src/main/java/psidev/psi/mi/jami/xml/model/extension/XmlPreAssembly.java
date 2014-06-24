@@ -9,8 +9,6 @@ import psidev.psi.mi.jami.model.impl.DefaultPreassemby;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
 
-import java.io.Serializable;
-
 /**
  * Xml implementation of preassembly
  *
@@ -19,7 +17,7 @@ import java.io.Serializable;
  * @since <pre>15/11/13</pre>
  */
 
-public class XmlPreAssembly extends DefaultPreassemby implements FileSourceContext, Serializable {
+public class XmlPreAssembly extends DefaultPreassemby implements FileSourceContext {
     private PsiXmLocator sourceLocator;
 
     public XmlPreAssembly(CvTerm outcome) {

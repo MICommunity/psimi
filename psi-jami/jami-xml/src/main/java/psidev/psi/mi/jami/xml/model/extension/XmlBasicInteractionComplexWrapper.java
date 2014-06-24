@@ -7,11 +7,10 @@ import psidev.psi.mi.jami.utils.AliasUtils;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
-import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -27,7 +26,7 @@ import java.util.*;
  * @since <pre>30/10/13</pre>
  */
 
-public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant>, Serializable {
+public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
 
     private ExtendedPsiXmlInteraction interaction;
     private SynchronizedModelledParticipantList modelledParticipants;

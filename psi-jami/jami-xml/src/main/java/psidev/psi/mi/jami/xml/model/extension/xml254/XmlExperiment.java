@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.xml.model.extension.BibRef;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 
 /**
  * Xml im
@@ -20,7 +19,7 @@ import java.io.Serializable;
  */
 @XmlRootElement(name = "experimentDescription", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlExperiment extends AbstractXmlExperiment implements Serializable {
+public class XmlExperiment extends AbstractXmlExperiment {
 
     public XmlExperiment() {
     }

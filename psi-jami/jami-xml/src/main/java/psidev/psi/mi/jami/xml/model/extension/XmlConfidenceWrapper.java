@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.model.ModelledConfidence;
 import psidev.psi.mi.jami.model.Publication;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 
 /**
  * A wrapper for confidences
@@ -16,7 +15,7 @@ import java.io.Serializable;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlConfidenceWrapper implements ModelledConfidence, Serializable {
+public class XmlConfidenceWrapper implements ModelledConfidence {
 
     private Confidence confidence;
     private Publication publication;

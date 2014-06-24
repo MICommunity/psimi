@@ -10,7 +10,6 @@ import psidev.psi.mi.jami.xml.model.extension.xml300.BindingFeatures;
 import psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlCausalRelationship;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlModelledBinaryInteractionWrapper implements ModelledBinaryInteraction, FileSourceContext,
-        psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction, Serializable {
+        psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction {
     private psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlModelledInteraction wrappedInteraction;
     private ModelledBinaryInteractionWrapper binaryWrapper;
 
