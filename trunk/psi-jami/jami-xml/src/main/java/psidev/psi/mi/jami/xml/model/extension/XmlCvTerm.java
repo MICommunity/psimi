@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Xref;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 
 /**
  * Xml implementation of CvTerm.
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.*;
 @XmlSeeAlso({
         ExperimentalCvTerm.class
 })
-public class XmlCvTerm extends AbstractXmlCvTerm{
+public class XmlCvTerm extends AbstractXmlCvTerm implements Serializable {
 
     @XmlLocation
     @XmlTransient

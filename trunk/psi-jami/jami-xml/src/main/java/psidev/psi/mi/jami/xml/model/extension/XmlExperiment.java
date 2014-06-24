@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.Publication;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * Xml im
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "defaultExperiment")
-public class XmlExperiment extends AbstractXmlExperiment {
+public class XmlExperiment extends AbstractXmlExperiment implements Serializable {
 
     public XmlExperiment() {
     }

@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
+public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInteraction, ModelledFeature> implements ModelledParticipant, Serializable {
 
     @XmlLocation
     @XmlTransient

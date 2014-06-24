@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Alias;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
 @XmlSeeAlso({
         ComplexNamesContainer.class
 })
-public class NamesContainer implements FileSourceContext, Locatable{
+public class NamesContainer implements FileSourceContext, Locatable, Serializable{
 
     private String shortLabel;
     private String fullName;

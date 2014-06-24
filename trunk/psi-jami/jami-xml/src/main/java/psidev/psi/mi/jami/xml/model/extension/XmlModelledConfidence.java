@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.Publication;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.Serializable;
 
 /**
  * Xml implementation of ModelledConfidence
@@ -15,7 +16,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledConfidence extends XmlConfidence implements ModelledConfidence{
+public class XmlModelledConfidence extends XmlConfidence implements ModelledConfidence, Serializable {
 
     Publication publication;
 

@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlTransient
-public class XmlModelledInteractionComplexWrapper implements Complex, FileSourceContext, ExtendedPsiXmlModelledInteraction {
+public class XmlModelledInteractionComplexWrapper implements Complex, FileSourceContext, ExtendedPsiXmlModelledInteraction, Serializable {
 
     private ExtendedPsiXmlModelledInteraction modelledInteraction;
     private Organism organism;

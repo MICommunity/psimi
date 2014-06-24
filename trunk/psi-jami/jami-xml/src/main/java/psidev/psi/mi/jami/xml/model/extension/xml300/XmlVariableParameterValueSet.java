@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.model.reference.AbstractXmlIdReference;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -29,7 +30,7 @@ import java.util.logging.Logger;
  * @since <pre>30/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlVariableParameterValueSet implements VariableParameterValueSet,FileSourceContext,Locatable {
+public class XmlVariableParameterValueSet implements VariableParameterValueSet,FileSourceContext,Locatable, Serializable {
 
     private PsiXmLocator sourceLocator;
 

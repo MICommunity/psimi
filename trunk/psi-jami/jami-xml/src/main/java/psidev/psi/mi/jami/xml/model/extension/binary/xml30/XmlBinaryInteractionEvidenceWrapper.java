@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEv
 import psidev.psi.mi.jami.xml.model.extension.xml300.XmlInteractionEvidence;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlBinaryInteractionEvidenceWrapper extends psidev.psi.mi.jami.xml.model.extension.binary.xml25.XmlBinaryInteractionEvidenceWrapper
-        implements psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEvidence {
+        implements psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEvidence, Serializable {
 
     public XmlBinaryInteractionEvidenceWrapper(ExtendedPsiXmlInteractionEvidence interaction){
         super(interaction);

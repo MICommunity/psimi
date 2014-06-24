@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.xml.model.reference;
 
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
+import java.io.Serializable;
+
 /**
  * Abstract implementation for XmlIdReference
  *
@@ -10,7 +12,7 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractXmlIdReference implements XmlIdReference {
+public abstract class AbstractXmlIdReference implements XmlIdReference, Serializable {
     protected int ref;
 
     public AbstractXmlIdReference(int ref) {

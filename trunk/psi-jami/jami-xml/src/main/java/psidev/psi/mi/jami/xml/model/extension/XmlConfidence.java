@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.reference.AbstractExperimentRef;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +24,7 @@ import java.util.List;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlConfidence extends AbstractXmlConfidence{
+public class XmlConfidence extends AbstractXmlConfidence implements Serializable {
 
     private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;
 

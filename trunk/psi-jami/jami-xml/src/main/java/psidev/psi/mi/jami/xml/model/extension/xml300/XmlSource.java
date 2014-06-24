@@ -15,6 +15,7 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractXmlSource;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 
 /**
@@ -30,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "source", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlSource extends AbstractXmlSource
+public class XmlSource extends AbstractXmlSource implements Serializable
 {
     public XmlSource(){
         super();

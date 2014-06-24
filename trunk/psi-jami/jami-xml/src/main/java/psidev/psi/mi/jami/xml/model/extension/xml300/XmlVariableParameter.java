@@ -15,6 +15,7 @@ import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  * @since <pre>30/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlVariableParameter implements VariableParameter,FileSourceContext,Locatable {
+public class XmlVariableParameter implements VariableParameter,FileSourceContext,Locatable, Serializable {
 
     private PsiXmLocator sourceLocator;
 

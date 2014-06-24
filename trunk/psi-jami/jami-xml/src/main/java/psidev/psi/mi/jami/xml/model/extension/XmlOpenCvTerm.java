@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 
 /**
  * Xml implementation of CvTerm.
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>18/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlOpenCvTerm extends AbstractXmlCvTerm{
+public class XmlOpenCvTerm extends AbstractXmlCvTerm implements Serializable {
 
     @XmlLocation
     @XmlTransient

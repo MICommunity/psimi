@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.model.extension.*;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
  * @since <pre>16/10/13</pre>
  */
 @XmlTransient
-public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvidence,FileSourceContext,ExtendedPsiXmlInteractionEvidence {
+public class XmlBinaryInteractionEvidenceWrapper implements BinaryInteractionEvidence,FileSourceContext,ExtendedPsiXmlInteractionEvidence, Serializable {
     private ExtendedPsiXmlInteractionEvidence wrappedInteraction;
     private BinaryInteractionEvidenceWrapper binaryWrapper;
 

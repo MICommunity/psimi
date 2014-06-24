@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractionEvidence;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Xml implementation of InteractionEvidence
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "interaction", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence{
+public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence implements Serializable {
 
     public XmlInteractionEvidence() {
         super();

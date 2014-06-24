@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -22,7 +23,8 @@ import java.util.List;
  * @since <pre>08/10/13</pre>
  */
 @XmlTransient
-public class XmlComplex extends DefaultComplex implements ExtendedPsiXmlInteractor,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
+public class XmlComplex extends DefaultComplex implements ExtendedPsiXmlInteractor,FileSourceContext,
+        ExtendedPsiXmlInteraction<ModelledParticipant>, Serializable {
 
     private int id;
     private PsiXmLocator sourceLocator;

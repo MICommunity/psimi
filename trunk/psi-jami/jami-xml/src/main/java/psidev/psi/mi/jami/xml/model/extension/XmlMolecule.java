@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 
 /**
  * Xml implementation of molecule
@@ -15,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlMolecule extends XmlInteractor implements Molecule{
+public class XmlMolecule extends XmlInteractor implements Molecule, Serializable {
 
     public XmlMolecule() {
     }

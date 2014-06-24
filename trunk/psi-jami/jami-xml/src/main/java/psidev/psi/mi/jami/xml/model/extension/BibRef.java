@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.*;
 
@@ -23,7 +24,7 @@ import java.util.*;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class BibRef
-        implements Publication, FileSourceContext, Locatable
+        implements Publication, FileSourceContext, Locatable, Serializable
 {
 
     private PublicationXrefContainer xrefContainer;

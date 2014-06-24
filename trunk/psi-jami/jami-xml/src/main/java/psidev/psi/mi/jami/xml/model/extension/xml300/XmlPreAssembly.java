@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.Preassembly;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.Serializable;
 
 /**
  * Xml 3.0 implementation of preassembly
@@ -14,7 +15,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @since <pre>15/11/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlPreAssembly extends AbstractXmlCooperativeEffect implements Preassembly{
+public class XmlPreAssembly extends AbstractXmlCooperativeEffect implements Preassembly, Serializable {
 
     public XmlPreAssembly() {
     }

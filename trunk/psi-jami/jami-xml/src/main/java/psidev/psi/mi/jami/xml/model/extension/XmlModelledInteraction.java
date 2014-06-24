@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * Xml implementation of ModelledInteraction
@@ -15,7 +16,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "defaultModelledInteraction")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledInteraction extends AbstractXmlModelledInteraction{
+public class XmlModelledInteraction extends AbstractXmlModelledInteraction implements Serializable {
 
     public XmlModelledInteraction() {
     }

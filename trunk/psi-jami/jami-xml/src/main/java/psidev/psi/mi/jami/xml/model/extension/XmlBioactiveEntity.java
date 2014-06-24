@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 
 /**
  * Xml implementation of BioactiveEntity
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlBioactiveEntity extends DefaultBioactiveEntity implements ExtendedPsiXmlInteractor,FileSourceContext{
+public class XmlBioactiveEntity extends DefaultBioactiveEntity implements ExtendedPsiXmlInteractor,FileSourceContext, Serializable {
 
     private int id;
     private PsiXmLocator sourceLocator;

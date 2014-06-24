@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -26,7 +27,7 @@ import java.util.*;
  * @since <pre>30/10/13</pre>
  */
 
-public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant> {
+public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceContext, ExtendedPsiXmlInteraction<ModelledParticipant>, Serializable {
 
     private ExtendedPsiXmlInteraction interaction;
     private SynchronizedModelledParticipantList modelledParticipants;

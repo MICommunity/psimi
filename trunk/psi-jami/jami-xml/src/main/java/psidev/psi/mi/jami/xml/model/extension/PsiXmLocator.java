@@ -2,6 +2,8 @@ package psidev.psi.mi.jami.xml.model.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 
+import java.io.Serializable;
+
 /**
  * Psi-XML source locator
  *
@@ -10,7 +12,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
  * @since <pre>22/07/13</pre>
  */
 
-public class PsiXmLocator extends FileSourceLocator implements org.xml.sax.Locator {
+public class PsiXmLocator extends FileSourceLocator implements org.xml.sax.Locator , Serializable{
 
     private Integer objectId;
 

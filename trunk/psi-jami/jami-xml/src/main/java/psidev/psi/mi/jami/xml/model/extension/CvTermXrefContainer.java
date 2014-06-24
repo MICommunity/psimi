@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -20,16 +21,28 @@ import java.util.*;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "cvTermXrefContainer")
-public class CvTermXrefContainer extends XrefContainer{
+public class CvTermXrefContainer extends XrefContainer implements Serializable {
 
     private Xref miIdentifier;
     private Xref modIdentifier;
     private Xref parIdentifier;
     private List<Xref> identifiers;
 
+    protected boolean isAnIdentifier(Xref ref){
+        if (XrefUtils.isXrefAnIdentifier(ref)){
+           return true;
+        }
+        else if (ref.getQualifier() == null && (CvTermUtils.isCvTerm(ref.getDatabase(), CvTerm.PSI_MI_MI, CvTerm.PSI_MI)
+        || CvTermUtils.isCvTerm(ref.getDatabase(), CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)
+        || CvTermUtils.isCvTerm(ref.getDatabase(), null, CvTerm.PSI_PAR))){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void processAddedPrimaryRef(Xref added) {
-        if (XrefUtils.isXrefAnIdentifier(added)){
+        if (isAnIdentifier(added)){
             getIdentifiers().add(added);
         }
         else {
@@ -140,6 +153,9 @@ public class CvTermXrefContainer extends XrefContainer{
                     miIdentifier = added;
                 }
             }
+            else if (added.getQualifier() == null){
+                miIdentifier = added;
+            }
         }
         // the added identifier is psi-mod and it is not the current mod identifier
         else if (modIdentifier != added && XrefUtils.isXrefFromDatabase(added, CvTerm.PSI_MOD_MI, CvTerm.PSI_MOD)){
@@ -158,6 +174,9 @@ public class CvTermXrefContainer extends XrefContainer{
                     modIdentifier = added;
                 }
             }
+            else if (added.getQualifier() == null){
+                modIdentifier = added;
+            }
         }
         // the added identifier is psi-par and it is not the current par identifier
         else if (parIdentifier != added && XrefUtils.isXrefFromDatabase(added, null, CvTerm.PSI_PAR)){
@@ -175,6 +194,9 @@ public class CvTermXrefContainer extends XrefContainer{
                         && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
                     parIdentifier = added;
                 }
+            }
+            else if (added.getQualifier() == null){
+                parIdentifier = added;
             }
         }
     }
@@ -221,7 +243,7 @@ public class CvTermXrefContainer extends XrefContainer{
         }
 
         protected boolean addXref(Integer index, Xref xref) {
-            if (XrefUtils.isXrefAnIdentifier(xref)){
+            if (isAnIdentifier(xref)){
                 return addIdentifier(index, xref);
             }
             else{

@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -21,14 +22,24 @@ import java.util.*;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "featureXrefContainer")
-public class FeatureXrefContainer extends XrefContainer{
+public class FeatureXrefContainer extends XrefContainer implements Serializable {
 
     private Xref interpro;
     private List<Xref> identifiers;
 
+    protected boolean isAnIdentifier(Xref ref){
+        if (XrefUtils.isXrefAnIdentifier(ref)){
+            return true;
+        }
+        else if (ref.getQualifier() == null && CvTermUtils.isCvTerm(ref.getDatabase(), Xref.INTERPRO_MI, Xref.INTERPRO)){
+            return true;
+        }
+        return false;
+    }
+
     @Override
     protected void processAddedPrimaryRef(Xref added) {
-        if (XrefUtils.isXrefAnIdentifier(added)){
+        if (isAnIdentifier(added)){
             getIdentifiers().add(added);
         }
         else {
@@ -88,6 +99,9 @@ public class FeatureXrefContainer extends XrefContainer{
                         && XrefUtils.doesXrefHaveQualifier(added, Xref.SECONDARY_MI, Xref.SECONDARY)){
                     interpro = added;
                 }
+            }
+            else if (added.getQualifier() == null){
+                interpro = added;
             }
         }
     }

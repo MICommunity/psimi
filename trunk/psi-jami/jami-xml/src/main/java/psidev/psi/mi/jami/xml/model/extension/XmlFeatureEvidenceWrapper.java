@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.model.extension;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -17,7 +18,7 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlFeatureEvidenceWrapper implements ModelledFeature{
+public class XmlFeatureEvidenceWrapper implements ModelledFeature, Serializable {
     private FeatureEvidence feature;
     private ModelledParticipant parent;
     private Collection<ModelledFeature> linkedFeatures;
