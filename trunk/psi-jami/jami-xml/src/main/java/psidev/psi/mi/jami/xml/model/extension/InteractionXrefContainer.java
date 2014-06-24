@@ -9,7 +9,6 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +22,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "interactionXrefContainer")
-public class InteractionXrefContainer extends XrefContainer implements Serializable {
+public class InteractionXrefContainer extends XrefContainer {
     private Xref imexId;
     private List<Xref> identifiers;
 

@@ -11,7 +11,6 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.reference.AbstractExperimentRef;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,7 +37,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class InferredInteraction
-        implements FileSourceContext, Locatable, Serializable
+        implements FileSourceContext, Locatable
 {
 
     private List<InferredInteractionParticipant> participants;

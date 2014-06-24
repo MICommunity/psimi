@@ -8,12 +8,11 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
+import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.model.reference.AbstractExperimentRef;
 import psidev.psi.mi.jami.xml.model.reference.AbstractInteractorRef;
-import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -42,7 +41,7 @@ import java.util.List;
  *
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class ExperimentalInteractor implements FileSourceContext, Locatable, Serializable
+public class ExperimentalInteractor implements FileSourceContext, Locatable
 {
     private Interactor interactor;
     private XmlInteractorFactory interactorFactory;

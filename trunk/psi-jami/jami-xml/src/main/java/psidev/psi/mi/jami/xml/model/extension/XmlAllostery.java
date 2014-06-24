@@ -8,8 +8,6 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
 import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
 
-import java.io.Serializable;
-
 /**
  * XML implementation of Allostery
  *
@@ -18,7 +16,7 @@ import java.io.Serializable;
  * @since <pre>15/11/13</pre>
  */
 
-public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperativeEffect implements FileSourceContext, Serializable {
+public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperativeEffect implements FileSourceContext {
     private PsiXmLocator sourceLocator;
     private CvTerm allostericMechanism;
     private CvTerm allosteryType;

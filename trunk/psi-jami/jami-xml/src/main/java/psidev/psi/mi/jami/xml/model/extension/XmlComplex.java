@@ -6,11 +6,10 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultComplex;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.model.Entry;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,7 +23,7 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlComplex extends DefaultComplex implements ExtendedPsiXmlInteractor,FileSourceContext,
-        ExtendedPsiXmlInteraction<ModelledParticipant>, Serializable {
+        ExtendedPsiXmlInteraction<ModelledParticipant> {
 
     private int id;
     private PsiXmLocator sourceLocator;

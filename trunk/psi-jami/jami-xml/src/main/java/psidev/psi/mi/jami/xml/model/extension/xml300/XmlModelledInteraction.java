@@ -14,7 +14,6 @@ import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.extension.XmlAnnotation;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +27,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "abstractInteraction", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParticipant> implements ExtendedPsiXmlModelledInteraction, Serializable {
+public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParticipant> implements ExtendedPsiXmlModelledInteraction {
 
     private CvTerm interactionType;
     private Collection<InteractionEvidence> interactionEvidences;

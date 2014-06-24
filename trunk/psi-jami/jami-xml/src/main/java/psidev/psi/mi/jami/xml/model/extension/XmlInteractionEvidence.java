@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.CvTerm;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
 
 /**
  * Xml implementation of InteractionEvidence
@@ -16,7 +15,7 @@ import java.io.Serializable;
  */
 @XmlType(name = "defaultInteractionEvidence")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence implements Serializable {
+public class XmlInteractionEvidence extends AbstractXmlInteractionEvidence  {
 
     public XmlInteractionEvidence() {
         super();

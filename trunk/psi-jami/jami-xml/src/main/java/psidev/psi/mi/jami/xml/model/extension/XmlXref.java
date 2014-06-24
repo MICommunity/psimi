@@ -23,7 +23,6 @@ import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +40,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlXref
-    implements ExtendedPsiXmlXref, FileSourceContext, Locatable, Serializable
+    implements ExtendedPsiXmlXref, FileSourceContext, Locatable
 {
 
     private CvTerm database;

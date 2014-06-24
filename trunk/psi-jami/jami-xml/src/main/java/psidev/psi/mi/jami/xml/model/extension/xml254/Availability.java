@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 
 /**
  * A text describing the availability of data, e.g. a copyright statement.
@@ -28,7 +27,7 @@ import java.io.Serializable;
  */
 @XmlRootElement(name = "availability", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class Availability extends AbstractAvailability implements Serializable
+public class Availability extends AbstractAvailability
 {
     public Availability() {
     }

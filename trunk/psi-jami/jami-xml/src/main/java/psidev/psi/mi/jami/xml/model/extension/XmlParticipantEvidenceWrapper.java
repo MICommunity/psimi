@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -18,7 +17,7 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlParticipantEvidenceWrapper implements ModelledParticipant, Serializable {
+public class XmlParticipantEvidenceWrapper implements ModelledParticipant {
 
     private ParticipantEvidence participant;
     private Collection<ModelledFeature> modelledFeatures;

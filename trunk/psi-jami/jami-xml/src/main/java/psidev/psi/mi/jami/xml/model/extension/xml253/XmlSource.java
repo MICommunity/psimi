@@ -15,7 +15,6 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractXmlSource;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 
 
 /**
@@ -31,7 +30,7 @@ import java.io.Serializable;
  */
 @XmlRootElement(name = "source", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlSource extends AbstractXmlSource implements Serializable
+public class XmlSource extends AbstractXmlSource
 {
 
     public XmlSource(){

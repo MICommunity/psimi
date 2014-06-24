@@ -10,8 +10,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Xref container for Feature
@@ -22,7 +22,7 @@ import java.util.*;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "featureXrefContainer")
-public class FeatureXrefContainer extends XrefContainer implements Serializable {
+public class FeatureXrefContainer extends XrefContainer {
 
     private Xref interpro;
     private List<Xref> identifiers;

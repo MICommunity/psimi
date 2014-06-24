@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlCausalRelationship;
 
 import javax.xml.bind.annotation.XmlTransient;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
  */
 @XmlTransient
 public class XmlBinaryInteractionEvidence extends psidev.psi.mi.jami.xml.model.extension.binary.xml25.XmlBinaryInteractionEvidence
-        implements psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEvidence, Serializable {
+        implements psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEvidence {
 
     private List<ExtendedPsiXmlCausalRelationship> causalRelationships;
 

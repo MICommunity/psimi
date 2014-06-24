@@ -14,7 +14,6 @@ import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 
 /**
  * Xml implementation of an Alias.
@@ -26,7 +25,7 @@ import java.io.Serializable;
  * @since <pre>18/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlAlias implements Alias, FileSourceContext, Locatable, Serializable {
+public class XmlAlias implements Alias, FileSourceContext, Locatable {
 
     private String name;
     private CvTerm type;

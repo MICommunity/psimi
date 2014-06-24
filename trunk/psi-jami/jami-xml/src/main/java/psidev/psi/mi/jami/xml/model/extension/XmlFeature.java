@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Participant;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 
 /**
  * Simple Xml implementation of a Feature
@@ -18,7 +17,7 @@ import java.io.Serializable;
  * @since <pre>08/10/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlFeature extends AbstractXmlFeature<Participant,Feature> implements Serializable {
+public class XmlFeature extends AbstractXmlFeature<Participant,Feature>  {
 
     @XmlLocation
     @XmlTransient

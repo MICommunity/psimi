@@ -9,10 +9,9 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.model.extension.xml300.*;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,7 +26,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEvidence, FeatureEvidence> implements
-        ExtendedPsiXmlParticipantEvidence, Serializable {
+        ExtendedPsiXmlParticipantEvidence {
 
     @XmlLocation
     @XmlTransient

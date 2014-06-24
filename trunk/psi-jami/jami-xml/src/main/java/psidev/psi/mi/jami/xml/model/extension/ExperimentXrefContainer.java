@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
-import java.io.Serializable;
 
 /**
  * Xref container for Experiment
@@ -19,7 +18,7 @@ import java.io.Serializable;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "experimentXrefContainer")
-public class ExperimentXrefContainer extends XrefContainer implements Serializable {
+public class ExperimentXrefContainer extends XrefContainer  {
 
     private Xref imexId;
     private Publication publication;

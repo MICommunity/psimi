@@ -14,7 +14,6 @@ import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
 
 import javax.xml.bind.annotation.*;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +26,7 @@ import java.util.List;
  * @since <pre>15/11/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlCooperativityEvidence implements CooperativityEvidence, FileSourceContext, Locatable, Serializable {
+public class XmlCooperativityEvidence implements CooperativityEvidence, FileSourceContext, Locatable {
     private PsiXmLocator sourceLocator;
     private Publication publication;
 
