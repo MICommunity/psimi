@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.model.extension;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlParameterWrapper implements ModelledParameter{
+public class XmlParameterWrapper implements ModelledParameter, Serializable {
 
     private Parameter parameter;
     private Publication publication;

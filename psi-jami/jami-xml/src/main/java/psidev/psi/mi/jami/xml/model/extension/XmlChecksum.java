@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultChecksum;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 
 /**
  * Xml implementation of a checksum
@@ -15,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlChecksum extends DefaultChecksum implements FileSourceContext{
+public class XmlChecksum extends DefaultChecksum implements FileSourceContext, Serializable {
     private PsiXmLocator sourceLocator;
 
     public XmlChecksum(CvTerm method, String value) {

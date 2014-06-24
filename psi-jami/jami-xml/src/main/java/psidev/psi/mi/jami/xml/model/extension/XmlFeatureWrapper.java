@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.model.extension;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Collection;
  * @since <pre>30/10/13</pre>
  */
 
-public class XmlFeatureWrapper implements ModelledFeature{
+public class XmlFeatureWrapper implements ModelledFeature, Serializable {
     private Feature<Participant, Feature> feature;
     private ModelledParticipant parent;
     private SynchronizedLinkedFeatureList linkedFeatures;

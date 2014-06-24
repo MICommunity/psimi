@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.model.extension;
 import psidev.psi.mi.jami.model.*;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -13,7 +14,7 @@ import java.util.*;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlInteractorPool extends XmlInteractor implements InteractorPool {
+public class XmlInteractorPool extends XmlInteractor implements InteractorPool, Serializable {
 
     private Collection<Interactor> interactors;
 

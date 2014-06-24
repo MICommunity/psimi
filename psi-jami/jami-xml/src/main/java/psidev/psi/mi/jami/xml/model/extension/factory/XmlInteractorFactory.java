@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.utils.clone.InteractorCloner;
 import psidev.psi.mi.jami.xml.model.extension.*;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 /**
  * Interactor factory for XML interactors
@@ -107,6 +108,24 @@ public class XmlInteractorFactory extends InteractorFactory{
             InteractorCloner.copyAndOverrideBasicInteractorProperties(source, reloadedInteractorDependingOnType);
             ((FileSourceContext)reloadedInteractorDependingOnType).setSourceLocator((PsiXmLocator)source.getSourceLocator());
             reloadedInteractorDependingOnType.setId(source.getId());
+
+            // we don't have any identifiers, we look back at the xrefs
+            if (reloadedInteractorDependingOnType.getIdentifiers().isEmpty() && !reloadedInteractorDependingOnType.getXrefs().isEmpty()){
+                Iterator<Xref> refIterator = reloadedInteractorDependingOnType.getXrefs().iterator();
+                while (refIterator.hasNext()){
+                    Xref ref = refIterator.next();
+                    if (CvTermUtils.isCvTerm(ref.getDatabase(), Xref.UNIPROTKB_MI, Xref.UNIPROTKB)
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.REFSEQ_MI, Xref.REFSEQ)
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.ENSEMBL_MI, Xref.ENSEMBL)
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.CHEBI_MI, Xref.CHEBI)
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES)
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE)
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK)){
+                        refIterator.remove();
+                        reloadedInteractorDependingOnType.getIdentifiers().add(ref);
+                    }
+                }
+            }
 
             return reloadedInteractorDependingOnType;
         }

@@ -15,6 +15,7 @@ import psidev.psi.mi.jami.xml.model.extension.XmlModelledFeature;
 import psidev.psi.mi.jami.xml.model.reference.AbstractFeatureRef;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  * @since <pre>23/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class BindingFeatures implements FileSourceContext, Locatable {
+public class BindingFeatures implements FileSourceContext, Locatable, Serializable {
 
     private PsiXmLocator sourceLocator;
     @XmlLocation

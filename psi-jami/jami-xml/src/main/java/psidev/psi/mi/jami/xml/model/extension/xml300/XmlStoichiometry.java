@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.utils.comparator.participant.StoichiometryComparator;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 
 /**
  * Xml 3.0 implementation of stoichiometry mean value
@@ -20,7 +21,7 @@ import javax.xml.bind.annotation.*;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(namespace = "http://psi.hupo.org/mi/mif300")
-public class XmlStoichiometry implements FileSourceContext, Stoichiometry, Locatable {
+public class XmlStoichiometry implements FileSourceContext, Stoichiometry, Locatable, Serializable {
 
     private PsiXmLocator sourceLocator;
 

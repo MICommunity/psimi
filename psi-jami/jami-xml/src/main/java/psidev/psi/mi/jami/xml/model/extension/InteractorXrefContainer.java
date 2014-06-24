@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -15,7 +16,7 @@ import java.util.*;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "interactorXrefContainer")
-public class InteractorXrefContainer extends XrefContainer {
+public class InteractorXrefContainer extends XrefContainer implements Serializable {
 
     private List<Xref> identifiers;
 

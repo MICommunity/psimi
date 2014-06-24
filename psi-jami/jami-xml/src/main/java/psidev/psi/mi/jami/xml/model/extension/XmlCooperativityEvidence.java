@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousCooperativityEvidenceComparator;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,7 +21,7 @@ import java.util.Collections;
  * @since <pre>15/11/13</pre>
  */
 
-public class XmlCooperativityEvidence implements CooperativityEvidence, FileSourceContext {
+public class XmlCooperativityEvidence implements CooperativityEvidence, FileSourceContext, Serializable {
     private PsiXmLocator sourceLocator;
     private Experiment exp;
     private Publication publication;

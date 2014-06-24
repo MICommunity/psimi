@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.reference.AbstractFeatureRef;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 
 /**
  * Xml implementation of feature modification effector
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>15/11/13</pre>
  */
 @XmlTransient
-public class XmlFeatureModificationEffector implements FeatureModificationEffector, FileSourceContext {
+public class XmlFeatureModificationEffector implements FeatureModificationEffector, FileSourceContext, Serializable {
     private ModelledFeature feature;
     private PsiXmLocator sourceLocator;
 

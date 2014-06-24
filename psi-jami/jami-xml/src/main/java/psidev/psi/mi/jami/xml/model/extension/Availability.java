@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.model.extension;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * A text describing the availability of data, e.g. a copyright statement.
@@ -25,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "defaultAvailability")
-public class Availability extends AbstractAvailability
+public class Availability extends AbstractAvailability implements Serializable
 {
     public Availability() {
     }

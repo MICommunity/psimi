@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.model.Xref;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 
 /**
@@ -29,7 +30,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "defaultSource")
-public class XmlSource extends AbstractXmlSource
+public class XmlSource extends AbstractXmlSource implements Serializable
 {
 
     public XmlSource() {

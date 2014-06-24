@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractor;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * The Xml implementation of Interactor
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "interactor", namespace = "http://psi.hupo.org/mi/mif")
-public class XmlInteractor extends AbstractXmlInteractor{
+public class XmlInteractor extends AbstractXmlInteractor implements Serializable {
 
     public XmlInteractor() {
     }

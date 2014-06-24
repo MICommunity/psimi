@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.xml.model.extension.BibRef;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -27,7 +28,7 @@ import java.util.List;
  */
 @XmlRootElement(name = "experimentDescription", namespace = "http://psi.hupo.org/mi/mif300")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlExperiment extends AbstractXmlExperiment{
+public class XmlExperiment extends AbstractXmlExperiment implements Serializable {
 
     private JAXBVariableParameterWrapper jaxbVariableParameterWrapper;
 

@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import java.io.Serializable;
 
 /**
  * A container for aliases, shortname and fullname
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class ComplexNamesContainer extends NamesContainer{
+public class ComplexNamesContainer extends NamesContainer implements Serializable {
 
     private Alias recommendedName;
     private Alias systematicName;

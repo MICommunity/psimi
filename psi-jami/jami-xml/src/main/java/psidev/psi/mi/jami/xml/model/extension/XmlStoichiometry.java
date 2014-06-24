@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.impl.DefaultStoichiometry;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 
 /**
  * Xml implementation of stoichiometry
@@ -14,7 +15,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>02/08/13</pre>
  */
 @XmlTransient
-public class XmlStoichiometry extends DefaultStoichiometry implements FileSourceContext{
+public class XmlStoichiometry extends DefaultStoichiometry implements FileSourceContext, Serializable {
 
     private PsiXmLocator sourceLocator;
 

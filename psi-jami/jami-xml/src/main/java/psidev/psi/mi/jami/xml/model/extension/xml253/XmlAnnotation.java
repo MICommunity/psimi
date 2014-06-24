@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractXmlAnnotation;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Xml implementation of an Annotation
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "attribute", namespace = "net:sf:psidev:mi")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlAnnotation extends AbstractXmlAnnotation {
+public class XmlAnnotation extends AbstractXmlAnnotation implements Serializable {
 
     public XmlAnnotation() {
     }

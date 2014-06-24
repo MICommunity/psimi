@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.model.extension.AbstractXmlBasicInteraction;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Xml implementation of interaction
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlBasicInteraction extends AbstractXmlBasicInteraction{
+public class XmlBasicInteraction extends AbstractXmlBasicInteraction implements Serializable {
 
     public XmlBasicInteraction() {
         super();

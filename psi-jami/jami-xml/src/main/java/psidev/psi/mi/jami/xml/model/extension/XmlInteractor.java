@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.Xref;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlType;
+import java.io.Serializable;
 
 /**
  * The Xml implementation of Interactor
@@ -17,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "defaultInteractor")
-public class XmlInteractor extends AbstractXmlInteractor{
+public class XmlInteractor extends AbstractXmlInteractor implements Serializable {
 
     public XmlInteractor() {
     }

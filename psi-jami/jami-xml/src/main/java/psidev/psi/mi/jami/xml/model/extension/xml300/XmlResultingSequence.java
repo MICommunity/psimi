@@ -12,6 +12,7 @@ import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.model.extension.XrefContainer;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -23,7 +24,7 @@ import java.util.Collection;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(namespace = "http://psi.hupo.org/mi/mif300")
-public class XmlResultingSequence implements ResultingSequence, FileSourceContext, Locatable{
+public class XmlResultingSequence implements ResultingSequence, FileSourceContext, Locatable, Serializable {
     private String originalSequence;
     private String newSequence;
     private XrefContainer xrefContainer;

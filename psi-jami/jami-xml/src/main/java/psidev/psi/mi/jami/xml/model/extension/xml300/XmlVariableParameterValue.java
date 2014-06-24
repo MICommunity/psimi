@@ -13,6 +13,7 @@ import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
+import java.io.Serializable;
 
 /**
  * XML 3.0 implementation of variable parameter value
@@ -22,7 +23,7 @@ import javax.xml.bind.annotation.*;
  * @since <pre>30/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlVariableParameterValue implements VariableParameterValue,FileSourceContext,Locatable {
+public class XmlVariableParameterValue implements VariableParameterValue,FileSourceContext,Locatable, Serializable {
 
     private PsiXmLocator sourceLocator;
 

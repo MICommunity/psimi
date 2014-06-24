@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 
 /**
  * Xml implementation of Range
@@ -28,7 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>19/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlRange implements Range, FileSourceContext, Locatable{
+public class XmlRange implements Range, FileSourceContext, Locatable, Serializable {
     private Position start;
     private Position end;
     private boolean isLink;

@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
 
 import javax.xml.bind.annotation.XmlTransient;
+import java.io.Serializable;
 
 /**
  * XML implementation of allosteric molecule effector
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>15/11/13</pre>
  */
 @XmlTransient
-public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext {
+public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext, Serializable {
     private PsiXmLocator sourceLocator;
     private ModelledParticipant participant;
 
