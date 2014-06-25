@@ -39,8 +39,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private File file;
     private Unmarshaller unmarshaller;
     private RandomAccessFile randomAccessFile;
-    private PsiXmlVersion version;
-    private InteractionCategory interactionCategory;
     private String namespaceUri;
 
     private Map<Integer, AbstractAvailability> mapOfReferencedAvailabilities;
@@ -64,13 +62,15 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private Interaction currentInteraction=null;
     private Experiment currentExperiment=null;
 
-    public PsiXmlFileIndexCache(File file, PsiXmlVersion version, InteractionCategory category) throws FileNotFoundException {
+    public PsiXmlFileIndexCache(File file, Unmarshaller unmarshaller, PsiXmlVersion version) throws FileNotFoundException {
         if (file == null){
             throw new IllegalArgumentException("The file index cache needs the original file containing data.");
         }
         this.file = file;
-        this.version = version != null ? version : PsiXmlVersion.v2_5_4;
-        this.interactionCategory = category != null ? category : InteractionCategory.evidence;
+        if (unmarshaller == null){
+            throw new IllegalArgumentException("The file index cache needs the unmarshaller to unmarshall partial object from file cache.");
+        }
+        this.unmarshaller = unmarshaller;
 
         this.mapOfReferencedAvailabilities = new HashMap<Integer, AbstractAvailability>();
 
@@ -90,7 +90,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.variableParameterValueWeakMap = new WeakHashMap<Integer, VariableParameterValue>();
         this.complexWeakMap = new WeakHashMap<Integer, Complex>();
 
-        switch (this.version){
+        switch (version){
             case v2_5_4:
                 this.namespaceUri = PsiXmlUtils.Xml254_NAMESPACE_URI;
                 break;
@@ -104,6 +104,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                 this.namespaceUri = PsiXmlUtils.Xml254_NAMESPACE_URI;
                 break;
         }
+    }
+
+    public PsiXmlFileIndexCache(File file, PsiXmlVersion version, InteractionCategory category) throws FileNotFoundException, JAXBException {
+        this(file,
+                JaxbUnmarshallerFactory.getInstance().createUnmarshaller(version != null ? version : PsiXmlVersion.v2_5_4,
+                        category != null ? category : InteractionCategory.evidence),
+                version);
     }
 
     @Override
@@ -514,13 +521,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     public boolean containsComplex(int id) {
         return this.complexWeakMap.containsKey(id) || this.complexPositions.containsKey(id);    }
 
-    private Unmarshaller getUnmarshaller() throws JAXBException {
-        if (this.unmarshaller == null){
-            this.unmarshaller = JaxbUnmarshallerFactory.getInstance().createUnmarshaller(this.version, this.interactionCategory);
-        }
-        return this.unmarshaller;
-    }
-
     private <T extends Object> T loadFromFile(int id) throws IOException, JAXBException, XMLStreamException {
 
         this.randomAccessFile = new RandomAccessFile(this.file, "r");
@@ -528,7 +528,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         T obj = null;
         XMLStreamReader reader = null;
         try{
-            Unmarshaller unMarshaller = getUnmarshaller();
 
             XMLInputFactory xmlif = XMLInputFactory2.newInstance();
             reader = xmlif.createXMLStreamReader(in);
@@ -536,9 +535,9 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
             //Create the filter (to add namespace) and set the xmlReader as its parent.
             XmlReaderWithDefaultNamespace filteredReader = new XmlReaderWithDefaultNamespace(reader, this.namespaceUri);
 
-            unMarshaller.setListener(new XmlLocationListener(reader));
+            this.unmarshaller.setListener(new XmlLocationListener(reader));
 
-            obj = (T)unMarshaller.unmarshal(filteredReader);
+            obj = (T)this.unmarshaller.unmarshal(filteredReader);
         }
         finally {
             if (reader != null){

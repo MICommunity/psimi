@@ -8,15 +8,17 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.xml.*;
+import psidev.psi.mi.jami.xml.PsiXmlVersion;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlFileIndexCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.listener.XmlLocationListener;
 import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
-import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
@@ -26,10 +28,7 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.transform.stream.StreamSource;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -1001,7 +1000,17 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
 
     private void initialiseDefaultCache() {
         if (this.indexOfObjects == null){
-            this.indexOfObjects = new InMemoryPsiXmlCache();
+            if (this.originalFile != null){
+                try {
+                    this.indexOfObjects = new PsiXmlFileIndexCache(this.originalFile, this.unmarshaller, this.version);
+                } catch (FileNotFoundException e) {
+                    logger.log(Level.SEVERE, "cannot instantiate file index cache so will instantiate memory cache", e);
+                    this.indexOfObjects = new InMemoryPsiXmlCache();
+                }
+            }
+            else{
+                this.indexOfObjects = new InMemoryPsiXmlCache();
+            }
         }
     }
 }
