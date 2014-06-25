@@ -14,10 +14,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.XmlLocationListener;
 import psidev.psi.mi.jami.xml.model.Entry;
-import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
-import psidev.psi.mi.jami.xml.model.extension.AbstractXmlInteractor;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
+import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -62,9 +59,9 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
     private File originalFile;
     private InputStream originalStream;
     private Reader originalReader;
-    private Collection<T> loadedInteractions;
+    private Collection<Integer> loadedInteractions;
     private Unmarshaller unmarshaller;
-    private Iterator<T> interactionIterator;
+    private Iterator<Integer> interactionIterator;
     private XmlInteractorFactory interactorFactory;
     private PsiXmlParserListener listener;
     private boolean hasReadEntrySet = false;
@@ -80,7 +77,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             throw new IllegalArgumentException("The PsiXmlParser needs a non null File");
         }
         this.originalFile = file;
-        loadedInteractions = new ArrayList<T>();
+        loadedInteractions = new ArrayList<Integer>();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -89,7 +86,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             throw new IllegalArgumentException("The PsiXmlParser needs a non null InputStream");
         }
         this.originalStream = inputStream;
-        loadedInteractions = new ArrayList<T>();
+        loadedInteractions = new ArrayList<Integer>();
         this.interactorFactory = new XmlInteractorFactory();
 
     }
@@ -99,7 +96,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             throw new IllegalArgumentException("The PsiXmlParser needs a non null URL");
         }
         this.originalURL = url;
-        loadedInteractions = new ArrayList<T>();
+        loadedInteractions = new ArrayList<Integer>();
         this.interactorFactory = new XmlInteractorFactory();
 
     }
@@ -109,7 +106,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             throw new IllegalArgumentException("The PsiXmlParser needs a non null Reader");
         }
         this.originalReader = reader;
-        loadedInteractions = new ArrayList<T>();
+        loadedInteractions = new ArrayList<Integer>();
         this.interactorFactory = new XmlInteractorFactory();
     }
 
@@ -682,7 +679,8 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                     (PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement) ||
                     PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
             while(isReadingInteraction && this.currentElement != null){
-                this.loadedInteractions.add(unmarshallInteraction());
+                PsiXmlInteraction loadedInteraction = (PsiXmlInteraction)unmarshallInteraction();
+                this.loadedInteractions.add(loadedInteraction.getId());
 
                 this.currentElement = getNextPsiXmlStartElement();
                 isReadingInteraction = this.currentElement != null
@@ -720,8 +718,16 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
      * @return the next interaction preloaded in the interactionIterator. Deletes the returned interaction
      */
     protected T parseNextPreLoadedInteraction() {
-        T interaction = this.interactionIterator.next();
+        int id = this.interactionIterator.next();
+
+        T interaction = (T)this.indexOfObjects.getInteraction(id);
+        // resolve references if not done
+        clearPartialEntryReferences(XmlEntryContext.getInstance());
+
         this.interactionIterator.remove();
+        if (!this.interactionIterator.hasNext()){
+            flushEntry(XmlEntryContext.getInstance());
+        }
         return interaction;
     }
 
@@ -744,8 +750,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             // we have references to resolve, loads the all entry and keep in cache
             else{
                 loadEntry(entryContext,interaction);
-                // check if last interaction and need to flush entry
-                flushEntry(entryContext);
+                clearPartialEntryReferences(entryContext);
             }
 
             return interaction;
@@ -892,17 +897,20 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
     private void flushEntryIfNecessary(XmlEntryContext entryContext) throws PsiXmlParserException {
         this.currentElement = getNextPsiXmlStartElement();
         // end of file, flush last entry
-        if (this.currentElement == null){
+        if (this.currentElement == null && (this.interactionIterator == null || !this.interactionIterator.hasNext())){
             flushEntry(entryContext);
         }
         // end of entry, parse attributes and flush the entry
         else if (PsiXmlUtils.ATTRIBUTELIST_TAG.equals(this.currentElement)){
             parseAttributeList(entryContext);
-            flushEntry(entryContext);
+            if (this.interactionIterator == null || !this.interactionIterator.hasNext()){
+                flushEntry(entryContext);
+            }
         }
         // if this interaction is not followed by another interaction, we need to flush the entry
         else if (!PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement)
-                && !PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement)){
+                && !PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement)
+                && (this.interactionIterator == null || !this.interactionIterator.hasNext())){
             flushEntry(entryContext);
         }
     }
@@ -919,6 +927,11 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         context.resolveInteractorAndExperimentRefs();
         context.resolveInferredInteractionRefs();
         context.clear();
+    }
+
+    private void clearPartialEntryReferences(XmlEntryContext context){
+        context.resolveInteractorAndExperimentRefs();
+        context.resolveInferredInteractionRefs();
     }
 
     private void closeOriginalInputSources() {
