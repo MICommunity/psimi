@@ -5,9 +5,11 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.io.parser.JaxbUnmarshallerFactory;
+import psidev.psi.mi.jami.xml.io.parser.XmlReaderWithDefaultNamespace;
 import psidev.psi.mi.jami.xml.listener.XmlLocationListener;
 import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.extension.xml300.XmlVariableParameterValue;
+import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -39,6 +41,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private RandomAccessFile randomAccessFile;
     private PsiXmlVersion version;
     private InteractionCategory interactionCategory;
+    private String namespaceUri;
 
     private Map<Integer, AbstractAvailability> mapOfReferencedAvailabilities;
 
@@ -87,6 +90,21 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.featureWeakMap = new WeakHashMap<Integer, Feature>();
         this.variableParameterValueWeakMap = new WeakHashMap<Integer, VariableParameterValue>();
         this.complexWeakMap = new WeakHashMap<Integer, Complex>();
+
+        switch (this.version){
+            case v2_5_4:
+                this.namespaceUri = PsiXmlUtils.Xml254_NAMESPACE_URI;
+                break;
+            case v2_5_3:
+                this.namespaceUri = PsiXmlUtils.Xml253_NAMESPACE_URI;
+                break;
+            case v3_0_0:
+                this.namespaceUri = PsiXmlUtils.Xml300_NAMESPACE_URI;
+                break;
+            default:
+                this.namespaceUri = PsiXmlUtils.Xml254_NAMESPACE_URI;
+                break;
+        }
     }
 
     @Override
@@ -513,9 +531,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
             XMLInputFactory xmlif = XMLInputFactory2.newInstance();
             reader = xmlif.createXMLStreamReader(in);
+
+            //Create the filter (to add namespace) and set the xmlReader as its parent.
+            XmlReaderWithDefaultNamespace filteredReader = new XmlReaderWithDefaultNamespace(reader, this.namespaceUri);
+
             unMarshaller.setListener(new XmlLocationListener(reader));
 
-            obj = (T)unMarshaller.unmarshal(reader);
+            obj = (T)unMarshaller.unmarshal(filteredReader);
         }
         finally {
             if (reader != null){
