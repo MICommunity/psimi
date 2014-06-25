@@ -44,7 +44,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
 
     private Feature feature;
     private Participant participant;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     @XmlLocation
     @XmlTransient
     private Locator locator;
@@ -75,7 +75,7 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -84,8 +84,11 @@ public class InferredInteractionParticipant implements FileSourceContext, Locata
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 

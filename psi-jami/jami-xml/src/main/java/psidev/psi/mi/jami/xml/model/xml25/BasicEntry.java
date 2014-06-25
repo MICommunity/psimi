@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.model.AbstractEntry;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlBasicInteraction;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 
@@ -51,7 +51,7 @@ public class BasicEntry extends AbstractEntry<Interaction> {
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
+            super.setSourceLocator(new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
         }
         return super.getSourceLocator();
     }
@@ -62,7 +62,7 @@ public class BasicEntry extends AbstractEntry<Interaction> {
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
+            super.setSourceLocator(new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
         }
     }
 

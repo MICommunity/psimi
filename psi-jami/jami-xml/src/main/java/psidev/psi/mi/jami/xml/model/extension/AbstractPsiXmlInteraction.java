@@ -89,7 +89,7 @@ public abstract class AbstractPsiXmlInteraction<T extends Participant> extends A
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="inferredInteractionWrapper")
     public static class JAXBInferredInteractionWrapper implements Locatable, FileSourceContext{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -106,7 +106,7 @@ public abstract class AbstractPsiXmlInteraction<T extends Participant> extends A
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -115,8 +115,11 @@ public abstract class AbstractPsiXmlInteraction<T extends Participant> extends A
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

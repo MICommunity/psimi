@@ -37,7 +37,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
     @XmlLocation
     @XmlTransient
     private Locator locator;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     public AbstractXmlCooperativeEffect(){
     }
@@ -122,7 +122,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -131,12 +131,15 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocation(PsiXmLocator sourceLocator) {
+    public void setSourceLocation(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 
@@ -170,7 +173,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="cooperativityEvidenceWrapper")
     public static class JAXBCooperativityEvidenceWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -187,7 +190,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -196,8 +199,11 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -219,7 +225,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="cooperativeEffectAttributeWrapper")
     public static class JAXBAttributeWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -236,7 +242,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -245,8 +251,11 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -268,7 +277,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "cooperativeEffectInteractionRefList")
     public static class JAXBAffectedInteractionRefWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -286,7 +295,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -295,8 +304,11 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -386,7 +398,7 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
          * interaction ref for affected cooperative interaction
          */
         private class ModelledInteractionRef extends AbstractComplexRef {
-            private PsiXmLocator sourceLocator;
+            private PsiXmlLocator sourceLocator;
 
             public ModelledInteractionRef(int ref) {
                 super(ref);
@@ -437,8 +449,11 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
                 if (sourceLocator == null){
                     this.sourceLocator = null;
                 }
-                else{
-                    this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                else if (sourceLocator instanceof PsiXmlLocator){
+                    this.sourceLocator = (PsiXmlLocator)sourceLocator;
+                }
+                else {
+                    this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
                 }
             }
         }

@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
 import psidev.psi.mi.jami.xml.model.extension.XmlOpenCvTerm;
 import psidev.psi.mi.jami.xml.model.extension.XmlParticipant;
@@ -30,7 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,FileSourceContext,Locatable {
 
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     @XmlLocation
     @XmlTransient
@@ -92,7 +92,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -101,12 +101,15 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocation(PsiXmLocator sourceLocator) {
+    public void setSourceLocation(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 
@@ -131,7 +134,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
      * participant ref for target of relationship
      */
     private class TargetParticipantRef extends AbstractParticipantRef{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
 
         public TargetParticipantRef(int ref) {
             super(ref);
@@ -167,11 +170,11 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
-        public void setSourceLocator(PsiXmLocator sourceLocator) {
+        public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
         }
     }
@@ -180,7 +183,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
      * participant ref for source of relationship
      */
     private class SourceParticipantRef extends AbstractParticipantRef{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
 
         public SourceParticipantRef(int ref) {
             super(ref);
@@ -216,12 +219,15 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
-        public void setSourceLocator(PsiXmLocator sourceLocator) {
+        public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
         }
     }

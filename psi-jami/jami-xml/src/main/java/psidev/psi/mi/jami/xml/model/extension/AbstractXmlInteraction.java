@@ -37,7 +37,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
     private int id;
     private Date updatedDate;
     private Date createdDate;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private Entry entry;
 
     private JAXBAttributeWrapper jaxbAttributeWrapper;
@@ -292,7 +292,16 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = (PsiXmLocator)sourceLocator;
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            this.sourceLocator.setObjectId(getId());
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
+        }
     }
 
     public Entry getEntry() {
@@ -367,7 +376,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="interactionAttributeWrapper")
     public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -387,7 +396,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -396,8 +405,11 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -542,7 +554,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="interactionParticipantWrapper")
     public static class JAXBParticipantWrapper<T extends Participant> implements Locatable, FileSourceContext{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -559,7 +571,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -568,8 +580,11 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

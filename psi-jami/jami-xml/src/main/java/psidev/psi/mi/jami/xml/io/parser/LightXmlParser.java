@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
@@ -84,7 +84,7 @@ public class LightXmlParser extends AbstractPsiXmlParser<Interaction<? extends P
             if (getListener() != null){
                 FileSourceContext context = null;
                 if (experimentList != null){
-                    context = new DefaultFileSourceContext(new PsiXmLocator(experimentList.getLineNumber(), experimentList.getColumnNumber(), null));
+                    context = new DefaultFileSourceContext(new PsiXmlLocator(experimentList.getLineNumber(), experimentList.getColumnNumber(), null));
                 }
                 getListener().onInvalidSyntax(context, new PsiXmlParserException("ExperimentList elements does not contains any experimentDescription node. PSI-XML is not valid."));
             }
@@ -127,7 +127,7 @@ public class LightXmlParser extends AbstractPsiXmlParser<Interaction<? extends P
             if (getListener() != null){
                 FileSourceContext context = null;
                 if (availabilityList != null){
-                    context = new DefaultFileSourceContext(new PsiXmLocator(availabilityList.getLineNumber(), availabilityList.getColumnNumber(), null));
+                    context = new DefaultFileSourceContext(new PsiXmlLocator(availabilityList.getLineNumber(), availabilityList.getColumnNumber(), null));
                 }
                 getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contains any availability node. PSI-XML is not valid."));
             }

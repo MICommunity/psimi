@@ -29,7 +29,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
 
     private String name;
     private CvTerm type;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     @XmlLocation
     @XmlTransient
     private Locator locator;
@@ -127,7 +127,7 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -136,8 +136,11 @@ public class XmlAlias implements Alias, FileSourceContext, Locatable {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 

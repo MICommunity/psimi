@@ -18,7 +18,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "experimentXrefContainer")
-public class ExperimentXrefContainer extends XrefContainer  {
+public class                                                                                                                                                                                                                                                                                                                                                                                                                                                                           ExperimentXrefContainer extends XrefContainer  {
 
     private Xref imexId;
     private Publication publication;

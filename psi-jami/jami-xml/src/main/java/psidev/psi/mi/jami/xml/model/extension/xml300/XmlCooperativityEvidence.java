@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.utils.comparator.cooperativity.UnambiguousCooperativityEvidenceComparator;
 import psidev.psi.mi.jami.xml.model.extension.BibRef;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
 
 import javax.xml.bind.annotation.*;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlCooperativityEvidence implements CooperativityEvidence, FileSourceContext, Locatable {
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private Publication publication;
 
     @XmlLocation
@@ -59,7 +59,7 @@ public class XmlCooperativityEvidence implements CooperativityEvidence, FileSour
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -68,12 +68,15 @@ public class XmlCooperativityEvidence implements CooperativityEvidence, FileSour
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocation(PsiXmLocator sourceLocator) {
+    public void setSourceLocation(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 
@@ -134,7 +137,7 @@ public class XmlCooperativityEvidence implements CooperativityEvidence, FileSour
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "evidenceMethodList")
     public static class JAXBEvidenceMethodWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -151,7 +154,7 @@ public class XmlCooperativityEvidence implements CooperativityEvidence, FileSour
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -160,8 +163,11 @@ public class XmlCooperativityEvidence implements CooperativityEvidence, FileSour
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

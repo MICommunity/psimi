@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Stoichiometry;
 import psidev.psi.mi.jami.utils.comparator.participant.StoichiometryComparator;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 
 import javax.xml.bind.annotation.*;
 
@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.*;
 @XmlType(namespace = "http://psi.hupo.org/mi/mif300")
 public class XmlStoichiometry implements FileSourceContext, Stoichiometry, Locatable {
 
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     @XmlLocation
     @XmlTransient
@@ -95,7 +95,7 @@ public class XmlStoichiometry implements FileSourceContext, Stoichiometry, Locat
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -104,12 +104,15 @@ public class XmlStoichiometry implements FileSourceContext, Stoichiometry, Locat
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocation(PsiXmLocator sourceLocator) {
+    public void setSourceLocation(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 }

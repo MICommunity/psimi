@@ -133,19 +133,9 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
+            super.setSourceLocator(new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
         }
         return super.getSourceLocator();
-    }
-
-    @Override
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            super.setSourceLocator(null);
-        }
-        else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
-        }
     }
 
     @Override
@@ -194,7 +184,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "featureExperimentRefList")
     public static class JAXBExperimentRefWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -212,7 +202,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -221,8 +211,11 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -335,7 +328,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="featureParameterWrapper", namespace = "http://psi.hupo.org/mi/mif300")
     public static class JAXBParameterWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -352,7 +345,7 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -361,8 +354,11 @@ public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, 
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

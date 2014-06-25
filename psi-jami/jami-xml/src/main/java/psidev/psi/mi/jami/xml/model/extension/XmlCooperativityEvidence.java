@@ -21,7 +21,7 @@ import java.util.Collections;
  */
 
 public class XmlCooperativityEvidence implements CooperativityEvidence, FileSourceContext {
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private Experiment exp;
     private Publication publication;
     private Collection<CvTerm> evidenceMethods;
@@ -54,12 +54,15 @@ public class XmlCooperativityEvidence implements CooperativityEvidence, FileSour
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocator(PsiXmLocator locator) {
+    public void setSourceLocator(PsiXmlLocator locator) {
         this.sourceLocator = locator;
     }
 

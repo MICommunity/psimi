@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlTransient
 public class XmlGene extends DefaultGene implements ExtendedPsiXmlInteractor, FileSourceContext {
     private int id;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     public XmlGene(String name) {
         super(name, new XmlCvTerm(Gene.GENE, new XmlXref(CvTermUtils.createPsiMiDatabase(),Gene.GENE_MI, CvTermUtils.createIdentityQualifier())));
@@ -133,12 +133,15 @@ public class XmlGene extends DefaultGene implements ExtendedPsiXmlInteractor, Fi
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocator(PsiXmLocator sourceLocator) {
+    public void setSourceLocator(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 

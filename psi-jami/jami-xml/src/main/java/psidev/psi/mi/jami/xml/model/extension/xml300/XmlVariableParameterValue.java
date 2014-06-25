@@ -9,7 +9,7 @@ import psidev.psi.mi.jami.model.VariableParameter;
 import psidev.psi.mi.jami.model.VariableParameterValue;
 import psidev.psi.mi.jami.utils.comparator.experiment.VariableParameterValueComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlVariableParameterValue implements VariableParameterValue,FileSourceContext,Locatable {
 
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     @XmlLocation
     @XmlTransient
@@ -106,7 +106,7 @@ public class XmlVariableParameterValue implements VariableParameterValue,FileSou
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -115,13 +115,21 @@ public class XmlVariableParameterValue implements VariableParameterValue,FileSou
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            this.sourceLocator.setObjectId(id);
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), this.id);
         }
     }
 
-    public void setSourceLocation(PsiXmLocator sourceLocator) {
+    public void setSourceLocation(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    public int getId() {
+        return id;
     }
 
     @XmlElement(name = "value", required = true)
@@ -134,6 +142,9 @@ public class XmlVariableParameterValue implements VariableParameterValue,FileSou
         this.id = id;
         // register variable parameter value
         XmlEntryContext.getInstance().registerVariableParameterValue(this.id, this);
+        if (getSourceLocator() != null){
+            this.sourceLocator.setObjectId(this.id);
+        }
     }
 
     @XmlElement(name = "order", required = true)

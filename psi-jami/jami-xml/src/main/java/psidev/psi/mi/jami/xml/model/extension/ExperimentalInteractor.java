@@ -45,7 +45,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 {
     private Interactor interactor;
     private XmlInteractorFactory interactorFactory;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     @XmlLocation
     @XmlTransient
     private Locator locator;
@@ -78,7 +78,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -87,8 +87,11 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
@@ -143,7 +146,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name = "interactorExperimentRefList")
     public static class JAXBExperimentRefWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -161,7 +164,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -171,7 +174,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

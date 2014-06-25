@@ -18,7 +18,7 @@ import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
  */
 
 public class XmlPreAssembly extends DefaultPreassemby implements FileSourceContext {
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     public XmlPreAssembly(CvTerm outcome) {
         super(outcome);
@@ -37,11 +37,11 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
             this.sourceLocator = null;
         }
         else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
         }
     }
 
-    public void setSourceLocator(PsiXmLocator locator) {
+    public void setSourceLocator(PsiXmlLocator locator) {
         this.sourceLocator = locator;
     }
 
@@ -50,7 +50,7 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
         return "Pre-assembly: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
-    public void addAffectedInteractionRef(int affectedInteraction, PsiXmLocator locator){
+    public void addAffectedInteractionRef(int affectedInteraction, PsiXmlLocator locator){
         getAffectedInteractions().add(new ModelledInteractionRef(affectedInteraction, locator));
     }
 
@@ -58,9 +58,9 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
      * interaction ref for affected cooperative interaction
      */
     private class ModelledInteractionRef extends AbstractComplexRef {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
 
-        public ModelledInteractionRef(int ref, PsiXmLocator locator) {
+        public ModelledInteractionRef(int ref, PsiXmlLocator locator) {
             super(ref);
             this.sourceLocator = locator;
         }
@@ -109,12 +109,15 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
-        public void setSourceLocator(PsiXmLocator sourceLocator) {
+        public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
         }
     }

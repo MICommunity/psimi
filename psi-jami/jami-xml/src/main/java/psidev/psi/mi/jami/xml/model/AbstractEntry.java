@@ -27,7 +27,7 @@ import java.util.List;
  */
 @XmlTransient
 public abstract class AbstractEntry<T extends Interaction> extends Entry implements Locatable, FileSourceContext {
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private JAXBInteractorsWrapper interactorsWrapper;
     private JAXBInteractionsWrapper<T> interactionsWrapper;
     private JAXBAnnotationsWrapper annotationsWrapper;
@@ -47,7 +47,15 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = (PsiXmLocator)sourceLocator;
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }
     }
 
     public List<Interactor> getInteractors(){
@@ -102,7 +110,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
     @XmlType(name="interactorsWrapper")
     public static class JAXBInteractorsWrapper implements Locatable, FileSourceContext {
         private List<Interactor> interactors;
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -118,7 +126,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -127,8 +135,11 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -171,7 +182,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
     @XmlType(name="entryAnnotationsWrapper")
     public static class JAXBAnnotationsWrapper implements Locatable, FileSourceContext {
         private List<Annotation> annotations;
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -187,7 +198,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -196,8 +207,11 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -220,7 +234,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
     @XmlType(name="interactionsWrapper")
     public static class JAXBInteractionsWrapper<T extends Object> implements Locatable, FileSourceContext {
         private List<T> interactions;
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -236,7 +250,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -245,8 +259,11 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

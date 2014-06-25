@@ -22,7 +22,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlTransient
 public class XmlNucleciAcid extends DefaultNucleicAcid implements ExtendedPsiXmlInteractor, FileSourceContext {
     private int id;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     public XmlNucleciAcid(String name, CvTerm type) {
         super(name, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())));
@@ -126,12 +126,15 @@ public class XmlNucleciAcid extends DefaultNucleicAcid implements ExtendedPsiXml
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocator(PsiXmLocator sourceLocator) {
+    public void setSourceLocator(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 

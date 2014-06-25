@@ -30,7 +30,7 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
 
     private Organism organism;
     private CvTerm interactorType;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     NamesContainer namesContainer;
     InteractorXrefContainer xrefContainer;
     private String xmlSequence;
@@ -360,7 +360,7 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId());
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), getId());
         }
         return sourceLocator;
     }
@@ -369,12 +369,16 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            this.sourceLocator.setObjectId(getId());
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
         }
     }
 
-    public void setSourceLocation(PsiXmLocator sourceLocator) {
+    public void setSourceLocation(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 
@@ -395,7 +399,7 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="interactorAttributeWrapper")
     public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -415,7 +419,7 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -424,8 +428,11 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -531,7 +538,7 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.ROGID_MI, Checksum.ROGID)
                         || AnnotationUtils.doesAnnotationHaveTopic(a, Checksum.RIGID_MI, Checksum.RIGID)){
                     XmlChecksum checksum = new XmlChecksum(a.getTopic(), a.getValue() != null ? a.getValue() : PsiXmlUtils.UNSPECIFIED);
-                    checksum.setSourceLocator((PsiXmLocator)((FileSourceContext)a).getSourceLocator());
+                    checksum.setSourceLocator((PsiXmlLocator)((FileSourceContext)a).getSourceLocator());
                     checksums.add(checksum);
                     return false;
                 }

@@ -237,19 +237,9 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
+            super.setSourceLocator(new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), getId()));
         }
         return super.getSourceLocator();
-    }
-
-    @Override
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            super.setSourceLocator(null);
-        }
-        else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId()));
-        }
     }
 
     public List<BindingFeatures> getBindingFeatures() {
@@ -388,7 +378,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="modelledConfidenceWrapper30")
     public static class JAXBConfidenceWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -405,7 +395,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -415,7 +405,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -437,7 +427,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="modelledParameterWrapper")
     public static class JAXBParameterWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -454,7 +444,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -464,7 +454,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -486,7 +476,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="cooperativeEffectWrapper")
     public static class JAXBCooperativeEffectWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -503,7 +493,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -513,7 +503,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -538,7 +528,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="modelledCausalRelationshipWrapper")
     public static class JAXBCausalRelationshipWrapper implements Locatable, FileSourceContext {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -555,7 +545,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -565,7 +555,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -587,7 +577,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="bindingFeaturesWrapper")
     public static class JAXBBindingFeaturesWrapper implements Locatable, FileSourceContext{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -604,7 +594,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -614,7 +604,7 @@ public class XmlModelledInteraction extends AbstractXmlInteraction<ModelledParti
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

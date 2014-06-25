@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
@@ -83,7 +83,7 @@ public class XmlModelledParser extends AbstractPsiXmlParser<ModelledInteraction>
             if (getListener() != null){
                 FileSourceContext context = null;
                 if (availabilityList != null){
-                    context = new DefaultFileSourceContext(new PsiXmLocator(availabilityList.getLineNumber(), availabilityList.getColumnNumber(), null));
+                    context = new DefaultFileSourceContext(new PsiXmlLocator(availabilityList.getLineNumber(), availabilityList.getColumnNumber(), null));
                 }
                 getListener().onInvalidSyntax(context, new PsiXmlParserException("AvailabilityList elements does not contains any availability node. PSI-XML is not valid."));
             }

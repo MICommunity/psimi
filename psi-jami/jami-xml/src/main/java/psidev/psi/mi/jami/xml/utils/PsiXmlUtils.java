@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlAllostery;
 import psidev.psi.mi.jami.xml.model.extension.XmlCooperativityEvidence;
 import psidev.psi.mi.jami.xml.model.extension.XmlPreAssembly;
@@ -181,7 +181,7 @@ public class PsiXmlUtils {
                 if (preAssembly != null){
                     effect = new XmlPreAssembly(outcome.getTopic());
                     XmlPreAssembly preAssemblyEffect = (XmlPreAssembly)effect;
-                    preAssemblyEffect.setSourceLocator((PsiXmLocator)((FileSourceContext)preAssembly).getSourceLocator());
+                    preAssemblyEffect.setSourceLocator((PsiXmlLocator)((FileSourceContext)preAssembly).getSourceLocator());
 
                     // remove annotations
                     annots.remove(outcome);
@@ -191,7 +191,7 @@ public class PsiXmlUtils {
                     if (!affectedInteractions.isEmpty()){
                         for (Annotation ann : affectedInteractions){
                             try{
-                                preAssemblyEffect.addAffectedInteractionRef(Integer.parseInt(ann.getValue()), (PsiXmLocator) ((FileSourceContext) ann).getSourceLocator());
+                                preAssemblyEffect.addAffectedInteractionRef(Integer.parseInt(ann.getValue()), (PsiXmlLocator) ((FileSourceContext) ann).getSourceLocator());
                                 annots.remove(ann);
                             }
                             catch (NumberFormatException e){
@@ -212,8 +212,8 @@ public class PsiXmlUtils {
                             int refMolecule = Integer.parseInt(allostericMolecule.getValue());
                             effect = new XmlAllostery<MoleculeEffector>(outcome.getTopic());
                             xmlAllostery = (XmlAllostery)effect;
-                            xmlAllostery.setAllostericMoleculeRef(refMolecule, (PsiXmLocator)((FileSourceContext)allostericMolecule).getSourceLocator());
-                            xmlAllostery.setAllostericEffectorRef(refEffector, (PsiXmLocator)((FileSourceContext)allostericEffector).getSourceLocator());
+                            xmlAllostery.setAllostericMoleculeRef(refMolecule, (PsiXmlLocator)((FileSourceContext)allostericMolecule).getSourceLocator());
+                            xmlAllostery.setAllostericEffectorRef(refEffector, (PsiXmlLocator)((FileSourceContext)allostericEffector).getSourceLocator());
 
                             // remove annotations
                             annots.remove(allostery);
@@ -233,8 +233,8 @@ public class PsiXmlUtils {
                             int refMolecule = Integer.parseInt(allostericMolecule.getValue());
                             effect = new XmlAllostery<FeatureModificationEffector>(outcome.getTopic());
                             xmlAllostery = (XmlAllostery)effect;
-                            xmlAllostery.setAllostericMoleculeRef(refMolecule, (PsiXmLocator)((FileSourceContext)allostericMolecule).getSourceLocator());
-                            xmlAllostery.setAllostericPTMRef(refEffector, (PsiXmLocator)((FileSourceContext)allostericPTM).getSourceLocator());
+                            xmlAllostery.setAllostericMoleculeRef(refMolecule, (PsiXmlLocator)((FileSourceContext)allostericMolecule).getSourceLocator());
+                            xmlAllostery.setAllostericPTMRef(refEffector, (PsiXmlLocator)((FileSourceContext)allostericPTM).getSourceLocator());
 
                             // remove annotations
                             annots.remove(allostery);
@@ -253,7 +253,7 @@ public class PsiXmlUtils {
                     if (!affectedInteractions.isEmpty()){
                         for (Annotation ann : affectedInteractions){
                             try{
-                                xmlAllostery.addAffectedInteractionRef(Integer.parseInt(ann.getValue()), (PsiXmLocator) ((FileSourceContext) ann).getSourceLocator());
+                                xmlAllostery.addAffectedInteractionRef(Integer.parseInt(ann.getValue()), (PsiXmlLocator) ((FileSourceContext) ann).getSourceLocator());
                                 annots.remove(ann);
                             }
                             catch (NumberFormatException e){

@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.VariableParameter;
 import psidev.psi.mi.jami.model.VariableParameterValue;
 import psidev.psi.mi.jami.utils.comparator.experiment.UnambiguousVariableParameterComparator;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -29,7 +29,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlVariableParameter implements VariableParameter,FileSourceContext,Locatable {
 
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     @XmlLocation
     @XmlTransient
@@ -138,7 +138,7 @@ public class XmlVariableParameter implements VariableParameter,FileSourceContext
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -147,12 +147,15 @@ public class XmlVariableParameter implements VariableParameter,FileSourceContext
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocation(PsiXmLocator sourceLocator) {
+    public void setSourceLocation(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 
@@ -192,7 +195,7 @@ public class XmlVariableParameter implements VariableParameter,FileSourceContext
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="variableValuesWrapper")
     public static class JAXBVariableValueWrapper implements Locatable, FileSourceContext{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -213,7 +216,7 @@ public class XmlVariableParameter implements VariableParameter,FileSourceContext
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -222,8 +225,11 @@ public class XmlVariableParameter implements VariableParameter,FileSourceContext
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
