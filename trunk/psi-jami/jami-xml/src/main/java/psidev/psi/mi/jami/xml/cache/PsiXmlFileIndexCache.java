@@ -71,7 +71,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.file = file;
         this.version = version != null ? version : PsiXmlVersion.v2_5_4;
         this.interactionCategory = category != null ? category : InteractionCategory.evidence;
-        this.randomAccessFile = new RandomAccessFile(this.file, "r");
 
         this.mapOfReferencedAvailabilities = new HashMap<Integer, AbstractAvailability>();
 
@@ -523,6 +522,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     private <T extends Object> T loadFromFile(int id) throws IOException, JAXBException, XMLStreamException {
 
+        this.randomAccessFile = new RandomAccessFile(this.file, "r");
         InputStream in = Channels.newInputStream(this.randomAccessFile.getChannel().position(id));
         T obj = null;
         XMLStreamReader reader = null;
