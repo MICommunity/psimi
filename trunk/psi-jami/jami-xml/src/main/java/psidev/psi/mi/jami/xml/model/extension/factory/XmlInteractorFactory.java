@@ -106,7 +106,7 @@ public class XmlInteractorFactory extends InteractorFactory{
             }
 
             InteractorCloner.copyAndOverrideBasicInteractorProperties(source, reloadedInteractorDependingOnType);
-            ((FileSourceContext)reloadedInteractorDependingOnType).setSourceLocator((PsiXmLocator)source.getSourceLocator());
+            ((FileSourceContext)reloadedInteractorDependingOnType).setSourceLocator((PsiXmlLocator)source.getSourceLocator());
             reloadedInteractorDependingOnType.setId(source.getId());
 
             // we don't have any identifiers, we look back at the xrefs

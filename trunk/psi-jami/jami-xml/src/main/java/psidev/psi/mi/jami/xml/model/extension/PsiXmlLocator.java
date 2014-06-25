@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
+import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 
 /**
@@ -10,22 +11,31 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
  * @since <pre>22/07/13</pre>
  */
 
-public class PsiXmLocator extends FileSourceLocator implements org.xml.sax.Locator{
+public class PsiXmlLocator extends FileSourceLocator implements Locator{
 
     private Integer objectId;
+    private int characterOffset;
 
-    public PsiXmLocator(int lineNumber, int charNumber, Integer objectId) {
+    public PsiXmlLocator(int lineNumber, int charNumber, int offset) {
         super(lineNumber, charNumber);
+        this.characterOffset = offset;
+    }
+
+    public PsiXmlLocator(int lineNumber, int charNumber, Integer objectId) {
+        super(lineNumber, charNumber);
+        this.objectId = objectId;
     }
 
     public Integer getObjectId() {
         return objectId;
     }
 
+    @Override
     public String getPublicId() {
         return null;
     }
 
+    @Override
     public String getSystemId() {
         return null;
     }
@@ -36,6 +46,14 @@ public class PsiXmLocator extends FileSourceLocator implements org.xml.sax.Locat
 
     public void setObjectId(Integer objectId) {
         this.objectId = objectId;
+    }
+
+    public int getCharacterOffset() {
+        return characterOffset;
+    }
+
+    public void setCharacterOffset(int characterOffset) {
+        this.characterOffset = characterOffset;
     }
 
     public String toString() {

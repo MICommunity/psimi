@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.model.AbstractEntry;
 import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlSource;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlSource;
 import psidev.psi.mi.jami.xml.model.extension.xml300.Availability;
 import psidev.psi.mi.jami.xml.model.extension.xml300.XmlExperiment;
@@ -74,7 +74,7 @@ public class Entry extends AbstractEntry<Interaction> {
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
+            super.setSourceLocator(new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
         }
         return super.getSourceLocator();
     }
@@ -85,7 +85,7 @@ public class Entry extends AbstractEntry<Interaction> {
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
+            super.setSourceLocator(new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
         }
     }
 
@@ -100,7 +100,7 @@ public class Entry extends AbstractEntry<Interaction> {
     @XmlType(name="entryAvailabilitiesWrapper")
     public static class JAXBAvailabilitiesWrapper implements Locatable, FileSourceContext {
         private List<AbstractAvailability> availabilities;
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -116,7 +116,7 @@ public class Entry extends AbstractEntry<Interaction> {
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -126,7 +126,7 @@ public class Entry extends AbstractEntry<Interaction> {
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -149,7 +149,7 @@ public class Entry extends AbstractEntry<Interaction> {
     @XmlType(name="experimentsWrapper")
     public static class JAXBExperimentsWrapper implements Locatable, FileSourceContext {
         private List<Experiment> experiments;
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -165,7 +165,7 @@ public class Entry extends AbstractEntry<Interaction> {
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -175,7 +175,7 @@ public class Entry extends AbstractEntry<Interaction> {
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

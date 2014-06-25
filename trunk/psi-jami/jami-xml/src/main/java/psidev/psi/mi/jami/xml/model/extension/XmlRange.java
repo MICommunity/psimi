@@ -37,7 +37,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
     private boolean isLink;
     private ResultingSequence resultingSequence;
     private Participant participant;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     @XmlLocation
     @XmlTransient
     private Locator locator;
@@ -278,7 +278,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
          setResultingSequence(resultingSequence);
     }
 
-    public void setJAXBParticipantRef(int id, PsiXmLocator locator){
+    public void setJAXBParticipantRef(int id, PsiXmlLocator locator){
         if (this.participant == null){
             this.participant = new ParticipantRef(id, locator);
         }
@@ -296,7 +296,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -305,8 +305,11 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
@@ -338,9 +341,9 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
      * participant ref for a composite feature
      */
     private class ParticipantRef extends AbstractParticipantRef{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
 
-        public ParticipantRef(int ref, PsiXmLocator locator) {
+        public ParticipantRef(int ref, PsiXmlLocator locator) {
             super(ref);
             this.sourceLocator = locator;
         }
@@ -373,12 +376,15 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
-        public void setSourceLocator(PsiXmLocator sourceLocator) {
+        public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
         }
     }

@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class XmlBioactiveEntity extends DefaultBioactiveEntity implements ExtendedPsiXmlInteractor,FileSourceContext {
 
     private int id;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     public XmlBioactiveEntity(String name, CvTerm type) {
         super(name, type != null ? type : new XmlCvTerm(BioactiveEntity.BIOACTIVE_ENTITY, new XmlXref(CvTermUtils.createPsiMiDatabase(), BioactiveEntity.BIOACTIVE_ENTITY_MI, CvTermUtils.createIdentityQualifier())));
@@ -186,12 +186,16 @@ public class XmlBioactiveEntity extends DefaultBioactiveEntity implements Extend
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            this.sourceLocator.setObjectId(getId());
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
         }
     }
 
-    public void setSourceLocator(PsiXmLocator sourceLocator) {
+    public void setSourceLocator(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 

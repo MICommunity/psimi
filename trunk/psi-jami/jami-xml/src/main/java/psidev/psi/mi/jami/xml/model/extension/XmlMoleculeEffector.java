@@ -17,10 +17,10 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlTransient
 public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext {
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private ModelledParticipant participant;
 
-    public XmlMoleculeEffector(int participant, PsiXmLocator locator){
+    public XmlMoleculeEffector(int participant, PsiXmlLocator locator){
         this.participant = new MoleculeEffectorRef(participant, locator);
     }
 
@@ -40,12 +40,15 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocator(PsiXmLocator locator) {
+    public void setSourceLocator(PsiXmlLocator locator) {
         this.sourceLocator = locator;
     }
 
@@ -59,9 +62,9 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
      * participant ref for allosteric effector
      */
     private class MoleculeEffectorRef extends AbstractParticipantRef<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
 
-        public MoleculeEffectorRef(int ref, PsiXmLocator locator) {
+        public MoleculeEffectorRef(int ref, PsiXmlLocator locator) {
             super(ref);
             this.sourceLocator = locator;
         }
@@ -108,12 +111,15 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
-        public void setSourceLocator(PsiXmLocator sourceLocator) {
+        public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
         }
 

@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlTransient
 public class XmlChecksum extends DefaultChecksum implements FileSourceContext {
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     public XmlChecksum(CvTerm method, String value) {
         super(method, value);
@@ -30,12 +30,15 @@ public class XmlChecksum extends DefaultChecksum implements FileSourceContext {
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocator(PsiXmLocator locator) {
+    public void setSourceLocator(PsiXmlLocator locator) {
         this.sourceLocator = locator;
     }
 

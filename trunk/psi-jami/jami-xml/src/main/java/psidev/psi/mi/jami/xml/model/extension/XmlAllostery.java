@@ -17,7 +17,7 @@ import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
  */
 
 public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperativeEffect implements FileSourceContext {
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private CvTerm allostericMechanism;
     private CvTerm allosteryType;
     private ModelledParticipant allostericMolecule;
@@ -39,12 +39,15 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getColumnNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocator(PsiXmLocator locator) {
+    public void setSourceLocator(PsiXmlLocator locator) {
         this.sourceLocator = locator;
     }
 
@@ -91,19 +94,19 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         this.allostericEffector = effector;
     }
 
-    public void addAffectedInteractionRef(int affectedInteraction, PsiXmLocator locator){
+    public void addAffectedInteractionRef(int affectedInteraction, PsiXmlLocator locator){
         getAffectedInteractions().add(new ModelledInteractionRef(affectedInteraction, locator));
     }
 
-    public void setAllostericMoleculeRef(int ref, PsiXmLocator locator){
+    public void setAllostericMoleculeRef(int ref, PsiXmlLocator locator){
        this.allostericMolecule = new AllostericMoleculeRef(ref, locator);
     }
 
-    public void setAllostericPTMRef(int ref, PsiXmLocator locator){
+    public void setAllostericPTMRef(int ref, PsiXmlLocator locator){
         this.allostericEffector = (T)new XmlFeatureModificationEffector(ref, locator);
     }
 
-    public void setAllostericEffectorRef(int ref, PsiXmLocator locator){
+    public void setAllostericEffectorRef(int ref, PsiXmlLocator locator){
         this.allostericEffector = (T)new XmlMoleculeEffector(ref, locator);
     }
 
@@ -113,9 +116,9 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
      * participant ref for allosteric molecule
      */
     private class AllostericMoleculeRef extends AbstractParticipantRef<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
 
-        public AllostericMoleculeRef(int ref, PsiXmLocator locator) {
+        public AllostericMoleculeRef(int ref, PsiXmlLocator locator) {
             super(ref);
             this.sourceLocator = locator;
         }
@@ -163,12 +166,15 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
-        public void setSourceLocator(PsiXmLocator sourceLocator) {
+        public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
         }
 
@@ -201,9 +207,9 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
      * interaction ref for affected cooperative interaction
      */
     private class ModelledInteractionRef extends AbstractComplexRef {
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
 
-        public ModelledInteractionRef(int ref, PsiXmLocator locator) {
+        public ModelledInteractionRef(int ref, PsiXmlLocator locator) {
             super(ref);
             this.sourceLocator = locator;
         }
@@ -252,12 +258,15 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
-        public void setSourceLocator(PsiXmLocator sourceLocator) {
+        public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
         }
     }

@@ -63,7 +63,7 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction> {
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
+            super.setSourceLocator(new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
         }
         return super.getSourceLocator();
     }
@@ -74,7 +74,7 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction> {
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
+            super.setSourceLocator(new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
         }
     }
 
@@ -83,7 +83,7 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction> {
     @XmlType(name="modelledExperimentsWrapper")
     public static class JAXBExperimentsWrapper implements Locatable, FileSourceContext {
         private List<Experiment> experiments;
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -99,7 +99,7 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction> {
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -109,7 +109,7 @@ public class ModelledEntry extends AbstractEntry<ModelledInteraction> {
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

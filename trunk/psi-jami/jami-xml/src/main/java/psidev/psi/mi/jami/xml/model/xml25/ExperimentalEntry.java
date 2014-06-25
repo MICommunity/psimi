@@ -67,7 +67,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
     @Override
     public FileSourceLocator getSourceLocator() {
         if (super.getSourceLocator() == null && locator != null){
-            super.setSourceLocator(new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
+            super.setSourceLocator(new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null));
         }
         return super.getSourceLocator();
     }
@@ -78,7 +78,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
             super.setSourceLocator(null);
         }
         else{
-            super.setSourceLocator(new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
+            super.setSourceLocator(new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null));
         }
     }
 
@@ -93,7 +93,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
     @XmlType(name="entryAvailabilitiesWrapper")
     public static class JAXBAvailabilitiesWrapper implements Locatable, FileSourceContext {
         private List<AbstractAvailability> availabilities;
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -109,7 +109,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -119,7 +119,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 
@@ -142,7 +142,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
     @XmlType(name="experimentsWrapper")
     public static class JAXBExperimentsWrapper implements Locatable, FileSourceContext {
         private List<Experiment> experiments;
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -158,7 +158,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -168,7 +168,7 @@ public class ExperimentalEntry extends AbstractEntry<InteractionEvidence> {
                 this.sourceLocator = null;
             }
             else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

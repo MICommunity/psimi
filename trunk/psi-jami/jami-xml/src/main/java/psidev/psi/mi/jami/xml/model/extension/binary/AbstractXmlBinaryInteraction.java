@@ -7,10 +7,8 @@ import psidev.psi.mi.jami.model.Alias;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.model.Entry;
-import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
-import psidev.psi.mi.jami.xml.model.extension.PsiXmLocator;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmlInteraction;
-import psidev.psi.mi.jami.xml.model.extension.xml300.BindingFeatures;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -27,7 +25,7 @@ import java.util.List;
 public abstract class AbstractXmlBinaryInteraction<P extends Participant> extends AbstractBinaryInteraction<P>
         implements PsiXmlInteraction<P>, FileSourceContext {
 
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private String fullName;
     private List<Alias> aliases;
     private Entry entry;
@@ -86,7 +84,7 @@ public abstract class AbstractXmlBinaryInteraction<P extends Participant> extend
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = (PsiXmLocator)sourceLocator;
+        this.sourceLocator = (PsiXmlLocator)sourceLocator;
     }
 
     public boolean isIntraMolecular(){

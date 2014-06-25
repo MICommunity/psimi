@@ -26,7 +26,7 @@ public class XmlComplex extends DefaultComplex implements ExtendedPsiXmlInteract
         ExtendedPsiXmlInteraction<ModelledParticipant> {
 
     private int id;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private List<CvTerm> interactionTypes;
     private Entry entry;
     private Boolean intraMolecular;
@@ -235,12 +235,16 @@ public class XmlComplex extends DefaultComplex implements ExtendedPsiXmlInteract
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            this.sourceLocator.setObjectId(getId());
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
         }
     }
 
-    public void setSourceLocator(PsiXmLocator sourceLocator) {
+    public void setSourceLocator(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 

@@ -29,7 +29,7 @@ public abstract class AbstractXmlAnnotation implements Annotation, FileSourceCon
 
     private CvTerm topic;
     private String value;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     @XmlLocation
     @XmlTransient
@@ -118,7 +118,7 @@ public abstract class AbstractXmlAnnotation implements Annotation, FileSourceCon
 
     public FileSourceLocator getSourceLocator() {
         if (sourceLocator == null && locator != null){
-            sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
         }
         return sourceLocator;
     }
@@ -127,8 +127,11 @@ public abstract class AbstractXmlAnnotation implements Annotation, FileSourceCon
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 

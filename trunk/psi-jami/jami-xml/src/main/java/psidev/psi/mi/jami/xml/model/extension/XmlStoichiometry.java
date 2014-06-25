@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlTransient
 public class XmlStoichiometry extends DefaultStoichiometry implements FileSourceContext {
 
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     public XmlStoichiometry(int value) {
         super(value);
@@ -34,12 +34,15 @@ public class XmlStoichiometry extends DefaultStoichiometry implements FileSource
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
         }
     }
 
-    public void setSourceLocator(PsiXmLocator sourceLocator) {
+    public void setSourceLocator(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 

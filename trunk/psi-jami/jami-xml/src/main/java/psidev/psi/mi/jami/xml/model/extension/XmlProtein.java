@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class XmlProtein extends DefaultProtein implements ExtendedPsiXmlInteractor, FileSourceContext {
 
     private int id;
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     public XmlProtein(String name, CvTerm type) {
         super(name, type != null ? type : new XmlCvTerm(Protein.PROTEIN, new XmlXref(CvTermUtils.createPsiMiDatabase(),Protein.PROTEIN_MI, CvTermUtils.createIdentityQualifier())));
@@ -127,12 +127,16 @@ public class XmlProtein extends DefaultProtein implements ExtendedPsiXmlInteract
         if (sourceLocator == null){
             this.sourceLocator = null;
         }
-        else{
-            this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), id);
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            this.sourceLocator.setObjectId(getId());
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
         }
     }
 
-    public void setSourceLocator(PsiXmLocator sourceLocator) {
+    public void setSourceLocator(PsiXmlLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
     }
 

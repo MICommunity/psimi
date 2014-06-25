@@ -32,7 +32,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     private CvTermXrefContainer xrefContainer;
     private NamesContainer namesContainer;
 
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
     private JAXBAttributeWrapper jaxbAttributeWrapper;
 
     public AbstractXmlCvTerm(){
@@ -140,7 +140,15 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = (PsiXmLocator)sourceLocator;
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }
     }
 
     @Override
@@ -232,7 +240,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
     @XmlAccessorType(XmlAccessType.NONE)
     @XmlType(name="cvAnnotationWrapper")
     public static class JAXBAttributeWrapper implements Locatable, FileSourceContext{
-        private PsiXmLocator sourceLocator;
+        private PsiXmlLocator sourceLocator;
         @XmlLocation
         @XmlTransient
         private Locator locator;
@@ -249,7 +257,7 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
 
         public FileSourceLocator getSourceLocator() {
             if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
             }
             return sourceLocator;
         }
@@ -258,8 +266,11 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
             if (sourceLocator == null){
                 this.sourceLocator = null;
             }
-            else{
-                this.sourceLocator = new PsiXmLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
             }
         }
 

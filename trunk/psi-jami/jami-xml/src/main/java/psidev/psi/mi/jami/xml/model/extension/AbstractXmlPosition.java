@@ -24,7 +24,7 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
     private CvTerm status;
     private boolean isPositionUndetermined;
 
-    private PsiXmLocator sourceLocator;
+    private PsiXmlLocator sourceLocator;
 
     protected AbstractXmlPosition() {
     }
@@ -59,7 +59,15 @@ public abstract class AbstractXmlPosition implements Position, FileSourceContext
     }
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
-        this.sourceLocator = (PsiXmLocator)sourceLocator;
+        if (sourceLocator == null){
+            this.sourceLocator = null;
+        }
+        else if (sourceLocator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        }
+        else {
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+        }
     }
 
     @Override
