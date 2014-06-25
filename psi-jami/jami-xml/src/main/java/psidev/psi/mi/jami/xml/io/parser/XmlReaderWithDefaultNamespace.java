@@ -37,14 +37,6 @@ public class XmlReaderWithDefaultNamespace extends StreamReaderDelegate{
     }
 
     @Override
-    public String getAttributeNamespace(int arg0) {
-        String namespace = super.getAttributeNamespace(arg0);
-        if (namespace == null || namespace.length() == 0){
-            return this.usedNamespaceUri;
-        }
-        return namespace;
-    }
-    @Override
     public String getNamespaceURI() {
         String URI = super.getNamespaceURI();
         if (URI == null || URI.length() == 0){

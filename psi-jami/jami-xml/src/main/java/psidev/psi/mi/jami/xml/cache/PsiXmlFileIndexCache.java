@@ -155,6 +155,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     @Override
     public void registerInteraction(int id, Interaction object) {
+        this.currentExperiment = null;
         this.currentInteraction = object;
         this.interactionWeakMap.put(id, object);
         if (!this.interactionPositions.containsKey(id)){
