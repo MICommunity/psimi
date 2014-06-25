@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.io.parser.JaxbUnmarshallerFactory;
+import psidev.psi.mi.jami.xml.io.parser.NonCloseableInputStreamWrapper;
 import psidev.psi.mi.jami.xml.io.parser.XmlReaderWithDefaultNamespace;
 import psidev.psi.mi.jami.xml.listener.XmlLocationListener;
 import psidev.psi.mi.jami.xml.model.extension.*;
@@ -71,6 +72,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
             throw new IllegalArgumentException("The file index cache needs the unmarshaller to unmarshall partial object from file cache.");
         }
         this.unmarshaller = unmarshaller;
+        this.randomAccessFile = new RandomAccessFile(this.file, "r");
 
         this.mapOfReferencedAvailabilities = new HashMap<Integer, AbstractAvailability>();
 
@@ -523,8 +525,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     private <T extends Object> T loadFromFile(int id) throws IOException, JAXBException, XMLStreamException {
 
-        this.randomAccessFile = new RandomAccessFile(this.file, "r");
-        InputStream in = Channels.newInputStream(this.randomAccessFile.getChannel().position(id));
+        InputStream in = new NonCloseableInputStreamWrapper(Channels.newInputStream(this.randomAccessFile.getChannel().position(id)));
         T obj = null;
         XMLStreamReader reader = null;
         try{
@@ -543,7 +544,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
             if (reader != null){
                 reader.close();
             }
-            in.close();
         }
         return obj;
     }
