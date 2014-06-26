@@ -1,12 +1,17 @@
 package psidev.psi.mi.jami.tab.extension.datasource;
 
-import psidev.psi.mi.jami.datasource.*;
+import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.SourceCategory;
 import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.factory.InteractorFactory;
+import psidev.psi.mi.jami.factory.options.MIDataSourceOptions;
 import psidev.psi.mi.jami.factory.options.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.extension.MitabSource;
+import psidev.psi.mi.jami.tab.io.parser.AbstractInteractionLineParser;
 import psidev.psi.mi.jami.tab.io.parser.MitabLineParser;
 import psidev.psi.mi.jami.tab.io.parser.ParseException;
 import psidev.psi.mi.jami.tab.listener.MitabParserListener;
@@ -36,7 +41,7 @@ import java.util.logging.Logger;
 public abstract class AbstractMitabStreamSource<T extends Interaction, P extends Participant, F extends Feature> implements MitabStreamSource<T>{
 
     private static final Logger logger = Logger.getLogger("AbstractMitabStreamSource");
-    private MitabLineParser<T,P,F> lineParser;
+    private AbstractInteractionLineParser<T,P,F> lineParser;
     private boolean isInitialised = false;
 
     private URL originalURL;
@@ -48,6 +53,8 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
 
     private MitabParserListener parserListener;
     private MIFileParserListener defaultParserListener;
+
+    private InteractorFactory interactorFactory;
 
     /**
      * Empty constructor for the factory
@@ -151,6 +158,10 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
             setMIFileParserListener((MIFileParserListener) options.get(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY));
         }
 
+        if (options.containsKey(MIDataSourceOptions.INTERACTOR_FACTORY_OPTION_KEY)){
+            setInteractorFactory((InteractorFactory) options.get(MIDataSourceOptions.INTERACTOR_FACTORY_OPTION_KEY));
+        }
+
         isInitialised = true;
     }
 
@@ -174,6 +185,7 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
                     isInitialised = false;
                     isValid = null;
                     isInitialised = false;
+                    this.interactorFactory = null;
                 }
             }
             else if (this.originalReader != null){
@@ -193,6 +205,7 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
                     isInitialised = false;
                     isValid = null;
                     isInitialised = false;
+                    this.interactorFactory = null;
                 }
             }
             else{
@@ -206,6 +219,7 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
                 isInitialised = false;
                 isValid = null;
                 isInitialised = false;
+                this.interactorFactory = null;
             }
         }
     }
@@ -222,6 +236,7 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
             isInitialised = false;
             isValid = null;
             isInitialised = false;
+            this.interactorFactory = null;
         }
     }
 
@@ -538,13 +553,25 @@ public abstract class AbstractMitabStreamSource<T extends Interaction, P extends
         return createMitabIterator();
     }
 
+    public InteractorFactory getInteractorFactory() {
+        return interactorFactory;
+    }
+
+    public void setInteractorFactory(InteractorFactory interactorFactory) {
+        this.interactorFactory = interactorFactory;
+        if (this.lineParser != null){
+            this.lineParser.setInteractorFactory(interactorFactory);
+        }
+    }
+
     protected MitabLineParser<T,P,F> getLineParser() {
         return lineParser;
     }
 
-    protected void setLineParser(MitabLineParser<T,P,F> lineParser) {
+    protected void setLineParser(AbstractInteractionLineParser<T,P,F> lineParser) {
         this.lineParser = lineParser;
         this.lineParser.setParserListener(this);
+        this.lineParser.setInteractorFactory(this.interactorFactory);
     }
 
     protected abstract void initialiseMitabLineParser(Reader reader);

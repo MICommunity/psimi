@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.tab.io.parser;
 
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.factory.InteractorFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.tab.extension.*;
 import psidev.psi.mi.jami.tab.extension.factory.MitabInteractorFactory;
@@ -28,7 +29,7 @@ import java.util.regex.Pattern;
 public abstract class AbstractInteractionLineParser<T extends Interaction, P extends Participant, F extends Feature> extends MitabLineParser<T,P,F> {
 
     private MitabParserListener listener;
-    private MitabInteractorFactory interactorFactory;
+    private InteractorFactory interactorFactory;
     private boolean hasFinished = false;
     private StringBuilder builder = new StringBuilder(82);
 
@@ -60,14 +61,14 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
         this.listener = listener;
     }
 
-    public MitabInteractorFactory getInteractorFactory() {
+    public InteractorFactory getInteractorFactory() {
         if (interactorFactory == null){
             interactorFactory = new MitabInteractorFactory();
         }
         return interactorFactory;
     }
 
-    public void setInteractorFactory(MitabInteractorFactory interactorFactory) {
+    public void setInteractorFactory(InteractorFactory interactorFactory) {
         this.interactorFactory = interactorFactory;
     }
 
@@ -176,7 +177,12 @@ public abstract class AbstractInteractionLineParser<T extends Interaction, P ext
         }
 
         // find interactor type
-        interactor = getInteractorFactory().createInteractorFromInteractorTypes(type, shortName);
+        if (getInteractorFactory() instanceof MitabInteractorFactory){
+            interactor = ((MitabInteractorFactory)getInteractorFactory()).createInteractorFromInteractorTypes(type, shortName);
+        }
+        else if (!type.isEmpty()){
+            interactor = getInteractorFactory().createInteractorFromInteractorType(type.iterator().next(), shortName);
+        }
         // we don't have an interactor type, use identifiers
         if (interactor == null && !uniqueId.isEmpty()){
             interactor = getInteractorFactory().createInteractorFromIdentityXrefs(uniqueId, shortName);
