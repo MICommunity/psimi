@@ -1008,7 +1008,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             if (this.originalFile != null){
                 try {
                     this.indexOfObjects = new PsiXmlFileIndexCache(this.originalFile, this.unmarshaller, this.version);
-                } catch (FileNotFoundException e) {
+                } catch (IOException e) {
                     logger.log(Level.SEVERE, "cannot instantiate file index cache so will instantiate memory cache", e);
                     this.indexOfObjects = new InMemoryPsiXmlCache();
                 }

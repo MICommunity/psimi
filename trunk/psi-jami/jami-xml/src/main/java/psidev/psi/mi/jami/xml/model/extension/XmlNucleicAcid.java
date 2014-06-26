@@ -128,9 +128,10 @@ public class XmlNucleicAcid extends DefaultNucleicAcid implements ExtendedPsiXml
         }
         else if (sourceLocator instanceof PsiXmlLocator){
             this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            this.sourceLocator.setObjectId(getId());
         }
         else {
-            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
         }
     }
 

@@ -135,9 +135,10 @@ public class XmlGene extends DefaultGene implements ExtendedPsiXmlInteractor, Fi
         }
         else if (sourceLocator instanceof PsiXmlLocator){
             this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            this.sourceLocator.setObjectId(getId());
         }
         else {
-            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
         }
     }
 
