@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.factory.InteractorFactory;
+import psidev.psi.mi.jami.factory.DefaultInteractorFactory;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
@@ -21,20 +21,20 @@ import java.util.Collection;
 
 public abstract class AbstractBipartiteExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractComplexExpansionMethod<T,B> {
 
-    private InteractorFactory interactorFactory;
+    private DefaultInteractorFactory interactorFactory;
 
     public AbstractBipartiteExpansion(){
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.BIPARTITE_EXPANSION, ComplexExpansionMethod.BIPARTITE_EXPANSION_MI));
     }
 
-    public InteractorFactory getInteractorFactory() {
+    public DefaultInteractorFactory getInteractorFactory() {
         if (this.interactorFactory == null){
-            this.interactorFactory = new InteractorFactory();
+            this.interactorFactory = new DefaultInteractorFactory();
         }
         return interactorFactory;
     }
 
-    public void setInteractorFactory(InteractorFactory interactorFactory) {
+    public void setInteractorFactory(DefaultInteractorFactory interactorFactory) {
         this.interactorFactory = interactorFactory;
     }
 

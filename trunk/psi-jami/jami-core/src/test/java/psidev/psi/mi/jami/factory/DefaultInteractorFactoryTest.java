@@ -10,16 +10,16 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import java.util.Arrays;
 
 /**
- * Unit tester for InteractorFactory
+ * Unit tester for DefaultInteractorFactory
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>21/06/13</pre>
  */
 
-public class InteractorFactoryTest {
+public class DefaultInteractorFactoryTest {
 
-    private InteractorFactory interactorFactory = new InteractorFactory();
+    private DefaultInteractorFactory interactorFactory = new DefaultInteractorFactory();
 
     @Test
     public void test_interactor_type_null(){

@@ -21,7 +21,7 @@ public class DefaultInteractorSetTest {
 
         InteractorPool interactor = new DefaultInteractorPool("test");
 
-        Assert.assertEquals(CvTermUtils.createUnknownInteractorType(), interactor.getInteractorType());
+        Assert.assertEquals(CvTermUtils.createMoleculeSetType(), interactor.getInteractorType());
         Assert.assertEquals("test", interactor.getShortName());
         Assert.assertNotNull(interactor.getAliases());
         Assert.assertNotNull(interactor.getIdentifiers());
