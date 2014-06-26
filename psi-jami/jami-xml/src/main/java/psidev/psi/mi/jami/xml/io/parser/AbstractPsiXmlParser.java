@@ -15,7 +15,6 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlFileIndexCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.listener.XmlLocationListener;
 import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
@@ -991,7 +990,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
 
         // create unmarshaller knowing the version
         this.unmarshaller = createJAXBUnmarshaller();
-        this.unmarshaller.setListener(new XmlLocationListener(this.streamReader));
 
         entryContext.clear();
         this.hasReadEntrySet = true;
