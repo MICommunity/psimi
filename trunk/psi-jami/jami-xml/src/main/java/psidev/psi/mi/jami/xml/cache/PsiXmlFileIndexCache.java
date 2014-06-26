@@ -514,31 +514,28 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         try{
             fis = new CountingInputStream(new FileInputStream( f ));
 
-            char[] c = new char[1];
             long startPos = 0;
-            int read;
+            byte read = ' ';
             boolean recording = false;
             byte[] buf = new byte[1];
-
-            char x = ' ';
 
             int currentId = -1;
             long currentExperimentPost = 0;
             long currentInteractionPos = 0;
 
             while ( -1 != nextByte(fis, buf)) {
-                x = c[0];
+                read = buf[0];
 
                 if ( recording ) {
-                    if ( !isAlphabeticalChar( x ) ) {
-                        if ( x == '/' ) {
+                    if ( !isAlphabeticalChar( read ) ) {
+                        if ( read == '/' ) {
 
                             // search for '>' and that's our position
                             while ( -1 != nextByte(fis, buf) ) {
-                                x = c[0];
-                                if ( isAlphabeticalChar( x ) ) {
-                                    sb.append( x );
-                                } else if ( x == '>' ) {
+                                read = buf[0];
+                                if ( isAlphabeticalChar( read ) ) {
+                                    sb.append( read );
+                                } else if ( read == '>' ) {
                                     break;
                                 }
                             }
@@ -546,20 +543,20 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                             // it was a closing tag (<abc/> or </abc> ... problem will occur with <abc />)
                             recording = false;
 
-                        } else if ( x == '!' ) {
+                        } else if ( read == '!' ) {
 
                             // This is the beginning of a comments.
                             // Now fast forward until the end of the comment: '-->'
                             recording = false;
 
-                            char c1 = ' ',
+                            byte c1 = ' ',
                                     c2 = ' ',
                                     c3 = ' ';
                             logger.fine("Skiping comment");
                             while ( -1 != nextByte(fis, buf) ) {
                                 c1 = c2;
                                 c2 = c3;
-                                c3 = c[0];
+                                c3 = buf[0];
 
                                 if ( c1 == '-' && c2 == '-' && c3 == '>' ) {
                                     // found it
@@ -573,7 +570,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
                             if ( "experimentDescription".equalsIgnoreCase( sb.toString() ) ) {
 
-                                int result = getId( fis, c, buf );
+                                int result = getId( fis, buf );
                                 currentId = result;
                                 currentExperimentPost = startPos;
 
@@ -581,14 +578,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
                             } else if ( "interactor".equalsIgnoreCase( sb.toString() ) ) {
 
-                                int result = getId( fis, c, buf );
+                                int result = getId( fis, buf );
                                 currentId = result;
 
                                 this.interactorPositions.put(currentId, startPos);
 
                             } else if ( "interaction".equalsIgnoreCase( sb.toString() ) ) {
 
-                                int result = getId( fis, c, buf );
+                                int result = getId( fis, buf );
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
@@ -597,7 +594,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                             }
                             else if ( "abstractInteraction".equalsIgnoreCase( sb.toString() ) ) {
 
-                                int result = getId( fis, c, buf );
+                                int result = getId( fis,buf );
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
@@ -605,14 +602,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
                             }else if ( "participant".equalsIgnoreCase( sb.toString() ) ) {
 
-                                int result = getId( fis, c, buf );
+                                int result = getId( fis, buf );
                                 currentId = result;
 
                                 this.interactionPositions.put(currentId, currentInteractionPos);
 
                             } else if ( "feature".equalsIgnoreCase( sb.toString() ) ) {
 
-                                int result = getId( fis, c, buf );
+                                int result = getId( fis, buf );
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
@@ -620,7 +617,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                             }
                             else if ( "variableValue".equalsIgnoreCase( sb.toString() ) ) {
 
-                                int result = getId( fis, c, buf );
+                                int result = getId( fis, buf );
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
@@ -631,11 +628,11 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                         }
                     } else {
                         // add alphabetical char
-                        sb.append( x );
+                        sb.append( new String(buf) );
                     }
                 }
 
-                if ( x == '<' ) {
+                if ( read == '<' ) {
                     // start recording
                     startPos = fis.getByteCount() -1; // we want the '<' included
                     recording = true;
@@ -656,16 +653,15 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         }
     }
 
-    private int getId( CountingInputStream r, char[] c,  byte[] buf) throws IOException {
+    private int getId( CountingInputStream r, byte[] buf) throws IOException {
 
         int id = -1;
-        int read;
 
         StringBuilder sb = new StringBuilder( 20 );
         while ( -1 != nextByte(r, buf) ) {
 
-            char x = c[0];
-            if ( x == '>' ) {
+            byte read = buf[0];
+            if ( read == '>' ) {
                 // completed the tag, extract the id
                 Matcher matcher = ID_PATTERN.matcher( sb.toString() );
                 if ( matcher.matches() ) {
@@ -675,14 +671,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
                 break; // stop here
             } else {
-                sb.append( x );
+                sb.append( new String(buf) );
             }
         }
 
         return id;
     }
 
-    private boolean isAlphabeticalChar( char c ) {
+    private boolean isAlphabeticalChar( byte c ) {
         return ( ( c >= 'a' && c <= 'z' ) || ( ( c >= 'A' && c <= 'Z' ) ) );
     }
 
