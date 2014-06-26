@@ -4,6 +4,7 @@ import org.codehaus.stax2.XMLInputFactory2;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.io.parser.JaxbUnmarshallerFactory;
 import psidev.psi.mi.jami.xml.io.parser.NonCloseableInputStreamWrapper;
 import psidev.psi.mi.jami.xml.io.parser.XmlReaderWithDefaultNamespace;
@@ -224,7 +225,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         }
         else {
             try {
-                return loadFromFile(this.interactorPositions.get(id));
+                AbstractXmlInteractor interactor = loadFromFile(this.interactorPositions.get(id));
+                return XmlEntryContext.getInstance().getInteractorFactory().createInteractorFromXmlInteractorInstance(interactor);
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "cannot reload interactor "+id, e);
             } catch (JAXBException e) {
