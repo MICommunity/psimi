@@ -405,14 +405,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
         this.mapOfReferencedAvailabilities.clear();
 
-        this.experimentPositions.clear();
-        this.interactorPositions.clear();
-        this.interactionPositions.clear();
-        this.complexPositions.clear();
-        this.participantPositions.clear();
-        this.featurePositions.clear();
-        this.variableParameterValuePositions.clear();
-
         this.experimentWeakMap.clear();
         this.interactorWeakMap.clear();
         this.interactionWeakMap.clear();
@@ -425,6 +417,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     @Override
     public void close() {
         clear();
+
+        this.experimentPositions.clear();
+        this.interactorPositions.clear();
+        this.interactionPositions.clear();
+        this.complexPositions.clear();
+        this.participantPositions.clear();
+        this.featurePositions.clear();
+        this.variableParameterValuePositions.clear();
 
         try {
             this.randomAccessFile.close();
