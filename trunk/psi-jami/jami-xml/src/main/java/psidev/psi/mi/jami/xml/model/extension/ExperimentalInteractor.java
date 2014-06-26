@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.model.reference.AbstractExperimentRef;
@@ -53,7 +54,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
     private JAXBExperimentRefWrapper jaxbExperimentRefWrapper;
 
     public ExperimentalInteractor() {
-        this.interactorFactory = new XmlInteractorFactory();
+        this.interactorFactory =  XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public Interactor getInteractor() {

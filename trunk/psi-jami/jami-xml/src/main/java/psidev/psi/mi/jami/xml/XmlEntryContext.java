@@ -3,11 +3,12 @@ package psidev.psi.mi.jami.xml;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.model.Entry;
 import psidev.psi.mi.jami.xml.model.extension.AbstractAvailability;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteractionParticipant;
-import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.model.extension.xml300.BindingFeatures;
 import psidev.psi.mi.jami.xml.model.reference.XmlIdReference;
 
@@ -33,6 +34,7 @@ public class XmlEntryContext {
     private Collection<BindingFeatures> bindingFeatures;
     private Entry currentEntry;
     private PsiXmlParserListener listener;
+    private XmlInteractorFactory interactorFactory;
 
     private XmlEntryContext(){
     }
@@ -67,6 +69,18 @@ public class XmlEntryContext {
         if (this.bindingFeatures != null){
             this.bindingFeatures.clear();
         }
+        this.interactorFactory = null;
+    }
+
+    public XmlInteractorFactory getInteractorFactory() {
+        if (this.interactorFactory == null){
+            this.interactorFactory = new XmlInteractorFactory();
+        }
+        return interactorFactory;
+    }
+
+    public void setInteractorFactory(XmlInteractorFactory interactorFactory) {
+        this.interactorFactory = interactorFactory;
     }
 
     public Entry getCurrentEntry() {

@@ -20,71 +20,71 @@ import javax.xml.bind.annotation.XmlTransient;
  * @since <pre>24/07/13</pre>
  */
 @XmlTransient
-public class XmlNucleciAcid extends DefaultNucleicAcid implements ExtendedPsiXmlInteractor, FileSourceContext {
+public class XmlNucleicAcid extends DefaultNucleicAcid implements ExtendedPsiXmlInteractor, FileSourceContext {
     private int id;
     private PsiXmlLocator sourceLocator;
 
-    public XmlNucleciAcid(String name, CvTerm type) {
+    public XmlNucleicAcid(String name, CvTerm type) {
         super(name, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())));
     }
 
-    public XmlNucleciAcid(String name, String fullName, CvTerm type) {
+    public XmlNucleicAcid(String name, String fullName, CvTerm type) {
         super(name, fullName, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())));
     }
 
-    public XmlNucleciAcid(String name, CvTerm type, Organism organism) {
+    public XmlNucleicAcid(String name, CvTerm type, Organism organism) {
         super(name, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
-    public XmlNucleciAcid(String name, String fullName, CvTerm type, Organism organism) {
+    public XmlNucleicAcid(String name, String fullName, CvTerm type, Organism organism) {
         super(name, fullName, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
-    public XmlNucleciAcid(String name, CvTerm type, Xref uniqueId) {
+    public XmlNucleicAcid(String name, CvTerm type, Xref uniqueId) {
         super(name, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
-    public XmlNucleciAcid(String name, String fullName, CvTerm type, Xref uniqueId) {
+    public XmlNucleicAcid(String name, String fullName, CvTerm type, Xref uniqueId) {
         super(name, fullName, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
-    public XmlNucleciAcid(String name, CvTerm type, Organism organism, Xref uniqueId) {
+    public XmlNucleicAcid(String name, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
-    public XmlNucleciAcid(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
+    public XmlNucleicAcid(String name, String fullName, CvTerm type, Organism organism, Xref uniqueId) {
         super(name, fullName, type != null ? type : new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
-    public XmlNucleciAcid(String name) {
+    public XmlNucleicAcid(String name) {
         super(name, new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())));
     }
 
-    public XmlNucleciAcid(String name, String fullName) {
+    public XmlNucleicAcid(String name, String fullName) {
         super(name, fullName, new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())));
     }
 
-    public XmlNucleciAcid(String name, Organism organism) {
+    public XmlNucleicAcid(String name, Organism organism) {
         super(name, new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
-    public XmlNucleciAcid(String name, String fullName, Organism organism) {
+    public XmlNucleicAcid(String name, String fullName, Organism organism) {
         super(name, fullName, new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), organism);
     }
 
-    public XmlNucleciAcid(String name, Xref uniqueId) {
+    public XmlNucleicAcid(String name, Xref uniqueId) {
         super(name, new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
-    public XmlNucleciAcid(String name, String fullName, Xref uniqueId) {
+    public XmlNucleicAcid(String name, String fullName, Xref uniqueId) {
         super(name, fullName, new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), uniqueId);
     }
 
-    public XmlNucleciAcid(String name, Organism organism, Xref uniqueId) {
+    public XmlNucleicAcid(String name, Organism organism, Xref uniqueId) {
         super(name, new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 
-    public XmlNucleciAcid(String name, String fullName, Organism organism, Xref uniqueId) {
+    public XmlNucleicAcid(String name, String fullName, Organism organism, Xref uniqueId) {
         super(name, fullName, new XmlCvTerm(NucleicAcid.NULCEIC_ACID, new XmlXref(CvTermUtils.createPsiMiDatabase(),NucleicAcid.NULCEIC_ACID_MI, CvTermUtils.createIdentityQualifier())), organism, uniqueId);
     }
 

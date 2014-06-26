@@ -77,7 +77,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         }
         this.originalFile = file;
         loadedInteractions = new ArrayList<Integer>();
-        this.interactorFactory = new XmlInteractorFactory();
     }
 
     public AbstractPsiXmlParser(InputStream inputStream) {
@@ -86,7 +85,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         }
         this.originalStream = inputStream;
         loadedInteractions = new ArrayList<Integer>();
-        this.interactorFactory = new XmlInteractorFactory();
 
     }
 
@@ -96,8 +94,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         }
         this.originalURL = url;
         loadedInteractions = new ArrayList<Integer>();
-        this.interactorFactory = new XmlInteractorFactory();
-
     }
 
     public AbstractPsiXmlParser(Reader reader) {
@@ -106,7 +102,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         }
         this.originalReader = reader;
         loadedInteractions = new ArrayList<Integer>();
-        this.interactorFactory = new XmlInteractorFactory();
     }
 
     public T parseNextInteraction() throws PsiXmlParserException{
@@ -317,6 +312,17 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         this.useDefaultCache = false;
     }
 
+    public XmlInteractorFactory getInteractorFactory() {
+        if (this.interactorFactory == null){
+            this.interactorFactory = new XmlInteractorFactory();
+        }
+        return interactorFactory;
+    }
+
+    public void setInteractorFactory(XmlInteractorFactory interactorFactory) {
+        this.interactorFactory = interactorFactory;
+    }
+
     protected String getNextPsiXmlStartElement() throws PsiXmlParserException{
         // Parse into typed objects
         try{
@@ -345,7 +351,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                     }
                 }
                 while((namespaceURI == null
-                                || (!PsiXmlUtils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())
+                        || (!PsiXmlUtils.Xml254_NAMESPACE_URI.equals(namespaceURI.trim())
                         && !PsiXmlUtils.Xml253_NAMESPACE_URI.equals(namespaceURI.trim())
                         && !PsiXmlUtils.Xml300_NAMESPACE_URI.equals(namespaceURI.toLowerCase())))
                         && this.streamReader.hasNext());
@@ -615,7 +621,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             }
         }
         catch (XMLStreamException e){
-             throw createPsiXmlExceptionFrom("Impossible to parse the experiment list",e);
+            throw createPsiXmlExceptionFrom("Impossible to parse the experiment list",e);
         } catch (JAXBException e) {
             throw createPsiXmlExceptionFrom("Impossible to parse the experiment list",e);
         }
@@ -659,7 +665,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             return processEntryAndLoadNextInteraction(entryContext, startEntry);
         }
         catch (XMLStreamException e){
-             throw createPsiXmlExceptionFrom("Cannot parse entry",e);
+            throw createPsiXmlExceptionFrom("Cannot parse entry",e);
         }
     }
 
@@ -676,7 +682,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             this.currentElement = getNextPsiXmlStartElement();
             boolean isReadingInteraction = this.currentElement != null &&
                     (PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement) ||
-                    PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
+                            PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
             while(isReadingInteraction && this.currentElement != null){
                 PsiXmlInteraction loadedInteraction = (PsiXmlInteraction)unmarshallInteraction();
                 this.loadedInteractions.add(loadedInteraction.getId());
@@ -684,7 +690,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 this.currentElement = getNextPsiXmlStartElement();
                 isReadingInteraction = this.currentElement != null
                         && (PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement)
-                              || PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
+                        || PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
             }
 
             // get the current entry. It must exists
@@ -843,7 +849,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
                 }
                 // only look if we have a start or end element
                 if (this.streamReader.isEndElement() || this.streamReader.isStartElement()){
-                   isFromPsiNamespace = this.streamReader.getNamespaceURI() != null && currentNamespace.equals(this.streamReader.getNamespaceURI().trim());
+                    isFromPsiNamespace = this.streamReader.getNamespaceURI() != null && currentNamespace.equals(this.streamReader.getNamespaceURI().trim());
                 }
             }
             while (!isFromPsiNamespace);
@@ -985,6 +991,9 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
     }
 
     private void initialiseEntryContext(XmlEntryContext entryContext) throws JAXBException {
+        // set the interactor factory
+        entryContext.setInteractorFactory(getInteractorFactory());
+
         // create unmarshaller knowing the version
         this.unmarshaller = createJAXBUnmarshaller();
         this.unmarshaller.setListener(new XmlLocationListener(this.streamReader));

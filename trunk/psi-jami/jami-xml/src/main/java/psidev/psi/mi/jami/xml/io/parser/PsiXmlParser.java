@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 
 /**
  * Interface for PsiXmlParser
@@ -31,5 +32,9 @@ public interface PsiXmlParser<T extends Interaction> {
     public void setCacheOfObjects(PsiXmlIdCache indexOfObjects);
 
     public PsiXmlVersion getVersion();
+
+    public XmlInteractorFactory getInteractorFactory();
+
+    public void setInteractorFactory(XmlInteractorFactory factory);
 
 }

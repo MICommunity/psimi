@@ -17,6 +17,7 @@ import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.io.parser.PsiXmlParser;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.model.extension.factory.options.PsiXmlDataSourceOptions;
 import psidev.psi.mi.jami.xml.model.reference.XmlIdReference;
 
@@ -51,6 +52,7 @@ public abstract class AbstractPsiXmlStream<T extends Interaction> implements Psi
     private File originalFile;
     private InputStream originalStream;
     private Reader originalReader;
+    private XmlInteractorFactory interactorFactory;
 
     private Boolean isValid = null;
     private PsiXmlIdCache elementCache;
@@ -183,6 +185,17 @@ public abstract class AbstractPsiXmlStream<T extends Interaction> implements Psi
         return validateSyntax();
     }
 
+    public XmlInteractorFactory getInteractorFactory() {
+        return interactorFactory;
+    }
+
+    public void setInteractorFactory(XmlInteractorFactory interactorFactory) {
+        this.interactorFactory = interactorFactory;
+        if (this.parser != null){
+            this.parser.setInteractorFactory(interactorFactory);
+        }
+    }
+
     @Override
     public void initialiseContext(Map<String, Object> options) {
         File sourceFile = null;
@@ -258,6 +271,10 @@ public abstract class AbstractPsiXmlStream<T extends Interaction> implements Psi
             this.elementCache = (PsiXmlIdCache)options.get(PsiXmlDataSourceOptions.ELEMENT_WITH_ID_CACHE_OPTION);
         }
 
+        if (options.containsKey(PsiXmlDataSourceOptions.INTERACTOR_FACTORY_OPTION_KEY)){
+           setInteractorFactory(new XmlInteractorFactory((XmlInteractorFactory)options.get(PsiXmlDataSourceOptions.ELEMENT_WITH_ID_CACHE_OPTION)));
+        }
+
         // initialise parser after reading all options
         if (sourceFile != null){
             initialiseFile(sourceFile);
@@ -285,6 +302,7 @@ public abstract class AbstractPsiXmlStream<T extends Interaction> implements Psi
             if (this.parser != null){
                 this.parser.close();
             }
+            this.interactorFactory = null;
         }
     }
 
@@ -297,6 +315,7 @@ public abstract class AbstractPsiXmlStream<T extends Interaction> implements Psi
             this.defaultParserListener = null;
             isInitialised = false;
             this.isValid = null;
+            this.interactorFactory = null;
         }
     }
 
@@ -623,6 +642,7 @@ public abstract class AbstractPsiXmlStream<T extends Interaction> implements Psi
 
     protected void setParser(PsiXmlParser<T> parser) {
         this.parser = parser;
+        this.parser.setInteractorFactory(getInteractorFactory());
     }
 
     protected boolean isInitialised() {

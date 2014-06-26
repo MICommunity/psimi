@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.model.extension.factory;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.factory.DefaultInteractorFactory;
 import psidev.psi.mi.jami.factory.InteractorFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -19,69 +20,61 @@ import java.util.Iterator;
  * @since <pre>24/07/13</pre>
  */
 
-public class XmlInteractorFactory extends InteractorFactory{
+public class XmlInteractorFactory extends DefaultInteractorFactory{
+
+    private InteractorFactory delegate;
 
     public XmlInteractorFactory() {
         super();
     }
 
-    @Override
-    public XmlProtein createProtein(String name, CvTerm type) {
-        return new XmlProtein(name, type);
+    public XmlInteractorFactory(InteractorFactory delegate) {
+        super();
+        this.delegate = delegate;
     }
 
     @Override
-    public XmlNucleciAcid createNucleicAcid(String name, CvTerm type) {
-        return new XmlNucleciAcid(name, type);
+    public Protein createProtein(String name, CvTerm type) {
+        return delegate != null ? delegate.createProtein(name, type) : new XmlProtein(name, type);
     }
 
     @Override
-    public XmlGene createGene(String name) {
-        return new XmlGene(name);
+    public NucleicAcid createNucleicAcid(String name, CvTerm type) {
+        return delegate != null ? delegate.createNucleicAcid(name, type) : new XmlNucleicAcid(name, type);
     }
 
     @Override
-    public XmlComplex createComplex(String name, CvTerm type) {
-        return new XmlComplex(name, type);
+    public Gene createGene(String name) {
+        return delegate != null ? delegate.createGene(name) : new XmlGene(name);
     }
 
     @Override
-    public XmlBioactiveEntity createBioactiveEntity(String name, CvTerm type) {
-        return new XmlBioactiveEntity(name, type);
+    public Complex createComplex(String name, CvTerm type) {
+        return delegate != null ? delegate.createComplex(name, type) : new XmlComplex(name, type);
     }
 
     @Override
-    public XmlPolymer createPolymer(String name, CvTerm type) {
-        return new XmlPolymer(name, type);
+    public BioactiveEntity createBioactiveEntity(String name, CvTerm type) {
+        return delegate != null ? delegate.createBioactiveEntity(name, type) : new XmlBioactiveEntity(name, type);
     }
 
     @Override
-    public XmlInteractor createInteractor(String name, CvTerm type) {
-        return new XmlInteractor(name, type);
+    public Polymer createPolymer(String name, CvTerm type) {
+        return delegate != null ? delegate.createPolymer(name, type) : new XmlPolymer(name, type);
     }
 
     @Override
-    public XmlInteractorPool createInteractorSet(String name, CvTerm type) {
-        return new XmlInteractorPool(name, type);
+    public Interactor createInteractor(String name, CvTerm type) {
+        return delegate != null ? delegate.createInteractor(name, type) : new XmlInteractor(name, type);
     }
 
     @Override
-    public ExtendedPsiXmlInteractor createInteractorFromInteractorType(CvTerm type, String name) {
-        return (ExtendedPsiXmlInteractor) super.createInteractorFromInteractorType(type, name);
-    }
-
-    @Override
-    public ExtendedPsiXmlInteractor createInteractorFromDatabase(CvTerm database, String name) {
-        return (ExtendedPsiXmlInteractor)super.createInteractorFromDatabase(database, name);
-    }
-
-    @Override
-    public ExtendedPsiXmlInteractor createInteractorFromIdentityXrefs(Collection<? extends Xref> xrefs, String name) {
-        return (ExtendedPsiXmlInteractor)super.createInteractorFromIdentityXrefs(xrefs, name);
+    public InteractorPool createInteractorSet(String name, CvTerm type) {
+        return delegate != null ? delegate.createInteractorSet(name, type) : new XmlInteractorPool(name, type);
     }
 
     public Interactor createInteractorFromXmlInteractorInstance(AbstractXmlInteractor source){
-        ExtendedPsiXmlInteractor reloadedInteractorDependingOnType = createInteractorFromInteractorType(source.getInteractorType(), source.getShortName());
+        Interactor reloadedInteractorDependingOnType = createInteractorFromInteractorType(source.getInteractorType(), source.getShortName());
         if (reloadedInteractorDependingOnType == null){
             reloadedInteractorDependingOnType = createInteractorFromIdentityXrefs(source.getIdentifiers(), source.getShortName());
         }
@@ -107,7 +100,9 @@ public class XmlInteractorFactory extends InteractorFactory{
 
             InteractorCloner.copyAndOverrideBasicInteractorProperties(source, reloadedInteractorDependingOnType);
             ((FileSourceContext)reloadedInteractorDependingOnType).setSourceLocator((PsiXmlLocator)source.getSourceLocator());
-            reloadedInteractorDependingOnType.setId(source.getId());
+            if (reloadedInteractorDependingOnType instanceof ExtendedPsiXmlInteractor){
+                ((ExtendedPsiXmlInteractor)reloadedInteractorDependingOnType).setId(source.getId());
+            }
 
             // we don't have any identifiers, we look back at the xrefs
             if (reloadedInteractorDependingOnType.getIdentifiers().isEmpty() && !reloadedInteractorDependingOnType.getXrefs().isEmpty()){
@@ -120,7 +115,9 @@ public class XmlInteractorFactory extends InteractorFactory{
                             || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.CHEBI_MI, Xref.CHEBI)
                             || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.ENSEMBL_GENOMES_MI, Xref.ENSEMBL_GENOMES)
                             || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.ENTREZ_GENE_MI, Xref.ENTREZ_GENE)
-                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK)){
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.DDBJ_EMBL_GENBANK_MI, Xref.DDBJ_EMBL_GENBANK)
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.UNIPROTKB_SWISSPROT_MI, Xref.UNIPROTKB_SWISSPROT)
+                            || CvTermUtils.isCvTerm(ref.getDatabase(), Xref.UNIPROTKB_TREMBL_MI, Xref.UNIPROTKB_TREMBL)){
                         refIterator.remove();
                         reloadedInteractorDependingOnType.getIdentifiers().add(ref);
                     }

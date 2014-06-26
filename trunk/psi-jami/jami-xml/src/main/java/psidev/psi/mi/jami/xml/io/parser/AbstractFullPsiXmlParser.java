@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.model.AbstractEntry;
 import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
+import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
@@ -41,6 +42,7 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
     private Iterator<AbstractEntry<T>> entryIterator;
     private PsiXmlParserListener listener;
     private AbstractEntrySet<AbstractEntry<T>> entrySet;
+    private XmlInteractorFactory interactorFactory;
 
     private PsiXmlIdCache indexOfObjects=null;
     private boolean useDefaultCache = true;
@@ -165,10 +167,22 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
         this.indexOfObjects = null;
         this.useDefaultCache = true;
         this.version = null;
+        this.interactorFactory = null;
 
         // release the thread local
         XmlEntryContext.getInstance().clear();
         XmlEntryContext.remove();
+    }
+
+    public XmlInteractorFactory getInteractorFactory() {
+        if (interactorFactory == null){
+            interactorFactory = new XmlInteractorFactory();
+        }
+        return interactorFactory;
+    }
+
+    public void setInteractorFactory(XmlInteractorFactory interactorFactory) {
+        this.interactorFactory = interactorFactory;
     }
 
     @Override
@@ -288,6 +302,10 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
     }
 
     private void initialiseEntryContext(XmlEntryContext entryContext) throws PsiXmlParserException, JAXBException {
+
+        // set interactor factory
+        entryContext.setInteractorFactory(getInteractorFactory());
+
         initialiseVersion(this.reader);
         // create unmarshaller knowing the version
         this.unmarshaller = createJAXBUnmarshaller();
