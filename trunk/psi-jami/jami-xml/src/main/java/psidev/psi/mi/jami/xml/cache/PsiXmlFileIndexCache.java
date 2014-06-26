@@ -8,7 +8,6 @@ import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.io.parser.JaxbUnmarshallerFactory;
 import psidev.psi.mi.jami.xml.io.parser.NonCloseableInputStreamWrapper;
 import psidev.psi.mi.jami.xml.io.parser.XmlReaderWithDefaultNamespace;
-import psidev.psi.mi.jami.xml.listener.XmlLocationListener;
 import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.extension.xml300.XmlVariableParameterValue;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
@@ -480,8 +479,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
             //Create the filter (to add namespace) and set the xmlReader as its parent.
             XmlReaderWithDefaultNamespace filteredReader = new XmlReaderWithDefaultNamespace(reader, this.namespaceUri);
-
-            this.unmarshaller.setListener(new XmlLocationListener(reader));
 
             obj = (T)this.unmarshaller.unmarshal(filteredReader);
         }
