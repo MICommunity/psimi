@@ -1,7 +1,8 @@
 package psidev.psi.mi.jami.tab.extension.factory;
 
-import psidev.psi.mi.jami.factory.InteractorFactory;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.factory.DefaultInteractorFactory;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.tab.extension.*;
 
 import java.util.Collection;
@@ -15,7 +16,7 @@ import java.util.Iterator;
  * @since <pre>18/06/13</pre>
  */
 
-public class MitabInteractorFactory extends InteractorFactory {
+public class MitabInteractorFactory extends DefaultInteractorFactory {
 
     public MitabInteractorFactory() {
         super();
