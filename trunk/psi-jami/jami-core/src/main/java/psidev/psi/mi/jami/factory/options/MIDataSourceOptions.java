@@ -57,4 +57,11 @@ public class MIDataSourceOptions {
      * that can read the datasource.
      */
     public static final String INPUT_TYPE_OPTION_KEY = "input_format_key";
+
+    /**
+     * The interactor factory used to create the proper interactor instance based on the interactor type and/or xrefs
+     * It must be an instance of InteractorFactory.
+     * If this option is not specified, it will create a new DefaultInteractorFactory to create the interactors or use another factory depending on the data source implementations.
+     */
+    public static final String INTERACTOR_FACTORY_OPTION_KEY = "interactor_factory_key";
 }
