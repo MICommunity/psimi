@@ -158,7 +158,7 @@ public abstract class AbstractEntry<T extends Interaction> extends Entry impleme
         }
 
         private class InteractorList extends AbstractListHavingProperties<Interactor> {
-            XmlInteractorFactory interactorFactory = new XmlInteractorFactory();
+            XmlInteractorFactory interactorFactory = XmlEntryContext.getInstance().getInteractorFactory();
 
             @Override
             protected void processAddedObjectEvent(Interactor added) {

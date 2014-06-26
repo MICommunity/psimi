@@ -50,7 +50,7 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
     private Stoichiometry stoichiometry;
 
     public AbstractXmlParticipant(){
-        this.interactorFactory = new XmlInteractorFactory();
+        this.interactorFactory = XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public AbstractXmlParticipant(Interactor interactor){
@@ -59,7 +59,7 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         }
         this.interactor = interactor;
         this.biologicalRole = new XmlCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier()));
-        this.interactorFactory = new XmlInteractorFactory();
+        this.interactorFactory = XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public AbstractXmlParticipant(Interactor interactor, CvTerm bioRole){
@@ -68,19 +68,19 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         }
         this.interactor = interactor;
         this.biologicalRole = bioRole != null ? bioRole : new XmlCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier()));
-        this.interactorFactory = new XmlInteractorFactory();
+        this.interactorFactory =  XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public AbstractXmlParticipant(Interactor interactor, Stoichiometry stoichiometry){
         this(interactor);
         setStoichiometry(stoichiometry);
-        this.interactorFactory = new XmlInteractorFactory();
+        this.interactorFactory =  XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public AbstractXmlParticipant(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry){
         this(interactor, bioRole);
         setStoichiometry(stoichiometry);
-        this.interactorFactory = new XmlInteractorFactory();
+        this.interactorFactory =  XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public void setInteractionAndAddParticipant(I interaction) {

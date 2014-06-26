@@ -9,6 +9,7 @@ import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
+import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.model.extension.factory.xml25.XmlBinaryInteractionFactory;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
@@ -118,6 +119,16 @@ public abstract class AbstractPsixmlBinaryParser<T extends Interaction<? extends
 
     public void setCacheOfObjects(PsiXmlIdCache indexOfObjects) {
         this.delegateParser.setCacheOfObjects(indexOfObjects);
+    }
+
+    @Override
+    public XmlInteractorFactory getInteractorFactory() {
+        return this.delegateParser.getInteractorFactory();
+    }
+
+    @Override
+    public void setInteractorFactory(XmlInteractorFactory factory) {
+        this.delegateParser.setInteractorFactory(factory);
     }
 
     @Override
