@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.xml.cache;
 
+import org.apache.commons.io.input.CountingInputStream;
 import org.codehaus.stax2.XMLInputFactory2;
-import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
@@ -25,6 +25,8 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Cache using a file and a weak map to cache the objects
@@ -38,6 +40,11 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     private static final Logger logger = Logger.getLogger("PsiXmlFileIndexCache");
 
+    /**
+     * Captures the identifier from a String looking like: id="1"
+     */
+    private static final Pattern ID_PATTERN = Pattern.compile( "id(?:\\s*)=(?:\\s*)\"(\\d*)\"", Pattern.CANON_EQ );
+
     private File file;
     private Unmarshaller unmarshaller;
     private RandomAccessFile randomAccessFile;
@@ -45,13 +52,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     private Map<Integer, AbstractAvailability> mapOfReferencedAvailabilities;
 
-    private Map<Integer, Integer> experimentPositions;
-    private Map<Integer, Integer> interactorPositions;
-    private Map<Integer, Integer> interactionPositions;
-    private Map<Integer, Integer> participantPositions;
-    private Map<Integer, Integer> featurePositions;
-    private Map<Integer, Integer> variableParameterValuePositions;
-    private Map<Integer, Integer> complexPositions;
+    private Map<Integer, Long> experimentPositions;
+    private Map<Integer, Long> interactorPositions;
+    private Map<Integer, Long> interactionPositions;
+    private Map<Integer, Long> participantPositions;
+    private Map<Integer, Long> featurePositions;
+    private Map<Integer, Long> variableParameterValuePositions;
+    private Map<Integer, Long> complexPositions;
 
     private Map<Integer, Experiment> experimentWeakMap;
     private Map<Integer, Interactor> interactorWeakMap;
@@ -64,7 +71,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private Interaction currentInteraction=null;
     private Experiment currentExperiment=null;
 
-    public PsiXmlFileIndexCache(File file, Unmarshaller unmarshaller, PsiXmlVersion version) throws FileNotFoundException {
+    public PsiXmlFileIndexCache(File file, Unmarshaller unmarshaller, PsiXmlVersion version) throws IOException {
         if (file == null){
             throw new IllegalArgumentException("The file index cache needs the original file containing data.");
         }
@@ -77,13 +84,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
         this.mapOfReferencedAvailabilities = new HashMap<Integer, AbstractAvailability>();
 
-        this.experimentPositions = new HashMap<Integer, Integer>();
-        this.interactorPositions = new HashMap<Integer, Integer>();
-        this.interactionPositions = new HashMap<Integer, Integer>();
-        this.participantPositions = new HashMap<Integer, Integer>();
-        this.featurePositions = new HashMap<Integer, Integer>();
-        this.variableParameterValuePositions = new HashMap<Integer, Integer>();
-        this.complexPositions = new HashMap<Integer, Integer>();
+        this.experimentPositions = new HashMap<Integer, Long>();
+        this.interactorPositions = new HashMap<Integer, Long>();
+        this.interactionPositions = new HashMap<Integer, Long>();
+        this.participantPositions = new HashMap<Integer, Long>();
+        this.featurePositions = new HashMap<Integer, Long>();
+        this.variableParameterValuePositions = new HashMap<Integer, Long>();
+        this.complexPositions = new HashMap<Integer, Long>();
 
         this.experimentWeakMap = new WeakHashMap<Integer, Experiment>();
         this.interactorWeakMap = new WeakHashMap<Integer, Interactor>();
@@ -107,9 +114,11 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                 this.namespaceUri = PsiXmlUtils.Xml254_NAMESPACE_URI;
                 break;
         }
+
+        buildPositionIndex(this.file);
     }
 
-    public PsiXmlFileIndexCache(File file, PsiXmlVersion version, InteractionCategory category) throws FileNotFoundException, JAXBException {
+    public PsiXmlFileIndexCache(File file, PsiXmlVersion version, InteractionCategory category) throws IOException, JAXBException {
         this(file,
                 JaxbUnmarshallerFactory.getInstance().createUnmarshaller(version != null ? version : PsiXmlVersion.v2_5_4,
                         category != null ? category : InteractionCategory.evidence),
@@ -130,15 +139,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     public void registerExperiment(int id, Experiment object) {
         this.currentExperiment = object;
         this.experimentWeakMap.put(id, object);
-        if (!this.experimentPositions.containsKey(id)){
-            if (object instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext)object;
-                if (context.getSourceLocator() instanceof PsiXmlLocator){
-                    PsiXmlLocator locator = (PsiXmlLocator)context.getSourceLocator();
-                    this.experimentPositions.put(id, locator.getCharacterOffset());
-                }
-            }
-        }
     }
 
     @Override
@@ -147,7 +147,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
             return this.experimentWeakMap.get(id);
         }
         else if (!this.experimentPositions.containsKey(id)){
-           return null;
+            return null;
         }
         else {
             try {
@@ -168,15 +168,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.currentExperiment = null;
         this.currentInteraction = object;
         this.interactionWeakMap.put(id, object);
-        if (!this.interactionPositions.containsKey(id)){
-            if (object instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext)object;
-                if (context.getSourceLocator() instanceof PsiXmlLocator){
-                    PsiXmlLocator locator = (PsiXmlLocator)context.getSourceLocator();
-                    this.interactionPositions.put(id, locator.getCharacterOffset());
-                }
-            }
-        }
     }
 
     @Override
@@ -204,15 +195,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     @Override
     public void registerInteractor(int id, Interactor object) {
         this.interactorWeakMap.put(id, object);
-        if (!this.interactorPositions.containsKey(id)){
-            if (object instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext)object;
-                if (context.getSourceLocator() instanceof PsiXmlLocator){
-                    PsiXmlLocator locator = (PsiXmlLocator)context.getSourceLocator();
-                    this.interactorPositions.put(id, locator.getCharacterOffset());
-                }
-            }
-        }
     }
 
     @Override
@@ -241,16 +223,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     @Override
     public void registerParticipant(int id, Participant object) {
         this.participantWeakMap.put(id, object);
-        if (!this.participantPositions.containsKey(id)){
-            // store position of interaction because we always load the participant with its interaction!!!!
-            if (this.currentInteraction instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext)this.currentInteraction;
-                if (context.getSourceLocator() instanceof PsiXmlLocator){
-                    PsiXmlLocator locator = (PsiXmlLocator)context.getSourceLocator();
-                    this.participantPositions.put(id, locator.getCharacterOffset());
-                }
-            }
-        }
     }
 
     @Override
@@ -292,16 +264,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     @Override
     public void registerFeature(int id, Feature object) {
         this.featureWeakMap.put(id, object);
-        if (!this.featurePositions.containsKey(id)){
-            // store position of interaction because we always load the feature with its participant and interaction!!!!
-            if (this.currentInteraction instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext)this.currentInteraction;
-                if (context.getSourceLocator() instanceof PsiXmlLocator){
-                    PsiXmlLocator locator = (PsiXmlLocator)context.getSourceLocator();
-                    this.featurePositions.put(id, locator.getCharacterOffset());
-                }
-            }
-        }
     }
 
     @Override
@@ -324,7 +286,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                         for (Object f : participant.getFeatures()){
                             ExtendedPsiXmlFeature feature = (ExtendedPsiXmlFeature)f;
                             if (feature.getId() == id){
-                                 return feature;
+                                return feature;
                             }
                         }
                     }
@@ -346,15 +308,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     @Override
     public void registerComplex(int id, Complex object) {
         this.complexWeakMap.put(id, object);
-        if (!this.complexPositions.containsKey(id)){
-            if (object instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext)object;
-                if (context.getSourceLocator() instanceof PsiXmlLocator){
-                    PsiXmlLocator locator = (PsiXmlLocator)context.getSourceLocator();
-                    this.complexPositions.put(id, locator.getCharacterOffset());
-                }
-            }
-        }
     }
 
     @Override
@@ -405,16 +358,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     @Override
     public void registerVariableParameterValue(int id, VariableParameterValue object) {
         this.variableParameterValueWeakMap.put(id, object);
-        if (!this.variableParameterValuePositions.containsKey(id)){
-            // we don't store positions of variable parameter value but the ones of current experiment as we will reload the full experiment
-            if (this.currentExperiment instanceof FileSourceContext){
-                FileSourceContext context = (FileSourceContext)this.currentExperiment;
-                if (context.getSourceLocator() instanceof PsiXmlLocator){
-                    PsiXmlLocator locator = (PsiXmlLocator)context.getSourceLocator();
-                    this.variableParameterValuePositions.put(id, locator.getCharacterOffset());
-                }
-            }
-        }
     }
 
     @Override
@@ -525,7 +468,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     public boolean containsComplex(int id) {
         return this.complexWeakMap.containsKey(id) || this.complexPositions.containsKey(id);    }
 
-    private <T extends Object> T loadFromFile(int id) throws IOException, JAXBException, XMLStreamException {
+    private <T extends Object> T loadFromFile(long id) throws IOException, JAXBException, XMLStreamException {
 
         InputStream in = new NonCloseableInputStreamWrapper(Channels.newInputStream(this.randomAccessFile.getChannel().position(id)));
         T obj = null;
@@ -549,4 +492,206 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         }
         return obj;
     }
+
+
+    /**
+     * Indexes references component of the given file. that is experiments, interaction, interactor, feature and
+     * participant so that we know where they are in the file and we can jump in the right position should we want to
+     * extract one of them.
+     *
+     * @param f the file to index.
+     * @return a PsimiXmlFileIndex that stores the mapping between object ids and their position.
+     * @throws IOException
+     */
+    public void buildPositionIndex( File f ) throws IOException {
+
+        long start = System.currentTimeMillis();
+        long length = f.length();
+        logger.info( "length = " + length );
+
+        CountingInputStream fis = null;
+        StringBuilder sb = new StringBuilder( 100 );
+        try{
+            fis = new CountingInputStream(new FileInputStream( f ));
+
+            char[] c = new char[1];
+            long startPos = 0;
+            int read;
+            boolean recording = false;
+            byte[] buf = new byte[1];
+
+            char x = ' ';
+
+            int currentId = -1;
+            long currentExperimentPost = 0;
+            long currentInteractionPos = 0;
+
+            while ( -1 != nextByte(fis, buf)) {
+                x = c[0];
+
+                if ( recording ) {
+                    if ( !isAlphabeticalChar( x ) ) {
+                        if ( x == '/' ) {
+
+                            // search for '>' and that's our position
+                            while ( -1 != nextByte(fis, buf) ) {
+                                x = c[0];
+                                if ( isAlphabeticalChar( x ) ) {
+                                    sb.append( x );
+                                } else if ( x == '>' ) {
+                                    break;
+                                }
+                            }
+
+                            // it was a closing tag (<abc/> or </abc> ... problem will occur with <abc />)
+                            recording = false;
+
+                        } else if ( x == '!' ) {
+
+                            // This is the beginning of a comments.
+                            // Now fast forward until the end of the comment: '-->'
+                            recording = false;
+
+                            char c1 = ' ',
+                                    c2 = ' ',
+                                    c3 = ' ';
+                            logger.fine("Skiping comment");
+                            while ( -1 != nextByte(fis, buf) ) {
+                                c1 = c2;
+                                c2 = c3;
+                                c3 = c[0];
+
+                                if ( c1 == '-' && c2 == '-' && c3 == '>' ) {
+                                    // found it
+                                    logger.fine("End of comment");
+                                    break;
+                                }
+                            }
+
+                        } else {
+                            // check what start tag it is
+
+                            if ( "experimentDescription".equalsIgnoreCase( sb.toString() ) ) {
+
+                                int result = getId( fis, c, buf );
+                                currentId = result;
+                                currentExperimentPost = startPos;
+
+                                this.experimentPositions.put(currentId, startPos);
+
+                            } else if ( "interactor".equalsIgnoreCase( sb.toString() ) ) {
+
+                                int result = getId( fis, c, buf );
+                                currentId = result;
+
+                                this.interactorPositions.put(currentId, startPos);
+
+                            } else if ( "interaction".equalsIgnoreCase( sb.toString() ) ) {
+
+                                int result = getId( fis, c, buf );
+                                currentId = result;
+                                currentInteractionPos = startPos;
+
+                                this.interactionPositions.put(currentId, startPos);
+
+                            }
+                            else if ( "abstractInteraction".equalsIgnoreCase( sb.toString() ) ) {
+
+                                int result = getId( fis, c, buf );
+                                currentId = result;
+                                currentInteractionPos = startPos;
+
+                                this.interactionPositions.put(currentId, startPos);
+
+                            }else if ( "participant".equalsIgnoreCase( sb.toString() ) ) {
+
+                                int result = getId( fis, c, buf );
+                                currentId = result;
+
+                                this.interactionPositions.put(currentId, currentInteractionPos);
+
+                            } else if ( "feature".equalsIgnoreCase( sb.toString() ) ) {
+
+                                int result = getId( fis, c, buf );
+                                currentId = result;
+                                currentInteractionPos = startPos;
+
+                                this.interactionPositions.put(currentId, currentInteractionPos);
+                            }
+                            else if ( "variableValue".equalsIgnoreCase( sb.toString() ) ) {
+
+                                int result = getId( fis, c, buf );
+                                currentId = result;
+                                currentInteractionPos = startPos;
+
+                                this.interactionPositions.put(currentId, currentExperimentPost);
+                            }
+
+                            recording = false;
+                        }
+                    } else {
+                        // add alphabetical char
+                        sb.append( x );
+                    }
+                }
+
+                if ( x == '<' ) {
+                    // start recording
+                    startPos = fis.getByteCount() -1; // we want the '<' included
+                    recording = true;
+                    sb.setLength(0);
+                }
+
+            } // while can read
+
+            long stop = System.currentTimeMillis();
+
+            logger.info( "Time elapsed: " + ( stop - start ) + "ms" );
+        }
+        finally {
+
+            if (fis != null){
+                fis.close();
+            }
+        }
+    }
+
+    private int getId( CountingInputStream r, char[] c,  byte[] buf) throws IOException {
+
+        int id = -1;
+        int read;
+
+        StringBuilder sb = new StringBuilder( 20 );
+        while ( -1 != nextByte(r, buf) ) {
+
+            char x = c[0];
+            if ( x == '>' ) {
+                // completed the tag, extract the id
+                Matcher matcher = ID_PATTERN.matcher( sb.toString() );
+                if ( matcher.matches() ) {
+                    String strId = matcher.group( 1 );
+                    id = Integer.parseInt( strId );
+                }
+
+                break; // stop here
+            } else {
+                sb.append( x );
+            }
+        }
+
+        return id;
+    }
+
+    private boolean isAlphabeticalChar( char c ) {
+        return ( ( c >= 'a' && c <= 'z' ) || ( ( c >= 'A' && c <= 'Z' ) ) );
+    }
+
+    private static int nextByte(CountingInputStream cis, byte[] buf) throws IOException {
+        int result = cis.read(buf);
+        while (result != -1 && buf[0] == 0 ){
+            result = cis.read(buf);
+        }
+        return result;
+    }
+
 }
