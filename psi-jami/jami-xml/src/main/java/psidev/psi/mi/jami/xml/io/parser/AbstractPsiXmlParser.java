@@ -684,6 +684,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             while(isReadingInteraction && this.currentElement != null){
                 PsiXmlInteraction loadedInteraction = (PsiXmlInteraction)unmarshallInteraction();
                 this.loadedInteractions.add(loadedInteraction.getId());
+                clearPartialEntryReferences(entryContext);
 
                 this.currentElement = getNextPsiXmlStartElement();
                 isReadingInteraction = this.currentElement != null
@@ -753,7 +754,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             // we have references to resolve, loads the all entry and keep in cache
             else{
                 loadEntry(entryContext,interaction);
-                clearPartialEntryReferences(entryContext);
             }
 
             return interaction;
