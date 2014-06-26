@@ -99,8 +99,8 @@ public class XmlInteractorFactory extends DefaultInteractorFactory{
             }
 
             InteractorCloner.copyAndOverrideBasicInteractorProperties(source, reloadedInteractorDependingOnType);
-            ((FileSourceContext)reloadedInteractorDependingOnType).setSourceLocator((PsiXmlLocator)source.getSourceLocator());
             if (reloadedInteractorDependingOnType instanceof ExtendedPsiXmlInteractor){
+                ((FileSourceContext)reloadedInteractorDependingOnType).setSourceLocator(source.getSourceLocator());
                 ((ExtendedPsiXmlInteractor)reloadedInteractorDependingOnType).setId(source.getId());
             }
 
