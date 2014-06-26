@@ -7,7 +7,6 @@ import psidev.psi.mi.jami.listener.MIFileParserListener;
 import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.tab.listener.MitabParserLogger;
-import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserLogger;
 import psidev.psi.mi.jami.xml.model.extension.factory.options.PsiXmlWriterOptions;
@@ -178,7 +177,7 @@ public class MIDataSourceOptionFactory {
      */
     public Map<String, Object> getDefaultXmlOptions(Object inputData){
         return getXml25Options(InteractionCategory.evidence, psidev.psi.mi.jami.model.ComplexType.n_ary, true, new PsiXmlParserLogger(),
-                inputData, null, new InMemoryPsiXmlCache());
+                inputData, null, null);
     }
 
     /**
@@ -191,7 +190,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the Psi Xml datasource using the provided objectCategory
      */
     public Map<String, Object> getXml25Options(InteractionCategory objectCategory, psidev.psi.mi.jami.model.ComplexType complexType, Object inputData){
-        return getXml25Options(objectCategory, complexType, true, null, inputData, null, new InMemoryPsiXmlCache());
+        return getXml25Options(objectCategory, complexType, true, null, inputData, null, null);
     }
 
     /**
@@ -203,7 +202,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getXml25Options(boolean streaming, Object inputData){
-        return getXml25Options(null, null, streaming, null, inputData, null, new InMemoryPsiXmlCache());
+        return getXml25Options(null, null, streaming, null, inputData, null, null);
     }
 
     /**
@@ -215,7 +214,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource with the provided listener
      */
     public Map<String, Object> getXml25Options(MIFileParserListener listener, Object inputData){
-        return getXml25Options(null, null, true, listener, inputData, null, new InMemoryPsiXmlCache());
+        return getXml25Options(null, null, true, listener, inputData, null, null);
     }
 
     /**
