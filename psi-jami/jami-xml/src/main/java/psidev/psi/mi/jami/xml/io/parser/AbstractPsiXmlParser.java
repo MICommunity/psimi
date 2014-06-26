@@ -988,9 +988,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
     }
 
     private void initialiseEntryContext(XmlEntryContext entryContext) throws JAXBException {
-        // set the interactor factory
-        initialiseDefaultCache();
-        entryContext.setInteractorFactory(getInteractorFactory());
 
         // create unmarshaller knowing the version
         this.unmarshaller = createJAXBUnmarshaller();
@@ -1000,6 +997,9 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         this.hasReadEntrySet = true;
         entryContext.setListener(this.listener);
 
+        // set the interactor factory
+        initialiseDefaultCache();
+        entryContext.setInteractorFactory(getInteractorFactory());
         entryContext.setElementCache(this.indexOfObjects);
     }
 
