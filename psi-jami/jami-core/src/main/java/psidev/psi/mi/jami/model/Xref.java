@@ -31,6 +31,10 @@ public interface Xref {
     public static final String DDBJ_EMBL_GENBANK_MI = "MI:0475";
     public static final String UNIPROTKB = "uniprotkb";
     public static final String UNIPROTKB_MI = "MI:0486";
+    public static final String UNIPROTKB_SWISSPROT = "swiss-prot";
+    public static final String UNIPROTKB_SWISSPROT_MI = "MI:1098";
+    public static final String UNIPROTKB_TREMBL = "trembl";
+    public static final String UNIPROTKB_TREMBL_MI = "MI:1099";
     public static final String IMEX = "imex";
     public static final String IMEX_MI = "MI:0670";
     public static final String PUBMED = "pubmed";

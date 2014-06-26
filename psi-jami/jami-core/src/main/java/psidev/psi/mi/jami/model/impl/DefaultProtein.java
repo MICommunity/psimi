@@ -251,7 +251,9 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
 
     protected void processAddedIdentifierEvent(Xref added) {
         // the added identifier is uniprotkb and it is not the current uniprotkb identifier
-        if (uniprotkb != added && XrefUtils.isXrefFromDatabase(added, Xref.UNIPROTKB_MI, Xref.UNIPROTKB)){
+        if (uniprotkb != added && (XrefUtils.isXrefFromDatabase(added, Xref.UNIPROTKB_MI, Xref.UNIPROTKB)
+        || XrefUtils.isXrefFromDatabase(added, Xref.UNIPROTKB_SWISSPROT_MI, Xref.UNIPROTKB_SWISSPROT)
+        || XrefUtils.isXrefFromDatabase(added, Xref.UNIPROTKB_TREMBL_MI, Xref.UNIPROTKB_TREMBL))){
             // the current uniprotkb identifier is not identity, we may want to set uniprotkb Identifier
             if (!XrefUtils.doesXrefHaveQualifier(uniprotkb, Xref.IDENTITY_MI, Xref.IDENTITY)){
                 // the uniprotkb identifier is not set, we can set the uniprotkb identifier
@@ -291,6 +293,12 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
     protected void processRemovedIdentifierEvent(Xref removed) {
         if (uniprotkb != null && uniprotkb.equals(removed)){
             uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.UNIPROTKB_MI, Xref.UNIPROTKB);
+            if (uniprotkb == null){
+                uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.UNIPROTKB_SWISSPROT_MI, Xref.UNIPROTKB_SWISSPROT);
+                if (uniprotkb == null){
+                    uniprotkb = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.UNIPROTKB_TREMBL_MI, Xref.UNIPROTKB_TREMBL);
+                }
+            }
         }
         else if (refseq != null && refseq.equals(removed)){
             refseq = XrefUtils.collectFirstIdentifierWithDatabase(getIdentifiers(), Xref.REFSEQ_MI, Xref.REFSEQ);
