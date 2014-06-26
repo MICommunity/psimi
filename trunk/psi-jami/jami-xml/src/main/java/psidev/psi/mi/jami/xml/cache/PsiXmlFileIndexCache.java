@@ -515,16 +515,17 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
             fis = new CountingInputStream(new FileInputStream( f ));
 
             long startPos = 0;
-            byte read = ' ';
+            char read = ' ';
             boolean recording = false;
             byte[] buf = new byte[1];
 
             int currentId = -1;
             long currentExperimentPost = 0;
             long currentInteractionPos = 0;
+            boolean readElements = false;
 
             while ( -1 != nextByte(fis, buf)) {
-                read = buf[0];
+                read = (char)(buf[0] & 0xFF);
 
                 if ( recording ) {
                     if ( !isAlphabeticalChar( read ) ) {
@@ -532,10 +533,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
                             // search for '>' and that's our position
                             while ( -1 != nextByte(fis, buf) ) {
-                                read = buf[0];
-                                if ( isAlphabeticalChar( read ) ) {
-                                    sb.append( read );
-                                } else if ( read == '>' ) {
+                                read = (char)(buf[0] & 0xFF);
+                                if ( read == '>' ) {
                                     break;
                                 }
                             }
@@ -605,7 +604,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                                 int result = getId( fis, buf );
                                 currentId = result;
 
-                                this.interactionPositions.put(currentId, currentInteractionPos);
+                                this.participantPositions.put(currentId, currentInteractionPos);
 
                             } else if ( "feature".equalsIgnoreCase( sb.toString() ) ) {
 
@@ -613,7 +612,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
-                                this.interactionPositions.put(currentId, currentInteractionPos);
+                                this.featurePositions.put(currentId, currentInteractionPos);
                             }
                             else if ( "variableValue".equalsIgnoreCase( sb.toString() ) ) {
 
@@ -621,7 +620,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
-                                this.interactionPositions.put(currentId, currentExperimentPost);
+                                this.variableParameterValuePositions.put(currentId, currentExperimentPost);
                             }
 
                             recording = false;
@@ -660,7 +659,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         StringBuilder sb = new StringBuilder( 20 );
         while ( -1 != nextByte(r, buf) ) {
 
-            byte read = buf[0];
+            char read = (char)(buf[0] & 0xFF);
             if ( read == '>' ) {
                 // completed the tag, extract the id
                 Matcher matcher = ID_PATTERN.matcher( sb.toString() );
@@ -678,7 +677,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         return id;
     }
 
-    private boolean isAlphabeticalChar( byte c ) {
+    private boolean isAlphabeticalChar( char c ) {
         return ( ( c >= 'a' && c <= 'z' ) || ( ( c >= 'A' && c <= 'Z' ) ) );
     }
 
