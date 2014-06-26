@@ -66,7 +66,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
     private boolean hasReadEntrySet = false;
     private boolean hasReadEntry = false;
     private PsiXmlIdCache indexOfObjects=null;
-    private boolean useDefaultCache = true;
     private String currentElement;
 
     private PsiXmlVersion version = null;
@@ -309,7 +308,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
 
     public void setCacheOfObjects(PsiXmlIdCache indexOfObjects) {
         this.indexOfObjects = indexOfObjects;
-        this.useDefaultCache = false;
     }
 
     public XmlInteractorFactory getInteractorFactory() {
@@ -982,7 +980,6 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             this.indexOfObjects.close();
         }
         this.indexOfObjects = null;
-        this.useDefaultCache = true;
         this.version = null;
 
         // release the thread local
@@ -1001,9 +998,8 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         entryContext.clear();
         this.hasReadEntrySet = true;
         entryContext.setListener(this.listener);
-        if (useDefaultCache){
-            initialiseDefaultCache();
-        }
+        initialiseDefaultCache();
+
         entryContext.setElementCache(this.indexOfObjects);
     }
 
