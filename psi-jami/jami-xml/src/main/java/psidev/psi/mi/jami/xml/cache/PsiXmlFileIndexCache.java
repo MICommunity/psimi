@@ -509,7 +509,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         CountingInputStream fis = null;
         StringBuilder sb = new StringBuilder( 100 );
         try{
-            fis = new CountingInputStream(new FileInputStream( f ));
+            fis = new CountingInputStream(new BufferedInputStream(new FileInputStream( f )));
 
             long startPos = 0;
             char read = ' ';
