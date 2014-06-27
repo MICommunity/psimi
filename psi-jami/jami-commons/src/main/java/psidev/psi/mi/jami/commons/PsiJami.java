@@ -117,6 +117,7 @@ public class PsiJami {
         supportedOptions1.put(MIFileDataSourceOptions.COMPLEX_TYPE_OPTION_KEY, complexType);
         supportedOptions1.put(MIFileDataSourceOptions.PARSER_LISTENER_OPTION_KEY, null);
         supportedOptions1.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, null);
+        supportedOptions1.put(MIFileDataSourceOptions.INTERACTOR_FACTORY_OPTION_KEY, null);
         return supportedOptions1;
     }
 
