@@ -28,6 +28,14 @@ public class ReadWriteWithJami {
 
     public static void main(String[] args) throws Exception {
 
+        if (args.length < 3){
+            System.err.println("We need three arguments : the path to the MITAB/XML file to parse, the name of the MITAB file where to write " +
+                    "the interactions and the name of the XML file where to write the interactions");
+        }
+        String fileName = args[0];
+        String mitabFileName = args[1];
+        String xmlFileName = args[2];
+
         // initialise default factories for reading and writing MITAB/PSI-MI XML files
         PsiJami.initialiseAllFactories();
 
@@ -41,7 +49,7 @@ public class ReadWriteWithJami {
         // get default options for a file. It will identify if the file is MITAB or PSI-MI XML file and then it will load the appropriate options.
         // By default, the datasource will be streaming (only returns an iterator of interactions), and returns a source of Interaction objects.
         // The default options can be overridden using the optionfactory or by manually adding options listed in MitabDataSourceOptions or PsiXmlDataSourceOptions
-        Map<String, Object> parsingOptions = optionfactory.getDefaultOptions(new File("path/to/file"));
+        Map<String, Object> parsingOptions = optionfactory.getDefaultOptions(new File(fileName));
 
         InteractionStream interactionSource = null;
         InteractionWriter xmlInteractionWriter = null;
@@ -62,13 +70,13 @@ public class ReadWriteWithJami {
             // By default, the writer will be a MITAB 2.7 writer and it will write the header
             // The default options can be overridden using the optionWriterfactory or by manually adding options listed in
             // MitabWriterOptions
-            Map<String, Object> mitabWritingOptions = optionwriterFactory.getDefaultMitabOptions(new File("path/to/newMitabFile"));
+            Map<String, Object> mitabWritingOptions = optionwriterFactory.getDefaultMitabOptions(new File(mitabFileName));
 
             // get default options for writing PSI-MI XML file.
             // By default, the writer will be a PSI-MI XML 2.5.4 writer and it will write expanded PSI-MI XML
             // The default options can be overridden using the optionWriterfactory or by manually adding options listed in
             // PsiXmlWriterOptions
-            Map<String, Object> xmlWritingOptions = optionwriterFactory.getDefaultXmlOptions(new File("path/to/newMitabFile"));
+            Map<String, Object> xmlWritingOptions = optionwriterFactory.getDefaultXmlOptions(new File(xmlFileName));
 
             // Get the default MITAB writer
             mitabInteractionWriter = writerFactory.getInteractionWriterWith(mitabWritingOptions);
