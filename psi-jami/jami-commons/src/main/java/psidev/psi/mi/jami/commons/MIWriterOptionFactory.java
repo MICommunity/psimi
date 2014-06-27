@@ -170,118 +170,152 @@ public class MIWriterOptionFactory {
 
     /**
      *
+     * @param file : the output file
+     * @return
+     */
+    public Map<String, Object> getDefaultXmlOptions(File file){
+        return getDefaultXmlOptions(file, InteractionCategory.mixed, ComplexType.n_ary, PsiXmlType.expanded, PsiXmlVersion.v2_5_4);
+    }
+
+    /**
+     *
+     * @param output : the output stream
+     * @return
+     */
+    public Map<String, Object> getDefaultXmlOptions(OutputStream output){
+        return getDefaultXmlOptions(output, InteractionCategory.mixed, ComplexType.n_ary, PsiXmlType.expanded, PsiXmlVersion.v2_5_4);
+    }
+
+    /**
+     *
+     * @param writer : the output writer
+     * @return
+     */
+    public Map<String, Object> getDefaultXmlOptions(Writer writer){
+        return getDefaultXmlOptions(writer, InteractionCategory.mixed, ComplexType.n_ary, PsiXmlType.expanded, PsiXmlVersion.v2_5_4);
+    }
+
+    /**
+     *
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory: type of objects to write. It is mixed by default
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param type: compact or expanded. It is expanded by default
      * @return
      */
-    public Map<String, Object> getDefaultXml25Options(InteractionCategory objectCategory, ComplexType complexType, PsiXmlType type,
-                                                      PsiXmlVersion version){
+    public Map<String, Object> getDefaultXmlOptions(Object output, InteractionCategory objectCategory, ComplexType complexType, PsiXmlType type,
+                                                    PsiXmlVersion version){
         if (type == null){
-            return getDefaultExpandedXml25Options(objectCategory, complexType, version);
+            return getDefaultExpandedXmlOptions(output, objectCategory, complexType, version);
         }
         switch (type){
             case compact:
-                return getDefaultCompactXml25Options(objectCategory, complexType, version);
+                return getDefaultCompactXmlOptions(output, objectCategory, complexType, version);
             case expanded:
-                return getDefaultExpandedXml25Options(objectCategory, complexType, version);
+                return getDefaultExpandedXmlOptions(output, objectCategory, complexType, version);
             default:
-                return getDefaultExpandedXml25Options(objectCategory, complexType, version);
+                return getDefaultExpandedXmlOptions(output, objectCategory, complexType, version);
         }
     }
 
     /**
-     * Create the options for the default expanded PSI-XML 2.5 InteractionWriter.
+     * Create the options for the default expanded PSI-XML InteractionWriter.
      * The writer will not write extended XML objects and it will be based on an identity cache for generating ids
      * All sub complexes will be written as interactions.
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XML  InteractionWriter
      */
-    public Map<String, Object> getDefaultExpandedXml25Options(InteractionCategory objectCategory,
-                                                              ComplexType complexType, PsiXmlVersion version){
-        return getExpandedXml25Options(objectCategory, complexType, null, null, null, version);
+    public Map<String, Object> getDefaultExpandedXmlOptions(Object output, InteractionCategory objectCategory,
+                                                            ComplexType complexType, PsiXmlVersion version){
+        return getExpandedXmlOptions(output, objectCategory, complexType, null, null, null, version);
     }
 
     /**
-     * Create the default options for the compact PSI-XML 2.5 InteractionWriter.
+     * Create the default options for the compact PSI-XML InteractionWriter.
      * This writer will write an empty source with just a release date and no attributes attached to the entry
      * All complexes will be written as interactions.
-     * It will not write PsiXml25 extended object features
+     * It will not write PsiXml extended object features
      * It will use an identity cache to generate ids for the different interactions/experiments/interactors/participants/features
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param version: Psi xml version
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XM  InteractionWriter
      */
-    public Map<String, Object> getDefaultCompactXml25Options(InteractionCategory objectCategory,
-                                                             ComplexType complexType, PsiXmlVersion version){
-        return getCompactXml25Options(objectCategory, complexType, null, null, null, version);
+    public Map<String, Object> getDefaultCompactXmlOptions(Object output, InteractionCategory objectCategory,
+                                                           ComplexType complexType, PsiXmlVersion version){
+        return getCompactXmlOptions(output, objectCategory, complexType, null, null, null, version);
     }
 
     /**
-     * Create the options for the expanded PSI-XML 2.5 InteractionWriter.
+     * Create the options for the expanded PSI-XML InteractionWriter.
      * The writer will not write extended XML objects and it will be based on an identity cache for generating ids
      * All sub complexes will be written as interactions.
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param defaultSource : default source if no source provided
      * @param defaultReleaseDate : default release date in the entry source
      * @param defaultEntryAnnotations : annotations to write in the entry
      * @param version: Psi xml version
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XML InteractionWriter
      */
-    public Map<String, Object> getExpandedXml25Options(InteractionCategory objectCategory, ComplexType complexType, Source defaultSource,
-                                                       XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
-                                                       PsiXmlVersion version){
+    public Map<String, Object> getExpandedXmlOptions(Object output, InteractionCategory objectCategory, ComplexType complexType, Source defaultSource,
+                                                     XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
+                                                     PsiXmlVersion version){
 
-        return getExpandedXml25Options(objectCategory, complexType, new InMemoryLightIdentityObjectCache(),
-                 Collections.newSetFromMap(new IdentityHashMap<Interaction, Boolean>()),
+        return getExpandedXmlOptions(output, objectCategory, complexType, new InMemoryLightIdentityObjectCache(),
+                Collections.newSetFromMap(new IdentityHashMap<Interaction, Boolean>()),
                 defaultSource, defaultReleaseDate, defaultEntryAnnotations, false, false, version);
     }
 
     /**
-     * Create the options for the compact PSI-XML 2.5 InteractionWriter.
+     * Create the options for the compact PSI-XML InteractionWriter.
      * The writer will not write extended XML objects and it will be based on an identity cache for generating ids
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param defaultSource : default source if no source provided
      * @param defaultReleaseDate : default release date in the entry source
      * @param defaultEntryAnnotations : annotations to write in the entry
      * @param version: Psi xml version
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XML InteractionWriter
      */
-    public Map<String, Object> getCompactXml25Options(InteractionCategory objectCategory, ComplexType complexType, Source defaultSource,
-                                                      XMLGregorianCalendar defaultReleaseDate,
-                                                      Collection<Annotation> defaultEntryAnnotations,
-                                                      PsiXmlVersion version){
-        return getCompactXml25Options(objectCategory, complexType, new InMemoryIdentityObjectCache(),
+    public Map<String, Object> getCompactXmlOptions(Object output, InteractionCategory objectCategory, ComplexType complexType, Source defaultSource,
+                                                    XMLGregorianCalendar defaultReleaseDate,
+                                                    Collection<Annotation> defaultEntryAnnotations,
+                                                    PsiXmlVersion version){
+        return getCompactXmlOptions(output, objectCategory, complexType, new InMemoryIdentityObjectCache(),
                 Collections.newSetFromMap(new IdentityHashMap<Experiment, Boolean>()), Collections.newSetFromMap(new IdentityHashMap<Interactor, Boolean>()),
-                                          new HashSet<String>(), Collections.newSetFromMap(new IdentityHashMap<Interaction, Boolean>()),
-                                           defaultSource, defaultReleaseDate, defaultEntryAnnotations, false, false, version);
+                new HashSet<String>(), Collections.newSetFromMap(new IdentityHashMap<Interaction, Boolean>()),
+                defaultSource, defaultReleaseDate, defaultEntryAnnotations, false, false, version);
     }
 
 
     /**
-     * Create the options for the expanded PSI-XML 2.5 InteractionWriter.
+     * Create the options for the expanded PSI-XML InteractionWriter.
      * This writer will write an empty source with just a release date and no attributes attached to the entry.
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param elementCache: the cache of objects necessary to assign ids to the different MI elements
      * @param interactionSet : the instance of set for the interactions that we want to use in compact and expanded mode
      * @param version: Psi xml version
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XML  InteractionWriter
      */
-    public Map<String, Object> getExpandedXml25Options(InteractionCategory objectCategory, ComplexType complexType, PsiXmlObjectCache elementCache,
-                                                       Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended,
-                                                       PsiXmlVersion version){
-        return getExpandedXml25Options(objectCategory, complexType, elementCache, interactionSet,
+    public Map<String, Object> getExpandedXmlOptions(Object output, InteractionCategory objectCategory, ComplexType complexType, PsiXmlObjectCache elementCache,
+                                                     Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended,
+                                                     PsiXmlVersion version){
+        return getExpandedXmlOptions(output, objectCategory, complexType, elementCache, interactionSet,
                 null, null, null, writeComplexAsInteractors, extended, version);
     }
 
     /**
-     * Create the options for the compact PSI-XML 2.5 InteractionWriter.
+     * Create the options for the compact PSI-XML InteractionWriter.
      * This writer will write an empty source with just a release date and no attributes attached to the entry.
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param elementCache: the cache of objects necessary to assign ids to the different MI elements
@@ -290,23 +324,24 @@ public class MIWriterOptionFactory {
      * @param availabilitySet : the instance of set for the availability that we want to use in compact mode
      * @param interactionSet : the instance of set for the interactions that we want to use in compact and expanded mode
      * @param writeComplexAsInteractors : true if we want to write all sub complexes as interactors instead of interactions
-     * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml25 objects
+     * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml objects
      * @param version: Psi xml version
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XML  InteractionWriter
      */
-    public Map<String, Object> getCompactXml25Options(InteractionCategory objectCategory, ComplexType complexType, PsiXmlObjectCache elementCache,
-                                                      Set<Experiment> experimentSet,Set<Interactor> interactorSet,Set<String> availabilitySet,
-                                               Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended,
-                                               PsiXmlVersion version){
-        return getCompactXml25Options(objectCategory, complexType, elementCache, experimentSet, interactorSet, availabilitySet, interactionSet,
+    public Map<String, Object> getCompactXmlOptions(Object output, InteractionCategory objectCategory, ComplexType complexType, PsiXmlObjectCache elementCache,
+                                                    Set<Experiment> experimentSet, Set<Interactor> interactorSet, Set<String> availabilitySet,
+                                                    Set<Interaction> interactionSet, boolean writeComplexAsInteractors, boolean extended,
+                                                    PsiXmlVersion version){
+        return getCompactXmlOptions(output, objectCategory, complexType, elementCache, experimentSet, interactorSet, availabilitySet, interactionSet,
                 null, null, null, writeComplexAsInteractors, extended, version);
     }
 
 
     /**
-     * Create the options for the compact PSI-XML 2.5 InteractionWriter.
+     * Create the options for the compact PSI-XML InteractionWriter.
      * This writer will write an empty source with just a release date and no attributes attached to the entry.
      * All sub complexes will be written as interactions.
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param elementCache: the cache of objects necessary to assign ids to the different MI elements
@@ -315,21 +350,22 @@ public class MIWriterOptionFactory {
      * @param defaultReleaseDate : default release date in the entry source
      * @param defaultEntryAnnotations : annotations to write in the entry
      * @param writeComplexAsInteractors : true if we want to write all sub complexes as interactors instead of interactions
-     * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml25 objects
+     * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml objects
      * @param version: Psi xml version
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XML  InteractionWriter
      */
-    public Map<String, Object> getExpandedXml25Options(InteractionCategory objectCategory, ComplexType complexType, PsiXmlObjectCache elementCache,
-                                                       Set<Interaction> interactionSet, Source defaultSource,
-                                                       XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
-                                                       boolean writeComplexAsInteractors, boolean extended,
-                                                       PsiXmlVersion version){
-        return getXml25Options(objectCategory, complexType, PsiXmlType.expanded, elementCache, null, null, null, interactionSet, defaultSource,
+    public Map<String, Object> getExpandedXmlOptions(Object output, InteractionCategory objectCategory, ComplexType complexType, PsiXmlObjectCache elementCache,
+                                                     Set<Interaction> interactionSet, Source defaultSource,
+                                                     XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
+                                                     boolean writeComplexAsInteractors, boolean extended,
+                                                     PsiXmlVersion version){
+        return getXmlOptions(output, objectCategory, complexType, PsiXmlType.expanded, elementCache, null, null, null, interactionSet, defaultSource,
                 defaultReleaseDate, defaultEntryAnnotations, writeComplexAsInteractors, extended, version);
     }
 
     /**
-     * Create the options for the compact PSI-XML 2.5 InteractionWriter.
+     * Create the options for the compact PSI-XML InteractionWriter.
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param elementCache: the cache of objects necessary to assign ids to the different MI elements
@@ -341,23 +377,24 @@ public class MIWriterOptionFactory {
      * @param defaultReleaseDate : default release date in the entry source
      * @param defaultEntryAnnotations : annotations to write in the entry
      * @param writeComplexAsInteractors : true if we want to write all sub complexes as interactors instead of interactions
-     * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml25 objects
+     * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml objects
      * @param version: Psi xml version
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XML  InteractionWriter
      */
-    public Map<String, Object> getCompactXml25Options(InteractionCategory objectCategory, ComplexType complexType, PsiXmlObjectCache elementCache,
-                                                      Set<Experiment> experimentSet,Set<Interactor> interactorSet,Set<String> availabilitySet,
-                                                      Set<Interaction> interactionSet, Source defaultSource,
-                                                      XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
-                                                      boolean writeComplexAsInteractors, boolean extended,
-                                                      PsiXmlVersion version){
-        return getXml25Options(objectCategory, complexType, PsiXmlType.compact, elementCache,
+    public Map<String, Object> getCompactXmlOptions(Object output, InteractionCategory objectCategory, ComplexType complexType, PsiXmlObjectCache elementCache,
+                                                    Set<Experiment> experimentSet, Set<Interactor> interactorSet, Set<String> availabilitySet,
+                                                    Set<Interaction> interactionSet, Source defaultSource,
+                                                    XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
+                                                    boolean writeComplexAsInteractors, boolean extended,
+                                                    PsiXmlVersion version){
+        return getXmlOptions(output, objectCategory, complexType, PsiXmlType.compact, elementCache,
                 experimentSet, interactorSet, availabilitySet, interactionSet, defaultSource,
                 defaultReleaseDate, defaultEntryAnnotations, writeComplexAsInteractors, extended, version);
     }
 
     /**
-     * Create the options for the PSI-XML 2.5 InteractionWriter.
+     * Create the options for the PSI-XML InteractionWriter.
+     * @param output the output (file, outputfile, writer)
      * @param objectCategory : the interaction object type to write
      * @param complexType: the kind of complex to write : n-ary or binary
      * @param xmlType: the type of xml (compact or expanded). The default type is expanded
@@ -370,19 +407,20 @@ public class MIWriterOptionFactory {
      * @param defaultReleaseDate : default release date in the entry source
      * @param defaultEntryAnnotations : annotations to write in the entry
      * @param writeComplexAsInteractors : true if we want to write all sub complexes as interactors instead of interactions
-     * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml25 objects
+     * @param extended : true if all the interactions, participants, source, experiment, organism, cv terms and xrefs are pure xml objects
      * @param version: Psi xml version
-     * @return the options for the PSI-XML 2.5  InteractionWriter
+     * @return the options for the PSI-XML  InteractionWriter
      */
-    public Map<String, Object> getXml25Options(InteractionCategory objectCategory, ComplexType complexType, PsiXmlType xmlType,
-                                               PsiXmlObjectCache elementCache, Set<Experiment> experimentSet,
-                                               Set<Interactor> interactorSet, Set<String> availabilitySet,
-                                               Set<Interaction> interactionSet, Source defaultSource,
-                                               XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
-                                               boolean writeComplexAsInteractors, boolean extended,
-                                               PsiXmlVersion version){
+    public Map<String, Object> getXmlOptions(Object output, InteractionCategory objectCategory, ComplexType complexType, PsiXmlType xmlType,
+                                             PsiXmlObjectCache elementCache, Set<Experiment> experimentSet,
+                                             Set<Interactor> interactorSet, Set<String> availabilitySet,
+                                             Set<Interaction> interactionSet, Source defaultSource,
+                                             XMLGregorianCalendar defaultReleaseDate, Collection<Annotation> defaultEntryAnnotations,
+                                             boolean writeComplexAsInteractors, boolean extended,
+                                             PsiXmlVersion version){
         Map<String, Object> options = new HashMap<String, Object>(10);
 
+        options.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, output);
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psimi_xml.toString());
         if (objectCategory != null){
             options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, InteractionCategory.mixed);
