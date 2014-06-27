@@ -29,6 +29,7 @@
         <module>interactionviewer-app</module>
         <module>jami-batch</module>
         <module>jami-xml</module>
+    <module>jami-examples</module>
   </modules>
 
     <dependencies>
