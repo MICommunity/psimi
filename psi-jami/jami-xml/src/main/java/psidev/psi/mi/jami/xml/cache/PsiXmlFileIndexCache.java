@@ -48,6 +48,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private Unmarshaller unmarshaller;
     private RandomAccessFile randomAccessFile;
     private String namespaceUri;
+    private XMLInputFactory xmlif;
 
     private Map<Integer, AbstractAvailability> mapOfReferencedAvailabilities;
 
@@ -66,9 +67,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private Map<Integer, Feature> featureWeakMap;
     private Map<Integer, VariableParameterValue> variableParameterValueWeakMap;
     private Map<Integer, Complex> complexWeakMap;
-
-    private Interaction currentInteraction=null;
-    private Experiment currentExperiment=null;
 
     public PsiXmlFileIndexCache(File file, Unmarshaller unmarshaller, PsiXmlVersion version) throws IOException {
         if (file == null){
@@ -136,7 +134,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     @Override
     public void registerExperiment(int id, Experiment object) {
-        this.currentExperiment = object;
         this.experimentWeakMap.put(id, object);
     }
 
@@ -164,8 +161,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     @Override
     public void registerInteraction(int id, Interaction object) {
-        this.currentExperiment = null;
-        this.currentInteraction = object;
         this.interactionWeakMap.put(id, object);
     }
 
@@ -399,9 +394,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     @Override
     public void clear() {
-        this.currentExperiment = null;
-        this.currentInteraction = null;
-
         this.mapOfReferencedAvailabilities.clear();
 
         this.experimentWeakMap.clear();
@@ -473,8 +465,9 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         T obj = null;
         XMLStreamReader reader = null;
         try{
-
-            XMLInputFactory xmlif = XMLInputFactory2.newInstance();
+            if (this.xmlif == null){
+                this.xmlif = XMLInputFactory2.newInstance();
+            }
             reader = xmlif.createXMLStreamReader(in);
 
             //Create the filter (to add namespace) and set the xmlReader as its parent.
@@ -489,7 +482,6 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         }
         return obj;
     }
-
 
     /**
      * Indexes references component of the given file. that is experiments, interaction, interactor, feature and
