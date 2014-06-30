@@ -680,7 +680,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
             boolean isReadingInteraction = this.currentElement != null &&
                     (PsiXmlUtils.INTERACTION_TAG.equals(this.currentElement) ||
                             PsiXmlUtils.ABSTRACT_INTERACTION_TAG.equals(this.currentElement));
-            while(isReadingInteraction && this.currentElement != null){
+            while(isReadingInteraction && this.currentElement != null && containsUnresolvedReferences(entryContext)){
                 PsiXmlInteraction loadedInteraction = (PsiXmlInteraction)unmarshallInteraction();
                 this.loadedInteractions.add(loadedInteraction.getId());
                 clearPartialEntryReferences(entryContext);
@@ -720,7 +720,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
      *
      * @return the next interaction preloaded in the interactionIterator. Deletes the returned interaction
      */
-    protected T parseNextPreLoadedInteraction() {
+    protected T parseNextPreLoadedInteraction() throws PsiXmlParserException {
         int id = this.interactionIterator.next();
 
         T interaction = (T)this.indexOfObjects.getInteraction(id);
@@ -729,7 +729,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
 
         this.interactionIterator.remove();
         if (!this.interactionIterator.hasNext()){
-            flushEntry(XmlEntryContext.getInstance());
+            flushEntryIfNecessary(XmlEntryContext.getInstance());
         }
         return interaction;
     }
@@ -745,6 +745,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         T interaction = null;
         try {
             interaction = unmarshallInteraction();
+            clearPartialEntryReferences(entryContext);
 
             // no references, can return the interaction
             if (!containsUnresolvedReferences(entryContext)){

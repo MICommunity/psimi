@@ -72,8 +72,11 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsParticipant(this.ref)){
                 Participant object = parsedObjects.getParticipant(this.ref);
+                if (object == null){
+                    return false;
+                }
                 // convert participant evidence in a modelled participant
-                if (object instanceof ParticipantEvidence){
+                else if (object instanceof ParticipantEvidence){
                     participant = new XmlParticipantEvidenceWrapper((ParticipantEvidence)object, null);
                     return true;
                 }

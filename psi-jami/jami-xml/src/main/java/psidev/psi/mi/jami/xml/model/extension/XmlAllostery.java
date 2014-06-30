@@ -126,8 +126,11 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsParticipant(this.ref)){
                 Participant object = parsedObjects.getParticipant(this.ref);
+                if (object == null){
+                    return false;
+                }
                 // convert participant evidence in a complex
-                if (object instanceof ParticipantEvidence){
+                else if (object instanceof ParticipantEvidence){
                     ModelledParticipant participant = new XmlParticipantEvidenceWrapper((ParticipantEvidence)object, null);
                     setAllostericMolecule(participant);
                     return true;
@@ -135,6 +138,7 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
                 // wrap modelled interaction
                 else if (object instanceof ModelledParticipant){
                     setAllostericMolecule((ModelledParticipant) object);
+                    return true;
                 }
                 // wrap basic interaction
                 else {
@@ -216,11 +220,18 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsComplex(this.ref)){
-                getAffectedInteractions().remove(this);
-                getAffectedInteractions().add(parsedObjects.getComplex(this.ref));
+                Complex c = parsedObjects.getComplex(this.ref);
+                if (c != null){
+                    getAffectedInteractions().remove(this);
+                    getAffectedInteractions().add(c);
+                    return true;
+                }
             }
             if (parsedObjects.containsInteraction(this.ref)){
                 Interaction object = parsedObjects.getInteraction(this.ref);
+                if (object == null){
+                    return false;
+                }
                 // convert interaction evidence in a complex
                 if (object instanceof ExtendedPsiXmlInteractionEvidence){
                     ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);

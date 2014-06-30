@@ -530,8 +530,11 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInter
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsAvailability(this.ref)){
-                availability = parsedObjects.getAvailability(this.ref);
-                return true;
+                AbstractAvailability av = parsedObjects.getAvailability(this.ref);
+                if (av != null){
+                   availability = av;
+                    return true;
+                }
             }
             return false;
         }
@@ -699,7 +702,10 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInter
                 public boolean resolve(PsiXmlIdCache parsedObjects) {
                     if (parsedObjects.containsExperiment(this.ref)){
                         Experiment obj = parsedObjects.getExperiment(this.ref);
-                        if (obj instanceof ExtendedPsiXmlExperiment){
+                        if (obj == null){
+                           return false;
+                        }
+                        else if (obj instanceof ExtendedPsiXmlExperiment){
                             ExtendedPsiXmlExperiment exp = (ExtendedPsiXmlExperiment)obj;
                             experiments.remove(this);
                             experiments.add(exp);

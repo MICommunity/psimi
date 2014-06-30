@@ -207,9 +207,12 @@ public class XmlVariableParameterValueSet implements VariableParameterValueSet,F
             public boolean resolve(PsiXmlIdCache parsedObjects) {
                 if (parsedObjects.containsVariableParameter(this.ref)){
                     VariableParameterValue obj = parsedObjects.getVariableParameterValue(this.ref);
-                    variableParameterValues.remove(this);
-                    variableParameterValues.add(obj);
-                    return true;
+                    if (obj != null){
+                        variableParameterValues.remove(this);
+                        variableParameterValues.add(obj);
+                        return true;
+                    }
+
                 }
                 return false;
             }

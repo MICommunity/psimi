@@ -72,8 +72,11 @@ public class XmlFeatureModificationEffector implements FeatureModificationEffect
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsFeature(this.ref)){
                 Feature object = parsedObjects.getFeature(this.ref);
+                if (object == null){
+                    return false;
+                }
                 // convert feature evidence in a modelled feature
-                if (object instanceof FeatureEvidence){
+                else if (object instanceof FeatureEvidence){
                     feature = new XmlFeatureEvidenceWrapper((FeatureEvidence)object, null);
                     return true;
                 }

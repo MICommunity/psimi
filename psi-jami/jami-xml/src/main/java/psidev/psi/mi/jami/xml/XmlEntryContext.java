@@ -209,6 +209,8 @@ public class XmlEntryContext {
             Iterator<InferredInteraction> inferredIterator = inferredInteractions.iterator();
             while(inferredIterator.hasNext()){
                 InferredInteraction inferred = inferredIterator.next();
+                boolean toRemove = true;
+
                 if (!inferred.getParticipants().isEmpty()){
                     Iterator<InferredInteractionParticipant> partIterator = inferred.getParticipants().iterator();
                     List<InferredInteractionParticipant> partIterator2 = new ArrayList<InferredInteractionParticipant>(inferred.getParticipants());
@@ -220,11 +222,17 @@ public class XmlEntryContext {
                         for (int i = currentIndex; i < partIterator2.size();i++){
                             InferredInteractionParticipant p2 = partIterator2.get(i);
 
-                            if (p1.getFeature() != null && p2.getFeature() != null){
+                            if (p1.getFeature() != null && p2.getFeature() != null
+                                    && !(p1.getFeature() instanceof XmlIdReference)
+                                    && !(p2.getFeature() instanceof XmlIdReference)){
                                 p1.getFeature().getLinkedFeatures().add(p2.getFeature());
                                 if (p1.getFeature() != p2.getFeature()){
                                     p2.getFeature().getLinkedFeatures().add(p1.getFeature());
                                 }
+                            }
+                            // cannot remove this inferred interaction because of unresolved dependencies
+                            else{
+                                toRemove = false;
                             }
                         }
                     }
@@ -235,7 +243,9 @@ public class XmlEntryContext {
                     }
                 }
 
-                inferredIterator.remove();
+                if (toRemove){
+                    inferredIterator.remove();
+                }
             }
         }
 
@@ -243,6 +253,7 @@ public class XmlEntryContext {
             Iterator<BindingFeatures> inferredIterator = bindingFeatures.iterator();
             while(inferredIterator.hasNext()){
                 BindingFeatures inferred = inferredIterator.next();
+                boolean toRemove = true;
                 if (!inferred.getLinkedFeatures().isEmpty()){
                     Iterator<ModelledFeature> partIterator = inferred.getLinkedFeatures().iterator();
                     List<ModelledFeature> partIterator2 = new ArrayList<ModelledFeature>(inferred.getLinkedFeatures());
@@ -251,13 +262,23 @@ public class XmlEntryContext {
                     while (partIterator.hasNext()){
                         currentIndex++;
                         ModelledFeature p1 = partIterator.next();
-                        for (int i = currentIndex; i < partIterator2.size();i++){
-                            ModelledFeature p2 = partIterator2.get(i);
-
-                            p1.getLinkedFeatures().add(p2);
-                            if (p1 != p2){
-                                p2.getLinkedFeatures().add(p1);
+                        if (!(p1 instanceof XmlIdReference)){
+                            for (int i = currentIndex; i < partIterator2.size();i++){
+                                ModelledFeature p2 = partIterator2.get(i);
+                                if (!(p2 instanceof XmlIdReference)){
+                                    p1.getLinkedFeatures().add(p2);
+                                    if (p1 != p2){
+                                        p2.getLinkedFeatures().add(p1);
+                                    }
+                                }
+                                else{
+                                    toRemove = false;
+                                }
                             }
+                        }
+                        // cannot remove this inferred interaction because of unresolved dependencies
+                        else {
+                            toRemove = false;
                         }
                     }
                 }
@@ -267,7 +288,9 @@ public class XmlEntryContext {
                     }
                 }
 
-                inferredIterator.remove();
+                if (toRemove){
+                    inferredIterator.remove();
+                }
             }
         }
     }
