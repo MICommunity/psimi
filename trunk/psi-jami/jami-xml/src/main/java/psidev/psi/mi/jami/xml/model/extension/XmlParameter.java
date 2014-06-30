@@ -70,8 +70,11 @@ public class XmlParameter extends AbstractXmlParameter  {
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsExperiment(this.ref)){
-                experiment = parsedObjects.getExperiment(this.ref);
-                return true;
+                Experiment exp = parsedObjects.getExperiment(this.ref);
+                if (exp != null){
+                    experiment = exp;
+                    return true;
+                }
             }
             return false;
         }

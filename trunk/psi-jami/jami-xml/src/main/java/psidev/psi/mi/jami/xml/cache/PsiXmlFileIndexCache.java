@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.cache;
 
 import org.apache.commons.io.input.CountingInputStream;
 import org.codehaus.stax2.XMLInputFactory2;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
@@ -52,13 +53,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     private Map<Integer, AbstractAvailability> mapOfReferencedAvailabilities;
 
-    private Map<Integer, Long> experimentPositions;
-    private Map<Integer, Long> interactorPositions;
-    private Map<Integer, Long> interactionPositions;
-    private Map<Integer, Long> participantPositions;
-    private Map<Integer, Long> featurePositions;
-    private Map<Integer, Long> variableParameterValuePositions;
-    private Map<Integer, Long> complexPositions;
+    private Map<EntryLocation, Long> experimentPositions;
+    private Map<EntryLocation, Long> interactorPositions;
+    private Map<EntryLocation, Long> interactionPositions;
+    private Map<EntryLocation, Long> participantPositions;
+    private Map<EntryLocation, Long> featurePositions;
+    private Map<EntryLocation, Long> variableParameterValuePositions;
+    private Map<EntryLocation, Long> complexPositions;
 
     private Map<Integer, Experiment> experimentWeakMap;
     private Map<Integer, Interactor> interactorWeakMap;
@@ -67,6 +68,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private Map<Integer, Feature> featureWeakMap;
     private Map<Integer, VariableParameterValue> variableParameterValueWeakMap;
     private Map<Integer, Complex> complexWeakMap;
+
+    private int numberOfEntries=1;
 
     public PsiXmlFileIndexCache(File file, Unmarshaller unmarshaller, PsiXmlVersion version) throws IOException {
         if (file == null){
@@ -81,13 +84,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
         this.mapOfReferencedAvailabilities = new HashMap<Integer, AbstractAvailability>();
 
-        this.experimentPositions = new HashMap<Integer, Long>();
-        this.interactorPositions = new HashMap<Integer, Long>();
-        this.interactionPositions = new HashMap<Integer, Long>();
-        this.participantPositions = new HashMap<Integer, Long>();
-        this.featurePositions = new HashMap<Integer, Long>();
-        this.variableParameterValuePositions = new HashMap<Integer, Long>();
-        this.complexPositions = new HashMap<Integer, Long>();
+        this.experimentPositions = new HashMap<EntryLocation, Long>();
+        this.interactorPositions = new HashMap<EntryLocation, Long>();
+        this.interactionPositions = new HashMap<EntryLocation, Long>();
+        this.participantPositions = new HashMap<EntryLocation, Long>();
+        this.featurePositions = new HashMap<EntryLocation, Long>();
+        this.variableParameterValuePositions = new HashMap<EntryLocation, Long>();
+        this.complexPositions = new HashMap<EntryLocation, Long>();
 
         this.experimentWeakMap = new WeakHashMap<Integer, Experiment>();
         this.interactorWeakMap = new WeakHashMap<Integer, Interactor>();
@@ -142,20 +145,24 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         if (this.experimentWeakMap.containsKey(id)){
             return this.experimentWeakMap.get(id);
         }
-        else if (!this.experimentPositions.containsKey(id)){
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.experimentPositions.containsKey(location)){
             return null;
         }
         else {
             try {
-                return loadFromFile(this.experimentPositions.get(id));
+                return loadFromFile(this.experimentPositions.get(location));
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "cannot reload experiment "+id, e);
+                throw new MIIOException("cannot reload experiment "+id, e);
             } catch (JAXBException e) {
                 logger.log(Level.SEVERE, "cannot reload experiment "+id, e);
+                throw new MIIOException("cannot reload experiment "+id, e);
             } catch (XMLStreamException e) {
                 logger.log(Level.SEVERE, "cannot reload experiment "+id, e);
+                throw new MIIOException("cannot reload experiment "+id, e);
             }
-            return null;
         }
     }
 
@@ -169,20 +176,24 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         if (this.interactionWeakMap.containsKey(id)){
             return this.interactionWeakMap.get(id);
         }
-        else if (!this.interactionPositions.containsKey(id)){
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.interactionPositions.containsKey(location)){
             return null;
         }
         else {
             try {
-                return loadFromFile(this.interactionPositions.get(id));
+                return loadFromFile(this.interactionPositions.get(location));
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "cannot reload interaction "+id, e);
+                throw new MIIOException("cannot reload interaction "+id, e);
             } catch (JAXBException e) {
                 logger.log(Level.SEVERE, "cannot reload interaction "+id, e);
+                throw new MIIOException("cannot reload interaction "+id, e);
             } catch (XMLStreamException e) {
                 logger.log(Level.SEVERE, "cannot reload interaction "+id, e);
+                throw new MIIOException("cannot reload interaction "+id, e);
             }
-            return null;
         }
     }
 
@@ -196,21 +207,25 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         if (this.interactorWeakMap.containsKey(id)){
             return this.interactorWeakMap.get(id);
         }
-        else if (!this.interactorPositions.containsKey(id)){
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.interactorPositions.containsKey(location)){
             return null;
         }
         else {
             try {
-                AbstractXmlInteractor interactor = loadFromFile(this.interactorPositions.get(id));
+                AbstractXmlInteractor interactor = loadFromFile(this.interactorPositions.get(location));
                 return XmlEntryContext.getInstance().getInteractorFactory().createInteractorFromXmlInteractorInstance(interactor);
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "cannot reload interactor "+id, e);
+                throw new MIIOException("cannot reload interactor "+id, e);
             } catch (JAXBException e) {
                 logger.log(Level.SEVERE, "cannot reload interactor "+id, e);
+                throw new MIIOException("cannot reload interactor "+id, e);
             } catch (XMLStreamException e) {
                 logger.log(Level.SEVERE, "cannot reload interactor "+id, e);
+                throw new MIIOException("cannot reload interactor "+id, e);
             }
-            return null;
         }
     }
 
@@ -224,12 +239,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         if (this.participantWeakMap.containsKey(id)){
             return this.participantWeakMap.get(id);
         }
-        else if (!this.participantPositions.containsKey(id)){
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.participantPositions.containsKey(location)){
             return null;
         }
         else {
             try {
-                Interaction originalInteraction = loadFromFile(this.participantPositions.get(id));
+                Interaction originalInteraction = loadFromFile(this.participantPositions.get(location));
                 if (originalInteraction == null){
                     logger.log(Level.SEVERE, "cannot reload participant "+id);
                 }
@@ -246,10 +263,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "cannot reload participant "+id, e);
+                throw new MIIOException("cannot reload participant "+id, e);
             } catch (JAXBException e) {
                 logger.log(Level.SEVERE, "cannot reload participant "+id, e);
+                throw new MIIOException("cannot reload participant "+id, e);
             } catch (XMLStreamException e) {
                 logger.log(Level.SEVERE, "cannot reload participant "+id, e);
+                throw new MIIOException("cannot reload participant "+id, e);
             }
             return null;
         }
@@ -265,12 +285,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         if (this.featureWeakMap.containsKey(id)){
             return this.featureWeakMap.get(id);
         }
-        else if (!this.featurePositions.containsKey(id)){
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.featurePositions.containsKey(location)){
             return null;
         }
         else {
             try {
-                Interaction originalInteraction = loadFromFile(this.featurePositions.get(id));
+                Interaction originalInteraction = loadFromFile(this.featurePositions.get(location));
                 if (originalInteraction == null){
                     logger.log(Level.SEVERE, "cannot reload feature "+id);
                 }
@@ -290,10 +312,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "cannot reload feature "+id, e);
+                throw new MIIOException("cannot reload feature "+id, e);
             } catch (JAXBException e) {
                 logger.log(Level.SEVERE, "cannot reload feature "+id, e);
+                throw new MIIOException("cannot reload feature "+id, e);
             } catch (XMLStreamException e) {
                 logger.log(Level.SEVERE, "cannot reload feature "+id, e);
+                throw new MIIOException("cannot reload feature "+id, e);
             }
             return null;
         }
@@ -309,12 +334,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         if (this.complexWeakMap.containsKey(id)){
             return this.complexWeakMap.get(id);
         }
-        else if (!this.complexPositions.containsKey(id)){
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.complexPositions.containsKey(location)){
             return null;
         }
         else {
             try {
-                Interaction originalInteraction = loadFromFile(this.complexPositions.get(id));
+                Interaction originalInteraction = loadFromFile(this.complexPositions.get(location));
                 if (originalInteraction == null){
                     logger.log(Level.SEVERE, "cannot reload complex "+id);
                 }
@@ -340,10 +367,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "cannot reload complex "+id, e);
+                throw new MIIOException("cannot reload complex "+id, e);
             } catch (JAXBException e) {
                 logger.log(Level.SEVERE, "cannot reload complex "+id, e);
+                throw new MIIOException("cannot reload complex "+id, e);
             } catch (XMLStreamException e) {
                 logger.log(Level.SEVERE, "cannot reload complex "+id, e);
+                throw new MIIOException("cannot reload complex "+id, e);
             }
             return null;
         }
@@ -359,12 +389,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         if (this.variableParameterValueWeakMap.containsKey(id)){
             return this.variableParameterValueWeakMap.get(id);
         }
-        else if (!this.variableParameterValuePositions.containsKey(id)){
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.variableParameterValuePositions.containsKey(location)){
             return null;
         }
         else {
             try {
-                Experiment originalExperiment = loadFromFile(this.variableParameterValuePositions.get(id));
+                Experiment originalExperiment = loadFromFile(this.variableParameterValuePositions.get(location));
                 if (originalExperiment == null){
                     logger.log(Level.SEVERE, "cannot reload variable parameter value "+id);
                 }
@@ -383,10 +415,13 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
             } catch (IOException e) {
                 logger.log(Level.SEVERE, "cannot reload variable parameter value "+id, e);
+                throw new MIIOException("cannot reload variable parameter "+id, e);
             } catch (JAXBException e) {
                 logger.log(Level.SEVERE, "cannot reload variable parameter value "+id, e);
+                throw new MIIOException("cannot reload variable parameter "+id, e);
             } catch (XMLStreamException e) {
                 logger.log(Level.SEVERE, "cannot reload variable parameter value "+id, e);
+                throw new MIIOException("cannot reload variable parameter "+id, e);
             }
             return null;
         }
@@ -403,12 +438,16 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.participantWeakMap.clear();
         this.featureWeakMap.clear();
         this.variableParameterValueWeakMap.clear();
+
+        // clear method is called after each entry so we increase the number of parsed entries when clear method is called
+        this.numberOfEntries++;
     }
 
     @Override
     public void close() {
         clear();
 
+        this.numberOfEntries = 1;
         this.experimentPositions.clear();
         this.interactorPositions.clear();
         this.interactionPositions.clear();
@@ -426,7 +465,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     @Override
     public boolean containsExperiment(int id) {
-        return this.experimentWeakMap.containsKey(id) || this.experimentPositions.containsKey(id);
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.experimentWeakMap.containsKey(id) || this.experimentPositions.containsKey(location);
     }
 
     @Override
@@ -436,28 +476,34 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
 
     @Override
     public boolean containsInteraction(int id) {
-        return this.interactionWeakMap.containsKey(id) || this.interactionPositions.containsKey(id);
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.interactionWeakMap.containsKey(id) || this.interactionPositions.containsKey(location);
     }
 
     @Override
     public boolean containsInteractor(int id) {
-        return this.interactorWeakMap.containsKey(id) || this.interactorPositions.containsKey(id);    }
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.interactorWeakMap.containsKey(id) || this.interactorPositions.containsKey(location);    }
 
     @Override
     public boolean containsParticipant(int id) {
-        return this.participantWeakMap.containsKey(id) || this.participantPositions.containsKey(id);    }
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.participantWeakMap.containsKey(id) || this.participantPositions.containsKey(location);    }
 
     @Override
     public boolean containsFeature(int id) {
-        return this.featureWeakMap.containsKey(id) || this.featurePositions.containsKey(id);    }
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.featureWeakMap.containsKey(id) || this.featurePositions.containsKey(location);    }
 
     @Override
     public boolean containsVariableParameter(int id) {
-        return this.variableParameterValueWeakMap.containsKey(id) || this.variableParameterValuePositions.containsKey(id);    }
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.variableParameterValueWeakMap.containsKey(id) || this.variableParameterValuePositions.containsKey(location);    }
 
     @Override
     public boolean containsComplex(int id) {
-        return this.complexWeakMap.containsKey(id) || this.complexPositions.containsKey(id);    }
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.complexWeakMap.containsKey(id) || this.complexPositions.containsKey(location);    }
 
     private <T extends Object> T loadFromFile(long id) throws IOException, JAXBException, XMLStreamException {
 
@@ -512,6 +558,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
             long currentExperimentPost = 0;
             long currentInteractionPos = 0;
             boolean readElements = false;
+            int currentEntry=0;
 
             while ( -1 != nextByte(fis, buf)) {
                 read = (char)(buf[0] & 0xFF);
@@ -556,20 +603,24 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                         } else {
                             // check what start tag it is
 
-                            if ( "experimentDescription".equalsIgnoreCase( sb.toString() ) ) {
+                            if ( "entry".equalsIgnoreCase( sb.toString() ) ) {
+
+                                currentEntry++;
+
+                            } else if ( "experimentDescription".equalsIgnoreCase( sb.toString() ) ) {
 
                                 int result = getId( fis, buf );
                                 currentId = result;
                                 currentExperimentPost = startPos;
 
-                                this.experimentPositions.put(currentId, startPos);
+                                this.experimentPositions.put(new EntryLocation(currentEntry, currentId), startPos);
 
                             } else if ( "interactor".equalsIgnoreCase( sb.toString() ) ) {
 
                                 int result = getId( fis, buf );
                                 currentId = result;
 
-                                this.interactorPositions.put(currentId, startPos);
+                                this.interactorPositions.put(new EntryLocation(currentEntry, currentId), startPos);
 
                             } else if ( "interaction".equalsIgnoreCase( sb.toString() ) ) {
 
@@ -577,7 +628,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
-                                this.interactionPositions.put(currentId, startPos);
+                                this.interactionPositions.put(new EntryLocation(currentEntry, currentId), startPos);
 
                             }
                             else if ( "abstractInteraction".equalsIgnoreCase( sb.toString() ) ) {
@@ -585,15 +636,16 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                                 int result = getId( fis,buf );
                                 currentId = result;
                                 currentInteractionPos = startPos;
-
-                                this.interactionPositions.put(currentId, startPos);
+                                EntryLocation location = new EntryLocation(currentEntry, currentId);
+                                this.complexPositions.put(location, startPos);
+                                this.interactionPositions.put(location, startPos);
 
                             }else if ( "participant".equalsIgnoreCase( sb.toString() ) ) {
 
                                 int result = getId( fis, buf );
                                 currentId = result;
 
-                                this.participantPositions.put(currentId, currentInteractionPos);
+                                this.participantPositions.put(new EntryLocation(currentEntry, currentId), currentInteractionPos);
 
                             } else if ( "feature".equalsIgnoreCase( sb.toString() ) ) {
 
@@ -601,7 +653,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
-                                this.featurePositions.put(currentId, currentInteractionPos);
+                                this.featurePositions.put(new EntryLocation(currentEntry, currentId), currentInteractionPos);
                             }
                             else if ( "variableValue".equalsIgnoreCase( sb.toString() ) ) {
 
@@ -609,7 +661,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                                 currentId = result;
                                 currentInteractionPos = startPos;
 
-                                this.variableParameterValuePositions.put(currentId, currentExperimentPost);
+                                this.variableParameterValuePositions.put(new EntryLocation(currentEntry, currentId), currentExperimentPost);
                             }
 
                             recording = false;

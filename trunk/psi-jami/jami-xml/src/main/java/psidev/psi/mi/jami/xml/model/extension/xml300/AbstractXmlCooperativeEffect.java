@@ -406,14 +406,20 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
 
             public boolean resolve(PsiXmlIdCache parsedObjects) {
                 if (parsedObjects.containsComplex(this.ref)){
-                    affectedInteractions.remove(this);
-                    affectedInteractions.add(parsedObjects.getComplex(this.ref));
-                    return true;
+                    Complex c = parsedObjects.getComplex(this.ref);
+                    if (c != null){
+                        affectedInteractions.remove(this);
+                        affectedInteractions.add(c);
+                        return true;
+                    }
                 }
                 else if (parsedObjects.containsInteraction(this.ref)){
                     Interaction object = parsedObjects.getInteraction(this.ref);
+                    if (object == null){
+                        return false;
+                    }
                     // convert interaction evidence in a complex
-                    if (object instanceof ExtendedPsiXmlInteractionEvidence){
+                    else if (object instanceof ExtendedPsiXmlInteractionEvidence){
                         ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
                         affectedInteractions.remove(this);
                         affectedInteractions.add(interaction);

@@ -205,9 +205,11 @@ public class HostOrganism extends XmlOrganism{
             public boolean resolve(PsiXmlIdCache parsedObjects) {
                 if (parsedObjects.containsExperiment(this.ref)){
                     Experiment obj = parsedObjects.getExperiment(this.ref);
-                    experiments.remove(this);
-                    experiments.add(obj);
-                    return true;
+                    if (obj != null){
+                        experiments.remove(this);
+                        experiments.add(obj);
+                        return true;
+                    }
                 }
                 return false;
             }

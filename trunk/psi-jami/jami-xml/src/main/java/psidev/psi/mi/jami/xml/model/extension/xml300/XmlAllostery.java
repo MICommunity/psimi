@@ -146,8 +146,11 @@ public class XmlAllostery extends AbstractXmlCooperativeEffect implements Allost
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsParticipant(this.ref)){
                 Participant object = parsedObjects.getParticipant(this.ref);
+                if (object == null){
+                    return false;
+                }
                 // convert participant evidence in a complex
-                if (object instanceof ParticipantEvidence){
+                else if (object instanceof ParticipantEvidence){
                     ModelledParticipant participant = new XmlParticipantEvidenceWrapper((ParticipantEvidence)object, null);
                     setAllostericMolecule(participant);
                     return true;
@@ -155,6 +158,7 @@ public class XmlAllostery extends AbstractXmlCooperativeEffect implements Allost
                 // wrap modelled interaction
                 else if (object instanceof ModelledParticipant){
                     setAllostericMolecule((ModelledParticipant) object);
+                    return true;
                 }
                 // wrap basic participant
                 else {

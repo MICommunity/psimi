@@ -492,12 +492,29 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             // take it from existing references
             if (parsedObjects.containsComplex(this.ref)){
-                interactor = parsedObjects.getComplex(this.ref);
+                Interactor i = parsedObjects.getComplex(this.ref);
+                if (i != null){
+                    interactor = i;
+                    return true;
+                }
+                else{
+                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                    if (listener != null){
+                        listener.onParticipantWithoutInteractor(null, this);
+                    }
+                }
             }
             else if (parsedObjects.containsInteraction(this.ref)){
                 Interaction object = parsedObjects.getInteraction(this.ref);
+                if (object == null){
+                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                    if (listener != null){
+                        listener.onParticipantWithoutInteractor(null, this);
+                    }
+                    return false;
+                }
                 // convert interaction evidence in a complex
-                if (object instanceof ExtendedPsiXmlInteractionEvidence){
+                else if (object instanceof ExtendedPsiXmlInteractionEvidence){
                     interactor = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
                     return true;
                 }
@@ -543,8 +560,11 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         @Override
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsInteractor(this.ref)){
-                interactor = parsedObjects.getInteractor(this.ref);
-                return true;
+                Interactor i = parsedObjects.getInteractor(this.ref);
+                if (i != null){
+                    interactor = i;
+                    return true;
+                }
             }
             return false;
         }
