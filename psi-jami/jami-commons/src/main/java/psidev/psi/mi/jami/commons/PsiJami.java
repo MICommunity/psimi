@@ -44,7 +44,7 @@ public class PsiJami {
         Map<String, Object> supportedOptions28 = createMITABInteractionWriterOptions(null, null, null, null);
         writerFactory.registerDataSourceWriter(DefaultMitabWriter.class, supportedOptions28);
 
-        Map<String, Object> supportedOptions4 = createXML25InteractionWriterOptions(null, null, null, null, null);
+        Map<String, Object> supportedOptions4 = createXMLInteractionWriterOptions(null, null, null, null, null);
         writerFactory.registerDataSourceWriter(DefaultXmlWriter.class, supportedOptions4);
     }
 
@@ -78,9 +78,9 @@ public class PsiJami {
         return supportedOptions4;
     }
 
-    private static Map<String, Object> createXML25InteractionWriterOptions(InteractionCategory interactionCategory, ComplexType complexType,
-                                                                           PsiXmlType type,
-                                                                           Boolean extended, Boolean writeNames) {
+    private static Map<String, Object> createXMLInteractionWriterOptions(InteractionCategory interactionCategory, ComplexType complexType,
+                                                                         PsiXmlType type,
+                                                                         Boolean extended, Boolean writeNames) {
         Map<String, Object> supportedOptions4 = new HashMap<String, Object>(14);
         supportedOptions4.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psimi_xml.toString());
         supportedOptions4.put(InteractionWriterOptions.INTERACTION_CATEGORY_OPTION_KEY, interactionCategory);
@@ -89,15 +89,9 @@ public class PsiJami {
         supportedOptions4.put(PsiXmlWriterOptions.XML_EXTENDED_OPTION, extended);
         supportedOptions4.put(PsiXmlWriterOptions.XML_NAMES_OPTION, writeNames);
         supportedOptions4.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, null);
-        switch (type){
-            case compact:
-                supportedOptions4.put(PsiXmlWriterOptions.COMPACT_XML_EXPERIMENT_SET_OPTION, null);
-                supportedOptions4.put(PsiXmlWriterOptions.COMPACT_XML_INTERACTOR_SET_OPTION, null);
-                supportedOptions4.put(PsiXmlWriterOptions.COMPACT_XML_AVAILABILITY_SET_OPTION, null);
-                break;
-            default:
-                break;
-        }
+        supportedOptions4.put(PsiXmlWriterOptions.COMPACT_XML_EXPERIMENT_SET_OPTION, null);
+        supportedOptions4.put(PsiXmlWriterOptions.COMPACT_XML_INTERACTOR_SET_OPTION, null);
+        supportedOptions4.put(PsiXmlWriterOptions.COMPACT_XML_AVAILABILITY_SET_OPTION, null);
         supportedOptions4.put(PsiXmlWriterOptions.ELEMENT_WITH_ID_CACHE_OPTION, null);
         supportedOptions4.put(PsiXmlWriterOptions.XML_INTERACTION_SET_OPTION, null);
         supportedOptions4.put(PsiXmlWriterOptions.DEFAULT_RELEASE_DATE_OPTION, null);
