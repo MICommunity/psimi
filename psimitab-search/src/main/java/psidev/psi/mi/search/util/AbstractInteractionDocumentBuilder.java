@@ -73,6 +73,8 @@ public abstract class AbstractInteractionDocumentBuilder<T extends BinaryInterac
 
     public Document createDocument( T binaryInteraction ) throws MitabLineException {
         String mitabLine = MitabWriterUtils.buildLine(binaryInteraction, PsimiTabVersion.v2_5);
+        int index = mitabLine.lastIndexOf("\n");
+        mitabLine = mitabLine.substring(0, index);
         final Row row;
         try {
             row = rowReader.readLine(mitabLine);
