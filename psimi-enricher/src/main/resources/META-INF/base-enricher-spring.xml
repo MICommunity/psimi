@@ -49,7 +49,6 @@
                 <ref bean="interactorListener"/>
                 <ref bean="featureListener"/>
                 <ref bean="participantListener"/>
-                <ref bean="participantPoolListener"/>
                 <ref bean="interactionListener"/>
                 <ref bean="experimentListener"/>
                 <ref bean="publicationListener"/>
