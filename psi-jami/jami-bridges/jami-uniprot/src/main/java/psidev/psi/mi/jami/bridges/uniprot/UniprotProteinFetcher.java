@@ -19,15 +19,7 @@ import psidev.psi.mi.jami.utils.checksum.RogidGenerator;
 import psidev.psi.mi.jami.utils.checksum.SeguidException;
 import uk.ac.ebi.kraken.interfaces.uniprot.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.*;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ensembl.Ensembl;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.flybase.FlyBase;
 import uk.ac.ebi.kraken.interfaces.uniprot.dbx.go.Go;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.interpro.InterPro;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.ipi.Ipi;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.pdb.Pdb;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.reactome.Reactome;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.refseq.RefSeq;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.wormbase.WormBase;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Field;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.*;
@@ -393,9 +385,9 @@ public class UniprotProteinFetcher
 
         // Database Xrefs
         for(DatabaseCrossReference dbxref : entity.getDatabaseCrossReferences()){
-            Xref dbxrefStandardised = createXrefFrom(dbxref);
-            if(dbxrefStandardised != null){
-                p.getXrefs().add(dbxrefStandardised);
+            Collection<Xref> dbxrefStandardised = createXrefsFrom(dbxref);
+            if(dbxrefStandardised != null && !dbxrefStandardised.isEmpty()){
+                p.getXrefs().addAll(dbxrefStandardised);
             }
         }
 
@@ -421,52 +413,45 @@ public class UniprotProteinFetcher
      * @param dbxref
      * @return
      */
-    private Xref createXrefFrom(DatabaseCrossReference dbxref){
+    private Collection<Xref> createXrefsFrom(DatabaseCrossReference dbxref){
         if(selectedDatabases == null) initiateDatabaseMap();
 
         if (selectedDatabases.containsKey(dbxref.getDatabase())){
+            Collection<Xref> refs = new ArrayList<Xref>(3);
             CvTerm database = selectedDatabases.get(dbxref.getDatabase());
             String id = null;
 
             switch(dbxref.getDatabase()){
                 case GO :
                     Go goDB = (Go)dbxref;
-                    if(goDB.hasGoId()) id = goDB.getGoId().getValue(); break;
+                    if(goDB.hasGoId()) id = goDB.getGoId().getValue();
+                    refs.add(new DefaultXref(database, id));
+                    break;
                 case INTERPRO :
-                    InterPro interProDB = (InterPro)dbxref;
-                    if(interProDB.hasInterProId()) id = interProDB.getInterProId().getValue();  break;
                 case PDB :
-                    Pdb pdbDB = (Pdb)dbxref;
-                    if(pdbDB.hasPdbAccessionNumber()) id = pdbDB.getPdbAccessionNumber().getValue(); break;
                 case REACTOME:
-                    Reactome reactomeDB = (Reactome)dbxref;
-                    if(reactomeDB.hasReactomeAccessionNumber()) id = reactomeDB.getReactomeAccessionNumber().getValue();
+                case WORMBASE :
+                case FLYBASE :
+                case REFSEQ :
+                case IPI :
+                    if(dbxref.getPrimaryId() != null) id = dbxref.getPrimaryId().getValue();
+                    refs.add(new DefaultXref(database, id));
                     break;
                 case ENSEMBL :
-                    Ensembl ensemblDB = (Ensembl)dbxref;
-                    if(ensemblDB.hasEnsemblProteinIdentifier()) id = ensemblDB.getEnsemblProteinIdentifier().getValue();
-                    if(ensemblDB.hasEnsemblTranscriptIdentifier()) id = ensemblDB.getEnsemblTranscriptIdentifier().getValue();
-                    if(ensemblDB.hasEnsemblGeneIdentifier()) id = ensemblDB.getEnsemblGeneIdentifier().getValue();
+                    if(dbxref.getPrimaryId() != null) id = dbxref.getPrimaryId().getValue();
+                    refs.add(new DefaultXref(database, id));
+                    if (dbxref.getDescription() != null && dbxref.getDescription().getValue().length() > 0){
+                        refs.add(new DefaultXref(database, dbxref.getDescription().getValue()));
+                    }
+                    if (dbxref.hasThird()){
+                        refs.add(new DefaultXref(database, dbxref.getThird().getValue()));
+                    }
                     break;
-                case WORMBASE :
-                    WormBase wormBaseDB = (WormBase)dbxref;
-                    if(wormBaseDB.hasWormBaseAccessionNumber()) id = wormBaseDB.getWormBaseAccessionNumber().getValue();
-                    break;
-                case FLYBASE :
-                    FlyBase flyBaseDB = (FlyBase)dbxref;
-                    if(flyBaseDB.hasFlyBaseAccessionNumber()) id = flyBaseDB.getFlyBaseAccessionNumber().getValue();
-                    break;
-                case REFSEQ :
-                    RefSeq refSeqDB = (RefSeq)dbxref;
-                    if(refSeqDB.hasRefSeqAccessionNumber()) id = refSeqDB.getRefSeqAccessionNumber().getValue();
-                    break;
-                case IPI :
-                    Ipi ipiDB = (Ipi)dbxref;
-                    if(ipiDB.hasIpiAcNumber()) id = ipiDB.getIpiAcNumber().getValue();
-                    break;
+                default:
+                break;
             }
 
-            if(id != null) return new DefaultXref(database, id);
+            if(id != null) return refs;
         }
         return null;
     }
