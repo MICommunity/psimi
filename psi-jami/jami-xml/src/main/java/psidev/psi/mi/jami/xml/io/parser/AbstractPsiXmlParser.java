@@ -146,6 +146,7 @@ public abstract class AbstractPsiXmlParser<T extends Interaction> implements Psi
         }
         // we start a new entry
         else if (PsiXmlUtils.ENTRY_TAG.equals(currentElement) && hasReadEntrySet) {
+            hasReadEntry = true;
             T interaction = processEntry(entryContext);
             // check if last interaction and need to flush entry
             flushEntryIfNecessary(entryContext);
