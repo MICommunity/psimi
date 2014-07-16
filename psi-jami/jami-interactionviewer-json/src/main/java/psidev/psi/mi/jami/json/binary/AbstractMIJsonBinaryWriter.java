@@ -990,4 +990,8 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
         this.mutations.clear();
         this.otherFeatures.clear();
     }
+
+    protected OntologyTermFetcher getFetcher() {
+        return fetcher;
+    }
 }
