@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.impl.DefaultBinaryInteractionEvidence;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.IllegalParameterException;
+import psidev.psi.mi.jami.json.binary.MIJsonBinaryEvidenceWriter;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
