@@ -1,12 +1,14 @@
-package psidev.psi.mi.jami.json;
+package psidev.psi.mi.jami.json.binary;
 
 import org.json.simple.JSONValue;
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
+import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
+import psidev.psi.mi.jami.json.MIJsonUtils;
+import psidev.psi.mi.jami.json.MIJsonWriterOptions;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.*;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
@@ -17,14 +19,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * JSON writer for InteractionEvidences
+ * Abstract JSON writer for binary interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>03/07/13</pre>
  */
 
-public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInteractionEvidence> {
+public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> implements InteractionWriter<I> {
 
     private boolean isInitialised = false;
     private Writer writer;
@@ -32,19 +34,19 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
     private Set<String> processedInteractors;
     private static final Logger logger = Logger.getLogger("MitabParserLogger");
     private Integer expansionId;
-    private Collection<FeatureEvidence> experimentalFeatures;
-    private Collection<FeatureEvidence> bindingSites;
-    private Collection<FeatureEvidence> mutations;
-    private Collection<FeatureEvidence> ptms;
-    private Collection<FeatureEvidence> otherFeatures;
+    private Collection<Feature> experimentalFeatures;
+    private Collection<Feature> bindingSites;
+    private Collection<Feature> mutations;
+    private Collection<Feature> ptms;
+    private Collection<Feature> otherFeatures;
     private OntologyTermFetcher fetcher;
 
-    public MIJsonBinaryEvidenceWriter(){
+    public AbstractMIJsonBinaryWriter(){
         processedInteractors = new HashSet<String>();
         initialiseFeatureCollections();
     }
 
-    public MIJsonBinaryEvidenceWriter(File file, OntologyTermFetcher fetcher) throws IOException {
+    public AbstractMIJsonBinaryWriter(File file, OntologyTermFetcher fetcher) throws IOException {
 
         initialiseFile(file);
         processedInteractors = new HashSet<String>();
@@ -55,7 +57,7 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         this.fetcher = fetcher;
     }
 
-    public MIJsonBinaryEvidenceWriter(OutputStream output, OntologyTermFetcher fetcher) {
+    public AbstractMIJsonBinaryWriter(OutputStream output, OntologyTermFetcher fetcher) {
 
         initialiseOutputStream(output);
         processedInteractors = new HashSet<String>();
@@ -66,7 +68,7 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         this.fetcher = fetcher;
     }
 
-    public MIJsonBinaryEvidenceWriter(Writer writer, OntologyTermFetcher fetcher) {
+    public AbstractMIJsonBinaryWriter(Writer writer, OntologyTermFetcher fetcher) {
 
         initialiseWriter(writer);
         processedInteractors = new HashSet<String>();
@@ -148,14 +150,14 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         }
     }
 
-    public void write(BinaryInteractionEvidence interaction) throws MIIOException {
+    public void write(I interaction) throws MIIOException {
         if (!isInitialised){
             throw new IllegalStateException("The json writer has not been initialised. The options for the json writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions and "+ MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY+" to know which OntologyTermFetcher to use.");
         }
 
         try{
-            ParticipantEvidence A = interaction.getParticipantA();
-            ParticipantEvidence B = interaction.getParticipantB();
+            Participant A = interaction.getParticipantA();
+            Participant B = interaction.getParticipantB();
 
             if (A != null || B != null){
                 // write start element and interactor and beginning of interaction
@@ -196,12 +198,12 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         }
     }
 
-    public void write(Collection<? extends BinaryInteractionEvidence> interactions) throws MIIOException {
-        Iterator<? extends BinaryInteractionEvidence> binaryIterator = interactions.iterator();
+    public void write(Collection<? extends I> interactions) throws MIIOException {
+        Iterator<? extends I> binaryIterator = interactions.iterator();
         write(binaryIterator);
     }
 
-    public void write(Iterator<? extends BinaryInteractionEvidence> interactions) throws MIIOException {
+    public void write(Iterator<? extends I> interactions) throws MIIOException {
         while(interactions.hasNext()){
             write(interactions.next());
         }
@@ -265,16 +267,16 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         this.expansionId = expansionId;
     }
 
-    protected void writeFeatures(String name, Collection<FeatureEvidence> features) throws IOException {
+    protected void writeFeatures(String name, Collection<Feature> features) throws IOException {
         writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
         writeNextPropertySeparatorAndIndent();
         writer.write(MIJsonUtils.INDENT);
         writeStartObject(name);
         writer.write(MIJsonUtils.OPEN_ARRAY);
 
-        Iterator<FeatureEvidence> featureIterator = features.iterator();
+        Iterator<Feature> featureIterator = features.iterator();
         while (featureIterator.hasNext()){
-            FeatureEvidence feature = featureIterator.next();
+            Feature feature = featureIterator.next();
             writeFeature(feature);
             if (featureIterator.hasNext()){
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
@@ -284,10 +286,10 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writer.write(MIJsonUtils.CLOSE_ARRAY);
     }
 
-    protected void writeAllFeatures(Collection<FeatureEvidence> features) throws IOException {
+    protected void writeAllFeatures(Collection<Feature> features) throws IOException {
         // first split the features in the proper collection of features
         clearFeatureCollections();
-        Iterator<FeatureEvidence> featureIterator = features.iterator();
+        Iterator<Feature> featureIterator = features.iterator();
         while (featureIterator.hasNext()){
             recognizeFeatureTypeAndSplitInFeatureCollections(featureIterator.next());
         }
@@ -309,7 +311,7 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         }
     }
 
-    protected void recognizeFeatureTypeAndSplitInFeatureCollections(FeatureEvidence feature) {
+    protected void recognizeFeatureTypeAndSplitInFeatureCollections(Feature feature) {
 
         // feature type is not null, we can recognize the feature
         if (feature.getType() != null){
@@ -408,7 +410,7 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         }
     }
 
-    protected void writeFeature(FeatureEvidence feature) throws IOException {
+    protected void writeFeature(Feature feature) throws IOException {
 
         writeNextPropertySeparatorAndIndent();
         writer.write(MIJsonUtils.INDENT);
@@ -448,25 +450,7 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         }
 
         // detection methods
-        if (!feature.getDetectionMethods().isEmpty()){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writer.write(MIJsonUtils.INDENT);
-            writer.write(MIJsonUtils.INDENT);
-            writeStartObject("detmethods");
-            writer.write(MIJsonUtils.OPEN_ARRAY);
-
-            Iterator<CvTerm> methodIterator = feature.getDetectionMethods().iterator();
-            while (methodIterator.hasNext()){
-                CvTerm method = methodIterator.next();
-                writeCvTerm(method);
-                if (methodIterator.hasNext()){
-                    writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                }
-            }
-
-            writer.write(MIJsonUtils.CLOSE_ARRAY);
-        }
+        writeFeatureProperties(feature);
 
         // ranges
         if (!feature.getRanges().isEmpty()){
@@ -498,9 +482,9 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
             writeStartObject("linkedFeatures");
             writer.write(MIJsonUtils.OPEN_ARRAY);
 
-            Iterator<FeatureEvidence> featureIterator = feature.getLinkedFeatures().iterator();
+            Iterator<Feature> featureIterator = feature.getLinkedFeatures().iterator();
             while (featureIterator.hasNext()){
-                FeatureEvidence f = featureIterator.next();
+                Feature f = featureIterator.next();
                 writer.write(MIJsonUtils.PROPERTY_DELIMITER);
                 writer.write(Integer.toString(f.hashCode()));
                 writer.write(MIJsonUtils.PROPERTY_DELIMITER);
@@ -527,13 +511,15 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writer.write(MIJsonUtils.CLOSE);
     }
 
+    protected abstract void writeFeatureProperties(Feature feature) throws IOException;
+
     protected void writeRange(Range range) throws IOException {
         writer.write(MIJsonUtils.PROPERTY_DELIMITER);
         writer.write(RangeUtils.convertRangeToString(range));
         writer.write(MIJsonUtils.PROPERTY_DELIMITER);
     }
 
-    protected void writeParticipant(ParticipantEvidence participant, String name) throws IOException {
+    protected void writeParticipant(Participant participant, String name) throws IOException {
 
         writeStartObject(name);
         writer.write(MIJsonUtils.OPEN);
@@ -556,47 +542,13 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writeIdentifier(db, interactorId);
 
         // write biorole
-        writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+        getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
         writeNextPropertySeparatorAndIndent();
-        writer.write(MIJsonUtils.INDENT);
+        getWriter().write(MIJsonUtils.INDENT);
         writeStartObject("bioRole");
         writeCvTerm(participant.getBiologicalRole());
 
-        // write expRole
-        writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-        writeNextPropertySeparatorAndIndent();
-        writer.write(MIJsonUtils.INDENT);
-        writeStartObject("expRole");
-        writeCvTerm(participant.getExperimentalRole());
-
-        // identification methods
-        if (!participant.getIdentificationMethods().isEmpty()){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writer.write(MIJsonUtils.INDENT);
-            writeStartObject("identificationMethods");
-            writer.write(MIJsonUtils.OPEN_ARRAY);
-
-            Iterator<CvTerm> methodIterator = participant.getIdentificationMethods().iterator();
-            while (methodIterator.hasNext()){
-                CvTerm method = methodIterator.next();
-                writeCvTerm(method);
-                if (methodIterator.hasNext()){
-                    writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                }
-            }
-
-            writer.write(MIJsonUtils.CLOSE_ARRAY);
-        }
-
-        // expressed in
-        if (participant.getExpressedInOrganism() != null){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writer.write(MIJsonUtils.INDENT);
-            writeStartObject("expressedIn");
-            writeOrganism(participant.getExpressedInOrganism());
-        }
+        writeParticipantProperties(participant);
 
         // features
         if (!participant.getFeatures().isEmpty()){
@@ -606,6 +558,8 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writeNextPropertySeparatorAndIndent();
         writer.write(MIJsonUtils.CLOSE);
     }
+
+    protected abstract void writeParticipantProperties(Participant participant) throws IOException;
 
     protected void writeAnnotation(String text) throws IOException {
         writer.write(MIJsonUtils.PROPERTY_DELIMITER);
@@ -668,12 +622,12 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writer.write(MIJsonUtils.CLOSE);
     }
 
-    protected void writeAllParameters(Collection<Parameter> parameters) throws IOException {
+    protected <P extends Parameter> void writeAllParameters(Collection<P> parameters) throws IOException {
         writer.write(MIJsonUtils.OPEN_ARRAY);
 
-        Iterator<Parameter> paramIterator = parameters.iterator();
+        Iterator<P> paramIterator = parameters.iterator();
         while (paramIterator.hasNext()){
-            Parameter param = paramIterator.next();
+            P param = paramIterator.next();
             if (param != null){
                 writeParameter(JSONValue.escape(param.getType().getShortName()), JSONValue.escape(ParameterUtils.getParameterValueAsString(param)), param.getUnit() != null ? JSONValue.escape(param.getUnit().getShortName()) : null);
             }
@@ -696,12 +650,12 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writer.write(MIJsonUtils.CLOSE);
     }
 
-    protected void writeAllConfidences(Collection<Confidence> confidences) throws IOException {
+    protected <C extends Confidence> void writeAllConfidences(Collection<C> confidences) throws IOException {
         writer.write(MIJsonUtils.OPEN_ARRAY);
 
-        Iterator<Confidence> confidencesIterator = confidences.iterator();
+        Iterator<C> confidencesIterator = confidences.iterator();
         while (confidencesIterator.hasNext()){
-            Confidence conf = confidencesIterator.next();
+            C conf = confidencesIterator.next();
             if (conf != null){
                 writeConfidence(JSONValue.escape(conf.getType().getShortName()), JSONValue.escape(conf.getValue()));
             }
@@ -743,77 +697,7 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writer.write(MIJsonUtils.CLOSE_ARRAY);
     }
 
-    protected boolean writeExperiment(InteractionEvidence interaction) throws IOException {
-        Experiment experiment = interaction.getExperiment();
-        Collection<Annotation> figures = AnnotationUtils.collectAllAnnotationsHavingTopic(interaction.getAnnotations(), Annotation.FIGURE_LEGEND_MI, Annotation.FIGURE_LEGEND);
-
-        if (experiment != null){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("experiment");
-            writer.write(MIJsonUtils.OPEN);
-            writeNextPropertySeparatorAndIndent();
-            writer.write(MIJsonUtils.INDENT);
-
-            // write detection method
-            writeStartObject("detmethod");
-            writeCvTerm(experiment.getInteractionDetectionMethod());
-
-            if (experiment.getHostOrganism() != null){
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writer.write(MIJsonUtils.INDENT);
-                writeStartObject("host");
-                writeOrganism(experiment.getHostOrganism());
-            }
-
-            // write publication
-            if (experiment.getPublication() != null){
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writer.write(MIJsonUtils.INDENT);
-                writePublication(experiment.getPublication());
-            }
-
-            Collection<Annotation> expModifications = AnnotationUtils.collectAllAnnotationsHavingTopic(experiment.getAnnotations(), Annotation.EXP_MODIFICATION_MI, Annotation.EXP_MODIFICATION);
-            if (!expModifications.isEmpty()){
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writer.write(MIJsonUtils.INDENT);
-                writeStartObject("experimentModifications");
-                writeAllAnnotations(expModifications);
-            }
-
-            if (!figures.isEmpty()){
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writer.write(MIJsonUtils.INDENT);
-                writeStartObject("figures");
-                writeAllAnnotations(figures);
-            }
-
-            writeNextPropertySeparatorAndIndent();
-            writer.write(MIJsonUtils.CLOSE);
-            return true;
-        }
-        else if (!figures.isEmpty()){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("experiment");
-            writer.write(MIJsonUtils.OPEN);
-            writeNextPropertySeparatorAndIndent();
-            writer.write(MIJsonUtils.INDENT);
-
-            // write figures
-            writeStartObject("figures");
-            writeAllAnnotations(figures);
-
-            writeNextPropertySeparatorAndIndent();
-            writer.write(MIJsonUtils.CLOSE);
-            return true;
-        }
-        return false;
-    }
+    protected abstract boolean writeInteractionProperties(I interaction) throws IOException;
 
     protected void writeIdentifier(String db, String id) throws IOException {
         writer.write(MIJsonUtils.OPEN);
@@ -886,7 +770,7 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writer.write(MIJsonUtils.INDENT);
     }
 
-    protected void writeInteraction(BinaryInteractionEvidence binary, ParticipantEvidence A, ParticipantEvidence B) throws IOException {
+    protected void writeInteraction(I binary, Participant A, Participant B) throws IOException {
         writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
         writer.write(MIJsonUtils.LINE_SEPARATOR);
         writer.write(MIJsonUtils.INDENT);
@@ -895,8 +779,8 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writeNextPropertySeparatorAndIndent();
         writerProperty("object","interaction");
 
-        // first experiment
-        boolean hasExperiment = writeExperiment(binary);
+        // first interaction properties such as experiment, etc
+        boolean hasProperties = writeInteractionProperties(binary);
 
         // then interaction type
         boolean hasType = binary.getInteractionType() != null;
@@ -913,26 +797,14 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
             writeStartObject("identifiers");
-            writeAllIdentifiers(binary.getIdentifiers(), binary.getImexId());
+            writeAllIdentifiers(binary.getIdentifiers(), extractImexIdFrom(binary));
         }
 
         // then confidences
-        boolean hasConfidences = !binary.getConfidences().isEmpty();
-        if (hasConfidences){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("confidences");
-            writeAllConfidences(binary.getConfidences());
-        }
+        writeConfidences(binary);
 
         // then parameters
-        boolean hasParameters = !binary.getParameters().isEmpty();
-        if (hasParameters){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("parameters");
-            writeAllParameters(binary.getParameters());
-        }
+        writeParameters(binary);
 
         // then complex expansion
         boolean hasComplexExpansion = binary.getComplexExpansion() != null;
@@ -980,7 +852,13 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writer.write(MIJsonUtils.CLOSE);
     }
 
-    protected void registerAndWriteInteractor(ParticipantEvidence participant, boolean writeElementSeparator) throws IOException {
+    protected abstract void writeParameters(I binary) throws IOException;
+
+    protected abstract void writeConfidences(I binary) throws IOException;
+
+    protected abstract String extractImexIdFrom(I binary);
+
+    protected void registerAndWriteInteractor(Participant participant, boolean writeElementSeparator) throws IOException {
         if (participant != null){
             Interactor interactor = participant.getInteractor();
 
@@ -1063,6 +941,10 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
         writer.write(MIJsonUtils.CLOSE);
     }
 
+    protected Writer getWriter() {
+        return writer;
+    }
+
     private void initialiseWriter(Writer writer) {
         if (writer == null){
             throw new IllegalArgumentException("The writer cannot be null.");
@@ -1094,11 +976,11 @@ public class MIJsonBinaryEvidenceWriter implements InteractionWriter<BinaryInter
     }
 
     private void initialiseFeatureCollections(){
-        this.experimentalFeatures = new ArrayList<FeatureEvidence>();
-        this.bindingSites = new ArrayList<FeatureEvidence>();
-        this.ptms = new ArrayList<FeatureEvidence>();
-        this.mutations = new ArrayList<FeatureEvidence>();
-        this.otherFeatures = new ArrayList<FeatureEvidence>();
+        this.experimentalFeatures = new ArrayList<Feature>();
+        this.bindingSites = new ArrayList<Feature>();
+        this.ptms = new ArrayList<Feature>();
+        this.mutations = new ArrayList<Feature>();
+        this.otherFeatures = new ArrayList<Feature>();
     }
 
     private void clearFeatureCollections(){
