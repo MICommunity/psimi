@@ -51,7 +51,7 @@ public class SpokeExpansionTest {
     }
 
     @Test
-    public void test_expand_default_interaction(){
+    public void test_expand_default_interaction() throws ComplexExpansionException {
 
         InteractionEvidence binary = new DefaultInteractionEvidence();
         binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
@@ -104,7 +104,7 @@ public class SpokeExpansionTest {
     }
 
     @Test
-    public void test_expand_interaction_evidence(){
+    public void test_expand_interaction_evidence() throws ComplexExpansionException {
 
         InteractionEvidence binary = new DefaultInteractionEvidence();
         binary.addParticipant(new DefaultParticipantEvidence(new DefaultProtein("p1")));
@@ -156,7 +156,7 @@ public class SpokeExpansionTest {
     }
 
     @Test
-    public void test_expand_modelled_interaction(){
+    public void test_expand_modelled_interaction() throws ComplexExpansionException {
 
         ModelledInteraction binary = new DefaultModelledInteraction();
         binary.addParticipant(new DefaultModelledParticipant(new DefaultProtein("p1")));

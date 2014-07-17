@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.factory;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.*;
-
-import java.io.IOException;
 import java.util.*;
 
 /**

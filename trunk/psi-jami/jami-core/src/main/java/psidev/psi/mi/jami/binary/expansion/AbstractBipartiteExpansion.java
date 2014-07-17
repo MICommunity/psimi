@@ -7,6 +7,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.clone.InteractorCloner;
+import psidev.psi.mi.jami.factory.InteractorFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,22 +20,23 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractBipartiteExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractComplexExpansionMethod<T,B> {
+public abstract class AbstractBipartiteExpansion<T extends Interaction, B extends BinaryInteraction>
+        extends AbstractComplexExpansionMethod<T,B> {
 
-    private DefaultInteractorFactory interactorFactory;
+    private InteractorFactory interactorFactory;
 
     public AbstractBipartiteExpansion(){
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.BIPARTITE_EXPANSION, ComplexExpansionMethod.BIPARTITE_EXPANSION_MI));
     }
 
-    public DefaultInteractorFactory getInteractorFactory() {
+    public InteractorFactory getInteractorFactory() {
         if (this.interactorFactory == null){
             this.interactorFactory = new DefaultInteractorFactory();
         }
         return interactorFactory;
     }
 
-    public void setInteractorFactory(DefaultInteractorFactory interactorFactory) {
+    public void setInteractorFactory(InteractorFactory interactorFactory) {
         this.interactorFactory = interactorFactory;
     }
 
@@ -43,10 +45,10 @@ public abstract class AbstractBipartiteExpansion<T extends Interaction<? extends
         Participant externalEntity =  createParticipantForComplexEntity(createComplexEntity(interaction));
 
         Collection<B> binaryInteractions = new ArrayList<B>(interaction.getParticipants().size());
-        for ( Participant p : interaction.getParticipants() ) {
+        for ( Object p : interaction.getParticipants() ) {
 
             // build a new interaction
-            B binary = createBinaryInteraction(interaction, externalEntity, p);
+            B binary = createBinaryInteraction(interaction, externalEntity, (Participant)p);
 
             binaryInteractions.add(binary);
         }

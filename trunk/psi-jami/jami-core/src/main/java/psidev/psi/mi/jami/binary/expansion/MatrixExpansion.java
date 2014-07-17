@@ -33,7 +33,7 @@ public class MatrixExpansion extends AbstractMatrixExpansion<Interaction<? exten
     }
 
     @Override
-    public Collection<BinaryInteraction> expand(Interaction interaction) {
+    public Collection<BinaryInteraction> expand(Interaction interaction) throws ComplexExpansionException{
 
         if (interaction instanceof InteractionEvidence){
             Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>(interaction.getParticipants().size());
