@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.binary.expansion.ComplexExpansionException;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
@@ -54,12 +55,16 @@ public abstract class AbstractPsixmlBinaryParser<T extends Interaction<? extends
         }
 
         // expand
-        this.binaryInteractions.addAll(getExpansionMethod().expand(interaction));
-        this.binaryInteractionIterator = this.binaryInteractions.iterator();
-        if (this.binaryInteractionIterator.hasNext()){
-            return processAndRemoveNextBinary();
-        }
-        else{
+        try {
+            this.binaryInteractions.addAll(getExpansionMethod().expand(interaction));
+            this.binaryInteractionIterator = this.binaryInteractions.iterator();
+            if (this.binaryInteractionIterator.hasNext()){
+                return processAndRemoveNextBinary();
+            }
+            else{
+                return null;
+            }
+        } catch (ComplexExpansionException e) {
             return null;
         }
     }
