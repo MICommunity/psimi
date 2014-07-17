@@ -46,9 +46,9 @@ public interface ComplexExpansionMethod<T extends Interaction, B extends BinaryI
      * The collection cannot be null.
      * @param interaction
      * @return collection of binary interactions expanded from the original interaction object
-     * @throws IllegalArgumentException if the interaction cannot be expanded with this method
+     * @throws ComplexExpansionException if the interaction cannot be expanded with this method
      */
-    public Collection<B> expand(T interaction);
+    public Collection<B> expand(T interaction) throws ComplexExpansionException;
 
     /**
      *

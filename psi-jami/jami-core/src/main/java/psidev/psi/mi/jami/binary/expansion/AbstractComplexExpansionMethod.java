@@ -6,7 +6,6 @@ import psidev.psi.mi.jami.factory.DefaultBinaryInteractionFactory;
 import psidev.psi.mi.jami.model.ComplexType;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.InteractionUtils;
 
 import java.util.Collection;
@@ -20,7 +19,7 @@ import java.util.Collections;
  * @since <pre>05/06/13</pre>
  */
 
-public abstract class AbstractComplexExpansionMethod<T extends Interaction<? extends Participant>, B extends BinaryInteraction> implements ComplexExpansionMethod<T,B> {
+public abstract class AbstractComplexExpansionMethod<T extends Interaction, B extends BinaryInteraction> implements ComplexExpansionMethod<T,B> {
 
     private CvTerm method;
     private BinaryInteractionFactory factory;
@@ -43,7 +42,11 @@ public abstract class AbstractComplexExpansionMethod<T extends Interaction<? ext
         return true;
     }
 
-    public Collection<B> expand(T interaction) {
+    public Collection<B> expand(T interaction) throws ComplexExpansionException{
+
+        if (!isInteractionExpandable(interaction)){
+            throw new ComplexExpansionException("Cannot expand the interaction: "+interaction.toString() + " with the expansion: "+method.toString());
+        }
 
         ComplexType category = findInteractionCategory(interaction);
 

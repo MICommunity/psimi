@@ -16,7 +16,8 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractMatrixExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractComplexExpansionMethod<T,B> {
+public abstract class AbstractMatrixExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction>
+        extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractMatrixExpansion(){
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.MATRIX_EXPANSION, ComplexExpansionMethod.MATRIX_EXPANSION_MI));

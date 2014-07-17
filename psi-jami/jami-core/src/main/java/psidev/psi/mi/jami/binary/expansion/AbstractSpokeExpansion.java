@@ -16,7 +16,8 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractSpokeExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction> extends AbstractComplexExpansionMethod<T,B> {
+public abstract class AbstractSpokeExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction>
+        extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractSpokeExpansion() {
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.SPOKE_EXPANSION, ComplexExpansionMethod.SPOKE_EXPANSION_MI));
