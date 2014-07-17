@@ -1,7 +1,6 @@
-package psidev.psi.mi.jami.json.binary;
+package psidev.psi.mi.jami.json.nary;
 
 import org.json.simple.JSONValue;
-import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
@@ -10,7 +9,10 @@ import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.json.MIJsonWriterOptions;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.*;
+import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.utils.OntologyTermUtils;
+import psidev.psi.mi.jami.utils.ParameterUtils;
+import psidev.psi.mi.jami.utils.RangeUtils;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 
 import java.io.*;
@@ -19,19 +21,21 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Abstract JSON writer for binary interactions (binary json format)
+ * Abstract JSON writer for interactions (n-ary json format)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>03/07/13</pre>
  */
 
-public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> implements InteractionWriter<I> {
+public abstract class AbstractMIJsonWriter<I extends Interaction> implements InteractionWriter<I> {
 
     private boolean isInitialised = false;
     private Writer writer;
     private boolean hasOpened = false;
-    private Set<String> processedInteractors;
+    private Map<String, Integer> processedInteractors;
+    private Map<String, Integer> processedInteractions;
+    private Map<Feature, Integer> processedFeatures;
     private static final Logger logger = Logger.getLogger("MitabParserLogger");
     private Integer expansionId;
     private Collection<Feature> experimentalFeatures;
@@ -41,15 +45,22 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
     private Collection<Feature> otherFeatures;
     private OntologyTermFetcher fetcher;
 
-    public AbstractMIJsonBinaryWriter(){
-        processedInteractors = new HashSet<String>();
+    private int currentInteractorId = 0;
+    private int currentFeatureId = 0;
+
+    public AbstractMIJsonWriter(){
+        processedInteractors = new HashMap<String, Integer>();
+        processedInteractions = new HashMap<String, Integer>();
+        processedInteractions = new HashMap<String, Integer>();
         initialiseFeatureCollections();
     }
 
-    public AbstractMIJsonBinaryWriter(File file, OntologyTermFetcher fetcher) throws IOException {
+    public AbstractMIJsonWriter(File file, OntologyTermFetcher fetcher) throws IOException {
 
         initialiseFile(file);
-        processedInteractors = new HashSet<String>();
+        processedInteractors = new HashMap<String, Integer>();
+        processedInteractions = new HashMap<String, Integer>();
+        processedInteractions = new HashMap<String, Integer>();
         initialiseFeatureCollections();
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
@@ -57,10 +68,12 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
         this.fetcher = fetcher;
     }
 
-    public AbstractMIJsonBinaryWriter(OutputStream output, OntologyTermFetcher fetcher) {
+    public AbstractMIJsonWriter(OutputStream output, OntologyTermFetcher fetcher) {
 
         initialiseOutputStream(output);
-        processedInteractors = new HashSet<String>();
+        processedInteractors = new HashMap<String, Integer>();
+        processedInteractions = new HashMap<String, Integer>();
+        processedInteractions = new HashMap<String, Integer>();
         initialiseFeatureCollections();
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
@@ -68,10 +81,12 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
         this.fetcher = fetcher;
     }
 
-    public AbstractMIJsonBinaryWriter(Writer writer, OntologyTermFetcher fetcher) {
+    public AbstractMIJsonWriter(Writer writer, OntologyTermFetcher fetcher) {
 
         initialiseWriter(writer);
-        processedInteractors = new HashSet<String>();
+        processedInteractors = new HashMap<String, Integer>();
+        processedInteractions = new HashMap<String, Integer>();
+        processedInteractions = new HashMap<String, Integer>();
         initialiseFeatureCollections();
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
@@ -156,38 +171,27 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
         }
 
         try{
-            Participant A = interaction.getParticipantA();
-            Participant B = interaction.getParticipantB();
 
-            if (A != null || B != null){
+            if (!interaction.getParticipants().isEmpty()){
                 // write start element and interactor and beginning of interaction
                 if (!hasOpened){
                     hasOpened = true;
 
-                    if (A != null && B != null){
-                        registerAndWriteInteractor(A, false);
-                        registerAndWriteInteractor(B, true);
-                    }
-                    else if (A != null){
-                        registerAndWriteInteractor(A, false);
-                    }
-                    else {
-                        registerAndWriteInteractor(B, false);
+                    Iterator<Participant> pIterator = interaction.getParticipants().iterator();
+                    registerAndWriteInteractor(pIterator.next(), false);
+                    while(pIterator.hasNext()){
+                        registerAndWriteInteractor(pIterator.next(), true);
                     }
                 }
                 // write interactors
-                else if (A != null && B != null){
-                    registerAndWriteInteractor(A, true);
-                    registerAndWriteInteractor(B, true);
-                }
-                else if (A != null){
-                    registerAndWriteInteractor(A, true);
-                }
                 else {
-                    registerAndWriteInteractor(B, true);
+                    Iterator<Participant> pIterator = interaction.getParticipants().iterator();
+                    while(pIterator.hasNext()){
+                        registerAndWriteInteractor(pIterator.next(), true);
+                    }
                 }
 
-                writeInteraction(interaction, A, B);
+                writeInteraction(interaction);
             }
             else {
                 logger.log(Level.WARNING, "Ignore interaction as it does not contain any participants : "+interaction.toString());
@@ -237,8 +241,12 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
             writer = null;
             hasOpened = false;
             processedInteractors.clear();
+            processedInteractions.clear();
+            processedFeatures.clear();
             expansionId = null;
             this.fetcher = null;
+            this.currentInteractorId = 0;
+            this.currentFeatureId = 0;
         }
     }
 
@@ -257,8 +265,12 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
                 writer = null;
                 hasOpened = false;
                 processedInteractors.clear();
+                processedInteractions.clear();
+                processedFeatures.clear();
                 expansionId = null;
                 this.fetcher = null;
+                this.currentInteractorId = 0;
+                this.currentFeatureId = 0;
             }
         }
     }
@@ -421,6 +433,15 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
         writer.write(MIJsonUtils.INDENT);
 
         // write identifier == hashcode of feature
+        int id = 0;
+        if (this.processedFeatures.containsKey(feature)){
+           id = this.processedFeatures.get(feature);
+        }
+        else{
+            this.currentFeatureId++;
+            id = this.currentFeatureId;
+            this.processedFeatures.put(feature, id);
+        }
         writerProperty("id", Integer.toString(feature.hashCode()));
 
         // write name
@@ -514,9 +535,14 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
     protected abstract void writeFeatureProperties(Feature feature) throws IOException;
 
     protected void writeRange(Range range) throws IOException {
-        writer.write(MIJsonUtils.PROPERTY_DELIMITER);
-        writer.write(RangeUtils.convertRangeToString(range));
-        writer.write(MIJsonUtils.PROPERTY_DELIMITER);
+        writeStartObject("range");
+        writer.write(MIJsonUtils.OPEN);
+        writerProperty("pos",RangeUtils.convertRangeToString(range));
+        writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+        if (range.getParticipant() != null){
+            writerProperty("interactorRef",Integer.toString(this.processedInteractors.get(generateInteractorKeyFor(range.getParticipant().getInteractor().getPreferredIdentifier(), range.getParticipant().getInteractor()))));
+        }
+        writer.write(MIJsonUtils.CLOSE);
     }
 
     protected void writeParticipant(Participant participant, String name) throws IOException {
@@ -529,17 +555,36 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
         // write identifier
         writeStartObject("identifier");
         Xref preferredIdentifier = participant.getInteractor().getPreferredIdentifier();
-        String interactorId = null;
-        String db = null;
-        if (preferredIdentifier != null){
-            interactorId = JSONValue.escape(preferredIdentifier.getId());
-            db = JSONValue.escape(preferredIdentifier.getDatabase().getShortName());
+        if (participant.getInteractor() instanceof Complex){
+            String [] keyValues = generateInteractionKeyFor(preferredIdentifier, (Complex)participant.getInteractor());
+            writerProperty("id", Integer.toString(this.processedInteractions.get(keyValues[2])));
         }
         else{
-            interactorId = Integer.toString(UnambiguousExactInteractorBaseComparator.hashCode(participant.getInteractor()));
-            db = "generated";
+            String [] keyValues = generateInteractorKeyFor(preferredIdentifier, participant.getInteractor());
+            writerProperty("id", Integer.toString(this.processedInteractors.get(keyValues[2])));
         }
-        writeIdentifier(db, interactorId);
+
+        // write stoichiometry
+        if (participant.getStoichiometry() != null &&
+                participant.getStoichiometry().getMinValue() > 0 &&
+                participant.getStoichiometry().getMaxValue() > 0){
+            if (participant.getStoichiometry().getMaxValue() == participant.getStoichiometry().getMinValue()){
+                getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                getWriter().write(MIJsonUtils.INDENT);
+                writerProperty("stoichiometry", Integer.toString(participant.getStoichiometry().getMinValue()));
+            }
+            else{
+                getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                getWriter().write(MIJsonUtils.INDENT);
+                writerProperty("minStoichiometry", Integer.toString(participant.getStoichiometry().getMinValue()));
+                getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                getWriter().write(MIJsonUtils.INDENT);
+                writerProperty("maxStoichiometry", Integer.toString(participant.getStoichiometry().getMaxValue()));
+            }
+        }
 
         // write biorole
         getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
@@ -770,87 +815,96 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
         writer.write(MIJsonUtils.INDENT);
     }
 
-    protected void writeInteraction(I binary, Participant A, Participant B) throws IOException {
-        writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-        writer.write(MIJsonUtils.LINE_SEPARATOR);
-        writer.write(MIJsonUtils.INDENT);
-        writer.write(MIJsonUtils.OPEN);
+    protected void writeInteraction(I interaction) throws IOException {
+        Xref preferredIdentifier = interaction.getIdentifiers().isEmpty() ? (Xref)interaction.getIdentifiers().iterator().next() : null;
+        String[] keyValues = generateInteractionKeyFor(preferredIdentifier, interaction);
+        int id = 0;
 
-        writeNextPropertySeparatorAndIndent();
-        writerProperty("object","interaction");
+        // if the interaction has not yet been processed, we write the interactor
+        if (!processedInteractions.containsKey(keyValues[2])){
+            this.currentInteractorId++;
+            id = this.currentInteractorId;
+            processedInteractions.put(keyValues[2], id);
 
-        // first interaction properties such as experiment, etc
-        boolean hasProperties = writeInteractionProperties(binary);
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            writer.write(MIJsonUtils.LINE_SEPARATOR);
+            writer.write(MIJsonUtils.INDENT);
+            writer.write(MIJsonUtils.OPEN);
 
-        // then interaction type
-        boolean hasType = binary.getInteractionType() != null;
-        if (hasType){
+            writeNextPropertySeparatorAndIndent();
+            writerProperty("object","interaction");
+            // write accession
             writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
             writeNextPropertySeparatorAndIndent();
-            writeStartObject("interactionType");
-            writeCvTerm(binary.getInteractionType());
-        }
+            writerProperty("id", Integer.toString(id));
 
-        // then interaction identifiers
-        boolean hasIdentifiers = !binary.getIdentifiers().isEmpty();
-        if (hasIdentifiers){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("identifiers");
-            writeAllIdentifiers(binary.getIdentifiers(), extractImexIdFrom(binary));
-        }
+            // first interaction properties such as experiment, etc
+            boolean hasProperties = writeInteractionProperties(interaction);
 
-        // then confidences
-        writeConfidences(binary);
-
-        // then parameters
-        writeParameters(binary);
-
-        // then complex expansion
-        boolean hasComplexExpansion = binary.getComplexExpansion() != null;
-        if (hasComplexExpansion){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("expansion");
-            writeExpansionMethod(binary.getComplexExpansion());
-        }
-
-        // then participant A and B
-        if (A != null){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeParticipant(A, "source");
-
-            if (B != null){
+            // then interaction type
+            boolean hasType = interaction.getInteractionType() != null;
+            if (hasType){
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
                 writeNextPropertySeparatorAndIndent();
-                writeParticipant(B, "target");
+                writeStartObject("interactionType");
+                writeCvTerm(interaction.getInteractionType());
             }
-            else {
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writeParticipant(A, "target");
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writerProperty("intramolecular", "true");
-            }
-        }
-        else if (B != null){
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeParticipant(B, "source");
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeParticipant(B, "target");
-            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writerProperty("intramolecular", "true");
-        }
 
-        writer.write(MIJsonUtils.LINE_SEPARATOR);
-        writer.write(MIJsonUtils.INDENT);
-        writer.write(MIJsonUtils.CLOSE);
+            // then interaction identifiers
+            boolean hasIdentifiers = !interaction.getIdentifiers().isEmpty();
+            if (hasIdentifiers){
+                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                writeStartObject("identifiers");
+                writeAllIdentifiers(interaction.getIdentifiers(), extractImexIdFrom(interaction));
+            }
+
+            // then confidences
+            writeConfidences(interaction);
+
+            // then parameters
+            writeParameters(interaction);
+
+            // then participant A and B
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writeStartObject("participants");
+            writer.write(MIJsonUtils.OPEN_ARRAY);
+            writeNextPropertySeparatorAndIndent();
+
+            Iterator<Participant> participantIterator = interaction.getParticipants().iterator();
+            while (participantIterator.hasNext()){
+                Participant participant = participantIterator.next();
+                writeParticipant(participant, "participant");
+                if (participantIterator.hasNext()){
+                    writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+                }
+            }
+
+            writer.write(MIJsonUtils.CLOSE_ARRAY);
+            writer.write(MIJsonUtils.LINE_SEPARATOR);
+            writer.write(MIJsonUtils.INDENT);
+            writer.write(MIJsonUtils.CLOSE);
+        }
     }
+
+    protected void writeComplex(boolean indent, Complex interaction, String interactorId, String db, String interactorKey) throws IOException {
+        int id = 0;
+        // if the interactor has not yet been processed, we write the interactor
+        if (!processedInteractions.containsKey(interactorKey)){
+            this.currentInteractorId++;
+            id = this.currentInteractorId;
+            processedInteractions.put(interactorKey, id);
+
+            if (indent){
+                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+                writer.write(MIJsonUtils.LINE_SEPARATOR);
+            }
+            writeComplex(interaction);
+        }
+    }
+
+    protected abstract void writeComplex(Complex complex);
 
     protected abstract void writeParameters(I binary) throws IOException;
 
@@ -863,65 +917,73 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
             Interactor interactor = participant.getInteractor();
 
             Xref preferredIdentifier = interactor.getPreferredIdentifier();
-            String interactorId = null;
-            String db = null;
-            if (preferredIdentifier != null){
-                interactorId = JSONValue.escape(preferredIdentifier.getId());
-                db = JSONValue.escape(preferredIdentifier.getDatabase().getShortName());
+            String[] keyValues = generateInteractorKeyFor(preferredIdentifier, interactor);
+
+            if (interactor instanceof Complex){
+                writeComplex(writeElementSeparator, (Complex)interactor, keyValues[1], keyValues[0], keyValues[2]);
             }
             else{
-                interactorId = Integer.toString(UnambiguousExactInteractorBaseComparator.hashCode(interactor));
-                db = "generated";
+                writeInteractor(writeElementSeparator, interactor, keyValues[1], keyValues[0], keyValues[2]);
             }
-            String interactorKey = db+"_"+interactorId;
+        }
+    }
 
-            // if the interactor has not yet been processed, we write the interactor
-            if (processedInteractors.add(interactorKey)){
-                if (writeElementSeparator){
-                    writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                    writer.write(MIJsonUtils.LINE_SEPARATOR);
-                }
-                writer.write(MIJsonUtils.INDENT);
-                writer.write(MIJsonUtils.OPEN);
-                writeNextPropertySeparatorAndIndent();
-                writerProperty("object","interactor");
+    protected void writeInteractor(boolean writeElementSeparator, Interactor interactor, String interactorId, String db, String interactorKey) throws IOException {
+        int id = 0;
+        // if the interactor has not yet been processed, we write the interactor
+        if (!processedInteractors.containsKey(interactorKey)){
+            this.currentInteractorId++;
+            id = this.currentInteractorId;
+            processedInteractors.put(interactorKey, id);
 
-                // write sequence if possible
-                if (interactor instanceof Polymer){
-                    Polymer polymer = (Polymer) interactor;
-                    if (polymer.getSequence() != null){
-                        writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                        writeNextPropertySeparatorAndIndent();
-                        writerProperty("sequence", JSONValue.escape(polymer.getSequence()));
-                    }
-                }
-                // write interactor type
+            if (writeElementSeparator){
                 writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writeStartObject("type");
-                writeCvTerm(interactor.getInteractorType());
+                writer.write(MIJsonUtils.LINE_SEPARATOR);
+            }
+            writer.write(MIJsonUtils.INDENT);
+            writer.write(MIJsonUtils.OPEN);
+            writeNextPropertySeparatorAndIndent();
+            writerProperty("object","interactor");
+            // write accession
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writerProperty("id", Integer.toString(id));
 
-                // write organism
-                if (interactor.getOrganism() != null){
+            // write sequence if possible
+            if (interactor instanceof Polymer){
+                Polymer polymer = (Polymer) interactor;
+                if (polymer.getSequence() != null){
                     writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
                     writeNextPropertySeparatorAndIndent();
-                    writeStartObject("organism");
-                    writeOrganism(interactor.getOrganism());
+                    writerProperty("sequence", JSONValue.escape(polymer.getSequence()));
                 }
-                // write accession
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writeStartObject("identifier");
-                writeIdentifier(db, interactorId);
-
-                // write label
-                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writerProperty("label", JSONValue.escape(interactor.getShortName()));
-                writer.write(MIJsonUtils.LINE_SEPARATOR);
-                writer.write(MIJsonUtils.INDENT);
-                writer.write(MIJsonUtils.CLOSE);
             }
+            // write interactor type
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writeStartObject("type");
+            writeCvTerm(interactor.getInteractorType());
+
+            // write organism
+            if (interactor.getOrganism() != null){
+                writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+                writeNextPropertySeparatorAndIndent();
+                writeStartObject("organism");
+                writeOrganism(interactor.getOrganism());
+            }
+            // write accession
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writeStartObject("identifier");
+            writeIdentifier(db, interactorId);
+
+            // write label
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            writeNextPropertySeparatorAndIndent();
+            writerProperty("label", JSONValue.escape(interactor.getShortName()));
+            writer.write(MIJsonUtils.LINE_SEPARATOR);
+            writer.write(MIJsonUtils.INDENT);
+            writer.write(MIJsonUtils.CLOSE);
         }
     }
 
@@ -993,5 +1055,33 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> im
 
     protected OntologyTermFetcher getFetcher() {
         return fetcher;
+    }
+
+    protected String[] generateInteractorKeyFor(Xref ref, Interactor interactor){
+        String interactorId = null;
+        String db = null;
+        if (ref != null){
+            interactorId = JSONValue.escape(ref.getId());
+            db = JSONValue.escape(ref.getDatabase().getShortName());
+        }
+        else{
+            interactorId = Integer.toString(UnambiguousExactInteractorBaseComparator.hashCode(interactor));
+            db = "generated";
+        }
+        return new String[]{db, interactorId, db+"_"+interactorId};
+    }
+
+    protected String[] generateInteractionKeyFor(Xref ref, Interaction interaction){
+        String interactorId = null;
+        String db = null;
+        if (ref != null){
+            interactorId = JSONValue.escape(ref.getId());
+            db = JSONValue.escape(ref.getDatabase().getShortName());
+        }
+        else{
+            interactorId = Integer.toString(interaction.hashCode());
+            db = "generated";
+        }
+        return new String[]{db, interactorId, db+"_"+interactorId};
     }
 }
