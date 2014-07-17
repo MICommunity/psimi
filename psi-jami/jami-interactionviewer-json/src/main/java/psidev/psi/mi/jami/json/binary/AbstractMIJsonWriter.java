@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.json.binary;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.binary.expansion.ComplexExpansionException;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
@@ -129,14 +130,18 @@ public abstract class AbstractMIJsonWriter<I extends Interaction, B extends Bina
 
         // reset expansion id
         this.binaryWriter.setExpansionId(null);
-        Collection<B> binaryInteractions = expansionMethod.expand(interaction);
-
-        // we expanded a n-ary interaction
-        if(binaryInteractions.size() > 1){
-            this.binaryWriter.setExpansionId(currentExpansionId);
-            currentExpansionId++;
+        Collection<B> binaryInteractions = null;
+        try {
+            binaryInteractions = expansionMethod.expand(interaction);
+            // we expanded a n-ary interaction
+            if(binaryInteractions.size() > 1){
+                this.binaryWriter.setExpansionId(currentExpansionId);
+                currentExpansionId++;
+            }
+            this.binaryWriter.write(binaryInteractions);
+        } catch (ComplexExpansionException e) {
+            // do not write anything as this interaction cannot be expanded
         }
-        this.binaryWriter.write(binaryInteractions);
     }
 
     public void write(Collection<? extends I> interactions) throws MIIOException {
