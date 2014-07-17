@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.tab.io.writer;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.binary.expansion.ComplexExpansionException;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
@@ -149,7 +150,11 @@ public abstract class AbstractMitabWriter<T extends Interaction<? extends Partic
             throw new IllegalStateException("The mitab writer was not initialised. The options for the Mitab writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        this.binaryWriter.write(getExpansionMethod().expand(interaction));
+        try {
+            this.binaryWriter.write(getExpansionMethod().expand(interaction));
+        } catch (ComplexExpansionException e) {
+            throw new MIIOException("Impossible to expand the n-ary interaction "+interaction.toString(), e);
+        }
     }
 
     public void write(Collection<? extends T> interactions) throws MIIOException {
