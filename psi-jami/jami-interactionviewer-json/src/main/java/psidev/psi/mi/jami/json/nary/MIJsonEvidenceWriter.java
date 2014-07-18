@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.json.nary;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
+import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
@@ -45,6 +46,34 @@ public class MIJsonEvidenceWriter extends AbstractMIJsonWriter<InteractionEviden
 
         super(writer, fetcher);
         this.complexWriter = new MIJsonModelledWriter(writer, fetcher);
+    }
+
+    public void flush() throws MIIOException {
+        if (complexWriter != null){
+            complexWriter.flush();
+        }
+    }
+
+    public void close() throws MIIOException {
+        try{
+            if (complexWriter != null){
+                complexWriter.close();
+            }
+        }
+        finally {
+            complexWriter = null;
+        }
+    }
+
+    public void reset() throws MIIOException {
+        try{
+            if (complexWriter != null){
+                complexWriter.reset();
+            }
+        }
+        finally {
+            complexWriter = null;
+        }
     }
 
     protected boolean writeExperiment(InteractionEvidence interaction) throws IOException {
