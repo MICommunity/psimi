@@ -442,7 +442,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
             id = this.currentFeatureId;
             this.processedFeatures.put(feature, id);
         }
-        writerProperty("id", Integer.toString(feature.hashCode()));
+        writerProperty("id", Integer.toString(id));
 
         // write name
         if (feature.getFullName() != null){
@@ -506,6 +506,16 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
             Iterator<Feature> featureIterator = feature.getLinkedFeatures().iterator();
             while (featureIterator.hasNext()){
                 Feature f = featureIterator.next();
+                int id2 = 0;
+                if (this.processedFeatures.containsKey(f)){
+                    id2 = this.processedFeatures.get(f);
+                }
+                else{
+                    this.currentFeatureId++;
+                    id2 = this.currentFeatureId;
+                    this.processedFeatures.put(f, id2);
+                }
+                writerProperty("id", Integer.toString(id2));
                 writer.write(MIJsonUtils.PROPERTY_DELIMITER);
                 writer.write(Integer.toString(f.hashCode()));
                 writer.write(MIJsonUtils.PROPERTY_DELIMITER);
@@ -535,14 +545,20 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     protected abstract void writeFeatureProperties(Feature feature) throws IOException;
 
     protected void writeRange(Range range) throws IOException {
-        writeStartObject("range");
-        writer.write(MIJsonUtils.OPEN);
-        writerProperty("pos",RangeUtils.convertRangeToString(range));
-        writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
         if (range.getParticipant() != null){
-            writerProperty("interactorRef",Integer.toString(this.processedInteractors.get(generateInteractorKeyFor(range.getParticipant().getInteractor().getPreferredIdentifier(), range.getParticipant().getInteractor()))));
+            writer.write(MIJsonUtils.OPEN);
+            writerProperty("pos", RangeUtils.convertRangeToString(range));
+            writer.write(MIJsonUtils.ELEMENT_SEPARATOR);
+            if (range.getParticipant() != null){
+                writerProperty("interactorRef",Integer.toString(this.processedInteractors.get(generateInteractorKeyFor(range.getParticipant().getInteractor().getPreferredIdentifier(), range.getParticipant().getInteractor()))));
+            }
+            writer.write(MIJsonUtils.CLOSE);
         }
-        writer.write(MIJsonUtils.CLOSE);
+        else{
+            writer.write(MIJsonUtils.PROPERTY_DELIMITER);
+            writer.write(RangeUtils.convertRangeToString(range));
+            writer.write(MIJsonUtils.PROPERTY_DELIMITER);
+        }
     }
 
     protected void writeParticipant(Participant participant, String name) throws IOException {
