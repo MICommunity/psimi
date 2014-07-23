@@ -22,7 +22,7 @@ public class JsonParameterWriter implements JsonElementWriter<Parameter>{
 
     public JsonParameterWriter(Writer writer){
         if (writer == null){
-            throw new IllegalArgumentException("The json confidence writer needs a non null Writer");
+            throw new IllegalArgumentException("The json parameter writer needs a non null Writer");
         }
         this.writer = writer;
     }
