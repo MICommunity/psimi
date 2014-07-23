@@ -33,7 +33,7 @@ public class SimpleJsonPublicationWriter implements JsonElementWriter<Publicatio
 
     public void write(Publication object) throws IOException {
         if (!object.getIdentifiers().isEmpty()){
-            MIJsonUtils.writeStartObject("pubid", writer);
+            MIJsonUtils.writePropertyKey("pubid", writer);
             MIJsonUtils.writeOpenArray(writer);
 
             Iterator<Xref> identifierIterator = object.getIdentifiers().iterator();
@@ -52,7 +52,7 @@ public class SimpleJsonPublicationWriter implements JsonElementWriter<Publicatio
             MIJsonUtils.writeEndArray(writer);
         }
         else if (object.getImexId() != null){
-            MIJsonUtils.writeStartObject("pubid", writer);
+            MIJsonUtils.writePropertyKey("pubid", writer);
             MIJsonUtils.writeOpenArray(writer);
             MIJsonUtils.writeProperty("imex", JSONValue.escape(object.getImexId()), writer);
             MIJsonUtils.writeEndArray(writer);
@@ -61,7 +61,7 @@ public class SimpleJsonPublicationWriter implements JsonElementWriter<Publicatio
         // publication source
         if (object.getSource() != null){
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeStartObject("sourceDatabase", writer);
+            MIJsonUtils.writePropertyKey("sourceDatabase", writer);
             getCvWriter().write(object.getSource());
         }
     }

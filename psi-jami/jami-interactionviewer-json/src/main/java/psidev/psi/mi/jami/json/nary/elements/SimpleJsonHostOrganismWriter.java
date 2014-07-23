@@ -39,17 +39,17 @@ public class SimpleJsonHostOrganismWriter extends SimpleJsonOrganismWriter{
     protected void writeOtherProperties(Organism object) throws IOException {
         if (object.getCellType() != null){
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeStartObject("cellType", writer);
+            MIJsonUtils.writePropertyKey("cellType", writer);
             getCvWriter().write(object.getCellType());
         }
         if (object.getTissue() != null){
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeStartObject("tissue", writer);
+            MIJsonUtils.writePropertyKey("tissue", writer);
             getCvWriter().write(object.getTissue());
         }
         if (object.getCompartment() != null){
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeStartObject("compartment", writer);
+            MIJsonUtils.writePropertyKey("compartment", writer);
             getCvWriter().write(object.getCompartment());
         }
     }
