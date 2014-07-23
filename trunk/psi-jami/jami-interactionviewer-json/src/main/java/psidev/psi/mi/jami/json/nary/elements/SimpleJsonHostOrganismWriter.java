@@ -40,17 +40,17 @@ public class SimpleJsonHostOrganismWriter extends SimpleJsonOrganismWriter{
         if (object.getCellType() != null){
             MIJsonUtils.writeSeparator(writer);
             MIJsonUtils.writeStartObject("cellType", writer);
-            this.cvWriter.write(object.getCellType());
+            getCvWriter().write(object.getCellType());
         }
         if (object.getTissue() != null){
             MIJsonUtils.writeSeparator(writer);
             MIJsonUtils.writeStartObject("tissue", writer);
-            this.cvWriter.write(object.getTissue());
+            getCvWriter().write(object.getTissue());
         }
         if (object.getCompartment() != null){
             MIJsonUtils.writeSeparator(writer);
             MIJsonUtils.writeStartObject("compartment", writer);
-            this.cvWriter.write(object.getCompartment());
+            getCvWriter().write(object.getCompartment());
         }
     }
 }
