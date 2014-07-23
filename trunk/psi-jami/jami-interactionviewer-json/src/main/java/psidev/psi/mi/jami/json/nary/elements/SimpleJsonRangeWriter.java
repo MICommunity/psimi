@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.json.nary.elements;
 
+import org.json.simple.JSONValue;
 import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.RangeUtils;
@@ -42,6 +43,17 @@ public class SimpleJsonRangeWriter implements JsonElementWriter<Range>{
                 MIJsonUtils.writeProperty("pos", RangeUtils.convertRangeToString(object), writer);
                 MIJsonUtils.writeSeparator(writer);
                 MIJsonUtils.writeProperty("interactorRef", key, writer);
+                if (object.getResultingSequence() != null && object.getResultingSequence().getNewSequence() != null){
+                    MIJsonUtils.writeSeparator(writer);
+                    MIJsonUtils.writeProperty("resultingSequence", JSONValue.escape(object.getResultingSequence().getNewSequence()), writer);
+                }
+                MIJsonUtils.writeEndObject(writer);
+            }
+            else if (object.getResultingSequence() != null && object.getResultingSequence().getNewSequence() != null){
+                MIJsonUtils.writeStartObject(writer);
+                MIJsonUtils.writeProperty("pos", RangeUtils.convertRangeToString(object), writer);
+                MIJsonUtils.writeSeparator(writer);
+                MIJsonUtils.writeProperty("resultingSequence", JSONValue.escape(object.getResultingSequence().getNewSequence()), writer);
                 MIJsonUtils.writeEndObject(writer);
             }
             else{

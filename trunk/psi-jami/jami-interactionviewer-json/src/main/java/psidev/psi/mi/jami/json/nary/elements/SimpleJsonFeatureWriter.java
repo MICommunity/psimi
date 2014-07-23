@@ -71,14 +71,14 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
         // write type
         if (object.getType() != null){
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeStartObject("type", writer);
+            MIJsonUtils.writePropertyKey("type", writer);
             getCvWriter().write(object.getType());
         }
 
         // write role
         if (object.getRole() != null){
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeStartObject("role", writer);
+            MIJsonUtils.writePropertyKey("role", writer);
             getCvWriter().write(object.getRole());
         }
 
@@ -88,7 +88,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
         // ranges
         if (!object.getRanges().isEmpty()){
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeStartObject("sequenceData", writer);
+            MIJsonUtils.writePropertyKey("sequenceData", writer);
             MIJsonUtils.writeOpenArray(writer);
 
             Iterator<Range> rangeIterator = object.getRanges().iterator();
@@ -105,7 +105,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
         // write linked features if required
         if (!object.getLinkedFeatures().isEmpty()){
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeStartObject("linkedFeatures", writer);
+            MIJsonUtils.writePropertyKey("linkedFeatures", writer);
             MIJsonUtils.writeOpenArray(writer);
 
             Iterator<F> featureIterator = object.getLinkedFeatures().iterator();

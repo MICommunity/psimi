@@ -47,11 +47,6 @@ public class MIJsonUtils {
         writer.write(MIJsonUtils.PROPERTY_DELIMITER);
     }
 
-    public static void writeStartObject(String objectName, Writer writer) throws IOException {
-        writePropertyKey(objectName, writer);
-        writer.write(MIJsonUtils.OPEN);
-    }
-
     public static void writeStartObject(Writer writer) throws IOException {
         writer.write(MIJsonUtils.OPEN);
     }
