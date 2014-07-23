@@ -16,12 +16,12 @@ import java.util.Map;
  * @since <pre>18/07/14</pre>
  */
 
-public class JsonRangeWriter implements JsonElementWriter<Range>{
+public class SimpleJsonRangeWriter implements JsonElementWriter<Range>{
 
     private Writer writer;
     private Map<String, Integer> processedInteractors;
 
-    public JsonRangeWriter(Writer writer, Map<String, Integer> processedInteractors){
+    public SimpleJsonRangeWriter(Writer writer, Map<String, Integer> processedInteractors){
         if (writer == null){
             throw new IllegalArgumentException("The json range writer needs a non null Writer");
         }

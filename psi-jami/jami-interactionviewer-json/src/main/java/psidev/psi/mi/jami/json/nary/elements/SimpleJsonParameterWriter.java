@@ -16,11 +16,11 @@ import java.io.Writer;
  * @since <pre>18/07/14</pre>
  */
 
-public class JsonParameterWriter implements JsonElementWriter<Parameter>{
+public class SimpleJsonParameterWriter implements JsonElementWriter<Parameter>{
 
     private Writer writer;
 
-    public JsonParameterWriter(Writer writer){
+    public SimpleJsonParameterWriter(Writer writer){
         if (writer == null){
             throw new IllegalArgumentException("The json parameter writer needs a non null Writer");
         }
