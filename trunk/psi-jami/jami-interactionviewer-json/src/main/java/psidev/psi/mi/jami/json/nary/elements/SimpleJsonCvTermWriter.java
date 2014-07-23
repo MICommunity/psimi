@@ -15,11 +15,11 @@ import java.io.Writer;
  * @since <pre>18/07/14</pre>
  */
 
-public class JsonCvTermWriter implements JsonElementWriter<CvTerm>{
+public class SimpleJsonCvTermWriter implements JsonElementWriter<CvTerm>{
 
     private Writer writer;
 
-    public JsonCvTermWriter(Writer writer){
+    public SimpleJsonCvTermWriter(Writer writer){
         if (writer == null){
             throw new IllegalArgumentException("The json cv term writer needs a non null Writer");
         }

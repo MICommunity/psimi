@@ -15,11 +15,11 @@ import java.io.Writer;
  * @since <pre>18/07/14</pre>
  */
 
-public class JsonConfidenceWriter implements JsonElementWriter<Confidence>{
+public class SimpleJsonConfidenceWriter implements JsonElementWriter<Confidence>{
 
     private Writer writer;
 
-    public JsonConfidenceWriter(Writer writer){
+    public SimpleJsonConfidenceWriter(Writer writer){
         if (writer == null){
             throw new IllegalArgumentException("The json confidence writer needs a non null Writer");
         }
