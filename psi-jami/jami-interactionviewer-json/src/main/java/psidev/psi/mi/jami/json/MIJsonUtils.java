@@ -1,5 +1,11 @@
 package psidev.psi.mi.jami.json;
 
+import org.json.simple.JSONValue;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
+
 import java.io.IOException;
 import java.io.Writer;
 
@@ -46,6 +52,10 @@ public class MIJsonUtils {
         writer.write(MIJsonUtils.OPEN);
     }
 
+    public static void writeStartObject(Writer writer) throws IOException {
+        writer.write(MIJsonUtils.OPEN);
+    }
+
     public static void writeEndObject(Writer writer) throws IOException {
         writer.write(MIJsonUtils.CLOSE);
     }
@@ -60,5 +70,39 @@ public class MIJsonUtils {
 
     public static void writeEndArray(Writer writer) throws IOException {
         writer.write(MIJsonUtils.CLOSE_ARRAY);
+    }
+
+    /**
+     *
+     * @param ref
+     * @param interactor
+     * @return an array of String : first the database, then the interactorId
+     */
+    public static String[] extractInteractorId(Xref ref, Interactor interactor){
+        String interactorId = null;
+        String db = null;
+        if (ref != null){
+            interactorId = JSONValue.escape(ref.getId());
+            db = JSONValue.escape(ref.getDatabase().getShortName());
+        }
+        else{
+            interactorId = Integer.toString(UnambiguousExactInteractorBaseComparator.hashCode(interactor));
+            db = "generated";
+        }
+        return new String[]{db, interactorId};
+    }
+
+    public static String[] extractInteractionId(Xref ref, Interaction interaction){
+        String interactorId = null;
+        String db = null;
+        if (ref != null){
+            interactorId = JSONValue.escape(ref.getId());
+            db = JSONValue.escape(ref.getDatabase().getShortName());
+        }
+        else{
+            interactorId = Integer.toString(interaction.hashCode());
+            db = "generated";
+        }
+        return new String[]{db, interactorId};
     }
 }
