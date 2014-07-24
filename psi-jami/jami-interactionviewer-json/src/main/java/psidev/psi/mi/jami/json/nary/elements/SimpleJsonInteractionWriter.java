@@ -72,6 +72,10 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
         // if the interaction has not yet been processed, we write the interactor
         if (!processedInteractors.containsKey(keyValues[0]+"_"+keyValues[1])){
             id = getIdGenerator().nextId();
+            // when the interactor is not the first one, we write an element separator
+            if (!processedInteractors.isEmpty()){
+                MIJsonUtils.writeSeparator(writer);
+            }
             this.processedInteractors.put(keyValues[0]+"_"+keyValues[1], id);
 
             MIJsonUtils.writeStartObject(writer);
@@ -150,7 +154,7 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
         }
     }
 
-    protected void writeOtherIdentifiers(I object) {
+    protected void writeOtherIdentifiers(I object) throws IOException {
         // to be overridden
     }
 

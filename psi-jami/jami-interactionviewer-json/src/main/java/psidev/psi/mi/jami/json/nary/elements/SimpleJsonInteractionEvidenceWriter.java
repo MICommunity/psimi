@@ -3,9 +3,11 @@ package psidev.psi.mi.jami.json.nary.elements;
 import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.XrefUtils;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -110,5 +112,33 @@ public class SimpleJsonInteractionEvidenceWriter extends SimpleJsonInteractionWr
 
     public void setParameterWriter(JsonElementWriter<Parameter> parameterWriter) {
         this.parameterWriter = parameterWriter;
+    }
+
+    @Override
+    protected void writeAllIdentifiers(InteractionEvidence object) throws IOException {
+        super.writeAllIdentifiers(object);
+        if (object.getImexId() != null && object.getIdentifiers().isEmpty()){
+            Collection<Xref> imexIds = XrefUtils.collectAllXrefsHavingDatabaseAndId(object.getXrefs(), Xref.IMEX_MI, Xref.IMEX, object.getImexId());
+            if (!imexIds.isEmpty()){
+                MIJsonUtils.writeSeparator(getWriter());
+                getIdentifierWriter().write(imexIds.iterator().next());
+            }
+        }
+    }
+
+    @Override
+    protected void writeOtherIdentifiers(InteractionEvidence object) throws IOException {
+        if (object.getImexId() != null){
+            Collection<Xref> imexIds = XrefUtils.collectAllXrefsHavingDatabaseAndId(object.getXrefs(), Xref.IMEX_MI, Xref.IMEX, object.getImexId());
+            if (!imexIds.isEmpty()){
+                MIJsonUtils.writeSeparator(getWriter());
+                getIdentifierWriter().write(imexIds.iterator().next());
+            }
+        }
+    }
+
+    @Override
+    protected boolean hasIdentifiers(InteractionEvidence object) {
+        return super.hasIdentifiers(object) || object.getImexId() != null;
     }
 }
