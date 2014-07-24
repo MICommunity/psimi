@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.json.nary.elements;
 
 import org.json.simple.JSONValue;
 import psidev.psi.mi.jami.json.MIJsonUtils;
+import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
     private JsonElementWriter<Range> rangeWriter;
     private Map<Feature, Integer> processedFeatures;
     private Map<String, Integer> processedInteractors;
-    private int currentFeatureId = 0;
+    private IncrementalIdGenerator idGenerator;
 
     public SimpleJsonFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures,
             Map<String, Integer> processedInteractors){
@@ -43,6 +44,23 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
         this.processedInteractors = processedInteractors;
     }
 
+    public SimpleJsonFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures,
+                                   Map<String, Integer> processedInteractors, IncrementalIdGenerator idGenerator){
+        if (writer == null){
+            throw new IllegalArgumentException("The json feature writer needs a non null Writer");
+        }
+        this.writer = writer;
+        if (processedFeatures == null){
+            throw new IllegalArgumentException("The json feature writer needs a non null map of processed features");
+        }
+        this.processedFeatures = processedFeatures;
+        if (processedInteractors == null){
+            throw new IllegalArgumentException("The json feature writer needs a non null map of processed interactors");
+        }
+        this.processedInteractors = processedInteractors;
+        this.idGenerator = idGenerator;
+    }
+
     public void write(F object) throws IOException {
         MIJsonUtils.writeStartObject(writer);
 
@@ -52,8 +70,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
             id = this.processedFeatures.get(object);
         }
         else{
-            this.currentFeatureId++;
-            id = this.currentFeatureId;
+            id = getIdGenerator().nextId();
             this.processedFeatures.put(object, id);
         }
         MIJsonUtils.writeProperty("id", Integer.toString(id), writer);
@@ -116,8 +133,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
                     id2 = this.processedFeatures.get(f);
                 }
                 else{
-                    this.currentFeatureId++;
-                    id2 = this.currentFeatureId;
+                    id2 = getIdGenerator().nextId();
                     this.processedFeatures.put(f, id2);
                 }
                 MIJsonUtils.writePropertyValue(Integer.toString(id2), writer);
@@ -163,14 +179,6 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
         this.identifierWriter = identifierWriter;
     }
 
-    public int getCurrentFeatureId() {
-        return currentFeatureId;
-    }
-
-    public void resetCurrentFeatureIdTo(int currentFeatureId) {
-        this.currentFeatureId = currentFeatureId;
-    }
-
     public JsonElementWriter<Range> getRangeWriter() {
         if (this.rangeWriter == null){
            this.rangeWriter = new SimpleJsonRangeWriter(writer, processedInteractors);
@@ -180,6 +188,17 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
 
     public void setRangeWriter(JsonElementWriter<Range> rangeWriter) {
         this.rangeWriter = rangeWriter;
+    }
+
+    public IncrementalIdGenerator getIdGenerator() {
+        if (this.idGenerator == null){
+            this.idGenerator = new IncrementalIdGenerator();
+        }
+        return idGenerator;
+    }
+
+    public void setIdGenerator(IncrementalIdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
     }
 
     protected Writer getWriter() {
