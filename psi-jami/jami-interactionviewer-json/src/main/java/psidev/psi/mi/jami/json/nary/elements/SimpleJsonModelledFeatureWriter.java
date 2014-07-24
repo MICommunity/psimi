@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.json.nary.elements;
 
+import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.ModelledFeature;
 
@@ -19,5 +20,10 @@ public class SimpleJsonModelledFeatureWriter extends SimpleJsonFeatureWriter<Mod
     public SimpleJsonModelledFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures,
                                            Map<String, Integer> processedInteractors){
         super(writer, processedFeatures, processedInteractors);
+    }
+
+    public SimpleJsonModelledFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, Integer> processedInteractors,
+                                           IncrementalIdGenerator idGenerator) {
+        super(writer, processedFeatures, processedInteractors, idGenerator);
     }
 }

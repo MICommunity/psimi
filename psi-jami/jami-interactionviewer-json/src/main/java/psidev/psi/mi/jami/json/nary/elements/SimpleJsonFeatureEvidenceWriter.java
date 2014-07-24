@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.json.nary.elements;
 
 import psidev.psi.mi.jami.json.MIJsonUtils;
+import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.FeatureEvidence;
@@ -26,6 +27,11 @@ public class SimpleJsonFeatureEvidenceWriter extends SimpleJsonFeatureWriter<Fea
     public SimpleJsonFeatureEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,
                                            Map<String, Integer> processedInteractors){
         super(writer, processedFeatures, processedInteractors);
+    }
+
+    public SimpleJsonFeatureEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, Integer> processedInteractors,
+                                           IncrementalIdGenerator idGenerator) {
+        super(writer, processedFeatures, processedInteractors, idGenerator);
     }
 
     @Override

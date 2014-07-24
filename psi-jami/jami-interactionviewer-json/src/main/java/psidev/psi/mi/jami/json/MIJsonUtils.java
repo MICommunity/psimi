@@ -87,6 +87,12 @@ public class MIJsonUtils {
         return new String[]{db, interactorId};
     }
 
+    /**
+     *
+     * @param ref
+     * @param interaction
+     * @return  an array of String : first the database, then the interactionId
+     */
     public static String[] extractInteractionId(Xref ref, Interaction interaction){
         String interactorId = null;
         String db = null;
