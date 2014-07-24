@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.io.Writer;
 
 /**
- * The jsonWriter which writes the modelled interactions
+ * The jsonWriter which writes all interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
