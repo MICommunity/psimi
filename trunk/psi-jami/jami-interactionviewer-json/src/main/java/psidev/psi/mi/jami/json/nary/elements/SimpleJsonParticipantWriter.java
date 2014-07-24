@@ -97,7 +97,6 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
 
     public void write(P object) throws IOException {
 
-        MIJsonUtils.writePropertyKey("participant", writer);
         MIJsonUtils.writeStartObject(writer);
         String [] keyValues;
         // write interactor ref
