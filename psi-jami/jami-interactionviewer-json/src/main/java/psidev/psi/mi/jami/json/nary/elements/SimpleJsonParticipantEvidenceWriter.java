@@ -25,8 +25,8 @@ public class SimpleJsonParticipantEvidenceWriter extends SimpleJsonParticipantWr
     private JsonElementWriter<Organism> hostOrganismWriter;
 
     public SimpleJsonParticipantEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, Integer> processedInteractors, OntologyTermFetcher fetcher){
-        super(writer, processedFeatures, processedInteractors, fetcher);
+                                               Map<String, Integer> processedInteractors){
+        super(writer, processedFeatures, processedInteractors);
     }
 
     public SimpleJsonParticipantEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,

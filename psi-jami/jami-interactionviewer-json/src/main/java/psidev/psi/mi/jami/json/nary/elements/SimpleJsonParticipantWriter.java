@@ -44,7 +44,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     private static final Logger logger = Logger.getLogger("SimpleJsonParticipantWriter");
 
     public SimpleJsonParticipantWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, Integer> processedInteractors, OntologyTermFetcher fetcher){
+                                       Map<String, Integer> processedInteractors){
         if (writer == null){
             throw new IllegalArgumentException("The json participant writer needs a non null Writer");
         }
