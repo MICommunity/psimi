@@ -53,8 +53,8 @@ import java.util.logging.Logger;
 
 public class MIJsonBinaryServlet extends HttpServlet{
 
-    public final static String URL_PARAM="url";
-    public final static String FILE_PARAM="file";
+    public final static String URL_PARAM="url1";
+    public final static String FILE_PARAM="file1";
     public final static String MI_FILE_PATH_PROPERTY="psi.mi.obo.path";
     private MIFileAnalyzer fileAnalyzer;
     private static final Logger logger = Logger.getLogger("MIJsonBinaryServlet");
@@ -117,13 +117,16 @@ public class MIJsonBinaryServlet extends HttpServlet{
         InteractionStream miDataSource = null;
         try {
             URL url = new URL(urlString);
+            URLConnection connection1 = url.openConnection();
+            connection1.setReadTimeout(timeOut);
+            connection1.setConnectTimeout(timeOut);
             URLConnection connection = url.openConnection();
             connection.setReadTimeout(timeOut);
             connection.setConnectTimeout(timeOut);
 
             // first recognize file and create data source
             stream = connection.getInputStream();
-            miDataSource = processMIData(urlString, connection.getInputStream(), resp, writer, stream, miDataSource);
+            miDataSource = processMIData(urlString, connection1.getInputStream(), resp, writer, stream, miDataSource);
 
         } catch (MalformedURLException e) {
             logger.log(Level.SEVERE, "The url " + urlString + " is not a valid url.", e);
