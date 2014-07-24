@@ -38,14 +38,30 @@ public class SimpleJsonInteractorWriter implements JsonElementWriter<Interactor>
         this.processedInteractors = processedInteractors;
     }
 
+    public SimpleJsonInteractorWriter(Writer writer,  Map<String, Integer>processedInteractors, IncrementalIdGenerator idGenerator) {
+        if (writer == null) {
+            throw new IllegalArgumentException("The json interactor writer needs a non null Writer");
+        }
+        this.writer = writer;
+        if (processedInteractors == null){
+            throw new IllegalArgumentException("The json interactor writer needs a non null map of processed interactors");
+        }
+        this.processedInteractors = processedInteractors;
+        this.idGenerator = idGenerator;
+    }
+
     public void write(Interactor object) throws IOException {
         String[] interactorIds = MIJsonUtils.extractInteractorId(object.getPreferredIdentifier(), object);
         String interactorKey = interactorIds[0]+"_"+interactorIds[1];
         // if the interactor has not yet been processed, we write the interactor
         if (!processedInteractors.containsKey(interactorKey)){
             int id = getIdGenerator().nextId();
-            processedInteractors.put(interactorKey, id);
 
+            // when the interactor is not the first one, we write an element separator
+            if (!processedInteractors.isEmpty()){
+                MIJsonUtils.writeSeparator(writer);
+            }
+            processedInteractors.put(interactorKey, id);
             MIJsonUtils.writeStartObject(writer);
             MIJsonUtils.writeProperty("object", "interactor", writer);
             // write accession

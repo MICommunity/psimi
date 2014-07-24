@@ -1,16 +1,16 @@
 package psidev.psi.mi.jami.json.nary;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.json.MIJsonUtils;
+import psidev.psi.mi.jami.json.nary.elements.SimpleJsonModelledInteractionWriter;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import psidev.psi.mi.jami.model.Participant;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Map;
 
 /**
  * Abstract JSON writer for interactions (n-ary json format)
@@ -41,19 +41,12 @@ public class MIJsonModelledWriter extends AbstractMIJsonWriter<ModelledInteracti
         super(writer, fetcher);
     }
 
-    @Override
-    protected void writeFeatureProperties(Feature feature) throws IOException {
-        // nothing to write
+    public MIJsonModelledWriter(Map<String, Integer> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+        super(processedInteractors, processedFeatures, idGenerator);
     }
 
-    @Override
-    protected void writeParticipantProperties(Participant participant) throws IOException {
-         // nothing to write
-    }
-
-    @Override
-    protected boolean writeInteractionProperties(ModelledInteraction interaction) throws IOException {
-        return false;
+    public MIJsonModelledWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, Integer> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+        super(writer, fetcher, processedInteractors, processedFeatures, idGenerator);
     }
 
     @Override
@@ -62,31 +55,9 @@ public class MIJsonModelledWriter extends AbstractMIJsonWriter<ModelledInteracti
     }
 
     @Override
-    protected void writeParameters(ModelledInteraction binary) throws IOException {
-        boolean hasParameters = !binary.getModelledParameters().isEmpty();
-        if (hasParameters){
-            getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("parameters");
-            writeAllParameters(binary.getModelledParameters());
-        }
+    protected void initialiseInteractionWriter() {
+        super.setInteractionWriter(new SimpleJsonModelledInteractionWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(), getIdGenerator()));
+        ((SimpleJsonModelledInteractionWriter)getInteractionWriter()).setFetcher(getFetcher());
     }
-
-    @Override
-    protected void writeConfidences(ModelledInteraction binary) throws IOException {
-        boolean hasConfidences = !binary.getModelledConfidences().isEmpty();
-        if (hasConfidences){
-            getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("confidences");
-            writeAllConfidences(binary.getModelledConfidences());
-        }
-    }
-
-    @Override
-    protected String extractImexIdFrom(ModelledInteraction binary) {
-        return null;
-    }
-
 
 }
