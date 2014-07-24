@@ -105,7 +105,15 @@ public class SimpleJsonInteractorWriter implements JsonElementWriter<Interactor>
                     Iterator<Interactor> interactorIterator = pool.iterator();
                     while (interactorIterator.hasNext()){
                         Interactor interactor = interactorIterator.next();
-                        write(interactor);
+                        String[] interactorIds2 = MIJsonUtils.extractInteractorId(interactor.getPreferredIdentifier(), interactor);
+                        String interactorKey2 = interactorIds2[0]+"_"+interactorIds2[1];
+                        // if the interactor has not yet been processed, we write the interactor
+                        if (!processedInteractors.containsKey(interactorKey2)){
+                            write(interactor);
+                        }
+                        else{
+                            MIJsonUtils.writeProperty("interactorRef",Integer.toString(this.processedInteractors.get(interactorKey)), writer);
+                        }
 
                         if (interactorIterator.hasNext()){
                             MIJsonUtils.writeSeparator(writer);
