@@ -186,7 +186,6 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
                 while(pIterator.hasNext()){
                     registerAndWriteInteractor(pIterator.next());
                 }
-                MIJsonUtils.writeSeparator(writer);
                 getInteractionWriter().write(interaction);
             }
             else {
