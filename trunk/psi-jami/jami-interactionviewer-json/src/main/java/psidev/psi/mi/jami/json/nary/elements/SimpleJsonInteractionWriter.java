@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.json.nary.elements;
 
+import org.json.simple.JSONValue;
+import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
@@ -94,6 +96,17 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
                 writeAllIdentifiers(object);
             }
 
+            // expansion method if necessary
+            if (object instanceof BinaryInteraction){
+                BinaryInteraction binary = (BinaryInteraction)object;
+                if (binary.getComplexExpansion() != null){
+                    MIJsonUtils.writeSeparator(writer);
+                    MIJsonUtils.writeSeparator(writer);
+                    MIJsonUtils.writePropertyKey("expansion", writer);
+                    writeExpansionMethod(binary.getComplexExpansion());
+                }
+            }
+
             // then participant A and B
             MIJsonUtils.writeSeparator(writer);
             MIJsonUtils.writePropertyKey("participants", writer);
@@ -111,6 +124,12 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
             MIJsonUtils.writeEndObject(writer);
 
         }
+    }
+
+    protected void writeExpansionMethod(CvTerm expansion) throws IOException {
+        MIJsonUtils.writeStartObject(writer);
+        MIJsonUtils.writeProperty("name", JSONValue.escape(expansion.getShortName()), writer);
+        MIJsonUtils.writeEndObject(writer);
     }
 
     protected void writeAllIdentifiers(I object) throws IOException {
