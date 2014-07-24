@@ -24,6 +24,15 @@
     http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
          metadata-complete="true" version="3.0">
     <servlet>
+        <servlet-name>MIJsonBinaryExporter</servlet-name>
+        <servlet-class>psidev.psi.mi.jami.viewer.servlet.MIJsonBinaryServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MIJsonBinaryExporter</servlet-name>
+        <url-pattern>/miJsonBinary/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>MIJsonExporter</servlet-name>
         <servlet-class>psidev.psi.mi.jami.viewer.servlet.MIJsonServlet</servlet-class>
     </servlet>

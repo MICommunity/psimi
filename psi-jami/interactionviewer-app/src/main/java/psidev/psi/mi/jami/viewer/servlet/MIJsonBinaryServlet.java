@@ -22,7 +22,8 @@ import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
-import psidev.psi.mi.jami.json.nary.MIJsonWriter;
+import psidev.psi.mi.jami.json.binary.MIJsonBinaryWriter;
+import psidev.psi.mi.jami.json.binary.MIJsonWriter;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
@@ -50,7 +51,7 @@ import java.util.logging.Logger;
  * @since <pre>08/07/13</pre>
  */
 
-public class MIJsonServlet extends HttpServlet{
+public class MIJsonBinaryServlet extends HttpServlet{
 
     public final static String URL_PARAM="url";
     public final static String FILE_PARAM="file";
@@ -197,15 +198,16 @@ public class MIJsonServlet extends HttpServlet{
             switch (fileType){
                 case mitab:
                     miDataSource = miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionCategory.evidence, ComplexType.binary, true, null, dataStream));
+                    interactionWriter = new MIJsonBinaryWriter(writer, this.fetcher);
                     break;
                 case psimi_xml:
                     miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionCategory.mixed, ComplexType.n_ary, true, null, dataStream, null, new InMemoryPsiXmlCache()));
+                    interactionWriter = new MIJsonWriter(writer, this.fetcher, this.expansionMethod);
                     break;
                 default:
                     dataStream.close();
                     break;
             }
-            interactionWriter = new MIJsonWriter(writer, this.fetcher);
 
             if (miDataSource == null){
                 logger.log(Level.SEVERE, "The input " + request + " is not a valid MI data source.");
