@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.json.nary;
 
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
-import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
@@ -96,10 +94,10 @@ public class MIJsonWriter extends AbstractMIJsonWriter<Interaction> {
             throw new IllegalStateException("The Json writer has not been initialised. The options for the Json writer should contain at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
 
-        if (interaction instanceof BinaryInteractionEvidence){
+        if (interaction instanceof InteractionEvidence){
             this.evidenceWriter.write((InteractionEvidence) interaction);
         }
-        else if (interaction instanceof ModelledBinaryInteraction){
+        else if (interaction instanceof ModelledInteraction){
             this.modelledWriter.write((ModelledInteraction) interaction);
         }
         else {
