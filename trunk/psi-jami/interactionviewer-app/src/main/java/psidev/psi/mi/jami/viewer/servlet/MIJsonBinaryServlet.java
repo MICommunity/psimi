@@ -22,7 +22,7 @@ import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
-import psidev.psi.mi.jami.json.binary.MIJsonBinaryWriter;
+import psidev.psi.mi.jami.json.binary.MIJsonBinaryEvidenceWriter;
 import psidev.psi.mi.jami.json.binary.MIJsonWriter;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -201,7 +201,7 @@ public class MIJsonBinaryServlet extends HttpServlet{
             switch (fileType){
                 case mitab:
                     miDataSource = miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionCategory.evidence, ComplexType.binary, true, null, dataStream));
-                    interactionWriter = new MIJsonBinaryWriter(writer, this.fetcher);
+                    interactionWriter = new MIJsonBinaryEvidenceWriter(writer, this.fetcher);
                     break;
                 case psimi_xml:
                     miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionCategory.mixed, ComplexType.n_ary, true, null, dataStream, null, new InMemoryPsiXmlCache()));
