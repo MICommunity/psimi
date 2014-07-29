@@ -43,6 +43,7 @@ public class SimpleJsonCvTermWriter implements JsonElementWriter<CvTerm>{
         }
         else if (!object.getIdentifiers().isEmpty()){
             MIJsonUtils.writeProperty("id", JSONValue.escape(object.getIdentifiers().iterator().next().getId()), writer);
+            hasId = true;
         }
 
         if (hasId){
