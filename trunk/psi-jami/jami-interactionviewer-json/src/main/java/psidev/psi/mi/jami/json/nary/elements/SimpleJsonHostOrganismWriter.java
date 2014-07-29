@@ -17,7 +17,6 @@ import java.io.Writer;
 
 public class SimpleJsonHostOrganismWriter extends SimpleJsonOrganismWriter{
 
-    private Writer writer;
     private JsonElementWriter<CvTerm> cvWriter;
 
     public SimpleJsonHostOrganismWriter(Writer writer){
@@ -26,7 +25,7 @@ public class SimpleJsonHostOrganismWriter extends SimpleJsonOrganismWriter{
 
     public JsonElementWriter<CvTerm> getCvWriter() {
         if (this.cvWriter == null){
-           this.cvWriter = new SimpleJsonCvTermWriter(this.writer);
+           this.cvWriter = new SimpleJsonCvTermWriter(getWriter());
         }
         return cvWriter;
     }
@@ -38,18 +37,18 @@ public class SimpleJsonHostOrganismWriter extends SimpleJsonOrganismWriter{
     @Override
     protected void writeOtherProperties(Organism object) throws IOException {
         if (object.getCellType() != null){
-            MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writePropertyKey("cellType", writer);
+            MIJsonUtils.writeSeparator(getWriter());
+            MIJsonUtils.writePropertyKey("cellType", getWriter());
             getCvWriter().write(object.getCellType());
         }
         if (object.getTissue() != null){
-            MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writePropertyKey("tissue", writer);
+            MIJsonUtils.writeSeparator(getWriter());
+            MIJsonUtils.writePropertyKey("tissue", getWriter());
             getCvWriter().write(object.getTissue());
         }
         if (object.getCompartment() != null){
-            MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writePropertyKey("compartment", writer);
+            MIJsonUtils.writeSeparator(getWriter());
+            MIJsonUtils.writePropertyKey("compartment", getWriter());
             getCvWriter().write(object.getCompartment());
         }
     }
