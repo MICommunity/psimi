@@ -92,7 +92,7 @@ public interface Participant<I extends Interaction, F extends Feature> extends E
      * The set cannot be null. If the participant does not have any annotations, the method should return an empty Collection.
      * @return the annotations
      */
-    public <A extends Annotation> Collection<A> getCandidates();
+    public <A extends Annotation> Collection<A> getAnnotations();
 
     /**
      * Collection of aliases which give more information about the participant.

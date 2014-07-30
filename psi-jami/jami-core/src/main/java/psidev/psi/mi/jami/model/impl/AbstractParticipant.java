@@ -101,7 +101,7 @@ public abstract class AbstractParticipant<I extends Interaction, F extends Featu
         return this.xrefs;
     }
 
-    public Collection<Annotation> getCandidates() {
+    public Collection<Annotation> getAnnotations() {
         if (annotations == null){
             initialiseAnnotations();
         }
