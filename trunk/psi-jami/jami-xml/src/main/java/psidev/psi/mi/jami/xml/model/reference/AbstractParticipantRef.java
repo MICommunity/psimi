@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.model.reference;
 
-import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
+import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlParticipant;
 
@@ -147,7 +147,7 @@ public abstract class AbstractParticipantRef<I extends Interaction, T extends Fe
         return this.delegate.getFeatures();
     }
 
-    public ParticipantInteractorChangeListener getChangeListener() {
+    public EntityInteractorChangeListener getChangeListener() {
         logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
         if (this.delegate == null){
             initialiseParticipantDelegate();
@@ -155,7 +155,7 @@ public abstract class AbstractParticipantRef<I extends Interaction, T extends Fe
         return this.delegate.getChangeListener();
     }
 
-    public void setChangeListener(ParticipantInteractorChangeListener listener) {
+    public void setChangeListener(EntityInteractorChangeListener listener) {
         logger.log(Level.WARNING, "The participant reference "+ref+" is not resolved. Some default properties will be initialised by default");
         if (this.delegate == null){
             initialiseParticipantDelegate();

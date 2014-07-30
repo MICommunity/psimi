@@ -19,7 +19,7 @@ import java.util.Collection;
 @XmlTransient
 public class XmlFeatureEvidenceWrapper implements ModelledFeature {
     private FeatureEvidence feature;
-    private ModelledParticipant parent;
+    private ModelledEntity parent;
     private Collection<ModelledFeature> linkedFeatures;
 
     public XmlFeatureEvidenceWrapper(FeatureEvidence part, ModelledParticipant wrapper){
@@ -101,7 +101,7 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature {
     }
 
     @Override
-    public ModelledParticipant getParticipant() {
+    public ModelledEntity getParticipant() {
         if (this.parent == null && this.feature.getParticipant()instanceof ParticipantEvidence){
             this.parent = new XmlParticipantEvidenceWrapper((ParticipantEvidence)this.feature.getParticipant(), null);
         }
@@ -109,12 +109,12 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature {
     }
 
     @Override
-    public void setParticipant(ModelledParticipant participant) {
+    public void setParticipant(ModelledEntity participant) {
         this.parent = participant;
     }
 
     @Override
-    public void setParticipantAndAddFeature(ModelledParticipant participant) {
+    public void setParticipantAndAddFeature(ModelledEntity participant) {
         if (this.parent != null){
             this.parent.removeFeature(this);
         }

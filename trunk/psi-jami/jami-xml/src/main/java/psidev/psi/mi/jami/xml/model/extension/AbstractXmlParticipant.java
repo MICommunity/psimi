@@ -5,7 +5,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
+import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -41,7 +41,7 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
     private NamesContainer namesContainer;
     private XrefContainer xrefContainer;
     private XmlInteractorFactory interactorFactory;
-    private ParticipantInteractorChangeListener changeListener;
+    private EntityInteractorChangeListener changeListener;
     private int id;
 
     private JAXBAttributeWrapper jaxbAttributeWrapper;
@@ -207,11 +207,11 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         }
     }
 
-    public ParticipantInteractorChangeListener getChangeListener() {
+    public EntityInteractorChangeListener getChangeListener() {
         return this.changeListener;
     }
 
-    public void setChangeListener(ParticipantInteractorChangeListener listener) {
+    public void setChangeListener(EntityInteractorChangeListener listener) {
         this.changeListener = listener;
     }
 

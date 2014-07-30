@@ -6,8 +6,8 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
@@ -156,7 +156,7 @@ public class BindingFeatures implements FileSourceContext, Locatable {
     /**
      * Experiment ref for experimental interactor
      */
-    private class ParticipantFeatureRef extends AbstractFeatureRef<ModelledParticipant, ModelledFeature> implements ModelledFeature{
+    private class ParticipantFeatureRef extends AbstractFeatureRef<ModelledEntity, ModelledFeature> implements ModelledFeature{
         public ParticipantFeatureRef(int ref) {
             super(ref);
         }
