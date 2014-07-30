@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.tab.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Basic interface for Mitab features
@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @since <pre>09/07/13</pre>
  */
 
-public interface MitabFeature<P extends Participant, F extends Feature> extends Feature<P,F>, FileSourceContext {
+public interface MitabFeature<P extends Entity, F extends Feature> extends Feature<P,F>, FileSourceContext {
 
     public String getText();
 
