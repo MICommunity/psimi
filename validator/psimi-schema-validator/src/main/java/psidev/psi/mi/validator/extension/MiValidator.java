@@ -241,7 +241,7 @@ public class MiValidator extends Validator {
         try {
 
             // first check if can parse dataSource and register datasources
-            InteractionStream<InteractionEvidence> interactionSource = parseDataSource(file);
+            InteractionStream interactionSource = parseDataSource(file);
 
             try{
                 // 1. Validate file input using Schema (MIF) for xml, normal listeners for mitab
@@ -285,7 +285,7 @@ public class MiValidator extends Validator {
      * @param interactionSource
      * @throws ValidatorException
      */
-    public void validateSemantic(InteractionStream<InteractionEvidence> interactionSource) throws ValidatorException {
+    public void validateSemantic(InteractionStream interactionSource) throws ValidatorException {
         this.validatorReport.getSemanticMessages().clear();
         this.validatorReport.setInteractionCount(0);
 
@@ -526,7 +526,7 @@ public class MiValidator extends Validator {
      * @param interactionSource the interaction source to be validated.
      * @throws ValidatorException
      */
-    private void runSemanticValidation(ValidatorReport report, InteractionStream<InteractionEvidence> interactionSource) throws ValidatorException {
+    private void runSemanticValidation(ValidatorReport report, InteractionStream interactionSource) throws ValidatorException {
 
         // Build the collection of messages in which we will accumulate the output of the validator
         Collection<ValidatorMessage> messages = report.getSemanticMessages();
@@ -568,19 +568,22 @@ public class MiValidator extends Validator {
         }
     }
 
-    private void processSemanticValidation(ValidatorReport report, Collection<ValidatorMessage> messages, InteractionStream<InteractionEvidence> interactionSource) throws ValidatorException {
+    private void processSemanticValidation(ValidatorReport report, Collection<ValidatorMessage> messages, InteractionStream interactionSource) throws ValidatorException {
         // now process interactions
-        Iterator<InteractionEvidence> interactionIterator = interactionSource.getInteractionsIterator();
+        Iterator interactionIterator = interactionSource.getInteractionsIterator();
         int number = 0;
         while ( interactionIterator.hasNext() ) {
-            InteractionEvidence interaction = interactionIterator.next();
+            Interaction interactionObject = (Interaction)interactionIterator.next();
+            if (interactionObject instanceof InteractionEvidence){
+                InteractionEvidence interaction = (InteractionEvidence)interactionObject;
 
-            // check using cv mapping rules
-            messages.addAll(super.checkCvMapping(interaction, "/interactionEvidence/"));
+                // check using cv mapping rules
+                messages.addAll(super.checkCvMapping(interaction, "/interactionEvidence/"));
 
-            // check object rules
-            if (validateObjectRule){
-                checkInteraction(messages, interaction);
+                // check object rules
+                if (validateObjectRule){
+                    checkInteraction(messages, interaction);
+                }
             }
             number++;
         }
@@ -991,13 +994,13 @@ public class MiValidator extends Validator {
         OntologyManagerContext.removeInstance();
     }
 
-    private InteractionStream<InteractionEvidence> parseDataSource(File file) throws IOException {
+    private InteractionStream parseDataSource(File file) throws IOException {
         PsiJami.initialiseAllMIDataSources();
         MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
         MIDataSourceOptionFactory optionsFactory = MIDataSourceOptionFactory.getInstance();
 
         // by default we always have interaction evidences
-        InteractionStream<InteractionEvidence> interactionSource = dataSourceFactory.getInteractionSourceWith(optionsFactory.getDefaultOptions(file));
+        InteractionStream interactionSource = dataSourceFactory.getInteractionSourceWith(optionsFactory.getDefaultOptions(file));
 
         if (interactionSource == null){
             throw new IOException("Cannot parse the file "+file.getName());
