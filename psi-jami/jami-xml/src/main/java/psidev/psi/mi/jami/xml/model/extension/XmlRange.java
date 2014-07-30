@@ -5,10 +5,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Position;
-import psidev.psi.mi.jami.model.Range;
-import psidev.psi.mi.jami.model.ResultingSequence;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.range.UnambiguousRangeAndResultingSequenceComparator;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
@@ -36,7 +33,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
     private Position end;
     private boolean isLink;
     private ResultingSequence resultingSequence;
-    private Participant participant;
+    private Entity participant;
     private PsiXmlLocator sourceLocator;
     @XmlLocation
     @XmlTransient
@@ -265,11 +262,11 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
         this.resultingSequence = resultingSequence;
     }
 
-    public Participant getParticipant() {
+    public Entity getParticipant() {
         return this.participant;
     }
 
-    public void setParticipant(Participant participant) {
+    public void setParticipant(Entity participant) {
         this.participant = participant;
     }
 

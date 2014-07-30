@@ -22,7 +22,7 @@ public class XmlAllostery extends AbstractXmlCooperativeEffect implements Allost
     private PsiXmlLocator sourceLocator;
     private CvTerm allostericMechanism;
     private CvTerm allosteryType;
-    private ModelledParticipant allostericMolecule;
+    private ModelledEntity allostericMolecule;
     private MoleculeEffector moleculeEffector;
     private FeatureModificationEffector featureEffector;
 
@@ -59,14 +59,14 @@ public class XmlAllostery extends AbstractXmlCooperativeEffect implements Allost
         this.allosteryType = type;
     }
 
-    public ModelledParticipant getAllostericMolecule() {
+    public ModelledEntity getAllostericMolecule() {
         if (this.allostericMolecule == null){
             this.allostericMolecule = new XmlModelledParticipant();
         }
         return this.allostericMolecule;
     }
 
-    public void setAllostericMolecule(ModelledParticipant participant) {
+    public void setAllostericMolecule(ModelledEntity participant) {
         if (participant == null){
             throw new IllegalArgumentException("The allosteric molecule cannot be null");
         }

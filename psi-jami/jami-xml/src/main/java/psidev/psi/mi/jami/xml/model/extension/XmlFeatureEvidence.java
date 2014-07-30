@@ -22,7 +22,7 @@ import java.util.List;
  * @since <pre>24/07/13</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
-public class XmlFeatureEvidence extends AbstractXmlFeature<ParticipantEvidence, FeatureEvidence> implements ExtendedPsiXmlFeatureEvidence {
+public class XmlFeatureEvidence extends AbstractXmlFeature<ExperimentalEntity, FeatureEvidence> implements ExtendedPsiXmlFeatureEvidence {
 
     private List<CvTerm> featureDetectionMethods;
     private boolean initialisedMethods = false;

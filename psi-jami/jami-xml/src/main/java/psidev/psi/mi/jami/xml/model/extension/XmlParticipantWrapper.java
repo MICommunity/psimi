@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
-import psidev.psi.mi.jami.listener.ParticipantInteractorChangeListener;
+import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 
@@ -83,7 +83,7 @@ public class XmlParticipantWrapper implements ModelledParticipant {
     }
 
     @Override
-    public void setChangeListener(ParticipantInteractorChangeListener listener) {
+    public void setChangeListener(EntityInteractorChangeListener listener) {
         this.participant.setChangeListener(listener);
     }
 
@@ -148,7 +148,7 @@ public class XmlParticipantWrapper implements ModelledParticipant {
     }
 
     @Override
-    public ParticipantInteractorChangeListener getChangeListener() {
+    public EntityInteractorChangeListener getChangeListener() {
         return this.participant.getChangeListener();
     }
 

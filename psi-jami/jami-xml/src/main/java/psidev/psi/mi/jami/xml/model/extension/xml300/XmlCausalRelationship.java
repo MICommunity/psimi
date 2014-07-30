@@ -6,6 +6,7 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
@@ -37,9 +38,9 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
     private Locator locator;
 
     private CvTerm relationType;
-    private Participant target;
+    private Entity target;
 
-    private Participant source;
+    private Entity source;
 
     public XmlCausalRelationship(){
 
@@ -64,7 +65,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
         return relationType;
     }
 
-    public Participant getTarget() {
+    public Entity getTarget() {
         if (this.target == null){
             this.target = new XmlParticipant();
         }
@@ -72,7 +73,7 @@ public class XmlCausalRelationship implements ExtendedPsiXmlCausalRelationship,F
     }
 
     @Override
-    public Participant getSource() {
+    public Entity getSource() {
         if (this.source == null){
             this.source = new XmlParticipant();
             this.source.getCausalRelationships().add(this);

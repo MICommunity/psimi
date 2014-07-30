@@ -15,6 +15,7 @@ import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -615,10 +616,11 @@ public class XmlEvidenceParserTest {
         InputStream stream = new URL("ftp://ftp.ebi.ac.uk/pub/databases/intact/current/psi25/pmid/2011/19536198_gong-2009-1_01.xml").openStream();
 
         System.out.println("Start"+System.currentTimeMillis());
-        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(new File(XmlEvidenceParserTest.class.getResource("/samples/dip20140703.mif25").getFile()));
         int index = 0;
         while(!parser.hasFinished()){
             InteractionEvidence interaction = parser.parseNextInteraction();
+            System.out.println(interaction.toString());
             Assert.assertNotNull(interaction);
             Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
             index++;

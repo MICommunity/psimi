@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @since <pre>11/10/13</pre>
  */
 
-public abstract class AbstractFeatureRef<E extends Participant, F extends Feature> extends AbstractXmlIdReference implements ExtendedPsiXmlFeature<E,F> {
+public abstract class AbstractFeatureRef<E extends Entity, F extends Feature> extends AbstractXmlIdReference implements ExtendedPsiXmlFeature<E,F> {
     private static final Logger logger = Logger.getLogger("AbstractFeatureRef");
     private ExtendedPsiXmlFeature<E,F> delegate;
 
