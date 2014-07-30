@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.AllostericEffectorType;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.model.MoleculeEffector;
 
@@ -19,7 +20,7 @@ import psidev.psi.mi.jami.model.MoleculeEffector;
 
 public class DefaultMoleculeEffector implements MoleculeEffector {
 
-    private ModelledParticipant participant;
+    private ModelledEntity participant;
 
     public DefaultMoleculeEffector(ModelledParticipant participant){
         if (participant == null){
@@ -28,7 +29,7 @@ public class DefaultMoleculeEffector implements MoleculeEffector {
         this.participant = participant;
     }
 
-    public ModelledParticipant getMolecule() {
+    public ModelledEntity getMolecule() {
         return participant;
     }
 

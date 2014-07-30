@@ -10,7 +10,7 @@ import java.util.Collection;
  * @since <pre>23/11/12</pre>
  */
 
-public interface Feature<P extends Participant, F extends Feature> {
+public interface Feature<P extends Entity, F extends Feature> {
 
     public static final String BIOLOGICAL_FEATURE = "biological feature";
     public static final String BIOLOGICAL_FEATURE_MI ="MI:0252";
@@ -148,7 +148,7 @@ public interface Feature<P extends Participant, F extends Feature> {
     public void setRole(CvTerm role);
 
     /**
-     * The participant to which the feature is attached.
+     * The participant to which the feature is attached. It can be any entity (participant, participant pool, participant candidate, etc.)
      * It can be null if the feature is not attached to any participants.
      * @return the participant
      */

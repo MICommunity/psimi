@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Allostery;
 import psidev.psi.mi.jami.model.FeatureModificationEffector;
 import psidev.psi.mi.jami.utils.InteractorUtils;
 import psidev.psi.mi.jami.utils.comparator.cooperativity.DefaultFeatureModificationEffectorComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledEntityComparator;
 
 /**
  * Unit tester for DefaultAllostery
@@ -25,7 +25,7 @@ public class DefaultAllosteryTest {
                 new DefaultFeatureModificationEffector(new DefaultModelledFeature("test", "test effector")));
 
         Assert.assertEquals(new DefaultCvTerm("test outcome"), allostery.getOutCome());
-        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), allostery.getAllostericMolecule(), true));
+        Assert.assertTrue(DefaultModelledEntityComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), allostery.getAllostericMolecule(), true));
         Assert.assertTrue(DefaultFeatureModificationEffectorComparator.areEquals(new DefaultFeatureModificationEffector(new DefaultModelledFeature("test", "test effector")), allostery.getAllostericEffector()));
         Assert.assertNull(allostery.getAllostericMechanism());
         Assert.assertNull(allostery.getAllosteryType());

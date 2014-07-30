@@ -69,15 +69,15 @@ public interface Range {
     public void setResultingSequence(ResultingSequence resultingSequence);
 
     /**
-     * The participating molecule that this range refers to.
+     * The participating molecule that this range refers to. It can refer to any entity (participant, participant candidate, etc.)
      * It can be null. If null, the range is applied to the participant reporting the feature.
      * @return The participant that the range is referring to
      */
-    public Participant getParticipant();
+    public Entity getParticipant();
 
     /**
      * Sets the participating molecule that the range refers to
      * @param participant
      */
-    public void setParticipant(Participant participant);
+    public void setParticipant(Entity participant);
 }

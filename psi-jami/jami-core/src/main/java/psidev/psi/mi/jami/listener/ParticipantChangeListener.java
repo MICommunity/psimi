@@ -8,7 +8,7 @@ import psidev.psi.mi.jami.model.*;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
  */
-public interface ParticipantChangeListener<F extends Participant> extends AnnotationsChangeListener<F>, XrefsChangeListener<F>, AliasesChangeListener<F>, ParticipantInteractorChangeListener {
+public interface ParticipantChangeListener<F extends Participant> extends AnnotationsChangeListener<F>, XrefsChangeListener<F>, AliasesChangeListener<F>, EntityInteractorChangeListener {
 
     public void onBiologicalRoleUpdate(F participant, CvTerm oldType);
 

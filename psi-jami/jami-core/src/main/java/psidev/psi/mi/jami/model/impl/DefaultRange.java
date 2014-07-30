@@ -20,7 +20,7 @@ public class DefaultRange implements Range {
     private boolean isLink;
 
     private ResultingSequence resultingSequence;
-    private Participant participant;
+    private Entity participant;
 
     public DefaultRange(Position start, Position end){
         setPositions(start, end);
@@ -90,11 +90,11 @@ public class DefaultRange implements Range {
         this.resultingSequence = resultingSequence;
     }
 
-    public Participant getParticipant() {
+    public Entity getParticipant() {
         return this.participant;
     }
 
-    public void setParticipant(Participant participant) {
+    public void setParticipant(Entity participant) {
         this.participant = participant;
     }
 

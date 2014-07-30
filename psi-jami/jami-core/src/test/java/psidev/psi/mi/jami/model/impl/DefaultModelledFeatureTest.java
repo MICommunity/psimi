@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.InteractorUtils;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledEntityComparator;
 
 /**
  * Unit tester for DefaultModelledFeature
@@ -35,7 +35,7 @@ public class DefaultModelledFeatureTest {
         ModelledParticipant p = new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor());
         feature.setParticipant(p);
 
-        Assert.assertTrue(DefaultModelledParticipantComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipant(), true));
+        Assert.assertTrue(DefaultModelledEntityComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipant(), true));
         Assert.assertEquals(0, p.getFeatures().size());
 
         feature.setParticipantAndAddFeature(p);

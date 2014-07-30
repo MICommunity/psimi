@@ -134,8 +134,8 @@ public class AllosteryComparator implements Comparator<Allostery>{
             }
 
             // compare allosteric molecule
-            ModelledParticipant mol1 = allostery1.getAllostericMolecule();
-            ModelledParticipant mol2 = allostery2.getAllostericMolecule();
+            ModelledEntity mol1 = allostery1.getAllostericMolecule();
+            ModelledEntity mol2 = allostery2.getAllostericMolecule();
             comp = moleculeEffectorComparator.getParticipantComparator().compare(mol1, mol2);
             if (comp != 0){
                 return comp;

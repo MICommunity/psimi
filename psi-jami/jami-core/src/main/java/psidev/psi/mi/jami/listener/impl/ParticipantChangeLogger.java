@@ -74,7 +74,7 @@ public class ParticipantChangeLogger<T extends Participant> implements Participa
         entityChangeLogger.log(Level.INFO, "The annotation " + removed.toString() + " has been removed from the entity " + protein.toString());
     }
 
-    public void onInteractorUpdate(Participant entity, Interactor oldInteractor) {
+    public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
         entityChangeLogger.log(Level.INFO, "The interactor " + oldInteractor + " has been updated with " + entity.getInteractor() + " in the entity " + entity.toString());
     }
 }

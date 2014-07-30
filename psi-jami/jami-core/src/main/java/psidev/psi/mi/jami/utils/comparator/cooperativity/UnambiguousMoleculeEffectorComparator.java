@@ -1,14 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.MoleculeEffector;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousModelledParticipantComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousParticipantBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousEntityBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.UnambiguousModelledEntityComparator;
 
 /**
  * Unambiguous Comparator for MoleculeEffector.
  *
- * It is using a UnambiguousModelledParticipantComparator to compare the molecule
+ * It is using a UnambiguousModelledEntityComparator to compare the molecule
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>30/05/13</pre>
@@ -19,12 +19,12 @@ public class UnambiguousMoleculeEffectorComparator extends MoleculeEffectorCompa
     private static UnambiguousMoleculeEffectorComparator unambiguousMoleculeEffectorComparator;
 
     public UnambiguousMoleculeEffectorComparator() {
-        super(new UnambiguousModelledParticipantComparator());
+        super(new UnambiguousModelledEntityComparator());
     }
 
     @Override
-    public UnambiguousModelledParticipantComparator getParticipantComparator() {
-        return (UnambiguousModelledParticipantComparator) super.getParticipantComparator();
+    public UnambiguousModelledEntityComparator getParticipantComparator() {
+        return (UnambiguousModelledEntityComparator) super.getParticipantComparator();
     }
 
     /**
@@ -66,8 +66,8 @@ public class UnambiguousMoleculeEffectorComparator extends MoleculeEffectorCompa
         }
 
         int hashcode = 31;
-        ModelledParticipant molecule = effector.getMolecule();
-        hashcode = 31*hashcode + UnambiguousParticipantBaseComparator.hashCode(molecule);
+        ModelledEntity molecule = effector.getMolecule();
+        hashcode = 31*hashcode + UnambiguousEntityBaseComparator.hashCode(molecule);
         return hashcode;
     }
 }

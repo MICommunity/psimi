@@ -48,14 +48,14 @@ public interface Allostery<T extends AllostericEffector> extends CooperativeEffe
      * 	It cannot be null.
      * @return the allosteric molecule
      */
-    public ModelledParticipant getAllostericMolecule();
+    public ModelledEntity getAllostericMolecule();
 
     /**
      * Sets the allosteric molecule.
-     * @param participant : allosteric molecule
+     * @param participant : allosteric molecule (can refer to any participating entity)
      * @throws IllegalArgumentException when participant is null
      */
-    public void setAllostericMolecule(ModelledParticipant participant);
+    public void setAllostericMolecule(ModelledEntity participant);
 
     /**
      * The effector that elicits an allosteric response.

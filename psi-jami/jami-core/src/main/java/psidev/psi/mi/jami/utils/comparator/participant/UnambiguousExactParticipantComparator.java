@@ -24,7 +24,8 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
      */
     public UnambiguousExactParticipantComparator() {
         super(new UnambiguousExactParticipantBaseComparator(), new UnambiguousExactParticipantEvidenceComparator(),
-                new UnambiguousExactModelledParticipantComparator());
+                new UnambiguousExactModelledParticipantComparator(),
+                new UnambiguousExactParticipantPoolComparator());
     }
 
     @Override
@@ -40,6 +41,11 @@ public class UnambiguousExactParticipantComparator extends ParticipantComparator
     @Override
     public UnambiguousExactModelledParticipantComparator getBiologicalParticipantComparator() {
         return (UnambiguousExactModelledParticipantComparator) super.getBiologicalParticipantComparator();
+    }
+
+    @Override
+    public UnambiguousExactParticipantPoolComparator getPoolComparator() {
+        return (UnambiguousExactParticipantPoolComparator) super.getPoolComparator();
     }
 
     @Override

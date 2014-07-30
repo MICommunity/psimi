@@ -11,9 +11,9 @@ package psidev.psi.mi.jami.model;
 public interface MoleculeEffector extends AllostericEffector{
 
     /**
-     * Refers to the participant that elicits an allosteric response in an allosteric molecule upon binding to that molecule.
+     * Refers to the participant (any participating entity such as simple participant, participant pool or participant candidate) that elicits an allosteric response in an allosteric molecule upon binding to that molecule.
      * It cannot be null.
      * @return the participant that elicits the allosteric response.
      */
-    public ModelledParticipant getMolecule();
+    public ModelledEntity getMolecule();
 }

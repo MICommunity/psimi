@@ -5,7 +5,7 @@ import org.junit.Test;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.InteractorUtils;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultParticipantEvidenceComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultExperimentalEntityComparator;
 
 /**
  * Unit tester for DefaultFeatureEvidence
@@ -35,7 +35,7 @@ public class DefaultFeatureEvidenceTest {
         ParticipantEvidence p = new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor());
         feature.setParticipant(p);
 
-        Assert.assertTrue(DefaultParticipantEvidenceComparator.areEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipant(), true));
+        Assert.assertTrue(DefaultExperimentalEntityComparator.areEquals(new DefaultParticipantEvidence(InteractorUtils.createUnknownBasicInteractor()), feature.getParticipant(), true));
         Assert.assertEquals(0, p.getFeatures().size());
 
         feature.setParticipantAndAddFeature(p);

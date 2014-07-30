@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.model.impl;
 
-import psidev.psi.mi.jami.model.AllostericEffector;
-import psidev.psi.mi.jami.model.Allostery;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.*;
 
 /**
  * Default implementation for Allostery
@@ -23,7 +20,7 @@ public class DefaultAllostery<T extends AllostericEffector> extends DefaultCoope
 
     private CvTerm allostericMechanism;
     private CvTerm allosteryType;
-    private ModelledParticipant allostericMolecule;
+    private ModelledEntity allostericMolecule;
     private T allostericEffector;
 
     public DefaultAllostery(CvTerm outcome, ModelledParticipant allostericMolecule, T allostericEffector) {
@@ -66,11 +63,11 @@ public class DefaultAllostery<T extends AllostericEffector> extends DefaultCoope
         this.allosteryType = type;
     }
 
-    public ModelledParticipant getAllostericMolecule() {
+    public ModelledEntity getAllostericMolecule() {
         return this.allostericMolecule;
     }
 
-    public void setAllostericMolecule(ModelledParticipant participant) {
+    public void setAllostericMolecule(ModelledEntity participant) {
         if (participant == null){
             throw new IllegalArgumentException("The allosteric molecule cannot be null");
         }

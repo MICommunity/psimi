@@ -10,6 +10,7 @@ import java.util.Comparator;
  * - It uses ParticipantEvidenceComparator to compare experimental participants
  * - It uses ModelledParticipantComparator to compare biological participants
  * - It uses ParticipantBaseComparator to compare basic participant properties
+ * - It uses ParticipantPoolComparator to compare basic participant pool properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -21,20 +22,28 @@ public class ParticipantComparator implements Comparator<Participant> {
     protected ParticipantBaseComparator participantBaseComparator;
     protected ParticipantEvidenceComparator experimentalParticipantComparator;
     protected ModelledParticipantComparator biologicalParticipantComparator;
+    protected ParticipantPoolComparator poolComparator;
 
-    public ParticipantComparator(ParticipantBaseComparator participantBaseComparator, ParticipantEvidenceComparator experimentalParticipantComparator, ModelledParticipantComparator modelledParticipantComparator){
+    public ParticipantComparator(ParticipantBaseComparator participantBaseComparator,
+                                 ParticipantEvidenceComparator experimentalParticipantComparator,
+                                 ModelledParticipantComparator modelledParticipantComparator,
+                                 ParticipantPoolComparator poolComparator){
         if (participantBaseComparator == null){
-            throw new IllegalArgumentException("The participantBaseComparator is required to create more specific participant comparators and compares basic participant properties. It cannot be null");
+            throw new IllegalArgumentException("The entityBaseComparator is required to create more specific participant comparators and compares basic participant properties. It cannot be null");
         }
         this.participantBaseComparator = participantBaseComparator;
         if (experimentalParticipantComparator == null){
-            throw new IllegalArgumentException("The experimentalParticipantComparator is required to compare experimental participant properties. It cannot be null");
+            throw new IllegalArgumentException("The experimentalEntityComparator is required to compare experimental participant properties. It cannot be null");
         }
         this.experimentalParticipantComparator = experimentalParticipantComparator;
         if (modelledParticipantComparator == null){
             throw new IllegalArgumentException("The modelledParticipantComparator is required to compare modelled participant properties. It cannot be null");
         }
         this.biologicalParticipantComparator = modelledParticipantComparator;
+        if (poolComparator == null){
+            throw new IllegalArgumentException("The ParticipantPoolComparator is required to compare participant pool properties. It cannot be null");
+        }
+        this.poolComparator = poolComparator;
     }
 
     /**
@@ -90,7 +99,23 @@ public class ParticipantComparator implements Comparator<Participant> {
                     return AFTER;
                 }
                 else {
-                    return participantBaseComparator.compare(participant1, participant2);
+                    // both are experimental participants
+                    boolean isPool1 = participant1 instanceof ParticipantPool;
+                    boolean isPool2 = participant2 instanceof ParticipantPool;
+                    if (isPool1 && isPool2){
+                        return poolComparator.compare((ParticipantPool) participant1,
+                                (ParticipantPool) participant2);
+                    }
+                    // the experimental participant is before
+                    else if (isPool1){
+                        return BEFORE;
+                    }
+                    else if (isPool2){
+                        return AFTER;
+                    }
+                    else {
+                        return participantBaseComparator.compare(participant1, participant2);
+                    }
                 }
             }
         }
@@ -106,5 +131,9 @@ public class ParticipantComparator implements Comparator<Participant> {
 
     public ModelledParticipantComparator getBiologicalParticipantComparator() {
         return biologicalParticipantComparator;
+    }
+
+    public ParticipantPoolComparator getPoolComparator() {
+        return poolComparator;
     }
 }

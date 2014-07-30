@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractor
  * @since <pre>30/05/13</pre>
  */
 
-public class UnambiguousExactParticipantInteractorComparator extends ParticipantInteractorComparator<Participant> {
+public class UnambiguousExactParticipantInteractorComparator extends ParticipantInteractorComparator<Entity> {
     private static UnambiguousExactParticipantInteractorComparator unambiguousExactInteractorParticipantComparator;
 
     /**
@@ -36,7 +36,7 @@ public class UnambiguousExactParticipantInteractorComparator extends Participant
      *
      * This comparator will ignore all the other properties of a participant.
      */
-    public int compare(Participant participant1, Participant participant2) {
+    public int compare(Entity participant1, Entity participant2) {
         return super.compare(participant1, participant2);
     }
 
@@ -46,7 +46,7 @@ public class UnambiguousExactParticipantInteractorComparator extends Participant
      * @param participant2
      * @return true if the two participants are equal
      */
-    public static boolean areEquals(Participant participant1, Participant participant2){
+    public static boolean areEquals(Entity participant1, Entity participant2){
         if (unambiguousExactInteractorParticipantComparator == null){
             unambiguousExactInteractorParticipantComparator = new UnambiguousExactParticipantInteractorComparator();
         }

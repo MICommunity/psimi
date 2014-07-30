@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.model.impl;
 
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
 
 /**
  * Default implementation for feature
@@ -20,7 +20,7 @@ import psidev.psi.mi.jami.model.Participant;
  * @since <pre>01/02/13</pre>
  */
 
-public class DefaultFeature extends AbstractFeature<Participant, Feature>{
+public class DefaultFeature extends AbstractFeature<Entity, Feature>{
 
     public DefaultFeature(){
         super();

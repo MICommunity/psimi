@@ -40,57 +40,70 @@ public class DefaultParticipantEvidenceComparator {
             return false;
         }
         else {
-
-            // first compares basic participant properties
-            if (!DefaultParticipantBaseComparator.areEquals(experimentalParticipant1, experimentalParticipant2, ignoreInteractors)){
+            // both are experimental participant pools
+            boolean isExperimentalParticipantPool1 = experimentalParticipant1 instanceof ExperimentalParticipantPool;
+            boolean isExperimentalParticipantPool2 = experimentalParticipant2 instanceof ExperimentalParticipantPool;
+            if (isExperimentalParticipantPool1 && isExperimentalParticipantPool2){
+                return DefaultExperimentalParticipantPoolComparator.areEquals(
+                        (ExperimentalParticipantPool) experimentalParticipant1,
+                        (ExperimentalParticipantPool) experimentalParticipant2, false);
+            }
+            // the experimental participant is before
+            else if (isExperimentalParticipantPool1 || isExperimentalParticipantPool2){
                 return false;
             }
+            else {
+                // first compares basic participant properties
+                if (!DefaultParticipantBaseComparator.areEquals(experimentalParticipant1, experimentalParticipant2, ignoreInteractors)){
+                    return false;
+                }
 
-            // first compares the experimental roles
-            CvTerm expRoles1 = experimentalParticipant1.getExperimentalRole();
-            CvTerm expRoles2 = experimentalParticipant2.getExperimentalRole();
+                // first compares the experimental roles
+                CvTerm expRoles1 = experimentalParticipant1.getExperimentalRole();
+                CvTerm expRoles2 = experimentalParticipant2.getExperimentalRole();
 
-            if (!DefaultCvTermComparator.areEquals(expRoles1, expRoles2)){
-                return false;
+                if (!DefaultCvTermComparator.areEquals(expRoles1, expRoles2)){
+                    return false;
+                }
+
+                // then compares the participant identification method
+                Collection<CvTerm> method1 = experimentalParticipant1.getIdentificationMethods();
+                Collection<CvTerm> method2 = experimentalParticipant2.getIdentificationMethods();
+
+                if (!ComparatorUtils.areCvTermsEqual(method1, method2)){
+                    return false;
+                }
+
+                // then compares the participant experimental preparations
+                Collection<CvTerm> prep1 = experimentalParticipant1.getExperimentalPreparations();
+                Collection<CvTerm> prep2 = experimentalParticipant2.getExperimentalPreparations();
+
+                if (!ComparatorUtils.areCvTermsEqual(prep1, prep2)){
+                    return false;
+                }
+
+                // then compares the expressed in organisms
+                Organism organism1 = experimentalParticipant1.getExpressedInOrganism();
+                Organism organism2 = experimentalParticipant2.getExpressedInOrganism();
+
+                if (!DefaultOrganismComparator.areEquals(organism1, organism2)){
+                    return false;
+                }
+
+                // then compares the parameters
+                Collection<Parameter> param1 = experimentalParticipant1.getParameters();
+                Collection<Parameter> param2 = experimentalParticipant2.getParameters();
+
+                if (!ComparatorUtils.areParametersEqual(param1, param2)){
+                    return false;
+                }
+
+                // then compares the features
+                Collection<FeatureEvidence> features1 = experimentalParticipant1.getFeatures();
+                Collection<FeatureEvidence> features2 = experimentalParticipant2.getFeatures();
+
+                return compareCollectionOfFeatures(features1, features2);
             }
-
-            // then compares the participant identification method
-            Collection<CvTerm> method1 = experimentalParticipant1.getIdentificationMethods();
-            Collection<CvTerm> method2 = experimentalParticipant2.getIdentificationMethods();
-
-            if (!ComparatorUtils.areCvTermsEqual(method1, method2)){
-                return false;
-            }
-
-            // then compares the participant experimental preparations
-            Collection<CvTerm> prep1 = experimentalParticipant1.getExperimentalPreparations();
-            Collection<CvTerm> prep2 = experimentalParticipant2.getExperimentalPreparations();
-
-            if (!ComparatorUtils.areCvTermsEqual(prep1, prep2)){
-                return false;
-            }
-
-            // then compares the expressed in organisms
-            Organism organism1 = experimentalParticipant1.getExpressedInOrganism();
-            Organism organism2 = experimentalParticipant2.getExpressedInOrganism();
-
-            if (!DefaultOrganismComparator.areEquals(organism1, organism2)){
-                return false;
-            }
-
-            // then compares the parameters
-            Collection<Parameter> param1 = experimentalParticipant1.getParameters();
-            Collection<Parameter> param2 = experimentalParticipant2.getParameters();
-
-            if (!ComparatorUtils.areParametersEqual(param1, param2)){
-                return false;
-            }
-
-            // then compares the features
-            Collection<FeatureEvidence> features1 = experimentalParticipant1.getFeatures();
-            Collection<FeatureEvidence> features2 = experimentalParticipant2.getFeatures();
-
-            return compareCollectionOfFeatures(features1, features2);
         }
     }
 
