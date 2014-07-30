@@ -3,8 +3,8 @@ package psidev.psi.mi.jami.tab.extension;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.impl.DefaultFeature;
 
 /**
@@ -17,7 +17,7 @@ import psidev.psi.mi.jami.model.impl.DefaultFeature;
  * @since <pre>07/06/13</pre>
  */
 
-public class DefaultMitabFeature extends DefaultFeature implements MitabFeature<Participant, Feature>, FileSourceContext{
+public class DefaultMitabFeature extends DefaultFeature implements MitabFeature<Entity, Feature>, FileSourceContext{
 
     private String text;
     private FileSourceLocator sourceLocator;
