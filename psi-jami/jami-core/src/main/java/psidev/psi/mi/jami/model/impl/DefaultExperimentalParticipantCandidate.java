@@ -10,7 +10,8 @@ import psidev.psi.mi.jami.model.*;
  * @since <pre>29/07/14</pre>
  */
 
-public class DefaultExperimentalParticipantCandidate extends AbstractParticipantCandidate<ExperimentalParticipantPool, FeatureEvidence>{
+public class DefaultExperimentalParticipantCandidate extends
+        AbstractParticipantCandidate<ExperimentalParticipantPool, FeatureEvidence> implements ExperimentalParticipantCandidate{
     public DefaultExperimentalParticipantCandidate(Interactor interactor) {
         super(interactor);
     }

@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.utils.clone;
 
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.model.impl.DefaultFeature;
-import psidev.psi.mi.jami.model.impl.DefaultFeatureEvidence;
-import psidev.psi.mi.jami.model.impl.DefaultModelledFeature;
+import psidev.psi.mi.jami.model.impl.*;
 
 /**
  * Utility class for cloning a participant
@@ -28,7 +26,6 @@ public class ParticipantCloner {
             target.setExperimentalRole(source.getExperimentalRole());
             target.setExpressedInOrganism(source.getExpressedInOrganism());
             target.setBiologicalRole(source.getBiologicalRole());
-            target.setInteractor(source.getInteractor());
             target.setStoichiometry(source.getStoichiometry());
 
             // copy collections
@@ -48,6 +45,22 @@ public class ParticipantCloner {
             target.getParameters().addAll(source.getParameters());
             target.getIdentificationMethods().clear();
             target.getIdentificationMethods().addAll(source.getIdentificationMethods());
+
+            // special case for participant candidates
+            if (source instanceof ExperimentalParticipantPool && target instanceof ExperimentalParticipantPool){
+                ExperimentalParticipantPool poolTarget = (ExperimentalParticipantPool)target;
+                ExperimentalParticipantPool poolSource = (ExperimentalParticipantPool)source;
+
+                poolTarget.clear();
+                for (ExperimentalParticipantCandidate candidate : poolSource){
+                    ExperimentalParticipantCandidate candidateClone = new DefaultExperimentalParticipantCandidate(candidate.getInteractor());
+                    ParticipantCandidateCloner.copyAndOverrideExperimentalCandidateProperties(candidate, candidateClone, createNewFeature);
+                    poolTarget.add(candidateClone);
+                }
+            }
+            else{
+                target.setInteractor(source.getInteractor());
+            }
 
             // copy features or create new ones
             if (!createNewFeature){
@@ -76,7 +89,6 @@ public class ParticipantCloner {
     public static void copyAndOverrideModelledParticipantProperties(ModelledParticipant source, ModelledParticipant target, boolean createNewFeature){
         if (source != null && target != null){
             target.setBiologicalRole(source.getBiologicalRole());
-            target.setInteractor(source.getInteractor());
             target.setStoichiometry(source.getStoichiometry());
 
             // copy collections
@@ -88,6 +100,22 @@ public class ParticipantCloner {
             target.getXrefs().addAll(source.getXrefs());
             target.getAliases().clear();
             target.getAliases().addAll(source.getAliases());
+
+            // special case for participant candidates
+            if (source instanceof ModelledParticipantPool && target instanceof ModelledParticipantPool){
+                ModelledParticipantPool poolTarget = (ModelledParticipantPool)target;
+                ModelledParticipantPool poolSource = (ModelledParticipantPool)source;
+
+                poolTarget.clear();
+                for (ModelledParticipantCandidate candidate : poolSource){
+                    ModelledParticipantCandidate candidateClone = new DefaultModelledParticipantCandidate(candidate.getInteractor());
+                    ParticipantCandidateCloner.copyAndOverrideModelledPCandidateProperties(candidate, candidateClone, createNewFeature);
+                    poolTarget.add(candidateClone);
+                }
+            }
+            else{
+                target.setInteractor(source.getInteractor());
+            }
 
             // copy features or create new ones
             if (!createNewFeature){
@@ -114,7 +142,6 @@ public class ParticipantCloner {
     public static void copyAndOverrideBasicParticipantProperties(Participant source, Participant target, boolean createNewFeature){
         if (source != null && target != null){
             target.setBiologicalRole(source.getBiologicalRole());
-            target.setInteractor(source.getInteractor());
             target.setStoichiometry(source.getStoichiometry());
 
             // copy collections
@@ -127,17 +154,33 @@ public class ParticipantCloner {
             target.getAliases().clear();
             target.getAliases().addAll(source.getAliases());
 
+            // special case for participant candidates
+            if (source instanceof ParticipantPool && target instanceof ParticipantPool){
+                ParticipantPool poolTarget = (ParticipantPool)target;
+                ParticipantPool poolSource = (ParticipantPool)source;
+
+                poolTarget.clear();
+                for (Object candidate : poolSource){
+                    ParticipantCandidate candidateClone = new DefaultParticipantCandidate(((ParticipantCandidate)candidate).getInteractor());
+                    ParticipantCandidateCloner.copyAndOverrideBasicCandidateProperties((ParticipantCandidate)candidate, candidateClone, createNewFeature);
+                    poolTarget.add(candidateClone);
+                }
+            }
+            else{
+                target.setInteractor(source.getInteractor());
+            }
+
             // copy features or create new ones
             if (!createNewFeature){
                 target.getFeatures().clear();
-                target.getFeatures().addAll(source.getFeatures());
+                target.addAllFeatures(source.getFeatures());
             }
             else {
                 target.getFeatures().clear();
                 for (Object f : source.getFeatures()){
                     Feature clone = new DefaultFeature();
                     FeatureCloner.copyAndOverrideBasicFeaturesProperties((Feature)f, clone);
-                    target.getFeatures().add(clone);
+                    target.addFeature(clone);
                 }
             }
         }
