@@ -56,7 +56,7 @@ public class FeatureRangeRule extends AbstractMIRule<Feature> {
         // list of messages to return
         Collection<ValidatorMessage> messages = Collections.EMPTY_LIST;
 
-        Participant participant = feature.getParticipant();
+        Entity participant = feature.getParticipant();
         Interactor interactor = null;
         String sequence = null;
 
@@ -79,6 +79,13 @@ public class FeatureRangeRule extends AbstractMIRule<Feature> {
         }
         else{
             for (Range range : ranges){
+                if (range.getParticipant() != null){
+                    interactor = range.getParticipant().getInteractor();
+
+                    if (interactor != null){
+                        sequence = interactor instanceof Polymer ? ((Polymer) interactor).getSequence() : null;
+                    }
+                }
 
                 List<String> errorMessages = RangeUtils.validateRange(range, sequence);
 
