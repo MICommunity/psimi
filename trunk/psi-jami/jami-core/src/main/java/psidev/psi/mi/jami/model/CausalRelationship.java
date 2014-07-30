@@ -18,9 +18,9 @@ public interface CausalRelationship {
     public CvTerm getRelationType();
 
     /**
-     * The participant target of this causalRelationship.
+     * The participant/entity target of this causalRelationship.
      * It cannot be null.
-     * @return the participant target
+     * @return the participant/entity target
      */
-    public Participant getTarget();
+    public Entity getTarget();
 }

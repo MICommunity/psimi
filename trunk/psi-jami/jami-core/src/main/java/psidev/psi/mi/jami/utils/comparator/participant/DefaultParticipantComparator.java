@@ -5,9 +5,11 @@ import psidev.psi.mi.jami.model.*;
 /**
  * Generic default participant comparator.
  * Modelled participants come first and then experimental participants.
- * - It uses DefaultComponentComparator to compare components
+ * - It uses DefaultModelledParticipantComparator to compare modelled participants
  * - It uses DefaultParticipantEvidenceComparator to compare experimental participants
- * - It uses DefaultParticipantBaseComparator to compare basic participant properties
+ * - It uses DefaultModelledParticipantPoolComparator to compare modelled participant pools
+ * - It uses DefaultExperimentalParticipantPoolComparator to compare experimental participant pools
+ * - It uses DefaultParticipantPoolComparator to compare basic participant pool properties
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -32,11 +34,12 @@ public class DefaultParticipantComparator {
         }
         else {
             // first check if both participants are from the same interface
+            // both are biological participant pools
             // both are biological participants
             boolean isBiologicalParticipant1 = participant1 instanceof ModelledParticipant;
             boolean isBiologicalParticipant2 = participant2 instanceof ModelledParticipant;
             if (isBiologicalParticipant1 && isBiologicalParticipant2){
-                return DefaultModelledParticipantComparator.areEquals((ModelledParticipant) participant1, (ModelledParticipant) participant2, false);
+                return DefaultModelledParticipantComparator.areEquals((ModelledParticipant) participant1, (ModelledParticipant) participant2, true);
             }
             // the biological participant is before
             else if (isBiologicalParticipant1 || isBiologicalParticipant2){
@@ -47,14 +50,31 @@ public class DefaultParticipantComparator {
                 boolean isExperimentalParticipant1 = participant1 instanceof ParticipantEvidence;
                 boolean isExperimentalParticipant2 = participant2 instanceof ParticipantEvidence;
                 if (isExperimentalParticipant1 && isExperimentalParticipant2){
-                    return DefaultParticipantEvidenceComparator.areEquals((ParticipantEvidence) participant1, (ParticipantEvidence) participant2, false);
+                    return DefaultParticipantEvidenceComparator.areEquals(
+                            (ParticipantEvidence) participant1,
+                            (ParticipantEvidence) participant2, true);
                 }
                 // the experimental participant is before
                 else if (isExperimentalParticipant1 || isExperimentalParticipant2){
                     return false;
                 }
                 else {
-                    return DefaultParticipantBaseComparator.areEquals(participant1, participant2, false);
+                    // both are participant pools
+                    boolean isPool1 = participant1 instanceof ParticipantPool;
+                    boolean isPool2 = participant2 instanceof ParticipantPool;
+                    if (isPool1 && isPool2){
+                        return DefaultParticipantPoolComparator.areEquals(
+                                (ParticipantPool) participant1,
+                                (ParticipantPool) participant2, true);
+                    }
+                    // the experimental participant is before
+                    else if (isPool1 || isPool2){
+                        return true;
+                    }
+                    else {
+                        return DefaultParticipantBaseComparator.areEquals(participant1,
+                                participant2, true);
+                    }
                 }
             }
         }

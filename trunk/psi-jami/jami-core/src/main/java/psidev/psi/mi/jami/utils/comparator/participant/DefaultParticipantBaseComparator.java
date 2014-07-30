@@ -1,14 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultInteractorComparator;
 
 /**
  * Default participant comparator
- * It will first compare the interactors using DefaultInteractorComparator. If both interactors are the same,
- * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first).
+ * It will first compare the interactors and stoichiometry using DefaultEntityBaseComparator
+ * it will then compare the biological roles using DefaultCvTermComparator.
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -36,28 +35,15 @@ public class DefaultParticipantBaseComparator {
         else {
             int comp;
             // first compares interactors
-            if (!ignoreInteractors){
-                Interactor interactor1 = participant1.getInteractor();
-                Interactor interactor2 = participant2.getInteractor();
-
-                if (!DefaultInteractorComparator.areEquals(interactor1, interactor2)){
-                     return false;
-                }
+            if (!DefaultEntityBaseComparator.areEquals(participant1, participant2, ignoreInteractors)){
+                return false;
             }
 
             // then compares the biological role
             CvTerm role1 = participant1.getBiologicalRole();
             CvTerm role2 = participant2.getBiologicalRole();
 
-            if (!DefaultCvTermComparator.areEquals(role1, role2)){
-                return false;
-            }
-
-            // then compares the stoichiometry
-            Stoichiometry stc1 = participant1.getStoichiometry();
-            Stoichiometry stc2 = participant2.getStoichiometry();
-
-            return StoichiometryComparator.areEquals(stc1, stc2);
+            return DefaultCvTermComparator.areEquals(role1, role2);
         }
     }
 }

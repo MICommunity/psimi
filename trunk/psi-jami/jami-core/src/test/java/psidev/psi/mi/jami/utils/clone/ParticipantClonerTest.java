@@ -29,7 +29,7 @@ public class ParticipantClonerTest {
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
-        sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
+        sourceParticipant.getCandidates().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
         ((Collection<Feature>)sourceParticipant.getFeatures()).add(new DefaultFeature("test", "test feature"));
 
         Participant targetParticipant = new DefaultParticipant(new DefaultProtein("p2"));
@@ -37,12 +37,12 @@ public class ParticipantClonerTest {
         ParticipantCloner.copyAndOverrideBasicParticipantProperties(sourceParticipant, targetParticipant, false);
 
         Assert.assertEquals(1, targetParticipant.getXrefs().size());
-        Assert.assertEquals(1, targetParticipant.getAnnotations().size());
+        Assert.assertEquals(1, targetParticipant.getCandidates().size());
         Assert.assertEquals(1, targetParticipant.getAliases().size());
         Assert.assertEquals(1, targetParticipant.getFeatures().size());
         Assert.assertTrue(targetParticipant.getXrefs().iterator().next() == sourceParticipant.getXrefs().iterator().next());
         Assert.assertTrue(targetParticipant.getAliases().iterator().next() == sourceParticipant.getAliases().iterator().next());
-        Assert.assertTrue(targetParticipant.getAnnotations().iterator().next() == sourceParticipant.getAnnotations().iterator().next());
+        Assert.assertTrue(targetParticipant.getCandidates().iterator().next() == sourceParticipant.getCandidates().iterator().next());
         Assert.assertTrue(targetParticipant.getFeatures().iterator().next() == sourceParticipant.getFeatures().iterator().next());
         Assert.assertTrue(targetParticipant.getInteractor() == sourceParticipant.getInteractor());
         Assert.assertTrue(targetParticipant.getStoichiometry() == sourceParticipant.getStoichiometry());
@@ -59,7 +59,7 @@ public class ParticipantClonerTest {
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
-        sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
+        sourceParticipant.getCandidates().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
         ((Collection<Feature>)sourceParticipant.getFeatures()).add(new DefaultFeature("test", "test feature"));
 
         Participant targetParticipant = new DefaultParticipant(new DefaultProtein("p2"));
@@ -80,7 +80,7 @@ public class ParticipantClonerTest {
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
-        sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
+        sourceParticipant.getCandidates().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
         sourceParticipant.addFeature(new DefaultModelledFeature("test", "test feature"));
         sourceParticipant.setInteraction(new DefaultModelledInteraction());
 
@@ -89,13 +89,13 @@ public class ParticipantClonerTest {
         ParticipantCloner.copyAndOverrideModelledParticipantProperties(sourceParticipant, targetParticipant, false);
 
         Assert.assertEquals(1, targetParticipant.getXrefs().size());
-        Assert.assertEquals(1, targetParticipant.getAnnotations().size());
+        Assert.assertEquals(1, targetParticipant.getCandidates().size());
         Assert.assertEquals(1, targetParticipant.getAliases().size());
         Assert.assertEquals(1, targetParticipant.getFeatures().size());
         Assert.assertNull(targetParticipant.getInteraction());
         Assert.assertTrue(targetParticipant.getXrefs().iterator().next() == sourceParticipant.getXrefs().iterator().next());
         Assert.assertTrue(targetParticipant.getAliases().iterator().next() == sourceParticipant.getAliases().iterator().next());
-        Assert.assertTrue(targetParticipant.getAnnotations().iterator().next() == sourceParticipant.getAnnotations().iterator().next());
+        Assert.assertTrue(targetParticipant.getCandidates().iterator().next() == sourceParticipant.getCandidates().iterator().next());
         Assert.assertTrue(targetParticipant.getFeatures().iterator().next() == sourceParticipant.getFeatures().iterator().next());
         Assert.assertTrue(targetParticipant.getInteractor() == sourceParticipant.getInteractor());
         Assert.assertTrue(targetParticipant.getStoichiometry() == sourceParticipant.getStoichiometry());
@@ -113,7 +113,7 @@ public class ParticipantClonerTest {
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
-        sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
+        sourceParticipant.getCandidates().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
         sourceParticipant.addFeature(new DefaultModelledFeature("test", "test feature"));
         sourceParticipant.setInteraction(new DefaultModelledInteraction());
 
@@ -136,7 +136,7 @@ public class ParticipantClonerTest {
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
-        sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
+        sourceParticipant.getCandidates().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
         sourceParticipant.addFeature(new DefaultFeatureEvidence("test", "test feature"));
         sourceParticipant.setInteraction(new DefaultInteractionEvidence());
         sourceParticipant.setExperimentalRole(new DefaultCvTerm("bait"));
@@ -151,7 +151,7 @@ public class ParticipantClonerTest {
         ParticipantCloner.copyAndOverrideParticipantEvidenceProperties(sourceParticipant, targetParticipant, false);
 
         Assert.assertEquals(1, targetParticipant.getXrefs().size());
-        Assert.assertEquals(1, targetParticipant.getAnnotations().size());
+        Assert.assertEquals(1, targetParticipant.getCandidates().size());
         Assert.assertEquals(1, targetParticipant.getAliases().size());
         Assert.assertEquals(1, targetParticipant.getFeatures().size());
         Assert.assertEquals(1, targetParticipant.getParameters().size());
@@ -161,7 +161,7 @@ public class ParticipantClonerTest {
         Assert.assertNull(targetParticipant.getInteraction());
         Assert.assertTrue(targetParticipant.getXrefs().iterator().next() == sourceParticipant.getXrefs().iterator().next());
         Assert.assertTrue(targetParticipant.getAliases().iterator().next() == sourceParticipant.getAliases().iterator().next());
-        Assert.assertTrue(targetParticipant.getAnnotations().iterator().next() == sourceParticipant.getAnnotations().iterator().next());
+        Assert.assertTrue(targetParticipant.getCandidates().iterator().next() == sourceParticipant.getCandidates().iterator().next());
         Assert.assertTrue(targetParticipant.getFeatures().iterator().next() == sourceParticipant.getFeatures().iterator().next());
         Assert.assertTrue(targetParticipant.getInteractor() == sourceParticipant.getInteractor());
         Assert.assertTrue(targetParticipant.getStoichiometry() == sourceParticipant.getStoichiometry());
@@ -186,7 +186,7 @@ public class ParticipantClonerTest {
         sourceParticipant.setBiologicalRole(new DefaultCvTerm("enzyme"));
         sourceParticipant.getAliases().add(new DefaultAlias("test alias"));
         sourceParticipant.getXrefs().add(new DefaultXref(new DefaultCvTerm("test database"), "xxxx"));
-        sourceParticipant.getAnnotations().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
+        sourceParticipant.getCandidates().add(new DefaultAnnotation(new DefaultCvTerm("test comment"), "comment"));
         sourceParticipant.addFeature(new DefaultFeatureEvidence("test", "test feature"));
         sourceParticipant.setInteraction(new DefaultInteractionEvidence());
         sourceParticipant.setExperimentalRole(new DefaultCvTerm("bait"));

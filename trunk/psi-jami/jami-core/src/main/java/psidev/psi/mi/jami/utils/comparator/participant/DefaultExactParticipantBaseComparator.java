@@ -1,14 +1,12 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.interactor.DefaultExactInteractorComparator;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Stoichiometry;
 
 /**
  * Default exact participant comparator
- * It will first compare the interactors using DefaultExactInteractorComparator. If both interactors are the same,
- * it will compare the biological roles using DefaultCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first).
+ * It will first compare the interactors and stoichiometry using DefaultExactEntityComparator. If both interactors are the same,
+ * it will compare the biological roles using DefaultCvTermComparator.
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -34,22 +32,8 @@ public class DefaultExactParticipantBaseComparator {
             return false;
         }
         else {
-            int comp;
-            // first compares interactors
-            if (!ignoreInteractors){
-                Interactor interactor1 = participant1.getInteractor();
-                Interactor interactor2 = participant2.getInteractor();
 
-                if (!DefaultExactInteractorComparator.areEquals(interactor1, interactor2)){
-                    return false;
-                }
-            }
-
-            // then compares the biological role
-            CvTerm role1 = participant1.getBiologicalRole();
-            CvTerm role2 = participant2.getBiologicalRole();
-
-            if (!DefaultCvTermComparator.areEquals(role1, role2)){
+            if (!DefaultExactEntityBaseComparator.areEquals(participant1, participant2, ignoreInteractors)){
                 return false;
             }
 

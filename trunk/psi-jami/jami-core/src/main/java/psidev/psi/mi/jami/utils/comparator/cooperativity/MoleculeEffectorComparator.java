@@ -1,15 +1,15 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.MoleculeEffector;
-import psidev.psi.mi.jami.utils.comparator.participant.ModelledParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.ModelledEntityComparator;
 
 import java.util.Comparator;
 
 /**
  * Basic Comparator for MoleculeEffector.
  * 
- * It is using a ModelledParticipantComparator to compare the molecule
+ * It is using a ModelledEntityComparator to compare the molecule
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -18,9 +18,9 @@ import java.util.Comparator;
 
 public class MoleculeEffectorComparator implements Comparator<MoleculeEffector>{
 
-    private ModelledParticipantComparator participantComparator;
+    private ModelledEntityComparator participantComparator;
 
-    public MoleculeEffectorComparator(ModelledParticipantComparator participantComparator){
+    public MoleculeEffectorComparator(ModelledEntityComparator participantComparator){
 
         if (participantComparator == null){
             throw new IllegalArgumentException("The ModelledParticipantComparator is required to compare the molecules of the moleculeEffector");
@@ -28,12 +28,12 @@ public class MoleculeEffectorComparator implements Comparator<MoleculeEffector>{
         this.participantComparator = participantComparator;
     }
 
-    public ModelledParticipantComparator getParticipantComparator() {
+    public ModelledEntityComparator getParticipantComparator() {
         return participantComparator;
     }
 
     /**
-     * It is using a ModelledParticipantComparator to compare the molecule
+     * It is using a ModelledEntityComparator to compare the molecule
      * @param moleculeEffector1
      * @param moleculeEffector2
      * @return
@@ -54,8 +54,8 @@ public class MoleculeEffectorComparator implements Comparator<MoleculeEffector>{
         }
         else {
 
-            ModelledParticipant molecule1 = moleculeEffector1.getMolecule();
-            ModelledParticipant molecule2 = moleculeEffector2.getMolecule();
+            ModelledEntity molecule1 = moleculeEffector1.getMolecule();
+            ModelledEntity molecule2 = moleculeEffector2.getMolecule();
 
             return participantComparator.compare(molecule1, molecule2);
         }

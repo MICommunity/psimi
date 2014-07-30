@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.CausalRelationship;
 import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.utils.InteractorUtils;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultParticipantBaseComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultEntityBaseComparator;
 
 /**
  * Unit tester for CausalRelationship
@@ -24,7 +24,7 @@ public class DefaultCausalRelationshipTest {
         CausalRelationship rel = new DefaultCausalRelationship(CvTermUtils.createMICvTerm("decreases", "MI:xxxx"), new DefaultParticipant(InteractorUtils.createUnknownBasicInteractor()));
 
         Assert.assertEquals(CvTermUtils.createMICvTerm("decreases", "MI:xxxx"), rel.getRelationType());
-        org.junit.Assert.assertTrue(DefaultParticipantBaseComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), rel.getTarget(), true));
+        org.junit.Assert.assertTrue(DefaultEntityBaseComparator.areEquals(new DefaultModelledParticipant(InteractorUtils.createUnknownBasicInteractor()), rel.getTarget(), true));
     }
 
     @Test(expected=IllegalArgumentException.class)

@@ -36,7 +36,7 @@ public class DefaultExactParticipantComparator {
             boolean isBiologicalParticipant1 = participant1 instanceof ModelledParticipant;
             boolean isBiologicalParticipant2 = participant2 instanceof ModelledParticipant;
             if (isBiologicalParticipant1 && isBiologicalParticipant2){
-                return DefaultExactModelledParticipantComparator.areEquals((ModelledParticipant) participant1, (ModelledParticipant) participant2, false);
+                return DefaultExactModelledParticipantComparator.areEquals((ModelledParticipant) participant1, (ModelledParticipant) participant2, true);
             }
             // the biological participant is before
             else if (isBiologicalParticipant1 || isBiologicalParticipant2){
@@ -46,15 +46,30 @@ public class DefaultExactParticipantComparator {
                 // both are experimental participants
                 boolean isExperimentalParticipant1 = participant1 instanceof ParticipantEvidence;
                 boolean isExperimentalParticipant2 = participant2 instanceof ParticipantEvidence;
-                if (isExperimentalParticipant1 && isExperimentalParticipant2){
-                    return DefaultExactParticipantEvidenceComparator.areEquals((ParticipantEvidence) participant1, (ParticipantEvidence) participant2, false);
+                if (isExperimentalParticipant1 && isExperimentalParticipant2) {
+                    return DefaultExactParticipantEvidenceComparator.areEquals(
+                            (ParticipantEvidence) participant1,
+                            (ParticipantEvidence) participant2, true);
                 }
                 // the experimental participant is before
-                else if (isExperimentalParticipant1 || isExperimentalParticipant2){
+                else if (isExperimentalParticipant1 || isExperimentalParticipant2) {
                     return false;
-                }
-                else {
-                    return DefaultExactParticipantBaseComparator.areEquals(participant1, participant2, false);
+                } else {
+                    // both are participant pools
+                    boolean isPool1 = participant1 instanceof ParticipantPool;
+                    boolean isPool2 = participant2 instanceof ParticipantPool;
+                    if (isPool1 && isPool2) {
+                        return DefaultExactParticipantPoolComparator.areEquals(
+                                (ParticipantPool) participant1,
+                                (ParticipantPool) participant2, true);
+                    }
+                    // the experimental participant is before
+                    else if (isPool1 || isPool2) {
+                        return false;
+                    } else {
+                        return DefaultExactParticipantBaseComparator.areEquals(participant1,
+                                participant2, true);
+                    }
                 }
             }
         }

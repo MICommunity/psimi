@@ -8,6 +8,8 @@ import java.util.*;
 /**
  * Default exact biological participant comparator.
  * It will compare the basic properties of a biological participant using DefaultExactParticipantBaseComparator.
+ * It will compare features using DefaultModelledFeatureComparator.
+ * If the participant is a modelledParticipantPool, it will use DefaultExactModelledParticipantPoolComparator.
  *
  * This comparator will ignore all the other properties of a biological participant.
  *
@@ -19,7 +21,11 @@ import java.util.*;
 public class DefaultExactModelledParticipantComparator {
 
     /**
-     * Use DefaultExactModelledParticipantComparator to know if two biological participants are equals.
+     * It will compare the basic properties of a biological participant using DefaultExactParticipantBaseComparator.
+     * It will compare features using DefaultModelledFeatureComparator.
+     * If the participant is a modelledParticipantPool, it will use DefaultExactModelledParticipantPoolComparator.
+     *
+     * This comparator will ignore all the other properties of a biological participant.
      * @param bioParticipant1
      * @param bioParticipant2
      * @return true if the two biological participants are equal
@@ -34,52 +40,66 @@ public class DefaultExactModelledParticipantComparator {
             return false;
         }
         else {
-            boolean ignoreInteractors = false;
-            if (!checkComplexesAsInteractors){
-                if (checkIfComplexAlreadyProcessed(bioParticipant1, bioParticipant2, processedComplexes)
-                        || checkIfComplexAlreadyProcessed(bioParticipant2, bioParticipant1, processedComplexes)){
-                    ignoreInteractors = true;
-                }
+            // first check if both participants are from the same interface
+            // both are biological participant pools
+            boolean isBiologicalParticipantPool1 = bioParticipant1 instanceof ModelledParticipantPool;
+            boolean isBiologicalParticipantPool2 = bioParticipant2 instanceof ModelledParticipantPool;
+            if (isBiologicalParticipantPool1 && isBiologicalParticipantPool2){
+                return DefaultExactModelledParticipantPoolComparator.areEquals((ModelledParticipantPool) bioParticipant1,
+                        (ModelledParticipantPool) bioParticipant2, checkComplexesAsInteractors);
             }
-
-            if (!DefaultExactParticipantBaseComparator.areEquals(bioParticipant1, bioParticipant2, ignoreInteractors)){
+            // the biological participant is before
+            else if (isBiologicalParticipantPool1 || isBiologicalParticipantPool2){
                 return false;
             }
-
-            // then compares the features
-            Collection<ModelledFeature> features1 = bioParticipant1.getFeatures();
-            Collection<ModelledFeature> features2 = bioParticipant2.getFeatures();
-
-            if (features1.size() != features2.size()){
-                 return false;
-            }
             else {
-                Iterator<ModelledFeature> f1Iterator = new ArrayList<ModelledFeature>(features1).iterator();
-                Collection<ModelledFeature> f2List = new ArrayList<ModelledFeature>(features2);
-
-                while (f1Iterator.hasNext()){
-                    ModelledFeature f1 = f1Iterator.next();
-                    ModelledFeature f2ToRemove = null;
-                    for (ModelledFeature f2 : f2List){
-                        if (DefaultModelledFeatureComparator.areEquals(f1, f2)){
-                            f2ToRemove = f2;
-                            break;
-                        }
-                    }
-                    if (f2ToRemove != null){
-                        f2List.remove(f2ToRemove);
-                        f1Iterator.remove();
-                    }
-                    else {
-                        return false;
+                boolean ignoreInteractors = false;
+                if (!checkComplexesAsInteractors){
+                    if (checkIfComplexAlreadyProcessed(bioParticipant1, bioParticipant2, processedComplexes)
+                            || checkIfComplexAlreadyProcessed(bioParticipant2, bioParticipant1, processedComplexes)){
+                        ignoreInteractors = true;
                     }
                 }
 
-                if (f1Iterator.hasNext() || !f2List.isEmpty()){
+                if (!DefaultExactParticipantBaseComparator.areEquals(bioParticipant1, bioParticipant2, ignoreInteractors)){
                     return false;
                 }
-                else{
-                    return true;
+
+                // then compares the features
+                Collection<ModelledFeature> features1 = bioParticipant1.getFeatures();
+                Collection<ModelledFeature> features2 = bioParticipant2.getFeatures();
+
+                if (features1.size() != features2.size()){
+                    return false;
+                }
+                else {
+                    Iterator<ModelledFeature> f1Iterator = new ArrayList<ModelledFeature>(features1).iterator();
+                    Collection<ModelledFeature> f2List = new ArrayList<ModelledFeature>(features2);
+
+                    while (f1Iterator.hasNext()){
+                        ModelledFeature f1 = f1Iterator.next();
+                        ModelledFeature f2ToRemove = null;
+                        for (ModelledFeature f2 : f2List){
+                            if (DefaultModelledFeatureComparator.areEquals(f1, f2)){
+                                f2ToRemove = f2;
+                                break;
+                            }
+                        }
+                        if (f2ToRemove != null){
+                            f2List.remove(f2ToRemove);
+                            f1Iterator.remove();
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+
+                    if (f1Iterator.hasNext() || !f2List.isEmpty()){
+                        return false;
+                    }
+                    else{
+                        return true;
+                    }
                 }
             }
         }

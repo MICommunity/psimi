@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledEntityComparator;
 
 /**
  * Default comparator for Allostery
@@ -76,9 +76,9 @@ public class DefaultAllosteryComparator {
             }
 
             // compare allosteric molecule
-            ModelledParticipant mol1 = allostery1.getAllostericMolecule();
-            ModelledParticipant mol2 = allostery2.getAllostericMolecule();
-            return DefaultModelledParticipantComparator.areEquals(mol1, mol2, true);
+            ModelledEntity mol1 = allostery1.getAllostericMolecule();
+            ModelledEntity mol2 = allostery2.getAllostericMolecule();
+            return DefaultModelledEntityComparator.areEquals(mol1, mol2, true);
         }
     }
 }

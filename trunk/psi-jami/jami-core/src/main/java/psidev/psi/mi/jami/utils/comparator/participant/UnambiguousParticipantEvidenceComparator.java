@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousFeatureEvidenceComparator;
-import psidev.psi.mi.jami.utils.comparator.organism.UnambiguousOrganismComparator;
-import psidev.psi.mi.jami.utils.comparator.parameter.UnambiguousParameterComparator;
 
 /**
  * Unambiguous Experimental participant comparator.
@@ -28,17 +25,12 @@ public class UnambiguousParticipantEvidenceComparator extends ParticipantEvidenc
      * and a UnambiguousOrganismComparator to compare expressed in organisms
      */
     public UnambiguousParticipantEvidenceComparator() {
-        super(new UnambiguousParticipantBaseComparator(), new UnambiguousOrganismComparator(), new UnambiguousParameterComparator(), new UnambiguousFeatureEvidenceComparator());
+        super(new UnambiguousExperimentalParticipantPoolComparator());
     }
 
     @Override
-    public UnambiguousParticipantBaseComparator getParticipantBaseComparator() {
-        return (UnambiguousParticipantBaseComparator) this.participantBaseComparator;
-    }
-
-    @Override
-    public UnambiguousOrganismComparator getOrganismComparator() {
-        return (UnambiguousOrganismComparator) this.organismComparator;
+    public UnambiguousExperimentalParticipantPoolComparator getParticipantPoolComparator() {
+        return (UnambiguousExperimentalParticipantPoolComparator) this.poolComparator;
     }
 
     @Override

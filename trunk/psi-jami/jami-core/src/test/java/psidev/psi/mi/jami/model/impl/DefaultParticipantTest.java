@@ -26,7 +26,7 @@ public class DefaultParticipantTest {
         Assert.assertTrue(DefaultInteractorComparator.areEquals(InteractorUtils.createUnknownBasicInteractor(), p.getInteractor()));
         Assert.assertNotNull(p.getAliases());
         Assert.assertNotNull(p.getXrefs());
-        Assert.assertNotNull(p.getAnnotations());
+        Assert.assertNotNull(p.getCandidates());
         Assert.assertNotNull(p.getCausalRelationships());
         Assert.assertNull(p.getStoichiometry());
         Assert.assertEquals(CvTermUtils.createUnspecifiedRole(), p.getBiologicalRole());

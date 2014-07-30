@@ -2,7 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.CausalRelationship;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.Entity;
 
 import java.util.Comparator;
 
@@ -20,16 +20,16 @@ import java.util.Comparator;
 public class CausalRelationshipComparator implements Comparator<CausalRelationship>{
 
     private Comparator<CvTerm> cvTermComparator;
-    private ParticipantComparator participantComparator;
+    private EntityComparator participantComparator;
 
-    public CausalRelationshipComparator(Comparator<CvTerm> cvTermComparator, ParticipantComparator participantComparator){
+    public CausalRelationshipComparator(Comparator<CvTerm> cvTermComparator, EntityComparator participantComparator){
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The cvTermComparator cannot be null in a CausalRelationshipComparator");
         }
         this.cvTermComparator = cvTermComparator;
 
         if (participantComparator == null){
-            throw new IllegalArgumentException("The participantBaseComparator cannot be null in a CausalRelationshipComparator");
+            throw new IllegalArgumentException("The entityBaseComparator cannot be null in a CausalRelationshipComparator");
         }
         this.participantComparator = participantComparator;
     }
@@ -38,7 +38,7 @@ public class CausalRelationshipComparator implements Comparator<CausalRelationsh
         return cvTermComparator;
     }
 
-    public ParticipantComparator getParticipantComparator() {
+    public EntityComparator getParticipantComparator() {
         return participantComparator;
     }
 
@@ -72,8 +72,8 @@ public class CausalRelationshipComparator implements Comparator<CausalRelationsh
                 return comp;
             }
 
-            Participant p1 = causalRelationship1.getTarget();
-            Participant p2 = causalRelationship2.getTarget();
+            Entity p1 = causalRelationship1.getTarget();
+            Entity p2 = causalRelationship2.getTarget();
 
             return participantComparator.compare(p1, p2);
         }

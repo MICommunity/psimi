@@ -1,11 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.Complex;
-import psidev.psi.mi.jami.model.Interactor;
-import psidev.psi.mi.jami.model.ModelledFeature;
-import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
-import psidev.psi.mi.jami.utils.comparator.feature.ModelledFeatureComparator;
+import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
 import java.util.IdentityHashMap;
@@ -14,7 +9,9 @@ import java.util.Set;
 
 /**
  * Basic biological participant comparator.
- * It will compare the basic properties of a biological participant using ParticipantInteractorComparator.
+ * It will compare the basic properties of a biological participant using ParticipantBaseComparator.
+ *
+ * If the participants are both ModelledParticipantPool, it will use ModelledParticipantPoolComparator to compare them
  *
  * This comparator will ignore all the other properties of a biological participant.
  *
@@ -23,10 +20,9 @@ import java.util.Set;
  * @since <pre>13/02/13</pre>
  */
 
-public class ModelledParticipantComparator implements CustomizableModelledParticipantComparator {
+public class ModelledParticipantComparator implements CustomizableModelledParticipantComparator<ModelledParticipant> {
 
-    protected ParticipantBaseComparator participantBaseComparator;
-    protected FeatureCollectionComparator featureCollectionComparator;
+    protected ModelledParticipantPoolComparator poolComparator;
 
     protected boolean checkComplexesAsInteractors = true;
 
@@ -35,25 +31,24 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
     /**
      * Creates a new ComponentComparator
      */
-    public ModelledParticipantComparator(ModelledFeatureComparator featureComparator){
-
-        if (featureComparator == null){
-            throw new IllegalArgumentException("The modelled feature comparator is required to compare modelled features. It cannot be null");
+    public ModelledParticipantComparator(ModelledParticipantPoolComparator poolComparator){
+        if (poolComparator == null){
+            throw new IllegalArgumentException("The participant pool comparator is required to compare basic participant properties, features and participant pools. It cannot be null");
         }
-        this.featureCollectionComparator = new FeatureCollectionComparator(featureComparator);
+        this.poolComparator = poolComparator;
         this.processedComplexes = new IdentityHashMap<Complex, Set<Interactor>>();
     }
 
-    public ParticipantBaseComparator getParticipantBaseComparator() {
-        return participantBaseComparator;
+    public ModelledParticipantComparator(){
+        this.processedComplexes = new IdentityHashMap<Complex, Set<Interactor>>();
     }
 
-    public void setParticipantBaseComparator(ParticipantBaseComparator participantBaseComparator) {
-        this.participantBaseComparator = participantBaseComparator;
+    public ModelledParticipantPoolComparator getParticipantPoolComparator() {
+        return poolComparator;
     }
 
-    public FeatureCollectionComparator getFeatureCollectionComparator() {
-        return featureCollectionComparator;
+    public void setPoolComparator(ModelledParticipantPoolComparator poolComparator) {
+        this.poolComparator = poolComparator;
     }
 
     public boolean isCheckComplexesAsInteractors() {
@@ -69,7 +64,9 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
     }
 
     /**
-     * It will compare the basic properties of a biological participant using ParticipantInteractorComparator.
+     * It will compare the basic properties of a biological participant using ParticipantBaseComparator.
+     *
+     * If the participants are both ModelledParticipantPool, it will use ModelledParticipantPoolComparator to compare them
      *
      * This comparator will ignore all the other properties of a biological participant.
      * @param bioParticipant1
@@ -77,43 +74,58 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
      * @return
      */
     public int compare(ModelledParticipant bioParticipant1, ModelledParticipant bioParticipant2) {
-        if (participantBaseComparator == null){
-            throw new IllegalStateException("The participant base comparator is required to compare basic participant properties. It cannot be null");
-        }
-        else{
-            participantBaseComparator.setIgnoreInteractors(false);
-        }
-
         int EQUAL = 0;
         int BEFORE = -1;
         int AFTER = 1;
-
-        if (bioParticipant1 == bioParticipant2){
-            return EQUAL;
+        // both are biological participants
+        boolean isBiologicalParticipant1 = bioParticipant1 instanceof ModelledParticipantPool;
+        boolean isBiologicalParticipant2 = bioParticipant2 instanceof ModelledParticipantPool;
+        if (isBiologicalParticipant1 && isBiologicalParticipant2){
+            return this.poolComparator.compare((ModelledParticipantPool) bioParticipant1,
+                    (ModelledParticipantPool) bioParticipant2);
         }
-        else if (bioParticipant1 == null){
-            return AFTER;
-        }
-        else if (bioParticipant2 == null){
+        // the biological participant is before
+        else if (isBiologicalParticipant1){
             return BEFORE;
         }
+        else if (isBiologicalParticipant2){
+            return AFTER;
+        }
         else {
-
-            if (!checkComplexesAsInteractors){
-                checkIfComplexAlreadyProcessed(bioParticipant1, bioParticipant2);
-                checkIfComplexAlreadyProcessed(bioParticipant2, bioParticipant1);
+            if (this.poolComparator == null || this.poolComparator.getParticipantBaseComparator() == null){
+                throw new IllegalStateException("The participant base comparator is required to compare basic participant properties. It cannot be null");
+            }
+            else{
+                this.poolComparator.getParticipantBaseComparator().setIgnoreInteractors(false);
             }
 
-            int comp = participantBaseComparator.compare(bioParticipant1, bioParticipant2);
-            if (comp != 0){
-                return comp;
+            if (bioParticipant1 == bioParticipant2){
+                return EQUAL;
             }
+            else if (bioParticipant1 == null){
+                return AFTER;
+            }
+            else if (bioParticipant2 == null){
+                return BEFORE;
+            }
+            else {
 
-            // then compares the features
-            Collection<ModelledFeature> features1 = bioParticipant1.getFeatures();
-            Collection<ModelledFeature> features2 = bioParticipant2.getFeatures();
+                if (!checkComplexesAsInteractors){
+                    checkIfComplexAlreadyProcessed(bioParticipant1, bioParticipant2);
+                    checkIfComplexAlreadyProcessed(bioParticipant2, bioParticipant1);
+                }
 
-            return featureCollectionComparator.compare(features1, features2);
+                int comp = poolComparator.getParticipantBaseComparator().compare(bioParticipant1, bioParticipant2);
+                if (comp != 0){
+                    return comp;
+                }
+
+                // then compares the features
+                Collection<ModelledFeature> features1 = bioParticipant1.getFeatures();
+                Collection<ModelledFeature> features2 = bioParticipant2.getFeatures();
+
+                return poolComparator.getFeatureCollectionComparator().compare(features1, features2);
+            }
         }
     }
 
@@ -128,7 +140,7 @@ public class ModelledParticipantComparator implements CustomizableModelledPartic
             Set<Interactor> interactorSet = this.processedComplexes.get(complex);
             // already processed this pair
             if (interactorSet.contains(bioParticipant2.getInteractor())){
-                participantBaseComparator.setIgnoreInteractors(true);
+                poolComparator.getParticipantBaseComparator().setIgnoreInteractors(true);
             }
             else{
                 interactorSet.add(bioParticipant2.getInteractor());

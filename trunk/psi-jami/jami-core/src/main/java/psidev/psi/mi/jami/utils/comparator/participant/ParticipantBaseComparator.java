@@ -1,16 +1,14 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
-import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Participant;
 
 import java.util.Comparator;
 
 /**
  * Basic participant comparator.
- * It will first compare the interactors using InteractorComparator. If both interactors are the same,
- * it will compare the biological roles using AbstractCvTermComparator. If both biological roles are the same, it
- * will look at the stoichiometry (participant with lower stoichiometry will come first). If the stoichiometry is the same for both participants,
- * it will compare the features using a Comparator<Feature>.
+ * It will first compare the interactors/stoichiometry/features using EntityBaseComparator. If both interactors are the same,
+ * it will compare the biological roles using AbstractCvTermComparator.
  *
  * This comparator will ignore all the other properties of a participant.
  *
@@ -22,49 +20,40 @@ import java.util.Comparator;
 public class ParticipantBaseComparator implements Comparator<Participant> {
 
     protected Comparator<CvTerm> cvTermComparator;
-    protected StoichiometryComparator stoichiometryComparator;
-    protected InteractorComparator interactorComparator;
-
-    protected boolean ignoreInteractors = false;
+    protected EntityBaseComparator entityComparator;
 
     /**
      * Creates a new ParticipantBaseComparator
      * @param interactorComparator : interactor comparator required for comparing the molecules
      * @param cvTermComparator : CvTerm comparator required for comparing biological roles
      */
-    public ParticipantBaseComparator(InteractorComparator interactorComparator, Comparator<CvTerm> cvTermComparator){
+    public ParticipantBaseComparator(EntityBaseComparator interactorComparator, Comparator<CvTerm> cvTermComparator){
 
         if (interactorComparator == null){
-            throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
+            throw new IllegalArgumentException("The Entity base comparator is required to compare interactors, stoichiometry and features. It cannot be null");
         }
-        this.interactorComparator = interactorComparator;
+        this.entityComparator = interactorComparator;
 
         if (cvTermComparator == null){
             throw new IllegalArgumentException("The CvTerm comparator is required to compare biological roles. It cannot be null");
         }
         this.cvTermComparator = cvTermComparator;
-
-        this.stoichiometryComparator = new StoichiometryComparator();
     }
 
     public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 
-    public StoichiometryComparator getStoichiometryComparator() {
-        return stoichiometryComparator;
-    }
-
-    public InteractorComparator getInteractorComparator() {
-        return interactorComparator;
+    public EntityBaseComparator getEntityBaseComparator() {
+        return entityComparator;
     }
 
     public boolean isIgnoreInteractors() {
-        return ignoreInteractors;
+        return entityComparator.isIgnoreInteractors();
     }
 
     public void setIgnoreInteractors(boolean ignoreInteractors) {
-        this.ignoreInteractors = ignoreInteractors;
+        this.entityComparator.setIgnoreInteractors(ignoreInteractors);
     }
 
     /**
@@ -93,32 +82,17 @@ public class ParticipantBaseComparator implements Comparator<Participant> {
             return BEFORE;
         }
         else {
-            int comp;
+            int comp = this.entityComparator.compare(participant1, participant2);
             // first compares interactors
-            if (!ignoreInteractors){
-                Interactor interactor1 = participant1.getInteractor();
-                Interactor interactor2 = participant2.getInteractor();
-
-                comp = interactorComparator.compare(interactor1, interactor2);
-                if (comp != 0){
-                    return comp;
-                }
+            if (comp != 0){
+                return comp;
             }
 
             // then compares the biological role
             CvTerm role1 = participant1.getBiologicalRole();
             CvTerm role2 = participant2.getBiologicalRole();
 
-            comp = cvTermComparator.compare(role1, role2);
-            if (comp != 0){
-                return comp;
-            }
-
-            // then compares the stoichiometry
-            Stoichiometry stc1 = participant1.getStoichiometry();
-            Stoichiometry stc2 = participant2.getStoichiometry();
-
-            return stoichiometryComparator.compare(stc1, stc2);
+            return cvTermComparator.compare(role1, role2);
         }
     }
 }

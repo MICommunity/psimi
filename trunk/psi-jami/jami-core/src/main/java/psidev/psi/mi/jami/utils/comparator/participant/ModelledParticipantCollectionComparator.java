@@ -18,7 +18,7 @@ public class ModelledParticipantCollectionComparator extends CollectionComparato
      *
      * @param biologicalParticipantComparator
      */
-    public ModelledParticipantCollectionComparator(CustomizableModelledParticipantComparator biologicalParticipantComparator) {
+    public ModelledParticipantCollectionComparator(CustomizableModelledParticipantComparator<ModelledParticipant> biologicalParticipantComparator) {
         super(biologicalParticipantComparator);
     }
 

@@ -7,7 +7,7 @@ import psidev.psi.mi.jami.utils.comparator.cv.UnambiguousCvTermComparator;
  * Unambiguous comparator for CausalRelationship
  *
  * It will first compare the relationType using UnambiguousCvTermComparator. If both relationTypes are identical, it will compare the
- * target using UnambiguousParticipantBaseComparator
+ * target using UnambiguousEntityComparator
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -23,7 +23,7 @@ public class UnambiguousCausalRelationshipComparator extends CausalRelationshipC
      *
      */
     public UnambiguousCausalRelationshipComparator() {
-        super(new UnambiguousCvTermComparator(), new UnambiguousParticipantComparator());
+        super(new UnambiguousCvTermComparator(), new UnambiguousEntityComparator());
     }
 
     @Override
@@ -32,8 +32,8 @@ public class UnambiguousCausalRelationshipComparator extends CausalRelationshipC
     }
 
     @Override
-    public UnambiguousParticipantComparator getParticipantComparator() {
-        return (UnambiguousParticipantComparator) super.getParticipantComparator();
+    public UnambiguousEntityComparator getParticipantComparator() {
+        return (UnambiguousEntityComparator) super.getParticipantComparator();
     }
 
     @Override
@@ -75,7 +75,7 @@ public class UnambiguousCausalRelationshipComparator extends CausalRelationshipC
 
         int hashcode = 31;
         hashcode = 31 * hashcode + UnambiguousCvTermComparator.hashCode(rel.getRelationType());
-        hashcode = 31*hashcode + UnambiguousParticipantBaseComparator.hashCode(rel.getTarget());
+        hashcode = 31*hashcode + UnambiguousEntityBaseComparator.hashCode(rel.getTarget());
 
         return hashcode;
     }

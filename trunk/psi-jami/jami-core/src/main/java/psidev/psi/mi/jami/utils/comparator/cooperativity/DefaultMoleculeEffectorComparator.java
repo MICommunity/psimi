@@ -1,13 +1,13 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
-import psidev.psi.mi.jami.model.ModelledParticipant;
+import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.MoleculeEffector;
-import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledParticipantComparator;
+import psidev.psi.mi.jami.utils.comparator.participant.DefaultModelledEntityComparator;
 
 /**
  * Default Comparator for MoleculeEffector.
  *
- * It is using a DefaultModelledParticipantComparator to compare the molecule
+ * It is using a DefaultModelledEntityComparator to compare the molecule
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -31,10 +31,10 @@ public class DefaultMoleculeEffectorComparator {
         }
         else {
 
-            ModelledParticipant molecule1 = moleculeEffector1.getMolecule();
-            ModelledParticipant molecule2 = moleculeEffector2.getMolecule();
+            ModelledEntity molecule1 = moleculeEffector1.getMolecule();
+            ModelledEntity molecule2 = moleculeEffector2.getMolecule();
 
-            return DefaultModelledParticipantComparator.areEquals(molecule1, molecule2, true);
+            return DefaultModelledEntityComparator.areEquals(molecule1, molecule2, true);
         }
     }
 }

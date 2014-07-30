@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.utils.comparator.feature.UnambiguousModelledFeaturecomparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactComplexComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorComparator;
 
@@ -25,13 +24,16 @@ public class UnambiguousExactModelledParticipantComparator extends ModelledParti
      * the basic properties of a participant.
      */
     public UnambiguousExactModelledParticipantComparator() {
-        super(new UnambiguousModelledFeaturecomparator());
-        setParticipantBaseComparator(new UnambiguousExactParticipantBaseComparator(new UnambiguousExactInteractorComparator(new UnambiguousExactComplexComparator(this))));
+        super();
+        UnambiguousExactInteractorComparator interactorComparator =
+                new UnambiguousExactInteractorComparator(new UnambiguousExactComplexComparator(this));
+        UnambiguousExactEntityBaseComparator baseComparator = new UnambiguousExactEntityBaseComparator(interactorComparator);
+        setPoolComparator(new UnambiguousExactModelledParticipantPoolComparator(baseComparator));
     }
 
     @Override
-    public UnambiguousExactParticipantBaseComparator getParticipantBaseComparator() {
-        return (UnambiguousExactParticipantBaseComparator) this.participantBaseComparator;
+    public UnambiguousExactModelledParticipantPoolComparator getParticipantPoolComparator() {
+        return (UnambiguousExactModelledParticipantPoolComparator) this.poolComparator;
     }
 
     @Override
