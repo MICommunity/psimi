@@ -1,6 +1,6 @@
 package psidev.psi.mi.jami.listener.impl;
 
-import psidev.psi.mi.jami.listener.ParticipantCandidateChangeListener;
+import psidev.psi.mi.jami.listener.EntityChangeListener;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.logging.Level;
@@ -14,9 +14,9 @@ import java.util.logging.Logger;
  * @since <pre>11/06/13</pre>
  */
 
-public class ParticipantCandidateChangeLogger<T extends ParticipantCandidate> implements ParticipantCandidateChangeListener<T> {
+public class EntityChangeLogger<T extends Entity> implements EntityChangeListener<T> {
 
-    private static final Logger entityChangeLogger = Logger.getLogger("ParticipantCandidateChangeLogger");
+    private static final Logger entityChangeLogger = Logger.getLogger("EntityChangeLogger");
 
     public void onStoichiometryUpdate(T entity, Stoichiometry oldStoichiometry) {
         if (oldStoichiometry == null){
