@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.model.InteractionEvidence;
+import uk.ac.ebi.intact.model.Interaction;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -24,15 +24,15 @@ import java.io.Writer;
  * @since <pre>23/07/13</pre>
  */
 
-public class InteractionEvidenceEnricherProcessor implements ItemProcessor<InteractionEvidence, InteractionEvidence>, ItemStream{
+public class InteractionEnricherProcessor implements ItemProcessor<Interaction, Interaction>, ItemStream{
 
     private Resource errorResource;
     private Writer errorWriter;
-    private InteractionEnricher<InteractionEvidence> interactionEnricher;
+    private InteractionEnricher interactionEnricher;
 
-    public InteractionEvidence process(InteractionEvidence item) throws Exception {
+    public Interaction process(Interaction item) throws Exception {
         if (this.interactionEnricher == null){
-            throw new IllegalStateException("The InteractionEvidenceEnricherProcessor needs a non null InteractionEnricher.");
+            throw new IllegalStateException("The InteractionEnricherProcessor needs a non null InteractionEnricher.");
         }
         if (item == null){
             return null;
@@ -56,7 +56,7 @@ public class InteractionEvidenceEnricherProcessor implements ItemProcessor<Inter
         return item;
     }
 
-    public void setInteractionEnricher(InteractionEnricher<InteractionEvidence> interactionEnricher) {
+    public void setInteractionEnricher(InteractionEnricher interactionEnricher) {
         this.interactionEnricher = interactionEnricher;
     }
 
