@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEvidenceEnricher;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.listener.XrefsChangeListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
@@ -61,7 +62,7 @@ public class FullParticipantEvidenceEnricher<P extends ParticipantEvidence> exte
 
     protected void processXrefs(P participantEvidenceToEnrich, P objectSource) {
         EnricherUtils.mergeXrefs(participantEvidenceToEnrich, participantEvidenceToEnrich.getXrefs(), objectSource.getXrefs(), false, false,
-                getParticipantEnricherListener(), null);
+                getParticipantEnricherListener() instanceof XrefsChangeListener ? (XrefsChangeListener)getParticipantEnricherListener():null, null);
     }
 
     protected void mergeExperimentalPreparations(P termToEnrich, Collection<CvTerm> toEnrichTerms, Collection<CvTerm> fetchedTerms , boolean remove) throws EnricherException {

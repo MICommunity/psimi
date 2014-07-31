@@ -2,6 +2,10 @@ package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.listener.AliasesChangeListener;
+import psidev.psi.mi.jami.listener.AnnotationsChangeListener;
+import psidev.psi.mi.jami.listener.ParticipantChangeListener;
+import psidev.psi.mi.jami.listener.XrefsChangeListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interactor;
@@ -26,13 +30,16 @@ public class FullParticipantUpdater<P extends Participant, F extends Feature>
 
     @Override
     protected void processXrefs(P objectToEnrich, P objectSource) {
-        EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getXrefs(), objectSource.getXrefs(), true, false, getParticipantEnricherListener(),
+        EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getXrefs(), objectSource.getXrefs(), true, false,
+                getParticipantEnricherListener() instanceof XrefsChangeListener ? (XrefsChangeListener)getParticipantEnricherListener():null,
                 null);
     }
 
     @Override
     protected void processAnnotations(P objectToEnrich, P objectSource) {
-        EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), objectSource.getAnnotations(), true, getParticipantEnricherListener());
+        EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), objectSource.getAnnotations(),
+                true,
+                getParticipantEnricherListener() instanceof AnnotationsChangeListener ? (AnnotationsChangeListener)getParticipantEnricherListener():null);
     }
 
     @Override
@@ -64,8 +71,8 @@ public class FullParticipantUpdater<P extends Participant, F extends Feature>
         if (!DefaultCvTermComparator.areEquals(objectToEnrich.getBiologicalRole(), objectSource.getBiologicalRole())){
             CvTerm old = objectToEnrich.getBiologicalRole();
             objectToEnrich.setBiologicalRole(objectSource.getBiologicalRole());
-            if (getParticipantEnricherListener() != null){
-                getParticipantEnricherListener().onBiologicalRoleUpdate(objectToEnrich, old);
+            if (getParticipantEnricherListener() instanceof ParticipantChangeListener){
+                ((ParticipantChangeListener)getParticipantEnricherListener()).onBiologicalRoleUpdate(objectToEnrich, old);
             }
         }
         else if (getCvTermEnricher() != null
@@ -78,6 +85,7 @@ public class FullParticipantUpdater<P extends Participant, F extends Feature>
 
     @Override
     protected void processAliases(P objectToEnrich, P objectSource) {
-        EnricherUtils.mergeAliases(objectToEnrich, objectToEnrich.getAliases(), objectSource.getAliases(), true, getParticipantEnricherListener());
+        EnricherUtils.mergeAliases(objectToEnrich, objectToEnrich.getAliases(), objectSource.getAliases(), true,
+                getParticipantEnricherListener() instanceof AliasesChangeListener ? (AliasesChangeListener)getParticipantEnricherListener() : null);
     }
 }

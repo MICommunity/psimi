@@ -2,8 +2,8 @@ package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.InteractionEvidenceEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalModelledInteractionEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ModelledInteractionEnricherListener;
@@ -95,7 +95,7 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
     }
 
     @Override
-    public CompositeEntityEnricher getParticipantEnricher() {
+    public ParticipantEnricher getParticipantEnricher() {
         return this.interactionEnricher.getParticipantEnricher();
     }
 
@@ -110,7 +110,7 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
     }
 
     @Override
-    public void setParticipantEnricher(CompositeEntityEnricher participantEnricher) {
+    public void setParticipantEnricher(ParticipantEnricher participantEnricher) {
         this.interactionEnricher.setParticipantEnricher(participantEnricher);
     }
 

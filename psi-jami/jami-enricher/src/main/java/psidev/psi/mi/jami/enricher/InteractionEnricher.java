@@ -1,11 +1,9 @@
 package psidev.psi.mi.jami.enricher;
 
-import psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher;
+import psidev.psi.mi.jami.enricher.impl.CompositeParticipantEnricher;
 import psidev.psi.mi.jami.enricher.listener.InteractionEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 
 /**
  * The enricher for Interactions which can enrich a single interaction or a collection.
@@ -25,7 +23,7 @@ public interface InteractionEnricher <I extends Interaction> extends MIEnricher<
      * The current sub enricher for participants.
      * @return  The enricher for participants. Can be null.
      */
-    public CompositeEntityEnricher getParticipantEnricher();
+    public ParticipantEnricher getParticipantEnricher();
 
     /**
      * Sets the sub enricher for CvTerms.

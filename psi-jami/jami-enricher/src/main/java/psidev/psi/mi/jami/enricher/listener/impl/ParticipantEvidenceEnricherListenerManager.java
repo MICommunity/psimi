@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
-import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
@@ -33,7 +33,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onExperimentalRoleUpdate(P participant, CvTerm oldType) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onExperimentalRoleUpdate(participant, oldType);
             }
@@ -41,7 +41,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onExpressedInUpdate(P participant, Organism oldOrganism) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onExpressedInUpdate(participant, oldOrganism);
             }
@@ -49,7 +49,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onAddedIdentificationMethod(P participant, CvTerm added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onAddedIdentificationMethod(participant, added);
             }
@@ -57,7 +57,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onRemovedIdentificationMethod(P participant, CvTerm removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onRemovedIdentificationMethod(participant, removed);
             }
@@ -65,7 +65,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onAddedExperimentalPreparation(P participant, CvTerm added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onAddedExperimentalPreparation(participant, added);
             }
@@ -73,7 +73,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onRemovedExperimentalPreparation(P participant, CvTerm removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onRemovedExperimentalPreparation(participant, removed);
             }
@@ -81,7 +81,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onAddedConfidence(P o, Confidence added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onAddedConfidence(o, added);
             }
@@ -89,7 +89,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onRemovedConfidence(P o, Confidence removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onRemovedConfidence(o, removed);
             }
@@ -97,7 +97,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onAddedParameter(P o, Parameter added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onAddedParameter(o, added);
             }
@@ -105,7 +105,7 @@ public class ParticipantEvidenceEnricherListenerManager<P extends ParticipantEvi
     }
 
     public void onRemovedParameter(P o, Parameter removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
+        for(EntityEnricherListener listener : getListenersList()){
             if (listener instanceof ParticipantEvidenceEnricherListener){
                 ((ParticipantEvidenceEnricherListener)listener).onRemovedParameter(o, removed);
             }

@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl.writer;
 
 
-import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.ParticipantPoolEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
@@ -15,27 +15,27 @@ import java.io.IOException;
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 18/07/13
  */
-public class ParticipantEnricherStatisticsWriter<P extends Participant>
-        extends EntityEnricherStatisticsWriter<P>
-        implements ParticipantEnricherListener<P> {
+public class ParticipantPoolEnricherStatisticsWriter<P extends ParticipantPool>
+        extends ParticipantEnricherStatisticsWriter<P>
+        implements ParticipantPoolEnricherListener<P> {
 
 
-    private static final String FILE_NAME = "Participant";
+    private static final String FILE_NAME = "ParticipantPool";
 
     /**
      * Uses the known name of the JamiObject type as the seed to generate names for the success an failure log files.
-     * @throws IOException      Thrown if a problem is encountered with file location.
+     * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public ParticipantEnricherStatisticsWriter() throws IOException {
+    public ParticipantPoolEnricherStatisticsWriter() throws IOException {
         super(FILE_NAME);
     }
 
     /**
      * Creates the files from the provided seed file name with 'success' and 'failure' appended.
      * @param fileName          The seed to base the names of the files on.
-     * @throws IOException      Thrown if a problem is encountered with file location.
+     * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public ParticipantEnricherStatisticsWriter(String fileName) throws IOException {
+    public ParticipantPoolEnricherStatisticsWriter(String fileName) throws IOException {
         super(fileName);
     }
 
@@ -43,9 +43,9 @@ public class ParticipantEnricherStatisticsWriter<P extends Participant>
      * Uses the provided names to create the files for successful and failed enrichment logging.
      * @param successFileName   The exact name for the file to log successful enrichments in
      * @param failureFileName   The exact name for the file to log failed enrichments in
-     * @throws IOException      Thrown if a problem is encountered with file location.
+     * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public ParticipantEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
+    public ParticipantPoolEnricherStatisticsWriter(String successFileName, String failureFileName) throws IOException {
         super(successFileName, failureFileName);
     }
 
@@ -53,44 +53,24 @@ public class ParticipantEnricherStatisticsWriter<P extends Participant>
      * Uses the exact files provided to log successful and failed enrichments.
      * @param successFile       The file to log successful enrichments in
      * @param failureFile       The file to log failed enrichments in.
-     * @throws IOException      Thrown if a problem is encountered with file location.
+     * @throws java.io.IOException      Thrown if a problem is encountered with file location.
      */
-    public ParticipantEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
+    public ParticipantPoolEnricherStatisticsWriter(File successFile, File failureFile) throws IOException {
         super(successFile, failureFile);
     }
 
-    public void onBiologicalRoleUpdate(P participant, CvTerm oldType) {
+    public void onTypeUpdate(P participant, CvTerm oldType) {
         checkObject(participant);
         incrementUpdateCount();
     }
 
-    public void onAddedAlias(P o, Alias added) {
-        checkObject(o);
+    public void onAddedCandidate(P participant, ParticipantCandidate added) {
+        checkObject(participant);
         incrementAdditionCount();
     }
 
-    public void onRemovedAlias(P o, Alias removed) {
-        checkObject(o);
-        incrementRemovedCount();
-    }
-
-    public void onAddedAnnotation(P o, Annotation added) {
-        checkObject(o);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedAnnotation(P o, Annotation removed) {
-        checkObject(o);
-        incrementRemovedCount();
-    }
-
-    public void onAddedXref(P o, Xref added) {
-        checkObject(o);
-        incrementAdditionCount();
-    }
-
-    public void onRemovedXref(P o, Xref removed) {
-        checkObject(o);
+    public void onRemovedCandidate(P participant, ParticipantCandidate removed) {
+        checkObject(participant);
         incrementRemovedCount();
     }
 
