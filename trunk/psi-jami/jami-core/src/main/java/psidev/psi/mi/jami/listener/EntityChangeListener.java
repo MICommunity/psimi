@@ -3,12 +3,12 @@ package psidev.psi.mi.jami.listener;
 import psidev.psi.mi.jami.model.*;
 
 /**
- * Listener for changes in a participant candidates
+ * Listener for changes in an entity
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 19/07/13
  */
-public interface ParticipantCandidateChangeListener<F extends ParticipantCandidate> extends EntityInteractorChangeListener {
+public interface EntityChangeListener<F extends Entity> extends EntityInteractorChangeListener {
 
     public void onStoichiometryUpdate(F participant, Stoichiometry oldStoichiometry);
 
