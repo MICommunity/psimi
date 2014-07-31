@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
-import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
@@ -88,12 +88,12 @@ public class MinimalParticipantEvidenceUpdater<P extends ParticipantEvidence> ex
     }
 
     @Override
-    public void setParticipantListener(ParticipantEnricherListener listener) {
+    public void setParticipantListener(EntityEnricherListener listener) {
         this.minimalUpdater.setParticipantListener(listener);
     }
 
     @Override
-    public ParticipantEnricherListener getParticipantEnricherListener() {
+    public EntityEnricherListener getParticipantEnricherListener() {
         return this.minimalUpdater.getParticipantEnricherListener();
     }
 

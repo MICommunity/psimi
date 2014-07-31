@@ -1,8 +1,9 @@
 package psidev.psi.mi.jami.enricher.util;
 
+import psidev.psi.mi.jami.enricher.EntityEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher;
 import psidev.psi.mi.jami.listener.*;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.comparator.alias.DefaultAliasComparator;
@@ -349,7 +350,7 @@ public class EnricherUtils {
     }
 
     public static <P extends Participant> void mergeParticipants(Interaction termToEnrich, Collection<P> toEnrichParticipants, Collection<P> fetchedParticipants, boolean remove, InteractionChangeListener interactionListener,
-                                                                 CompositeEntityEnricher participantEnricher) throws EnricherException {
+                                                                 ParticipantEnricher participantEnricher) throws EnricherException {
         Iterator<P> partIterator = toEnrichParticipants.iterator();
         // remove participants in toEnrichParticipants that are not in fetchedParticipants
         if (remove){
@@ -400,7 +401,60 @@ public class EnricherUtils {
         }
     }
 
-    public static void mergeCausalRelationships(Participant termToEnrich, Collection<CausalRelationship> toEnrichRelationships, Collection<CausalRelationship> fetchedRelationships, boolean remove, ParticipantChangeListener entityListener) throws EnricherException {
+    public static <P extends ParticipantCandidate> void mergeParticipantCandidates(ParticipantPool termToEnrich, Collection<P> toEnrichParticipants, Collection<P> fetchedParticipants, boolean remove, ParticipantPoolChangeListener poolListener,
+                                                                 EntityEnricher participantEnricher) throws EnricherException {
+        Iterator<P> partIterator = toEnrichParticipants.iterator();
+        // remove participants in toEnrichParticipants that are not in fetchedParticipants
+        if (remove){
+            while(partIterator.hasNext()){
+                P part = partIterator.next();
+
+                boolean containsPart = false;
+                for (P part2 : fetchedParticipants){
+                    // identical participant
+                    if (part == part2){
+                        containsPart = true;
+                        break;
+                    }
+                }
+                // remove participant not in second list
+                if (!containsPart){
+                    partIterator.remove();
+                    if (poolListener != null){
+                        poolListener.onRemovedCandidate(termToEnrich, part);
+                    }
+                }
+            }
+        }
+
+        // add confidences from fetchedConfidences that are not in toEnrichConfidences
+        partIterator = fetchedParticipants.iterator();
+        while(partIterator.hasNext()){
+            P part = partIterator.next();
+            boolean containsPart = false;
+            for (P part2 : toEnrichParticipants){
+                // identical participants
+                if (part == part2){
+                    containsPart = true;
+                    if (participantEnricher != null){
+                        participantEnricher.enrich(part2, part);
+                    }
+                    break;
+                }
+            }
+            // add missing confidence not in second list
+            if (!containsPart){
+                termToEnrich.add(part);
+                if (poolListener != null){
+                    poolListener.onAddedCandidate(termToEnrich, part);
+                }
+            }
+        }
+    }
+
+    public static void mergeCausalRelationships(Entity termToEnrich, Collection<CausalRelationship> toEnrichRelationships,
+                                                Collection<CausalRelationship> fetchedRelationships,
+                                                boolean remove, EntityChangeListener entityListener) throws EnricherException {
         Iterator<CausalRelationship> relationshipIterator = toEnrichRelationships.iterator();
         if (remove){
             while(relationshipIterator.hasNext()){
@@ -442,7 +496,7 @@ public class EnricherUtils {
         }
     }
 
-    public static <F extends Feature> void mergeFeatures(Participant termToEnrich, Collection<F> toEnrichFeatures, Collection<F> fetchedFeatures, boolean remove, ParticipantChangeListener entityListener,
+    public static <F extends Feature> void mergeFeatures(Entity termToEnrich, Collection<F> toEnrichFeatures, Collection<F> fetchedFeatures, boolean remove, EntityChangeListener entityListener,
                                                                                    FeatureEnricher<F> featureEnricher) throws EnricherException {
         Iterator<F> featureIterator = toEnrichFeatures.iterator();
         if (remove){

@@ -6,9 +6,10 @@ import psidev.psi.mi.jami.enricher.FeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.CompositeInteractorEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalParticipantEvidenceUpdater;
-import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEvidenceEnricherListener;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.listener.XrefsChangeListener;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.FeatureEvidence;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
@@ -49,7 +50,7 @@ public class FullParticipantEvidenceUpdater<P extends ParticipantEvidence> exten
     @Override
     protected void processXrefs(P participantEvidenceToEnrich, P objectSource) {
         EnricherUtils.mergeXrefs(participantEvidenceToEnrich, participantEvidenceToEnrich.getXrefs(), objectSource.getXrefs(), true, false,
-                getParticipantEnricherListener(), null);
+                getParticipantEnricherListener() instanceof XrefsChangeListener ? (XrefsChangeListener)getParticipantEnricherListener():null, null);
     }
 
     @Override
@@ -83,12 +84,12 @@ public class FullParticipantEvidenceUpdater<P extends ParticipantEvidence> exten
     }
 
     @Override
-    public void setParticipantListener(ParticipantEnricherListener listener) {
+    public void setParticipantListener(EntityEnricherListener listener) {
         this.minimalUpdater.setParticipantListener(listener);
     }
 
     @Override
-    public ParticipantEnricherListener getParticipantEnricherListener() {
+    public EntityEnricherListener getParticipantEnricherListener() {
         return this.minimalUpdater.getParticipantEnricherListener();
     }
 

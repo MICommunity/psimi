@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.listener.impl;
 
 
+import psidev.psi.mi.jami.enricher.listener.EntityEnricherListener;
 import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
@@ -15,7 +16,7 @@ import psidev.psi.mi.jami.model.*;
  * @since 10/07/13
  */
 public class ParticipantEnricherListenerManager<P extends Participant>
-        extends EnricherListenerManager<P, ParticipantEnricherListener<P>>
+        extends EntityEnricherListenerManager<P>
         implements ParticipantEnricherListener<P>{
 
     /**
@@ -32,80 +33,58 @@ public class ParticipantEnricherListenerManager<P extends Participant>
     }
 
     public void onBiologicalRoleUpdate(P participant, CvTerm oldType) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onBiologicalRoleUpdate(participant, oldType);
-        }
-    }
-
-    public void onStoichiometryUpdate(P participant, Stoichiometry oldStoichiometry) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onStoichiometryUpdate(participant, oldStoichiometry);
-        }
-    }
-
-    public void onAddedCausalRelationship(P participant, CausalRelationship added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onAddedCausalRelationship(participant, added);
-        }
-    }
-
-    public void onRemovedCausalRelationship(P participant, CausalRelationship removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onRemovedCausalRelationship(participant, removed);
-        }
-    }
-
-    public void onAddedFeature(P participant, Feature added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onAddedFeature(participant, added);
-        }
-    }
-
-    public void onRemovedFeature(P participant, Feature removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onRemovedFeature(participant, removed);
+        for(EntityEnricherListener listener : getListenersList()){
+            if (listener instanceof ParticipantEnricherListener){
+                ((ParticipantEnricherListener)listener).onBiologicalRoleUpdate(participant, oldType);
+            }
         }
     }
 
     public void onAddedAlias(P o, Alias added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onAddedAlias(o, added);
+        for(EntityEnricherListener listener : getListenersList()){
+            if (listener instanceof ParticipantEnricherListener){
+                ((ParticipantEnricherListener)listener).onAddedAlias(o, added);
+            }
         }
     }
 
     public void onRemovedAlias(P o, Alias removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onRemovedAlias(o, removed);
+        for(EntityEnricherListener listener : getListenersList()){
+            if (listener instanceof ParticipantEnricherListener){
+                ((ParticipantEnricherListener)listener).onRemovedAlias(o, removed);
+            }
         }
     }
 
     public void onAddedAnnotation(P o, Annotation added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onAddedAnnotation(o, added);
+        for(EntityEnricherListener listener : getListenersList()){
+            if (listener instanceof ParticipantEnricherListener){
+                ((ParticipantEnricherListener)listener).onAddedAnnotation(o, added);
+            }
         }
     }
 
     public void onRemovedAnnotation(P o, Annotation removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onRemovedAnnotation(o, removed);
-        }
-    }
-
-    public void onInteractorUpdate(Participant entity, Interactor oldInteractor) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onInteractorUpdate(entity, oldInteractor);
+        for(EntityEnricherListener listener : getListenersList()){
+            if (listener instanceof ParticipantEnricherListener){
+                ((ParticipantEnricherListener)listener).onRemovedAnnotation(o, removed);
+            }
         }
     }
 
     public void onAddedXref(P o, Xref added) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onAddedXref(o, added);
+        for(EntityEnricherListener listener : getListenersList()){
+            if (listener instanceof ParticipantEnricherListener){
+                ((ParticipantEnricherListener)listener).onAddedXref(o, added);
+            }
         }
     }
 
     public void onRemovedXref(P o, Xref removed) {
-        for(ParticipantEnricherListener listener : getListenersList()){
-            listener.onRemovedXref(o, removed);
+        for(EntityEnricherListener listener : getListenersList()){
+            if (listener instanceof ParticipantEnricherListener){
+                ((ParticipantEnricherListener)listener).onRemovedXref(o, removed);
+            }
         }
     }
 

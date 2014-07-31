@@ -1,27 +1,30 @@
 package psidev.psi.mi.jami.enricher.impl;
 
-import psidev.psi.mi.jami.enricher.*;
+import psidev.psi.mi.jami.enricher.CvTermEnricher;
+import psidev.psi.mi.jami.enricher.EntityEnricher;
+import psidev.psi.mi.jami.enricher.FeatureEnricher;
+import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import psidev.psi.mi.jami.enricher.listener.ParticipantEnricherListener;
+import psidev.psi.mi.jami.enricher.listener.EntityEnricherListener;
 import psidev.psi.mi.jami.model.*;
 
 import java.util.Collection;
 
 /**
- * General enricher for entities and participants that can use sub enrichers for enriching specific interactors
+ * General enricher for entities and participants candidates that can use sub enrichers for enriching specific interactors
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>11/02/14</pre>
  */
 
-public class CompositeEntityEnricher implements ParticipantEnricher<Participant, Feature>{
+public class CompositeEntityEnricher implements EntityEnricher<Entity, Feature> {
 
-    private ParticipantEnricher<Participant,Feature> entityBaseEnricher;
-    private ParticipantEnricher<ModelledParticipant,ModelledFeature> modelledEntityEnricher;
-    private ParticipantEnricher<ParticipantEvidence,FeatureEvidence> experimentalEntityEnricher;
+    private EntityEnricher<Entity,Feature> entityBaseEnricher;
+    private EntityEnricher<ModelledEntity,ModelledFeature> modelledEntityEnricher;
+    private EntityEnricher<ExperimentalEntity,FeatureEvidence> experimentalEntityEnricher;
 
-    public CompositeEntityEnricher(ParticipantEnricher<Participant,Feature> entityBaseEnricher){
+    public CompositeEntityEnricher(EntityEnricher<Entity, Feature> entityBaseEnricher){
         super();
         if (entityBaseEnricher == null){
             throw new IllegalArgumentException("At least the Participant base enricher is needed and cannot be null") ;
@@ -29,40 +32,40 @@ public class CompositeEntityEnricher implements ParticipantEnricher<Participant,
         this.entityBaseEnricher = entityBaseEnricher;
     }
 
-    public ParticipantEnricher<Participant, Feature> getEntityBaseEnricher() {
+    public EntityEnricher<Entity, Feature> getEntityBaseEnricher() {
         return entityBaseEnricher;
     }
 
-    public ParticipantEnricher<ModelledParticipant, ModelledFeature> getModelledEntityEnricher() {
+    public EntityEnricher<ModelledEntity,ModelledFeature> getModelledEntityEnricher() {
         return modelledEntityEnricher;
     }
 
-    public void setModelledEntityEnricher(ParticipantEnricher<ModelledParticipant, ModelledFeature> modelledEntityEnricher) {
+    public void setModelledEntityEnricher(EntityEnricher<ModelledEntity,ModelledFeature> modelledEntityEnricher) {
         this.modelledEntityEnricher = modelledEntityEnricher;
     }
 
-    public ParticipantEnricher<ParticipantEvidence, FeatureEvidence> getExperimentalEntityEnricher() {
+    public EntityEnricher<ExperimentalEntity,FeatureEvidence> getExperimentalEntityEnricher() {
         return experimentalEntityEnricher;
     }
 
-    public void setExperimentalEntityEnricher(ParticipantEnricher<ParticipantEvidence, FeatureEvidence> experimentalEntityEnricher) {
+    public void setExperimentalEntityEnricher(EntityEnricher<ExperimentalEntity,FeatureEvidence> experimentalEntityEnricher) {
         this.experimentalEntityEnricher = experimentalEntityEnricher;
     }
 
-    public void enrich(Participant object) throws EnricherException {
+    public void enrich(Entity object) throws EnricherException {
         if(object == null)
             throw new IllegalArgumentException("Cannot enrich a null entity.");
-        if (object instanceof ParticipantEvidence){
+        if (object instanceof ExperimentalEntity){
             if (this.experimentalEntityEnricher != null){
-               this.experimentalEntityEnricher.enrich((ParticipantEvidence)object);
+               this.experimentalEntityEnricher.enrich((ExperimentalEntity)object);
             }
             else{
                 this.entityBaseEnricher.enrich(object);
             }
         }
-        else if (object instanceof ModelledParticipant){
+        else if (object instanceof ModelledEntity){
             if (this.modelledEntityEnricher != null){
-                this.modelledEntityEnricher.enrich((ModelledParticipant)object);
+                this.modelledEntityEnricher.enrich((ModelledEntity)object);
             }
             else{
                 this.entityBaseEnricher.enrich(object);
@@ -73,27 +76,27 @@ public class CompositeEntityEnricher implements ParticipantEnricher<Participant,
         }
     }
 
-    public void enrich(Collection<Participant> objects) throws EnricherException {
+    public void enrich(Collection<Entity> objects) throws EnricherException {
         if(objects == null)
             throw new IllegalArgumentException("Cannot enrich a null collection of interactors.");
 
-        for (Participant object : objects){
+        for (Entity object : objects){
             enrich(object);
         }
     }
 
-    public void enrich(Participant object, Participant objectSource) throws EnricherException {
-        if (object instanceof ParticipantEvidence && objectSource instanceof ParticipantEvidence){
+    public void enrich(Entity object, Entity objectSource) throws EnricherException {
+        if (object instanceof ExperimentalEntity && objectSource instanceof ExperimentalEntity){
             if (this.experimentalEntityEnricher != null){
-                this.experimentalEntityEnricher.enrich((ParticipantEvidence)object, (ParticipantEvidence)objectSource);
+                this.experimentalEntityEnricher.enrich((ExperimentalEntity)object, (ExperimentalEntity)objectSource);
             }
             else{
                 this.entityBaseEnricher.enrich(object, objectSource);
             }
         }
-        else if (object instanceof ModelledParticipant && objectSource instanceof ModelledParticipant){
+        else if (object instanceof ModelledEntity && objectSource instanceof ModelledEntity){
             if (this.modelledEntityEnricher != null){
-                this.modelledEntityEnricher.enrich((ModelledParticipant)object, (ModelledParticipant)objectSource);
+                this.modelledEntityEnricher.enrich((ModelledEntity)object, (ModelledEntity)objectSource);
             }
             else{
                 this.entityBaseEnricher.enrich(object, objectSource);
@@ -108,15 +111,11 @@ public class CompositeEntityEnricher implements ParticipantEnricher<Participant,
         return this.entityBaseEnricher.getInteractorEnricher();
     }
 
-    public CvTermEnricher<CvTerm> getCvTermEnricher() {
-        return this.entityBaseEnricher.getCvTermEnricher();
-    }
-
     public FeatureEnricher getFeatureEnricher() {
         return this.entityBaseEnricher.getFeatureEnricher();
     }
 
-    public ParticipantEnricherListener getParticipantEnricherListener() {
+    public EntityEnricherListener getParticipantEnricherListener() {
         return this.entityBaseEnricher.getParticipantEnricherListener();
     }
 }
