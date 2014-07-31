@@ -5,9 +5,9 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.util.Assert;
+import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.ModelledInteraction;
-import uk.ac.ebi.intact.model.Interaction;
 
 /**
  * Spring batch processor that enriches a mix of interactions
