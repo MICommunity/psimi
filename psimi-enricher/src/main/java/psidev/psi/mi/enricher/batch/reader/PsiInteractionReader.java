@@ -10,7 +10,6 @@ import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
-import uk.ac.ebi.intact.model.Interaction;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +24,7 @@ import java.util.Iterator;
  * @since <pre>23/07/13</pre>
  */
 
-public class PsiInteractionReader implements ItemReader<Interaction>, ItemStream{
+public class PsiInteractionReader implements ItemReader<psidev.psi.mi.jami.model.Interaction>, ItemStream{
 
     private InteractionStream interactionDataSource;
     private int interactionCount = 0;
@@ -34,13 +33,13 @@ public class PsiInteractionReader implements ItemReader<Interaction>, ItemStream
     private static final Log logger = LogFactory.getLog(PsiInteractionReader.class);
     private Iterator interactionIterator;
 
-    public Interaction read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+    public psidev.psi.mi.jami.model.Interaction read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
 
         if (this.interactionIterator == null){
             throw new IllegalStateException("The reader must be opened before reading interactions.");
         }
 
-        return interactionIterator.hasNext() ? (Interaction)interactionIterator.next() : null;
+        return interactionIterator.hasNext() ? (psidev.psi.mi.jami.model.Interaction)interactionIterator.next() : null;
     }
 
     public void open(ExecutionContext executionContext) throws ItemStreamException {

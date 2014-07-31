@@ -9,7 +9,7 @@ import org.springframework.util.Assert;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.enricher.InteractionEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
-import uk.ac.ebi.intact.model.Interaction;
+import psidev.psi.mi.jami.model.Interaction;
 
 import java.io.File;
 import java.io.FileWriter;
