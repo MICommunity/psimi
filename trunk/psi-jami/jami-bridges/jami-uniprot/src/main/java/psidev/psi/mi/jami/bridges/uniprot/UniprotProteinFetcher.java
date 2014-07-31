@@ -19,7 +19,6 @@ import psidev.psi.mi.jami.utils.checksum.RogidGenerator;
 import psidev.psi.mi.jami.utils.checksum.SeguidException;
 import uk.ac.ebi.kraken.interfaces.uniprot.*;
 import uk.ac.ebi.kraken.interfaces.uniprot.comments.*;
-import uk.ac.ebi.kraken.interfaces.uniprot.dbx.go.Go;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.Field;
 import uk.ac.ebi.kraken.interfaces.uniprot.description.FieldType;
 import uk.ac.ebi.kraken.interfaces.uniprot.features.*;
@@ -423,10 +422,6 @@ public class UniprotProteinFetcher
 
             switch(dbxref.getDatabase()){
                 case GO :
-                    Go goDB = (Go)dbxref;
-                    if(goDB.hasGoId()) id = goDB.getGoId().getValue();
-                    refs.add(new DefaultXref(database, id));
-                    break;
                 case INTERPRO :
                 case PDB :
                 case REACTOME:
