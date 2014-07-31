@@ -29,7 +29,7 @@
     <bean id="errorResource" class="org.springframework.core.io.FileSystemResource">
         <constructor-arg value="${error.file}"/>
     </bean>
-    <bean id="interactionEvidenceReader" class="psidev.psi.mi.enricher.batch.reader.PsiInteractionEvidenceReader">
+    <bean id="interactionReader" class="psidev.psi.mi.enricher.batch.reader.PsiInteractionReader">
         <property name="resource" ref="miFileResource"/>
     </bean>
 
@@ -107,16 +107,44 @@
         <constructor-arg index="0" value="${interactor.logFile}"/>
     </bean>
 
-    <bean id="featureListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.FeatureEvidenceEnricherStatisticsWriter">
+    <bean id="featureListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.FeatureEnricherStatisticsWriter">
         <constructor-arg index="0" value="${feature.logFile}"/>
     </bean>
 
-    <bean id="participantListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEvidenceEnricherStatisticsWriter">
+    <bean id="featureEvidenceListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.FeatureEvidenceEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${featureEvidence.logFile}"/>
+    </bean>
+
+    <bean id="entityListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.EntityEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${entity.logFile}"/>
+    </bean>
+
+    <bean id="participantListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEnricherStatisticsWriter">
         <constructor-arg index="0" value="${participant.logFile}"/>
+    </bean>
+
+    <bean id="participantEvidenceListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantEvidenceEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${participantEvidence.logFile}"/>
+    </bean>
+
+    <bean id="participantPoolListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ParticipantPoolEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${participantpool.logFile}"/>
+    </bean>
+
+    <bean id="experimentalParticipantPoolListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ExperimentalParticipantPoolEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${participantEvidencepool.logFile}"/>
     </bean>
 
     <bean id="interactionListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.InteractionEnricherStatisticsWriter">
         <constructor-arg index="0" value="${interaction.logFile}"/>
+    </bean>
+
+    <bean id="interactionEvidenceListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.InteractionEvidenceEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${interactionEvidence.logFile}"/>
+    </bean>
+
+    <bean id="modelledInteractionListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ModelledInteractionEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${modelledInteraction.logFile}"/>
     </bean>
 
     <bean id="experimentListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.ExperimentEnricherStatisticsWriter">

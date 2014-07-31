@@ -10,7 +10,7 @@ import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
-import psidev.psi.mi.jami.model.InteractionEvidence;
+import uk.ac.ebi.intact.model.Interaction;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,35 +18,35 @@ import java.util.Iterator;
 
 /**
  * The PsiJami file reader is a  spring batch reader that can read any PSI-MI files
- * containing i9nteraction evidences
+ * containing interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>23/07/13</pre>
  */
 
-public class PsiInteractionEvidenceReader implements ItemReader<InteractionEvidence>, ItemStream{
+public class PsiInteractionReader implements ItemReader<Interaction>, ItemStream{
 
-    private InteractionStream<InteractionEvidence> interactionDataSource;
+    private InteractionStream interactionDataSource;
     private int interactionCount = 0;
     private static final String COUNT_OPTION = "interaction_count";
     private Resource resource;
-    private static final Log logger = LogFactory.getLog(PsiInteractionEvidenceReader.class);
-    private Iterator<InteractionEvidence> interactionIterator;
+    private static final Log logger = LogFactory.getLog(PsiInteractionReader.class);
+    private Iterator interactionIterator;
 
-    public InteractionEvidence read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
+    public Interaction read() throws Exception, UnexpectedInputException, ParseException, NonTransientResourceException {
 
         if (this.interactionIterator == null){
             throw new IllegalStateException("The reader must be opened before reading interactions.");
         }
 
-        return interactionIterator.hasNext() ? interactionIterator.next() : null;
+        return interactionIterator.hasNext() ? (Interaction)interactionIterator.next() : null;
     }
 
     public void open(ExecutionContext executionContext) throws ItemStreamException {
         Assert.notNull(executionContext, "ExecutionContext must not be null");
 
-        PsiJami.initialiseInteractionEvidenceSources();
+        PsiJami.initialiseAllMIDataSources();
 
         if (resource == null){
             throw new IllegalStateException("Input resource must be provided. ");

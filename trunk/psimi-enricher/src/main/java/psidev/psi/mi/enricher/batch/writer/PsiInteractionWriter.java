@@ -11,11 +11,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.Assert;
 import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
-import psidev.psi.mi.jami.datasource.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
-import psidev.psi.mi.jami.factory.InteractionObjectCategory;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
-import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 
 import java.io.*;
 import java.nio.channels.Channels;
@@ -24,14 +22,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The spring batch writer for interaction evidences
+ * The spring batch writer for interactions
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>23/07/13</pre>
  */
 
-public class PsiInteractionEvidenceWriter implements ItemWriter<InteractionEvidence>, ItemStream{
+public class PsiInteractionWriter implements ItemWriter<psidev.psi.mi.jami.model.Interaction>, ItemStream{
 
     private Resource output;
 
@@ -41,11 +39,11 @@ public class PsiInteractionEvidenceWriter implements ItemWriter<InteractionEvide
     private FileOutputStream os;
     private Map<String, Object> writerOptions;
 
-    private InteractionWriter<InteractionEvidence> interactionWriter;
+    private InteractionWriter<psidev.psi.mi.jami.model.Interaction> interactionWriter;
 
     private final static String CURRENT_POSITION = "current_position";
 
-    private static final Log logger = LogFactory.getLog(PsiInteractionEvidenceWriter.class);
+    private static final Log logger = LogFactory.getLog(PsiInteractionWriter.class);
 
     public void open(ExecutionContext executionContext) throws ItemStreamException {
         Assert.notNull(executionContext, "ExecutionContext must not be null");
@@ -133,10 +131,9 @@ public class PsiInteractionEvidenceWriter implements ItemWriter<InteractionEvide
         Assert.state(outputBufferedWriter != null);
 
         // initialise writers
-        PsiJami.initialiseInteractionEvidenceWriters();
+        PsiJami.initialiseAllInteractionWriters();
         // add mandatory options
         this.writerOptions.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, this.outputBufferedWriter);
-        this.writerOptions.put(InteractionWriterOptions.INTERACTION_OBJECT_OPTION_KEY, InteractionObjectCategory.evidence);
 
         InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
         this.interactionWriter = writerFactory.getInteractionWriterWith(this.writerOptions);
@@ -200,7 +197,7 @@ public class PsiInteractionEvidenceWriter implements ItemWriter<InteractionEvide
 
     }
 
-    public void write(List<? extends InteractionEvidence> items) throws Exception {
+    public void write(List<? extends psidev.psi.mi.jami.model.Interaction> items) throws Exception {
         if (this.interactionWriter == null){
             throw new IllegalStateException("The writer needs to be initialised before writing");
         }
