@@ -185,4 +185,44 @@ public class ParticipantCloner {
             }
         }
     }
+
+    public static void copyAndOverrideBasicEntityProperties(Entity source, Entity target, boolean createNewFeature){
+        if (source != null && target != null){
+            target.setStoichiometry(source.getStoichiometry());
+
+            // copy collections
+            target.getCausalRelationships().clear();
+            target.getCausalRelationships().addAll(source.getCausalRelationships());
+
+            // special case for participant candidates
+            if (source instanceof ParticipantPool && target instanceof ParticipantPool){
+                ParticipantPool poolTarget = (ParticipantPool)target;
+                ParticipantPool poolSource = (ParticipantPool)source;
+
+                poolTarget.clear();
+                for (Object candidate : poolSource){
+                    ParticipantCandidate candidateClone = new DefaultParticipantCandidate(((ParticipantCandidate)candidate).getInteractor());
+                    ParticipantCandidateCloner.copyAndOverrideBasicCandidateProperties((ParticipantCandidate)candidate, candidateClone, createNewFeature);
+                    poolTarget.add(candidateClone);
+                }
+            }
+            else{
+                target.setInteractor(source.getInteractor());
+            }
+
+            // copy features or create new ones
+            if (!createNewFeature){
+                target.getFeatures().clear();
+                target.addAllFeatures(source.getFeatures());
+            }
+            else {
+                target.getFeatures().clear();
+                for (Object f : source.getFeatures()){
+                    Feature clone = new DefaultFeature();
+                    FeatureCloner.copyAndOverrideBasicFeaturesProperties((Feature)f, clone);
+                    target.addFeature(clone);
+                }
+            }
+        }
+    }
 }
