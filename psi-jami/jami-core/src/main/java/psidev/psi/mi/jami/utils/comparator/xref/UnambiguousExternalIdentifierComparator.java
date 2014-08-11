@@ -71,7 +71,34 @@ public class UnambiguousExternalIdentifierComparator implements Comparator<Xref>
                 return BEFORE;
             }
             else {
-                comp = database1.getShortName().toLowerCase().trim().compareTo(database2.getShortName().toLowerCase().trim());
+                String mod1 = database1.getMODIdentifier();
+                String mod2 = database2.getMODIdentifier();
+                if (mod1 != null && mod2 != null){
+                    comp = mi1.compareTo(mi2);
+                }
+                else if (mod1 == null && mod2 != null){
+                    return AFTER;
+                }
+                else if (mod2 == null && mod1 != null){
+                    return BEFORE;
+                }
+                else {
+                    String par1 = database1.getPARIdentifier();
+                    String par2 = database2.getPARIdentifier();
+
+                    if (par1 != null && par2 != null){
+                        comp = mi1.compareTo(mi2);
+                    }
+                    else if (par1 == null && par2 != null){
+                        return AFTER;
+                    }
+                    else if (par1 == null && par2 != null){
+                        return BEFORE;
+                    }
+                    else {
+                        comp = database1.getShortName().toLowerCase().trim().compareTo(database2.getShortName().toLowerCase().trim());
+                    }
+                }
             }
 
             if (comp != 0){
