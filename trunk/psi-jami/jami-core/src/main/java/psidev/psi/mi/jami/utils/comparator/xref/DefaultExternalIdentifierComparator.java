@@ -47,7 +47,21 @@ public class DefaultExternalIdentifierComparator {
                 comp = mi1.equals(mi2);
             }
             else {
-                comp = database1.getShortName().equalsIgnoreCase(database2.getShortName());
+                String mod1 = database1.getMODIdentifier();
+                String mod2 = database2.getMODIdentifier();
+                if (mod1 != null && mod2 != null){
+                    comp = mod1.equals(mod2);
+                }
+                else{
+                    String par1 = database1.getPARIdentifier();
+                    String par2 = database2.getPARIdentifier();
+                    if (par1 != null && par2 != null){
+                        comp = par1.equals(par2);
+                    }
+                    else{
+                        comp = database1.getShortName().equalsIgnoreCase(database2.getShortName());
+                    }
+                }
             }
 
             if (!comp){
