@@ -51,7 +51,7 @@ public class DefaultAnnotationComparator {
             }
             else {
 
-                return text1.equalsIgnoreCase(text2);
+                return text1.toLowerCase().trim().equalsIgnoreCase(text2.toLowerCase().trim());
             }
         }
     }
