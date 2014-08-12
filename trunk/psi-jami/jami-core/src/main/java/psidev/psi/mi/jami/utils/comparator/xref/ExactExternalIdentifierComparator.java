@@ -107,9 +107,17 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
         int hashcode = 31;
         CvTerm database1 = externalIdentifier1.getDatabase();
         String mi = database1.getMIIdentifier();
+        String mod = database1.getMODIdentifier();
+        String par = database1.getPARIdentifier();
 
         if (mi != null){
             hashcode = 31*hashcode + mi.hashCode();
+        }
+        else if (mod != null){
+            hashcode = 31*hashcode + mod.hashCode();
+        }
+        else if (par != null){
+            hashcode = 31*hashcode + par.hashCode();
         }
         else {
             hashcode = 31*hashcode + database1.getShortName().toLowerCase().trim().hashCode();
