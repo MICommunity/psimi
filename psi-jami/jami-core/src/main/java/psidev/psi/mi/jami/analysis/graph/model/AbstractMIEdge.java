@@ -1,14 +1,13 @@
 package psidev.psi.mi.jami.analysis.graph.model;
 
-import java.util.Comparator;
+import psidev.psi.mi.jami.utils.comparator.MIComparator;
 
 /**
- * Abstract class for MIEdge.
+ * Abstract class for MIEdge interface.
  * Node A and node B are sorted according to a provided comparator.
- * Equals and hascode are overriden so an edge is equals if nodeA and nodeB are the same and mutable.
- * The comparator will be used to test if two objects are identical in the equals method.
- * The comparator has to be consistent with the equals method of the nodes A and B so the generated hashcode is also consistent
- * because it will be based on node A and node B hashcodes.
+ * Equals and hashCode are overridden so an edge is equals if nodeA and nodeB are the same and mutable.
+ * The MIComparator will be used to sort node A and B, to test if two objects are identical in the equals method and to
+ * generate hashCode for node A and B.
  * (A-B is the same as B-A)
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -19,9 +18,9 @@ public abstract class AbstractMIEdge<T> implements MIEdge<T> {
 
     private T nodeA;
     private T nodeB;
-    private Comparator<T> nodeComparator;
+    private MIComparator<T> nodeComparator;
 
-    public AbstractMIEdge(T nodeA, T nodeB, Comparator<T> nodeComparator){
+    public AbstractMIEdge(T nodeA, T nodeB, MIComparator<T> nodeComparator){
          if (nodeA == null){
              throw new IllegalArgumentException("The nodeA cannot be null");
          }
@@ -72,8 +71,8 @@ public abstract class AbstractMIEdge<T> implements MIEdge<T> {
     @Override
     public int hashCode() {
         int hashcode = 31;
-        hashcode = 31*hashcode + nodeA.hashCode();
-        hashcode = 31 * hashcode + nodeB.hashCode();
+        hashcode = 31*hashcode + this.nodeComparator.computeHashCode(nodeA);
+        hashcode = 31*hashcode + this.nodeComparator.computeHashCode(nodeB);
         return hashcode;
     }
 }

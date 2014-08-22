@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.analysis.graph.model;
 
 /**
- * A MI edge is an edge joining two MI objects.
+ * A MI edge is an edge joining two JAMI objects.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -18,7 +18,7 @@ public interface MIEdge<T> {
 
     /**
      * The second node. It cannot be null.
-     * @return
+     * @return the second node
      */
     public T getNodeB();
 }

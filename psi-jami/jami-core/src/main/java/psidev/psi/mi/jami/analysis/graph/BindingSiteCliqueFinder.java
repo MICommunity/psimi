@@ -5,13 +5,14 @@ import psidev.psi.mi.jami.analysis.graph.model.BindingFeatureGraph;
 import psidev.psi.mi.jami.analysis.graph.model.BindingPair;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.utils.comparator.MIComparator;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
 /**
- * The BindingSiteClique finder is an extendion of BronKerboschCliqueFinder.
+ * The BindingSiteClique finder is an extension of BronKerboschCliqueFinder.
  *
  * It can find all maximal cliques in a graph of binding feature pairs (can retrieve complete graph of binding sites).
  * This BronKerboschCliqueFinder implements Bron-Kerbosch clique detection algorithm as it is described in
@@ -49,6 +50,21 @@ public class BindingSiteCliqueFinder<I extends Interaction, F extends Feature> {
 
     public BindingSiteCliqueFinder(Iterator<I> interaction) {
         this.graphBuilder = new FeatureGraphBuilder<I, F>();
+        this.cliqueFinder = new BronKerboschCliqueFinder<F, BindingPair<F>>(graphBuilder.buildGraphFrom(interaction));
+    }
+
+    public BindingSiteCliqueFinder(I interaction, MIComparator<F> featureComparator) {
+        this.graphBuilder = new FeatureGraphBuilder<I, F>(featureComparator);
+        this.cliqueFinder = new BronKerboschCliqueFinder<F, BindingPair<F>>(graphBuilder.buildGraphFrom(interaction));
+    }
+
+    public BindingSiteCliqueFinder(Collection<I> interaction, MIComparator<F> featureComparator) {
+        this.graphBuilder = new FeatureGraphBuilder<I, F>(featureComparator);
+        this.cliqueFinder = new BronKerboschCliqueFinder<F, BindingPair<F>>(graphBuilder.buildGraphFrom(interaction));
+    }
+
+    public BindingSiteCliqueFinder(Iterator<I> interaction, MIComparator<F> featureComparator) {
+        this.graphBuilder = new FeatureGraphBuilder<I, F>(featureComparator);
         this.cliqueFinder = new BronKerboschCliqueFinder<F, BindingPair<F>>(graphBuilder.buildGraphFrom(interaction));
     }
 
