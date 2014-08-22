@@ -60,7 +60,7 @@ public class MIJsonServlet extends HttpServlet{
     private static final Logger logger = Logger.getLogger("MIJsonServlet");
     private int timeOut = 30000;
     private OntologyTermFetcher fetcher;
-    private ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod;
+    private ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod;
 
     public void init() throws ServletException
     {
@@ -167,11 +167,11 @@ public class MIJsonServlet extends HttpServlet{
         this.fetcher = fetcher;
     }
 
-    public ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> getExpansionMethod() {
+    public ComplexExpansionMethod<Interaction, BinaryInteraction> getExpansionMethod() {
         return expansionMethod;
     }
 
-    public void setExpansionMethod(ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) {
+    public void setExpansionMethod(ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) {
         this.expansionMethod = expansionMethod != null ? expansionMethod : new SpokeExpansion();
     }
 
