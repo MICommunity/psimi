@@ -10,10 +10,25 @@ import psidev.psi.mi.jami.model.*;
  */
 public interface ExperimentChangeListener extends XrefsChangeListener<Experiment>, AnnotationsChangeListener<Experiment>, ConfidencesChangeListener<Experiment> {
 
+    /**
+     *
+     * @param experiment : updated experiment
+     * @param oldPublication : old publication
+     */
     public void onPublicationUpdate(Experiment experiment, Publication oldPublication);
 
+    /**
+     *
+     * @param experiment : updated experiment
+     * @param oldCv : old cv
+     */
     public void onInteractionDetectionMethodUpdate(Experiment experiment, CvTerm oldCv);
 
+    /**
+     *
+     * @param experiment : updated experiment
+     * @param oldOrganism : old organism
+     */
     public void onHostOrganismUpdate(Experiment experiment, Organism oldOrganism);
 
     /**

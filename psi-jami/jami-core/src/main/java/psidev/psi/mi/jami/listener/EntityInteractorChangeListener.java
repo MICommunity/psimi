@@ -15,5 +15,10 @@ import java.util.EventListener;
 
 public interface EntityInteractorChangeListener extends EventListener{
 
+    /**
+     *
+     * @param entity : updated entity
+     * @param oldInteractor : old interactor
+     */
    public void onInteractorUpdate(Entity entity, Interactor oldInteractor);
 }

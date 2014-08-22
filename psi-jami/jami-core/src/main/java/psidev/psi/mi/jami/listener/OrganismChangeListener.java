@@ -15,8 +15,8 @@ public interface OrganismChangeListener extends AliasesChangeListener<Organism> 
 
     /**
      * Listen to the event where the commonName of an organism has been changed.
-     * @param organism
-     * @param oldCommonName
+     * @param organism : updated organism
+     * @param oldCommonName : old common name
      */
     public void onCommonNameUpdate(Organism organism, String oldCommonName);
 
@@ -24,15 +24,15 @@ public interface OrganismChangeListener extends AliasesChangeListener<Organism> 
      * Listen to the event where the scientificName of an organism has been changed.
      * If oldScientificName is null, it means that the scientificName of the organism has been initialised.
      * If the current scientificName of the organism is null, it means that the scientificName has been reset
-     * @param organism
-     * @param oldScientificName
+     * @param organism : updated organism
+     * @param oldScientificName : old scientific name
      */
     public void onScientificNameUpdate(Organism organism, String oldScientificName);
 
     /**
      * Listen to the event where the taxid of an organism has been changed.
-     * @param organism
-     * @param oldTaxid
+     * @param organism : updated organism
+     * @param oldTaxid : old taxid
      */
     public void onTaxidUpdate(Organism organism, String oldTaxid);
 

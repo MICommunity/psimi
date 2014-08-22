@@ -6,12 +6,12 @@ import java.util.EventListener;
 
 
 /**
- * A listener for changes to a bioactiveEntity.
+ * A listener for changes to a list of identifiers.
  *
  * @author Gabriel Aldam (galdam@ebi.ac.uk)
  * @since 08/08/13
  */
-public interface IdentifiersChangeListener<T extends Object> extends EventListener {
+public interface IdentifiersChangeListener<T> extends EventListener {
 
     /**
      * Listen to the event where an identifier has been added to the protein identifiers.
