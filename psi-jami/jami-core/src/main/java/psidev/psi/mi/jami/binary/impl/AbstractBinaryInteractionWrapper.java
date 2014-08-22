@@ -270,6 +270,14 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
         return removed;
     }
 
+    @Override
+    public String toString() {
+        return "Binary interaction: " +
+                "participant A=["+(getParticipantA() != null ? getParticipantA().toString() : "") + "], participant B=[" +
+                (getParticipantB() != null ? getParticipantB().toString() : "")+"], Complex expansion=["+
+                (getComplexExpansion() != null ? getComplexExpansion().toString() : "")+"]";
+    }
+
     protected I getWrappedInteraction() {
         return wrappedInteraction;
     }

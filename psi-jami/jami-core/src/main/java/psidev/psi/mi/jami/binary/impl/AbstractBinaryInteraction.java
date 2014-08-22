@@ -222,4 +222,13 @@ public abstract class AbstractBinaryInteraction<T extends Participant> extends A
         }
         return removed;
     }
+
+    @Override
+    public String toString() {
+        return "Binary interaction: " +
+                "participant A=["+(getParticipantA() != null ? getParticipantA().toString() : "") + "], participant B=[" +
+                (getParticipantB() != null ? getParticipantB().toString() : "")+"], Complex expansion=["+
+                (getComplexExpansion() != null ? getComplexExpansion().toString() : "")+"]";
+    }
+
 }
