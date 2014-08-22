@@ -16,8 +16,8 @@ public class CooperativeEffectCloner {
 
     /***
      * This method will copy basic properties of CooperativeEffect source in CooperativeEffect target and will override all the other properties of Target CooperativeEffect.
-     * @param source
-     * @param target
+     * @param source : the cooperative effect source to copy from
+     * @param target : the cooperative effect target to copy to
      */
     public static void copyAndOverrideBasicCooperativeEffectProperties(CooperativeEffect source, CooperativeEffect target){
         if (source != null && target != null){
@@ -34,6 +34,12 @@ public class CooperativeEffectCloner {
         }
     }
 
+    /**
+     * This method will copy  basic properties and allostery specific properties from allostery source to allostery target.
+     * @param source : the allostery effect source to copy from
+     * @param target : the allostery effect target to copy to
+     * @param <T> : allosteric effector type
+     */
     public static <T extends AllostericEffector> void copyAndOverrideAllosteryProperties(Allostery<T> source, Allostery<T> target){
         if (source != null && target != null){
             copyAndOverrideBasicCooperativeEffectProperties(source, target);

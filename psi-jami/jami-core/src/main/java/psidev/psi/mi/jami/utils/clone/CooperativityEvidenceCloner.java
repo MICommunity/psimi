@@ -14,8 +14,8 @@ public class CooperativityEvidenceCloner {
 
     /***
      * This method will copy properties of CooperativityEvidence source in CooperativityEvidence target and will override all the other properties of Target CooperativityEvidence.
-     * @param source
-     * @param target
+     * @param source : the cooperativity evidence source to copy from
+     * @param target : the cooperativity evidence target to copy to
      */
     public static void copyAndOverrideCooperativityEvidenceProperties(CooperativityEvidence source, CooperativityEvidence target){
         if (source != null && target != null){
