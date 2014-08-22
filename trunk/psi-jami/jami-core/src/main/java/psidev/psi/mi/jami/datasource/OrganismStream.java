@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Organism;
 import java.util.Iterator;
 
 /**
- * An organism data source allows to stream the organisms of a given datasource
+ * An organism data source allows to stream the organisms of a given dataSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

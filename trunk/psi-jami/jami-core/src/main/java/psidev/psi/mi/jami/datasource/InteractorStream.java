@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import java.util.Iterator;
 
 /**
- * An interactor data source allows to stream the interactors of a given datasource
+ * An interactor data source allows to stream the interactors of a given dataSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

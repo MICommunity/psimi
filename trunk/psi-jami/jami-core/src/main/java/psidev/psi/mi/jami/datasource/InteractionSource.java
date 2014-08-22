@@ -8,7 +8,7 @@ import java.util.Collection;
 /**
  * A Data source of interactions.
  * It gives full access to all the interactions using Iterator or the full collection.
- * It can also give information about the size of the datasource
+ * It can also give information about the size of the dataSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
