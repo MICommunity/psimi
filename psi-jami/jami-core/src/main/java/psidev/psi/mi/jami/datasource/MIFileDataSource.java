@@ -6,7 +6,13 @@ import psidev.psi.mi.jami.listener.MIFileParserListener;
 import java.util.regex.Pattern;
 
 /**
- * Interface for molecular interaction datasources coming from a file
+ * Interface for MIDataSource coming from a file.
+ *
+ * These dataSources need to be closed when they are not used anymore.
+ *
+ * A MIFileParserListener can be provided to listen to parsing events.
+ *
+ * A MIFileDataSource provides a method to know if the file syntax is valid
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -37,9 +43,9 @@ public interface MIFileDataSource extends MIDataSource{
     /**
      * Validate the syntax of this MIFileDataSource and uses the provided MIFileParserListener to listen to the events.
      * The provided listener will be set as the MIFileParserListener of this datasource
-     * @param listener
+     * @param listener : the listener for parsing events
      * @return true if the file syntax is valid
-     * @throws MIIOException
+     * @throws MIIOException : if some severe syntax errors are found in the file and it stops the parsing
      */
     public boolean validateSyntax(MIFileParserListener listener) throws MIIOException;
 }

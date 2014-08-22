@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Publication;
 import java.util.Iterator;
 
 /**
- * A publication data source allows to stream the publications of a given datasource
+ * A publication data source allows to stream the publications of a given dataSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

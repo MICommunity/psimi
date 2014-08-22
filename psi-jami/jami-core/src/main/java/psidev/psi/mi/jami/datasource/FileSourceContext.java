@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.datasource;
 
 /**
- * Some context where an object is located in a file.
+ * Some context in a file giving information about object location, etc..
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

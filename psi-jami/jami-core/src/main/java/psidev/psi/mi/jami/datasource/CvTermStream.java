@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.CvTerm;
 import java.util.Iterator;
 
 /**
- * A CV term data source allows to stream the controlled vocabulary terms of a given datasource
+ * A CV term data source allows to stream the controlled vocabulary terms of a given dataSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

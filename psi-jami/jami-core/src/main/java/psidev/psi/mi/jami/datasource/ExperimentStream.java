@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Experiment;
 import java.util.Iterator;
 
 /**
- * An experiment data source allows to stream the experiments of a given datasource
+ * An experiment data source allows to stream the experiments of a given dataSource
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
