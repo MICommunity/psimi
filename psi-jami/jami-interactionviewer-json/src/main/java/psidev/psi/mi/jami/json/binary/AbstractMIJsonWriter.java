@@ -1,10 +1,10 @@
 package psidev.psi.mi.jami.json.binary;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.expansion.ComplexExpansionException;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
+import psidev.psi.mi.jami.exception.ComplexExpansionException;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.json.MIJsonWriterOptions;
