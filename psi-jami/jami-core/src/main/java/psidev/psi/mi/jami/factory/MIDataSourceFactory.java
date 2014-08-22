@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
 /**
- * A factory to create data sources.
+ * A factory singleton to create data sources.
  *
  * The datasource have to be registered first and then the factory can create the proper datasource depending on the options
  *
@@ -31,10 +31,20 @@ public class MIDataSourceFactory {
         registeredDataSources = new ConcurrentHashMap<Class<? extends MIDataSource>, Map<String, Object>>();
     }
 
+    /**
+     *
+     * @return the MIFactory instance
+     */
     public static MIDataSourceFactory getInstance() {
         return instance;
     }
 
+    /**
+     *
+     * @param requiredOptions : options needed and to initialise dataSource
+     * @return a new MIDatasource instance if the factory could find a registered MIDataSource matching the options.
+     * Null if the factory cannot provide any MIDataSource implementation matching the requested options
+     */
     public MIDataSource getMIDataSourceWith(Map<String,Object> requiredOptions) {
 
         for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
@@ -53,6 +63,13 @@ public class MIDataSourceFactory {
         return null;
     }
 
+    /**
+     *
+     * @param requiredOptions : options needed and to initialise dataSource
+     * @param <I> : type of interaction
+     * @return a new InteractionStream instance if the factory could find a registered InteractionStream matching the options.
+     * Null if the factory cannot provide any InteractionStream implementation matching the requested options
+     */
     public <I extends Interaction> InteractionStream<I> getInteractionSourceWith(Map<String,Object> requiredOptions) {
 
         for (Map.Entry<Class<? extends MIDataSource>, Map<String, Object>> entry : registeredDataSources.entrySet()){
@@ -73,9 +90,8 @@ public class MIDataSourceFactory {
 
     /**
      * Register a datasource with options in this factory
-     * @param dataSourceClass
-     * @param supportedOptions
-     * @return
+     * @param dataSourceClass : the class of the dataSource to register. It must provide a empty constructor
+     * @param supportedOptions : the map of options supported by this dataSource
      */
     public void registerDataSource(Class<? extends MIDataSource> dataSourceClass, Map<String,Object> supportedOptions){
         if (dataSourceClass == null){
@@ -87,7 +103,7 @@ public class MIDataSourceFactory {
 
     /**
      * Remove the dataSource from this factory
-     * @param dataSourceClass
+     * @param dataSourceClass : registered dataSource class
      */
     public void removeDataSource(Class<? extends MIDataSource> dataSourceClass){
         registeredDataSources.remove(dataSourceClass);
@@ -105,7 +121,7 @@ public class MIDataSourceFactory {
      * registeredDataSource.
      * @param supportedOptions options supported
      * @param options that are required
-     * @return
+     * @return true if the options are supported, false otherwise
      */
     private boolean areSupportedOptions(Map<String, Object> supportedOptions, Map<String, Object> options) {
         // no required options

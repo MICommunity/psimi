@@ -31,9 +31,8 @@ public class InteractionWriterFactory {
 
     /**
      * Register a datasource writer with options in this factory
-     * @param dataSourceClass
-     * @param supportedOptions
-     * @return
+     * @param dataSourceClass : dataSource class to register
+     * @param supportedOptions : options supported by this dataSource
      */
     public void registerDataSourceWriter(Class<? extends InteractionWriter> dataSourceClass, Map<String,Object> supportedOptions){
         if (dataSourceClass == null){
@@ -45,7 +44,7 @@ public class InteractionWriterFactory {
 
     /**
      * Remove the interactionDataSourceWriter from this factory
-     * @param dataSourceClass
+     * @param dataSourceClass : the dataSource class
      */
     public void removeDataSourceWriter(Class<? extends InteractionWriter> dataSourceClass){
         registeredWriters.remove(dataSourceClass);
@@ -58,6 +57,11 @@ public class InteractionWriterFactory {
         registeredWriters.clear();
     }
 
+    /**
+     *
+     * @param requiredOptions : options for initialising writer
+     * @return the registered InteractionWriter supporting this options, null if nothing could be found
+     */
     public InteractionWriter getInteractionWriterWith(Map<String,Object> requiredOptions) {
 
         for (Map.Entry<Class<? extends InteractionWriter>, Map<String, Object>> entry : registeredWriters.entrySet()){
@@ -89,7 +93,7 @@ public class InteractionWriterFactory {
      * registeredDataSourceWriter.
      * @param supportedOptions options supported
      * @param options that are required
-     * @return
+     * @return true if the options are supported false otherwise
      */
     private boolean areSupportedOptions(Map<String, Object> supportedOptions, Map<String, Object> options) {
         // no required options
