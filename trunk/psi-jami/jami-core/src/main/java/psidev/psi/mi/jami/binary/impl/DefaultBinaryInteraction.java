@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.Participant;
 /**
  * Default implementation for BinaryInteraction
  *
- * Note: the methods equals and hashcode have not been overriden. Use the same comparators as for DefaultInteraction
+ * Note: the methods equals and hashCode have not been overridden. Use the same comparators as for DefaultInteraction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

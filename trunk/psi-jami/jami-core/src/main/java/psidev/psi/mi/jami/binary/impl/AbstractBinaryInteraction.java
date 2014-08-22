@@ -10,7 +10,11 @@ import java.util.Collection;
 import java.util.Collections;
 
 /**
- * Abstract class for BinaryInteraction
+ * Abstract class for BinaryInteraction.
+ *
+ * A binary interaction is an interaction but will not allow to add more than two participants. As a consequence, the method getParticipants
+ * return a Unmodifiable collection and to add/remove participants, we must use the setParticipantA/B methods or the add/removeParticipant methods
+ * provided by the Interaction interface
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

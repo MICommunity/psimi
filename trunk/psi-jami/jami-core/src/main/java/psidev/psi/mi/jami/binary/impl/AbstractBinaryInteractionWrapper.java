@@ -8,7 +8,8 @@ import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
 import java.util.*;
 
 /**
- * Abstract class for BinaryInteractionWrapper
+ * Abstract class for binary interactions that wrap an Interaction.
+ *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -27,6 +28,10 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
 
     private Collection<Annotation> annotations;
 
+    /**
+     *
+     * @param interaction : the interaction to wrap
+     */
     public AbstractBinaryInteractionWrapper(I interaction){
         if (interaction == null){
             throw new IllegalArgumentException("The wrappedInteraction of a AbstractBinaryInteractionWrapper cannot be null");
@@ -46,6 +51,11 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
         }
     }
 
+    /**
+     *
+     * @param interaction: the interaction to wrap
+     * @param complexExpansion: the complex expansion method
+     */
     public AbstractBinaryInteractionWrapper(I interaction, CvTerm complexExpansion){
         this(interaction);
         this.complexExpansion = complexExpansion;

@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 
 /**
- * Wrapper for an Interaction which is binary
+ * Binary Wrapper for an Interaction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
