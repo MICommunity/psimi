@@ -15,8 +15,8 @@ public interface PolymerChangeListener<P extends Polymer> extends InteractorChan
      * Listen to the event where the sequence of a protein has been changed.
      * If oldSequence is null, it means that the sequence has been initialised.
      * If the sequence of the protein is null, it means that the sequence of the protein has been reset
-     * @param protein
-     * @param oldSequence
+     * @param protein : updated polymer
+     * @param oldSequence : old sequence
      */
     public void onSequenceUpdate(P protein, String oldSequence);
 }

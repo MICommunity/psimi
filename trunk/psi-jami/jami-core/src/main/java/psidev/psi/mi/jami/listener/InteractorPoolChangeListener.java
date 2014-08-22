@@ -16,14 +16,14 @@ public interface InteractorPoolChangeListener extends InteractorChangeListener<I
     /**
      * Listen to the event where an interactor has been added to the pool
      * @param interactor        The interactor which has changed.
-     * @param added
+     * @param added  : added interactor
      */
     public void onAddedInteractor(InteractorPool interactor, Interactor added);
 
     /**
      * Listen to the event where an interactor has been added to the pool
      * @param interactor        The interactor which has changed.
-     * @param removed
+     * @param removed  : removed interactor
      */
     public void onRemovedInteractor(InteractorPool interactor, Interactor removed);
 }
