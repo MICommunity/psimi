@@ -20,7 +20,7 @@ public class FileSourceLocator {
 
     /**
      * The line number in the file where the object is located
-     * @return
+     * @return the line number
      */
     public int getLineNumber() {
         return lineNumber;
@@ -28,7 +28,7 @@ public class FileSourceLocator {
 
     /**
      * The character number in the file where the object is located.
-     * @return
+     * @return the character number
      */
     public int getCharNumber() {
         return charNumber;

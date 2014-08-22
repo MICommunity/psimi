@@ -56,7 +56,7 @@ public interface ParticipantEvidence extends Participant<InteractionEvidence, Fe
 
     /**
      * Sets the expressed in organism
-     * @param organism: expressed in organism
+     * @param organism : expressed in organism
      */
     public void setExpressedInOrganism(Organism organism);
 

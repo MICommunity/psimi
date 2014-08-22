@@ -94,8 +94,8 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
     }
 
     /**
-     * The first ddbjEmblGenbank if provided, then the first refseq identifier if provided, otherwise the first identifier in the list
-     * @return
+     *
+     * @return The first ddbjEmblGenbank if provided, then the first refseq identifier if provided, otherwise the first identifier in the list
      */
     @Override
     public Xref getPreferredIdentifier() {
