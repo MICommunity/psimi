@@ -1,8 +1,7 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
-import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.InteractionCategory;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -19,7 +18,7 @@ import java.net.URL;
  * @since <pre>08/11/13</pre>
  */
 
-public class LightFullXmlParser extends AbstractFullPsiXmlParser<Interaction<? extends Participant>> {
+public class LightFullXmlParser extends AbstractFullPsiXmlParser<Interaction> {
     public LightFullXmlParser(File file) throws JAXBException, FileNotFoundException {
         super(file);
     }

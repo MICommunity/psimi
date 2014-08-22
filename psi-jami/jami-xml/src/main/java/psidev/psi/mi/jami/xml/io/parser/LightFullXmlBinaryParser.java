@@ -23,7 +23,7 @@ import java.net.URL;
  * @since <pre>08/11/13</pre>
  */
 
-public class LightFullXmlBinaryParser extends AbstractPsixmlBinaryParser<Interaction<? extends Participant>,BinaryInteraction> implements FullPsiXmlParser<Interaction<? extends Participant>> {
+public class LightFullXmlBinaryParser extends AbstractPsixmlBinaryParser<Interaction,BinaryInteraction> implements FullPsiXmlParser<Interaction<? extends Participant>> {
 
     public LightFullXmlBinaryParser(File file) throws JAXBException, FileNotFoundException {
         super(new LightFullXmlParser(file));
@@ -42,7 +42,7 @@ public class LightFullXmlBinaryParser extends AbstractPsixmlBinaryParser<Interac
     }
 
     @Override
-    protected ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> initialiseDefaultExpansionMethod() {
+    protected ComplexExpansionMethod<Interaction, BinaryInteraction> initialiseDefaultExpansionMethod() {
         return new SpokeExpansion();
     }
 

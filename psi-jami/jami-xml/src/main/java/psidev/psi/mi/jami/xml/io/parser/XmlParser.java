@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionCategory;
-import psidev.psi.mi.jami.model.Participant;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -19,7 +18,7 @@ import java.net.URL;
  * @since <pre>16/10/13</pre>
  */
 
-public class XmlParser extends AbstractPsiXmlParser<Interaction<? extends Participant>> {
+public class XmlParser extends AbstractPsiXmlParser<Interaction> {
     public XmlParser(File file){
         super(file);
     }

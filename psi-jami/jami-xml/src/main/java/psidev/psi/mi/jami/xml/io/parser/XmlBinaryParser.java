@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.stream.XMLStreamException;
@@ -19,7 +18,7 @@ import java.net.URL;
  * @since <pre>16/10/13</pre>
  */
 
-public class XmlBinaryParser extends AbstractPsixmlBinaryParser<Interaction<? extends Participant>,BinaryInteraction> {
+public class XmlBinaryParser extends AbstractPsixmlBinaryParser<Interaction,BinaryInteraction> {
     public XmlBinaryParser(File file) throws FileNotFoundException, XMLStreamException, JAXBException {
         super(new XmlParser(file));
     }
@@ -37,7 +36,7 @@ public class XmlBinaryParser extends AbstractPsixmlBinaryParser<Interaction<? ex
     }
 
     @Override
-    protected ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> initialiseDefaultExpansionMethod() {
+    protected ComplexExpansionMethod<Interaction, BinaryInteraction> initialiseDefaultExpansionMethod() {
         return new SpokeExpansion();
     }
 }

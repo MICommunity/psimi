@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.xml.model.extension.datasource;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.io.iterator.XmlBinaryInteractionIterator;
 import psidev.psi.mi.jami.xml.io.parser.LightXmlBinaryParser;
 
@@ -21,7 +20,7 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public class LightXmlBinaryStreamSource extends AbstractPsiXmlBinaryStream<Interaction<? extends Participant>, BinaryInteraction> {
+public class LightXmlBinaryStreamSource extends AbstractPsiXmlBinaryStream<Interaction, BinaryInteraction> {
 
     public LightXmlBinaryStreamSource() {
     }

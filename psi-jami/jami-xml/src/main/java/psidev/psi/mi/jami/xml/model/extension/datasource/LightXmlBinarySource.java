@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.datasource.BinaryInteractionSource;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.io.parser.LightFullXmlBinaryParser;
 
 import javax.xml.bind.JAXBException;
@@ -20,7 +19,7 @@ import java.net.URL;
  * @since <pre>08/11/13</pre>
  */
 
-public class LightXmlBinarySource extends AbstractPsiXmlBinarySource<Interaction<?extends Participant>, BinaryInteraction> implements BinaryInteractionSource<BinaryInteraction>{
+public class LightXmlBinarySource extends AbstractPsiXmlBinarySource<Interaction, BinaryInteraction> implements BinaryInteractionSource<BinaryInteraction>{
 
     public LightXmlBinarySource() {
     }
