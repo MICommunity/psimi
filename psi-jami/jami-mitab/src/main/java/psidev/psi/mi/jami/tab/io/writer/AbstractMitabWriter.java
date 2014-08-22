@@ -1,9 +1,9 @@
 package psidev.psi.mi.jami.tab.io.writer;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.expansion.ComplexExpansionException;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
+import psidev.psi.mi.jami.exception.ComplexExpansionException;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.model.Interaction;
@@ -36,7 +36,7 @@ import java.util.Map;
  * @since <pre>11/06/13</pre>
  */
 
-public abstract class AbstractMitabWriter<T extends Interaction<? extends Participant>, B extends BinaryInteraction, P extends Participant> implements InteractionWriter<T>{
+public abstract class AbstractMitabWriter<T extends Interaction, B extends BinaryInteraction, P extends Participant> implements InteractionWriter<T>{
 
     private ComplexExpansionMethod<T, B> expansionMethod;
     private AbstractMitab25BinaryWriter<B, P> binaryWriter;

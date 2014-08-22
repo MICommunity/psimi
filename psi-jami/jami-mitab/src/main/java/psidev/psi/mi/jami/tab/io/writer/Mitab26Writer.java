@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.tab.io.writer;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.tab.MitabVersion;
 
 import java.io.File;
@@ -41,15 +40,15 @@ public class Mitab26Writer extends Mitab25Writer {
         super(writer);
     }
 
-    public Mitab26Writer(File file, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab26Writer(File file, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab26Writer(OutputStream output, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab26Writer(OutputStream output, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(output, expansionMethod);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
-    public Mitab26Writer(Writer writer, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab26Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(writer, expansionMethod);
     }
 
