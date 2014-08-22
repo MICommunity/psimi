@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.exception.ComplexExpansionException;
 import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
@@ -31,7 +32,7 @@ public class SpokeExpansion extends AbstractSpokeExpansion<Interaction, BinaryIn
     }
 
     @Override
-    public Collection<BinaryInteraction> expand(Interaction interaction) throws ComplexExpansionException{
+    public Collection<BinaryInteraction> expand(Interaction interaction) throws ComplexExpansionException {
 
         if (interaction instanceof InteractionEvidence){
             Collection<BinaryInteraction> binaryInteractions = new ArrayList<BinaryInteraction>(interaction.getParticipants().size());

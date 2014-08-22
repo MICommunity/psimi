@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.exception.ComplexExpansionException;
 import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interaction;
@@ -46,7 +47,7 @@ public interface ComplexExpansionMethod<T extends Interaction, B extends BinaryI
      * The collection cannot be null.
      * @param interaction
      * @return collection of binary interactions expanded from the original interaction object
-     * @throws ComplexExpansionException if the interaction cannot be expanded with this method
+     * @throws psidev.psi.mi.jami.exception.ComplexExpansionException if the interaction cannot be expanded with this method
      */
     public Collection<B> expand(T interaction) throws ComplexExpansionException;
 

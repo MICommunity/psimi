@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.binary.expansion;
+package psidev.psi.mi.jami.exception;
 
 /**
  * Exception for Interactions that cannot be expanded with a specific complex expansion

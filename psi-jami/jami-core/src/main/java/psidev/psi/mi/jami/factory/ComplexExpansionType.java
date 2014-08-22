@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.binary.expansion.factory;
+package psidev.psi.mi.jami.factory;
 
 /**
  * Existing complex expansion types that will be recognised by the complex expansion factory

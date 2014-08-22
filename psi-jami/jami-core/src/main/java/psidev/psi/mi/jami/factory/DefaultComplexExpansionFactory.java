@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.binary.expansion.factory;
+package psidev.psi.mi.jami.factory;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.*;

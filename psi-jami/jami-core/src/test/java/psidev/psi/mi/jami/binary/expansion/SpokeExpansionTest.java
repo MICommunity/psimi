@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.impl.*;
+import psidev.psi.mi.jami.exception.ComplexExpansionException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
