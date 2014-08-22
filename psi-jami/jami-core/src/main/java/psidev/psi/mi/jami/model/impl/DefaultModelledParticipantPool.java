@@ -12,19 +12,19 @@ import psidev.psi.mi.jami.model.*;
 
 public class DefaultModelledParticipantPool extends AbstractParticipantPool<ModelledInteraction,ModelledFeature,ModelledParticipantCandidate>
 implements ModelledParticipantPool{
-    public DefaultModelledParticipantPool(Interactor interactor) {
-        super(interactor);
+    public DefaultModelledParticipantPool(String poolName) {
+        super(poolName);
     }
 
-    public DefaultModelledParticipantPool(Interactor interactor, CvTerm bioRole) {
-        super(interactor, bioRole);
+    public DefaultModelledParticipantPool(String poolName, CvTerm bioRole) {
+        super(poolName, bioRole);
     }
 
-    public DefaultModelledParticipantPool(Interactor interactor, Stoichiometry stoichiometry) {
-        super(interactor, stoichiometry);
+    public DefaultModelledParticipantPool(String poolName, Stoichiometry stoichiometry) {
+        super(poolName, stoichiometry);
     }
 
-    public DefaultModelledParticipantPool(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
-        super(interactor, bioRole, stoichiometry);
+    public DefaultModelledParticipantPool(String poolName, CvTerm bioRole, Stoichiometry stoichiometry) {
+        super(poolName, bioRole, stoichiometry);
     }
 }
