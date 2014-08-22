@@ -13,13 +13,13 @@ public interface FileSourceContext {
     /**
      * The locator of a position in a file.
      * It can be null
-     * @return
+     * @return the file locator
      */
     public FileSourceLocator getSourceLocator();
 
     /**
      * Sets the source locator
-     * @param locator
+     * @param locator : the file locator
      */
     public void setSourceLocator(FileSourceLocator locator);
 

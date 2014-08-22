@@ -110,8 +110,7 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
     }
 
     /**
-     * The first uniprokb if provided, then the first refseq identifier if provided, otherwise the first identifier in the list
-     * @return
+     * @return The first uniprokb if provided, then the first refseq identifier if provided, otherwise the first identifier in the list
      */
     @Override
     public Xref getPreferredIdentifier() {

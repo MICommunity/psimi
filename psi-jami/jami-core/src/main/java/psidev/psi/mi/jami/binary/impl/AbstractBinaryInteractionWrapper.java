@@ -53,8 +53,8 @@ public class AbstractBinaryInteractionWrapper<I extends Interaction<T>, T extend
 
     /**
      *
-     * @param interaction: the interaction to wrap
-     * @param complexExpansion: the complex expansion method
+     * @param interaction : the interaction to wrap
+     * @param complexExpansion : the complex expansion method
      */
     public AbstractBinaryInteractionWrapper(I interaction, CvTerm complexExpansion){
         this(interaction);

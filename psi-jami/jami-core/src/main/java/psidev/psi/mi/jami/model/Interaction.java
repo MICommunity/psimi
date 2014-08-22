@@ -39,7 +39,7 @@ public interface Interaction<T extends Participant> {
      * Sets the rigid of this interaction.
      * It will remove the previous rigid from the list of checksum and add the new one.
      * If rigid is null, it will remove all the rigid in the list of checksum
-     * @param rigid: the rigid
+     * @param rigid : the rigid
      */
     public void setRigid(String rigid);
 

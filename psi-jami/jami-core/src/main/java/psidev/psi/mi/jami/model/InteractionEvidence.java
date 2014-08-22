@@ -68,7 +68,7 @@ public interface InteractionEvidence extends Interaction<ParticipantEvidence>{
 
     /**
      * Sets the availability.
-     * @param availability: availability
+     * @param availability : availability
      */
     public void setAvailability(String availability);
 
@@ -110,7 +110,7 @@ public interface InteractionEvidence extends Interaction<ParticipantEvidence>{
 
     /**
      * Sets the negative boolean value.
-     * @param negative: negative value
+     * @param negative : negative value
      */
     public void setNegative(boolean negative);
 }

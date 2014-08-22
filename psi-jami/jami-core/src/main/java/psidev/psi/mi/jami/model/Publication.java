@@ -182,7 +182,7 @@ public interface Publication {
 
     /**
      * Sets the source who curated the publication.
-     * @param source: source for this publication
+     * @param source : source for this publication
      */
     public void setSource(Source source);
 

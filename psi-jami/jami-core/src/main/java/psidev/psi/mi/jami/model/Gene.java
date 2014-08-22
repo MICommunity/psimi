@@ -63,7 +63,7 @@ public interface Gene extends Molecule{
      * It will remove the old entrez/gene identifier from the collection of identifiers and replace it
      * with the new entrez/gene identifier. If the new entrez/gene identifier is null, all the existing entrez/gene identifiers will be removed from the
      * collection of identifiers
-     * @param id: Entrez gene id
+     * @param id : Entrez gene id
      */
     public void setEntrezGeneId(String id);
 
@@ -81,7 +81,7 @@ public interface Gene extends Molecule{
      * It will remove the old refseq identifier from the collection of identifiers and replace it
      * with the new refseq identifier. If the new refseq identifier is null, all the existing refseq identifiers will be removed from the
      * collection of identifiers
-     * @param ac: the refseq accession
+     * @param ac : the refseq accession
      */
     public void setRefseq(String ac);
 }

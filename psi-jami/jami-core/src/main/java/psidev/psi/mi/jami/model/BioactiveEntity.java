@@ -80,7 +80,7 @@ public interface BioactiveEntity extends Molecule {
      * Sets the standard InChI. It will remove the old standard inchi from the collection of checksums and replace it
      * with the new standard inchi. If the new standard is null, all the existing standard inchi will be removed from the
      * collection of checksums
-     * @param inchi: the standard InChI
+     * @param inchi : the standard InChI
      */
     public void setStandardInchi(String inchi);
 }

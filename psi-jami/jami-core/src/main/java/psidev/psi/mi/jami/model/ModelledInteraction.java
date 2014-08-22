@@ -32,7 +32,7 @@ public interface ModelledInteraction extends Interaction<ModelledParticipant>{
 
     /**
      * Sets the source reporting the interaction.
-     * @param source: source for this interaction
+     * @param source : source for this interaction
      */
     public void setSource(Source source);
 
