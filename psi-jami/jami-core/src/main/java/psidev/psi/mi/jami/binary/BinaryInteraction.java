@@ -5,7 +5,10 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.Participant;
 
 /**
- * A Binary interaction is an interaction only composed of two participants
+ * A Binary interaction is an interaction only composed of two participants.
+ *
+ * It can be a 'true' binary interaction (the complexExpansion is null) or it can be an expanded binary interaction
+ * from an original n-ary interaction (the complex expansion is not null)
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
