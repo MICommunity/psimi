@@ -5,7 +5,6 @@ import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,7 @@ import java.io.Writer;
  * @since <pre>05/07/13</pre>
  */
 
-public class LightMIJsonWriter extends AbstractMIJsonWriter<Interaction<? extends Participant>,BinaryInteraction> {
+public class LightMIJsonWriter extends AbstractMIJsonWriter<Interaction,BinaryInteraction> {
 
 
     public LightMIJsonWriter(){
@@ -39,15 +38,15 @@ public class LightMIJsonWriter extends AbstractMIJsonWriter<Interaction<? extend
         super(writer, fetcher);
     }
 
-    public LightMIJsonWriter(File file, OntologyTermFetcher fetcher, ComplexExpansionMethod<Interaction<? extends Participant>,BinaryInteraction> expansionMethod) throws IOException {
+    public LightMIJsonWriter(File file, OntologyTermFetcher fetcher, ComplexExpansionMethod<Interaction,BinaryInteraction> expansionMethod) throws IOException {
         super(file, fetcher, expansionMethod);
     }
 
-    public LightMIJsonWriter(OutputStream output, OntologyTermFetcher fetcher, ComplexExpansionMethod<Interaction<? extends Participant>,BinaryInteraction> expansionMethod) {
+    public LightMIJsonWriter(OutputStream output, OntologyTermFetcher fetcher, ComplexExpansionMethod<Interaction,BinaryInteraction> expansionMethod) {
         super(output, fetcher, expansionMethod);
     }
 
-    public LightMIJsonWriter(Writer writer, OntologyTermFetcher fetcher, ComplexExpansionMethod<Interaction<? extends Participant>,BinaryInteraction> expansionMethod) {
+    public LightMIJsonWriter(Writer writer, OntologyTermFetcher fetcher, ComplexExpansionMethod<Interaction,BinaryInteraction> expansionMethod) {
         super(writer, fetcher, expansionMethod);
     }
 
