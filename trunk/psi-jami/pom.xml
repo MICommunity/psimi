@@ -30,6 +30,7 @@
         <module>jami-batch</module>
         <module>jami-xml</module>
     <module>jami-examples</module>
+    <module>jami-crosslink-csv</module>
   </modules>
 
     <dependencies>
