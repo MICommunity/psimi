@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.xml.io.iterator;
 
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.io.parser.PsiXmlParser;
 
 /**
@@ -13,8 +12,8 @@ import psidev.psi.mi.jami.xml.io.parser.PsiXmlParser;
  * @since <pre>17/10/13</pre>
  */
 
-public class XmlInteractionIterator extends AbstractXmlIterator<Interaction<? extends Participant>> {
-    public XmlInteractionIterator(PsiXmlParser<Interaction<? extends Participant>> lineParser) throws MIIOException {
+public class XmlInteractionIterator extends AbstractXmlIterator<Interaction> {
+    public XmlInteractionIterator(PsiXmlParser<Interaction> lineParser) throws MIIOException {
         super(lineParser);
     }
 }

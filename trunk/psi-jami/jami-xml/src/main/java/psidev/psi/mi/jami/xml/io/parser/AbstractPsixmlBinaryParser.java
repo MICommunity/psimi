@@ -1,18 +1,17 @@
 package psidev.psi.mi.jami.xml.io.parser;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
-import psidev.psi.mi.jami.binary.expansion.ComplexExpansionException;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
+import psidev.psi.mi.jami.exception.ComplexExpansionException;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
+import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
 import psidev.psi.mi.jami.xml.model.extension.factory.xml25.XmlBinaryInteractionFactory;
-import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +25,7 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public abstract class AbstractPsixmlBinaryParser<T extends Interaction<? extends Participant>, B extends BinaryInteraction> implements PsiXmlParser<B> {
+public abstract class AbstractPsixmlBinaryParser<T extends Interaction, B extends BinaryInteraction> implements PsiXmlParser<B> {
 
     private ComplexExpansionMethod<T,B> expansionMethod;
     private Collection<B> binaryInteractions;

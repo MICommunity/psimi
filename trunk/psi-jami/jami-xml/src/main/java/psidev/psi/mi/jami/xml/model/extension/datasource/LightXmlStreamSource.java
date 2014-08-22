@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.xml.model.extension.datasource;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.io.iterator.XmlInteractionIterator;
 import psidev.psi.mi.jami.xml.io.parser.LightXmlParser;
 
@@ -21,7 +20,7 @@ import java.util.Iterator;
  * @since <pre>17/10/13</pre>
  */
 
-public class LightXmlStreamSource extends AbstractPsiXmlStream<Interaction<?extends Participant>> {
+public class LightXmlStreamSource extends AbstractPsiXmlStream<Interaction> {
 
     public LightXmlStreamSource() {
     }
@@ -80,7 +79,7 @@ public class LightXmlStreamSource extends AbstractPsiXmlStream<Interaction<?exte
     }
 
     @Override
-    protected Iterator<Interaction<? extends Participant>> createXmlIterator() {
+    protected Iterator<Interaction> createXmlIterator() {
         return new XmlInteractionIterator(getParser());
     }
 }

@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.ComplexExpansionMethod;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.model.AbstractEntry;
 import psidev.psi.mi.jami.xml.model.AbstractEntrySet;
@@ -23,7 +22,7 @@ import java.net.URL;
  * @since <pre>08/11/13</pre>
  */
 
-public class FullXmlBinaryParser extends AbstractPsixmlBinaryParser<Interaction<? extends Participant>,BinaryInteraction> implements FullPsiXmlParser<Interaction<? extends Participant>> {
+public class FullXmlBinaryParser extends AbstractPsixmlBinaryParser<Interaction,BinaryInteraction> implements FullPsiXmlParser<Interaction> {
 
     public FullXmlBinaryParser(File file) throws JAXBException, FileNotFoundException {
         super(new FullXmlParser(file));
@@ -42,12 +41,12 @@ public class FullXmlBinaryParser extends AbstractPsixmlBinaryParser<Interaction<
     }
 
     @Override
-    protected ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> initialiseDefaultExpansionMethod() {
+    protected ComplexExpansionMethod<Interaction, BinaryInteraction> initialiseDefaultExpansionMethod() {
         return new SpokeExpansion();
     }
 
     @Override
-    public AbstractEntrySet<AbstractEntry<Interaction<? extends Participant>>> getEntrySet() throws PsiXmlParserException {
-        return ((FullPsiXmlParser<Interaction<? extends Participant>>)getDelegateParser()).getEntrySet();
+    public AbstractEntrySet<AbstractEntry<Interaction>> getEntrySet() throws PsiXmlParserException {
+        return ((FullPsiXmlParser<Interaction>)getDelegateParser()).getEntrySet();
     }
 }
