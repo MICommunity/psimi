@@ -29,7 +29,7 @@ public interface BinaryInteractionFactory {
      * @param interaction : the original interaction
      * @param p1 : the first participant
      * @param p2 : the second participant
-     * @param expansionMethod
+     * @param expansionMethod  : the expansion method
      * @return the new BinaryInteractionEvidence object
      */
     public BinaryInteractionEvidence createBinaryInteractionEvidenceFrom(InteractionEvidence interaction, ParticipantEvidence p1, ParticipantEvidence p2, CvTerm expansionMethod);
@@ -39,7 +39,7 @@ public interface BinaryInteractionFactory {
      * @param interaction : the original interaction
      * @param p1 : the first participant
      * @param p2 : the second participant
-     * @param expansionMethod
+     * @param expansionMethod : the expansion method
      * @return the new ModelledBinaryInteraction object
      */
     public ModelledBinaryInteraction createModelledBinaryInteractionFrom(ModelledInteraction interaction, ModelledParticipant p1, ModelledParticipant p2, CvTerm expansionMethod);
