@@ -1,7 +1,7 @@
 package psidev.psi.mi.jami.exception;
 
 /**
- * Exception thrown by a datasource or a writer when it cannot read/write MI data
+ * Exception thrown by a dataSource or a writer when it cannot read/write MI data
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

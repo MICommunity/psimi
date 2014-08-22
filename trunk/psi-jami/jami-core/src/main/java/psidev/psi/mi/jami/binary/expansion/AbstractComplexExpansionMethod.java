@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.binary.expansion;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
+import psidev.psi.mi.jami.exception.ComplexExpansionException;
 import psidev.psi.mi.jami.factory.BinaryInteractionFactory;
 import psidev.psi.mi.jami.factory.DefaultBinaryInteractionFactory;
 import psidev.psi.mi.jami.model.ComplexType;
@@ -63,9 +64,9 @@ public abstract class AbstractComplexExpansionMethod<T extends Interaction, B ex
      *
      * @param interaction : the interaction to expand
      * @return  the collection of binary interactions generated from the given interaction.
-     * @throws ComplexExpansionException : when the interaction is not expandable by this method
+     * @throws psidev.psi.mi.jami.exception.ComplexExpansionException : when the interaction is not expandable by this method
      */
-    public Collection<B> expand(T interaction) throws ComplexExpansionException{
+    public Collection<B> expand(T interaction) throws ComplexExpansionException {
 
         if (!isInteractionExpandable(interaction)){
             throw new ComplexExpansionException("Cannot expand the interaction: "+interaction.toString() + " with the expansion: "+method.toString());
