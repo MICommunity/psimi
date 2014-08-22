@@ -20,7 +20,7 @@ import java.io.Writer;
  * @since <pre>20/06/13</pre>
  */
 
-public class LightMitab25Writer extends AbstractMitabWriter<Interaction<? extends Participant>, BinaryInteraction, Participant> {
+public class LightMitab25Writer extends AbstractMitabWriter<Interaction, BinaryInteraction, Participant> {
 
     public LightMitab25Writer() {
         super();
@@ -38,15 +38,15 @@ public class LightMitab25Writer extends AbstractMitabWriter<Interaction<? extend
         super(writer);
     }
 
-    public LightMitab25Writer(File file, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
+    public LightMitab25Writer(File file, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public LightMitab25Writer(OutputStream output, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) {
+    public LightMitab25Writer(OutputStream output, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) {
         super(output, expansionMethod);
     }
 
-    public LightMitab25Writer(Writer writer, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) {
+    public LightMitab25Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) {
         super(writer, expansionMethod);
     }
 
@@ -56,7 +56,7 @@ public class LightMitab25Writer extends AbstractMitabWriter<Interaction<? extend
     }
 
     @Override
-    protected void initialiseExpansionMethod(ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) {
+    protected void initialiseExpansionMethod(ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) {
         setExpansionMethod(expansionMethod != null ? expansionMethod : new SpokeExpansion());
     }
 

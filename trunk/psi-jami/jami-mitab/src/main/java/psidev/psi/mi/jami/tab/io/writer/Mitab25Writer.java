@@ -26,7 +26,7 @@ import java.io.*;
  * @since <pre>10/06/13</pre>
  */
 
-public class Mitab25Writer extends AbstractMitabWriter<Interaction<? extends Participant>, BinaryInteraction, Participant> {
+public class Mitab25Writer extends AbstractMitabWriter<Interaction, BinaryInteraction, Participant> {
 
     private Mitab25ModelledWriter modelledInteractionWriter;
     private Mitab25EvidenceWriter interactionEvidenceWriter;
@@ -48,15 +48,15 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction<? extends Par
         super(writer);
     }
 
-    public Mitab25Writer(File file, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab25Writer(File file, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(file, expansionMethod);
     }
 
-    public Mitab25Writer(OutputStream output, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab25Writer(OutputStream output, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(output, expansionMethod);
     }
 
-    public Mitab25Writer(Writer writer, ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) throws IOException {
+    public Mitab25Writer(Writer writer, ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) throws IOException {
         super(writer, expansionMethod);
     }
 
@@ -123,7 +123,7 @@ public class Mitab25Writer extends AbstractMitabWriter<Interaction<? extends Par
     }
 
     @Override
-    protected void initialiseExpansionMethod(ComplexExpansionMethod<Interaction<? extends Participant>, BinaryInteraction> expansionMethod) {
+    protected void initialiseExpansionMethod(ComplexExpansionMethod<Interaction, BinaryInteraction> expansionMethod) {
         setExpansionMethod(expansionMethod != null ? expansionMethod : new SpokeExpansion());
     }
 
