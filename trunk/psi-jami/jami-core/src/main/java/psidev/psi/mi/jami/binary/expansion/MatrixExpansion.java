@@ -21,7 +21,7 @@ import java.util.Collection;
  * @since <pre>04/06/13</pre>
  */
 
-public class MatrixExpansion extends AbstractMatrixExpansion<Interaction<? extends Participant>, BinaryInteraction> {
+public class MatrixExpansion extends AbstractMatrixExpansion<Interaction, BinaryInteraction> {
 
     private InteractionEvidenceMatrixExpansion interactionEvidenceExpansion;
     private ModelledInteractionMatrixExpansion modelledInteractionExpansion;
@@ -51,7 +51,7 @@ public class MatrixExpansion extends AbstractMatrixExpansion<Interaction<? exten
     }
 
     @Override
-    protected <P extends Participant> BinaryInteraction createBinaryInteraction(Interaction<? extends Participant> interaction, P c1, P c2) {
+    protected <P extends Participant> BinaryInteraction createBinaryInteraction(Interaction interaction, P c1, P c2) {
         return getBinaryInteractionFactory().createBasicBinaryInteractionFrom(interaction, c1, c2, getMethod());
     }
 

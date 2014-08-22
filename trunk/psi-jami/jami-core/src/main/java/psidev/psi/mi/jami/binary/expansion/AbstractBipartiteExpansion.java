@@ -13,7 +13,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Abstract class for BipartiteExpansion
+ * Abstract class for BipartiteExpansion.
+ *
+ * An InteractorFactory can be provided if we want to override the complex created by this expansion method
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
@@ -29,6 +31,10 @@ public abstract class AbstractBipartiteExpansion<T extends Interaction, B extend
         super(CvTermUtils.createMICvTerm(ComplexExpansionMethod.BIPARTITE_EXPANSION, ComplexExpansionMethod.BIPARTITE_EXPANSION_MI));
     }
 
+    /**
+     *
+     * @return  the interactor factory we want to use to create the complex for bipartite expansion
+     */
     public InteractorFactory getInteractorFactory() {
         if (this.interactorFactory == null){
             this.interactorFactory = new DefaultInteractorFactory();
@@ -36,12 +42,16 @@ public abstract class AbstractBipartiteExpansion<T extends Interaction, B extend
         return interactorFactory;
     }
 
+    /**
+     *
+     * @param interactorFactory : the interactor factory we want to use to create the complex for bipartite expansion
+     */
     public void setInteractorFactory(InteractorFactory interactorFactory) {
         this.interactorFactory = interactorFactory;
     }
 
     @Override
-    protected Collection<B> collectBinaryInteractionsFrom(T interaction){
+    protected Collection<B> collectBinaryInteractionsFromNary(T interaction){
         Participant externalEntity =  createParticipantForComplexEntity(createComplexEntity(interaction));
 
         Collection<B> binaryInteractions = new ArrayList<B>(interaction.getParticipants().size());
@@ -56,10 +66,29 @@ public abstract class AbstractBipartiteExpansion<T extends Interaction, B extend
         return binaryInteractions;
     }
 
+    /**
+     *
+     * @param interaction : the interaction to expand
+     * @param c1 : the participant with the created complex
+     * @param c2 : the original participant
+     * @param <P> : type of participant
+     * @return the binary interaction
+     */
     protected abstract <P extends Participant> B createBinaryInteraction(T interaction, P c1, P c2);
 
+    /**
+     *
+     * @param complexEntity : the generated complex
+     * @param <P> : type of participant
+     * @return the participant generated for the generated complex
+     */
     protected abstract <P extends Participant> P createParticipantForComplexEntity(Complex complexEntity);
 
+    /**
+     *
+     * @param interaction : the interaction to expand
+     * @return  the complex generated from this interaction instance
+     */
     protected Complex createComplexEntity(T interaction) {
         String complexName = generateComplexName(interaction);
         Complex interactionAsComplex = getInteractorFactory().createComplex(complexName, null);
@@ -67,6 +96,11 @@ public abstract class AbstractBipartiteExpansion<T extends Interaction, B extend
         return interactionAsComplex;
     }
 
+    /**
+     *
+     * @param interaction : the interaction to expand
+     * @return the generated name for this interaction
+     */
     protected String generateComplexName(Interaction interaction) {
         String complexName = interaction.getShortName() != null ? interaction.getShortName() : interaction.toString();
         if (complexName == null || complexName.length() == 0){
