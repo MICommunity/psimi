@@ -24,7 +24,7 @@ public class ModelledInteractionBipartiteExpansion extends AbstractBipartiteExpa
     }
 
     @Override
-    protected Collection<ModelledBinaryInteraction> createBinaryInteractionsFrom(ModelledInteraction interaction) {
+    protected Collection<ModelledBinaryInteraction> createBinaryInteractionWrappersFrom(ModelledInteraction interaction) {
         return Collections.singletonList(getBinaryInteractionFactory().createModelledBinaryInteractionWrapperFrom(interaction));
     }
 

@@ -27,7 +27,7 @@ public class ModelledInteractionSpokeExpansion extends AbstractSpokeExpansion<Mo
     }
 
     @Override
-    protected Collection<ModelledBinaryInteraction> createBinaryInteractionsFrom(ModelledInteraction interaction) {
+    protected Collection<ModelledBinaryInteraction> createBinaryInteractionWrappersFrom(ModelledInteraction interaction) {
         return Collections.singletonList(getBinaryInteractionFactory().createModelledBinaryInteractionWrapperFrom(interaction));
     }
 

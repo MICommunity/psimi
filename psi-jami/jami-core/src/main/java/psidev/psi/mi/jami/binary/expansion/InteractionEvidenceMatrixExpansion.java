@@ -27,7 +27,7 @@ public class InteractionEvidenceMatrixExpansion extends AbstractMatrixExpansion<
     }
 
     @Override
-    protected Collection<BinaryInteractionEvidence> createBinaryInteractionsFrom(InteractionEvidence interaction) {
+    protected Collection<BinaryInteractionEvidence> createBinaryInteractionWrappersFrom(InteractionEvidence interaction) {
         return Collections.singletonList(getBinaryInteractionFactory().createBinaryInteractionEvidenceWrapperFrom(interaction));
     }
 

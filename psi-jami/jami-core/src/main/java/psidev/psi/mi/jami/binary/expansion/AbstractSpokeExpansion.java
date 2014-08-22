@@ -16,7 +16,7 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractSpokeExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction>
+public abstract class AbstractSpokeExpansion<T extends Interaction, B extends BinaryInteraction>
         extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractSpokeExpansion() {
@@ -24,15 +24,15 @@ public abstract class AbstractSpokeExpansion<T extends Interaction<? extends Par
     }
 
     @Override
-    protected Collection<B> collectBinaryInteractionsFrom(T interaction) {
+    protected Collection<B> collectBinaryInteractionsFromNary(T interaction) {
         Collection<B> binaryInteractions = new ArrayList<B>(interaction.getParticipants().size()-1);
 
         Participant bait = collectBestBaitForSpokeExpansion(interaction);
 
-        for ( Participant p : interaction.getParticipants() ) {
+        for ( Object p : interaction.getParticipants() ) {
             if (p != bait){
                 // build a new interaction
-                B binary = createBinaryInteraction(interaction, bait, p);
+                B binary = createBinaryInteraction(interaction, bait, (Participant)p);
 
                 binaryInteractions.add(binary);
             }
@@ -41,7 +41,21 @@ public abstract class AbstractSpokeExpansion<T extends Interaction<? extends Par
         return binaryInteractions;
     }
 
+    /**
+     *
+     * @param interaction : the interaction to expand
+     * @param c1 : the bait
+     * @param c2 : the prey
+     * @param <P> : participant type
+     * @return the binary interaction
+     */
     protected abstract <P extends Participant> B createBinaryInteraction(T interaction, P c1, P c2);
 
+    /**
+     *
+     * @param interaction : the interaction to expand
+     * @param <P> : participant type
+     * @return the best bait to use for complex expansion among all participants of this interaction
+     */
     protected abstract <P extends Participant> P collectBestBaitForSpokeExpansion(T interaction);
 }

@@ -16,7 +16,7 @@ import java.util.Collection;
  * @since <pre>19/06/13</pre>
  */
 
-public abstract class AbstractMatrixExpansion<T extends Interaction<? extends Participant>, B extends BinaryInteraction>
+public abstract class AbstractMatrixExpansion<T extends Interaction, B extends BinaryInteraction>
         extends AbstractComplexExpansionMethod<T,B> {
 
     public AbstractMatrixExpansion(){
@@ -24,7 +24,7 @@ public abstract class AbstractMatrixExpansion<T extends Interaction<? extends Pa
     }
 
     @Override
-    protected Collection<B> collectBinaryInteractionsFrom(T interaction){
+    protected Collection<B> collectBinaryInteractionsFromNary(T interaction){
         Participant[] participants = createParticipantsArray(interaction);
 
         Collection<B> binaryInteractions = new ArrayList<B>((interaction.getParticipants().size() - 1)*(interaction.getParticipants().size() - 1));
@@ -42,7 +42,21 @@ public abstract class AbstractMatrixExpansion<T extends Interaction<? extends Pa
         return binaryInteractions;
     }
 
+    /**
+     *
+     * @param interaction : the interaction to expand
+     * @param c1 : participant A
+     * @param c2 : participant B
+     * @param <P> : participant type
+     * @return  the binary interaction
+     */
     protected abstract <P extends Participant> B createBinaryInteraction(T interaction, P c1, P c2);
 
+    /**
+     *
+     * @param interaction : the interaction to expand
+     * @param <P> : participant type
+     * @return the array of participants involved in this interaction
+     */
     protected abstract <P extends Participant> P[] createParticipantsArray(T interaction);
 }
