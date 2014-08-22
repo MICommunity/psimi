@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.utils.comparator;
 
-import java.util.Comparator;
-
 /**
  * The IdentityHashComparator will use the hashcode of each objects to compare the objects.
  *
@@ -10,7 +8,7 @@ import java.util.Comparator;
  * @since <pre>14/11/13</pre>
  */
 
-public class IdentityHashComparator<T> implements Comparator<T>{
+public class IdentityHashComparator<T> implements MIComparator<T>{
 
     /**
      * Compares two objects based on their hashcode methods
@@ -41,5 +39,9 @@ public class IdentityHashComparator<T> implements Comparator<T>{
         else {
             return 1;
         }
+    }
+
+    public int computeHashCode(T object) {
+        return object != null ? object.hashCode():0;
     }
 }
