@@ -24,8 +24,8 @@ implements ExperimentalParticipantPool{
     private Collection<Confidence> confidences;
     private Collection<Parameter> parameters;
 
-    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, Interactor interactor, CvTerm participantIdentificationMethod) {
-        super(interactor);
+    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, String poolName, CvTerm participantIdentificationMethod) {
+        super(poolName);
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }
@@ -33,32 +33,32 @@ implements ExperimentalParticipantPool{
         setInteraction(interaction);
     }
 
-    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole);
+    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, String poolName, CvTerm bioRole, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole);
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }        this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         setInteraction(interaction);
     }
 
-    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, Interactor interactor, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
-        super(interactor, stoichiometry);
+    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, String poolName, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(poolName, stoichiometry);
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }        this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         setInteraction(interaction);
     }
 
-    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole, stoichiometry);
+    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, String poolName, CvTerm bioRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole, stoichiometry);
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }        this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         setInteraction(interaction);
     }
 
-    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole);
+    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, String poolName, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole);
         if(expRole == null){
             this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         }
@@ -71,8 +71,8 @@ implements ExperimentalParticipantPool{
         setInteraction(interaction);
     }
 
-    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole, stoichiometry);
+    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, String poolName, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole, stoichiometry);
         if(expRole == null){
             this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         }
@@ -85,8 +85,8 @@ implements ExperimentalParticipantPool{
         setInteraction(interaction);
     }
 
-    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole);
+    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, String poolName, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole);
         if(expRole == null){
             this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         }
@@ -100,8 +100,8 @@ implements ExperimentalParticipantPool{
         setInteraction(interaction);
     }
 
-    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, Interactor interactor, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole, stoichiometry);
+    public DefaultExperimentalParticipantPool(InteractionEvidence interaction, String poolName, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole, stoichiometry);
         if(expRole == null){
             this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         }
@@ -115,32 +115,32 @@ implements ExperimentalParticipantPool{
         setInteraction(interaction);
     }
 
-    public DefaultExperimentalParticipantPool(Interactor interactor, CvTerm participantIdentificationMethod) {
-        super(interactor);
+    public DefaultExperimentalParticipantPool(String poolName, CvTerm participantIdentificationMethod) {
+        super(poolName);
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }
         this.experimentalRole = CvTermUtils.createUnspecifiedRole();
     }
 
-    public DefaultExperimentalParticipantPool(Interactor interactor, CvTerm bioRole, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole);
+    public DefaultExperimentalParticipantPool(String poolName, CvTerm bioRole, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole);
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }
         this.experimentalRole = CvTermUtils.createUnspecifiedRole();
     }
 
-    public DefaultExperimentalParticipantPool(Interactor interactor, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
-        super(interactor, stoichiometry);
+    public DefaultExperimentalParticipantPool(String poolName, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(poolName, stoichiometry);
         if (participantIdentificationMethod != null){
             getIdentificationMethods().add(participantIdentificationMethod);
         }
         this.experimentalRole = CvTermUtils.createUnspecifiedRole();
     }
 
-    public DefaultExperimentalParticipantPool(Interactor interactor, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole);
+    public DefaultExperimentalParticipantPool(String poolName, CvTerm bioRole, CvTerm expRole, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole);
         if(expRole == null){
             this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         }
@@ -152,8 +152,8 @@ implements ExperimentalParticipantPool{
         }
     }
 
-    public DefaultExperimentalParticipantPool(Interactor interactor, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole, stoichiometry);
+    public DefaultExperimentalParticipantPool(String poolName, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole, stoichiometry);
         if(expRole == null){
             this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         }
@@ -165,22 +165,8 @@ implements ExperimentalParticipantPool{
         }
     }
 
-    public DefaultExperimentalParticipantPool(Interactor interactor, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole);
-        if(expRole == null){
-            this.experimentalRole = CvTermUtils.createUnspecifiedRole();
-        }
-        else {
-            this.experimentalRole = expRole;
-        }
-        this.expressedIn = expressedIn;
-        if (participantIdentificationMethod != null){
-            getIdentificationMethods().add(participantIdentificationMethod);
-        }
-    }
-
-    public DefaultExperimentalParticipantPool(Interactor interactor, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
-        super(interactor, bioRole, stoichiometry);
+    public DefaultExperimentalParticipantPool(String poolName, CvTerm bioRole, CvTerm expRole, Organism expressedIn, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole);
         if(expRole == null){
             this.experimentalRole = CvTermUtils.createUnspecifiedRole();
         }
@@ -193,13 +179,27 @@ implements ExperimentalParticipantPool{
         }
     }
 
-    public DefaultExperimentalParticipantPool(Interactor interactor) {
-        super(interactor);
+    public DefaultExperimentalParticipantPool(String poolName, CvTerm bioRole, CvTerm expRole, Stoichiometry stoichiometry, Organism expressedIn, CvTerm participantIdentificationMethod) {
+        super(poolName, bioRole, stoichiometry);
+        if(expRole == null){
+            this.experimentalRole = CvTermUtils.createUnspecifiedRole();
+        }
+        else {
+            this.experimentalRole = expRole;
+        }
+        this.expressedIn = expressedIn;
+        if (participantIdentificationMethod != null){
+            getIdentificationMethods().add(participantIdentificationMethod);
+        }
+    }
+
+    public DefaultExperimentalParticipantPool(String poolName) {
+        super(poolName);
         this.experimentalRole = CvTermUtils.createUnspecifiedRole();
     }
 
-    public DefaultExperimentalParticipantPool(Interactor interactor, Stoichiometry stoichiometry) {
-        super(interactor, stoichiometry);
+    public DefaultExperimentalParticipantPool(String poolName, Stoichiometry stoichiometry) {
+        super(poolName, stoichiometry);
         this.experimentalRole = CvTermUtils.createUnspecifiedRole();
     }
 

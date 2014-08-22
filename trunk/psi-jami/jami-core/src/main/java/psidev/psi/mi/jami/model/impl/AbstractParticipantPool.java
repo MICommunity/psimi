@@ -22,23 +22,23 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
     private Collection<P> candidates;
     private CvTerm type;
 
-    public AbstractParticipantPool(Interactor interactor){
-        super(interactor);
+    public AbstractParticipantPool(String poolName){
+        super(new DefaultInteractorPool(poolName));
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractParticipantPool(Interactor interactor, CvTerm bioRole){
-        super(interactor);
+    public AbstractParticipantPool(String poolName, CvTerm bioRole){
+        super(new DefaultInteractorPool(poolName));
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractParticipantPool(Interactor interactor, Stoichiometry stoichiometry){
-        super(interactor, stoichiometry);
+    public AbstractParticipantPool(String poolName, Stoichiometry stoichiometry){
+        super(new DefaultInteractorPool(poolName), stoichiometry);
         initialiseComponentCandidatesSet();
     }
 
-    public AbstractParticipantPool(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry){
-        super(interactor, stoichiometry);
+    public AbstractParticipantPool(String poolName, CvTerm bioRole, Stoichiometry stoichiometry){
+        super(new DefaultInteractorPool(poolName), stoichiometry);
         initialiseComponentCandidatesSet();
     }
 
