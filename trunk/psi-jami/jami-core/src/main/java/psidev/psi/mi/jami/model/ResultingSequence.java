@@ -35,13 +35,13 @@ public interface ResultingSequence {
 
     /**
      * Sets the new sequence of this object
-     * @param sequence
+     * @param sequence : new sequence
      */
     public void setNewSequence(String sequence);
 
     /**
      * Sets the original sequence of this object
-     * @param sequence
+     * @param sequence : original sequence
      */
     public void setOriginalSequence(String sequence);
 }

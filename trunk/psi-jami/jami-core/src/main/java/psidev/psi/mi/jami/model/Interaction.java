@@ -124,28 +124,28 @@ public interface Interaction<T extends Participant> {
 
     /**
      * This method will add the participant and set the interaction of the new participant to this current interaction
-     * @param part
+     * @param part : participant to add
      * @return true if participant is added to the list of participants
      */
     public boolean addParticipant(T part);
 
     /**
      * This method will remove the participant and set the interaction of the new participant to null
-     * @param part
+     * @param part : participant to remove
      * @return true if participant is removed from the list of participants
      */
     public boolean removeParticipant(T part);
 
     /**
      * This method will add all the participant and set the interaction of the new participant to this current interaction
-     * @param participants
+     * @param participants : participants to add
      * @return true if participant are added to the list of participants
      */
     public boolean  addAllParticipants(Collection<? extends T> participants);
 
     /**
      * This method will remove the participant and set the interaction of the removed participant to null.
-     * @param participants
+     * @param participants : participants to remove
      * @return true if participant are removed from the list of participants
      */
     public boolean removeAllParticipants(Collection<? extends T> participants);

@@ -45,7 +45,7 @@ public interface Gene extends Molecule{
      * It will remove the old ensembl genomes identifier from the collection of identifiers and replace it
      * with the new ensembl genomes identifier. If the new ensembl genomes identifier is null, all the existing ensembl genomes identifiers will be removed from the
      * collection of identifiers
-     * @param ac
+     * @param ac : the ensembleGenome ac
      */
     public void setEnsemblGenome(String ac);
 

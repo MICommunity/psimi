@@ -20,7 +20,7 @@ public interface ModelledConfidence extends Confidence {
 
     /**
      * Sets the publication of this confidence
-     * @param publication
+     * @param publication : the publication
      */
     public void setPublication(Publication publication);
 }

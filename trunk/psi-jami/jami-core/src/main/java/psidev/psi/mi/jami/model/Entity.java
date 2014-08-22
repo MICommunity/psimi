@@ -52,34 +52,34 @@ public interface Entity<F extends Feature> {
 
     /**
      * Sets the entity change listener
-     * @param listener
+     * @param listener : the entity change listener
      */
     public void setChangeListener(EntityInteractorChangeListener listener);
 
     /**
      * This method will add the feature and set the entity of the new feature to this current entity
-     * @param feature
+     * @param feature : feature to add
      * @return true if feature is added to the list of features
      */
     public boolean  addFeature(F feature);
 
     /**
      * This method will remove the feature and set the entity of the removed feature to null.
-     * @param feature
+     * @param feature : feature to remove
      * @return true if feature is removed from the list of features
      */
     public boolean removeFeature(F feature);
 
     /**
      * This method will add all features and set the entity of the new features to this current entity
-     * @param features
+     * @param features : features to add
      * @return true if features are added to the list of features
      */
     public boolean  addAllFeatures(Collection<? extends F> features);
 
     /**
      * This method will remove all the features and set the entity of the removed features to null.
-     * @param features
+     * @param features : features to remove
      * @return true if features are removed from the list of features
      */
     public boolean removeAllFeatures(Collection<? extends F> features);

@@ -50,8 +50,7 @@ public interface Range {
 
     /**
      * Sets the link boolean for this Range
-     * @param link
-     * @return
+     * @param link : the linked value
      */
     public void setLink(boolean link);
 
@@ -64,7 +63,7 @@ public interface Range {
 
     /**
      * Sets the resultingSequence of this range object
-     * @param resultingSequence
+     * @param resultingSequence : the resulting sequence
      */
     public void setResultingSequence(ResultingSequence resultingSequence);
 

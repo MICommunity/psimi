@@ -70,7 +70,7 @@ public interface ModelledInteraction extends Interaction<ModelledParticipant>{
 
     /**
      * Sets the evidence type
-     * @param eco
+     * @param eco : the evidence type
      */
     public void setEvidenceType(CvTerm eco);
 }
