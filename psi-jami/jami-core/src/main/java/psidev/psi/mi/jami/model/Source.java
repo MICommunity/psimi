@@ -20,7 +20,7 @@ public interface Source extends CvTerm{
 
     /**
      * Set the URL
-     * @param url
+     * @param url : URL
      */
     public void setUrl(String url);
 
@@ -34,7 +34,7 @@ public interface Source extends CvTerm{
 
     /**
      * Set the postal address
-     * @param address
+     * @param address : postal Address
      */
     public void setPostalAddress(String address);
 

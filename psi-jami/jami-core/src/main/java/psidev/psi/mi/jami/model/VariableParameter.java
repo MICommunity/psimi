@@ -22,7 +22,7 @@ public interface VariableParameter {
 
     /**
      * Sets the short description of this parameter.
-     * @param description
+     * @param description : description
      * @throws IllegalArgumentException when description is null
      */
     public void setDescription(String description);
@@ -30,13 +30,13 @@ public interface VariableParameter {
     /**
      * The unit of the variableParameter if relevant.
      * It is a controlled vocabulary term and can be null if not relevant
-     * @return
+     * @return the unit
      */
     public CvTerm getUnit();
 
     /**
      * Sets the unit of this variableParameter.
-     * @param unit
+     * @param unit : unit
      */
     public void setUnit(CvTerm unit);
 
@@ -57,7 +57,7 @@ public interface VariableParameter {
 
     /**
      * Sets the experiment for this variableParameter
-     * @param experiment
+     * @param experiment  : experiment to set
      */
     public void setExperiment(Experiment experiment);
 
@@ -65,7 +65,7 @@ public interface VariableParameter {
      * Sets the experiment for this variableParameter and add this variableParameter to the list of variableParameters
      * of this experiment.
      * If experiment is null, remove the variableParameter from the previous experiment attached to this variableParameter
-     * @param experiment
+     * @param experiment : experiment to set
      */
     public void setExperimentAndAddVariableParameter(Experiment experiment);
 }

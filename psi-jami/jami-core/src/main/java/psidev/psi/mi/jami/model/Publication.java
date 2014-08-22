@@ -27,7 +27,7 @@ public interface Publication {
      * It will remove the previous pubmed identifier from the collection of identifiers, and add the new one in the collection of identifiers
      * with qualifier identity. If pubmedId is null, it will remove all the pubmed identifiers from the
      * collection of identifiers.
-     * @param pubmedId
+     * @param pubmedId : pubmed identifier
      */
     public void setPubmedId(String pubmedId);
 
@@ -44,7 +44,7 @@ public interface Publication {
      * It will remove the previous doi from the collection of identifiers, and add the new one in the collection of identifiers
      * with qualifier identity. If doi is null, it will remove all the doi from the
      * collection of identifiers.
-     * @param doi
+     * @param doi : DOI identifier
      */
     public void setDoi(String doi);
 
@@ -188,28 +188,28 @@ public interface Publication {
 
     /**
      * This method will add the experiment and set the publication of the new experiment to this current publication
-     * @param exp
+     * @param exp : experiment to add
      * @return true if experiment is added to the list of experiments
      */
     public boolean  addExperiment(Experiment exp);
 
     /**
      * This method will remove the experiment and set the publication of the removed experiment to null.
-     * @param exp
+     * @param exp : experiment to remove
      * @return true if experiment is removed from the list of experiments
      */
     public boolean removeExperiment(Experiment exp);
 
     /**
      * This method will add all the experiments and set the publication of the new experiments to this current publication
-     * @param exp
+     * @param exp : experiments to add
      * @return true if experiments are added to the list of experiments
      */
     public boolean  addAllExperiments(Collection<? extends Experiment> exp);
 
     /**
      * This method will remove the experiments and set the publication of the removed experiments to null.
-     * @param exp
+     * @param exp : experiments to remove
      * @return true if experiments are removed from the list of experiments
      */
     public boolean removeAllExperiments(Collection<? extends Experiment> exp);

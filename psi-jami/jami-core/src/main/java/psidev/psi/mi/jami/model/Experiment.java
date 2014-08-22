@@ -98,28 +98,28 @@ public interface Experiment {
 
     /**
      * This method will add the interaction evidence and set the experiment of the new interaction evidence to this current experiment
-     * @param evidence
+     * @param evidence : evidence to add
      * @return true if interaction evidence is added to the list of interactions
      */
     public boolean  addInteractionEvidence(InteractionEvidence evidence);
 
     /**
      * This method will remove the interaction evidence and set the experiment of the new interaction evidence to null
-     * @param evidence
+     * @param evidence : evidence to remove
      * @return true if interaction evidence is removed from the list of interactions
      */
     public boolean removeInteractionEvidence(InteractionEvidence evidence);
 
     /**
      * This method will add all the interaction evidences and set the experiment of the new interaction evidences to this current experiment
-     * @param evidences
+     * @param evidences : evidences to add
      * @return true if interaction evidences are added to the list of interaction evidences
      */
     public boolean  addAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences);
 
     /**
      * This method will remove the interaction evidences and set the experiment of the removed interaction evidences to null.
-     * @param evidences
+     * @param evidences : evidences to remove
      * @return true if interaction evidences are removed from the list of interactions
      */
     public boolean removeAllInteractionEvidences(Collection<? extends InteractionEvidence> evidences);
@@ -134,28 +134,28 @@ public interface Experiment {
 
     /**
      * This method will add the variableParameter and set the experiment of the new variableParameter to this current experiment
-     * @param variableParameter
+     * @param variableParameter : parameter to add
      * @return true if variableParameter is added to the list of variableParameters
      */
     public boolean  addVariableParameter(VariableParameter variableParameter);
 
     /**
      * This method will remove the variableParameter and set the experiment of the removed variableParameter to null.
-     * @param variableParameter
+     * @param variableParameter : parameter to remove
      * @return true if variableParameter is removed from the list of variableParameters
      */
     public boolean removeVariableParameter(VariableParameter variableParameter);
 
     /**
      * This method will add all variableParameters and set the experiment of the new variableParameters to this current experiment
-     * @param variableParameters
+     * @param variableParameters : parameters to add
      * @return true if variableParameters are added to the list of variableParameters
      */
     public boolean  addAllVariableParameters(Collection<? extends VariableParameter> variableParameters);
 
     /**
      * This method will remove all the variableParameters and set the experiment of the removed variableParameters to null.
-     * @param variableParameters
+     * @param variableParameters : parameters to remove
      * @return true if variableParameters are removed from the list of variableParameters
      */
     public boolean removeAllVariableParameters(Collection<? extends VariableParameter> variableParameters);

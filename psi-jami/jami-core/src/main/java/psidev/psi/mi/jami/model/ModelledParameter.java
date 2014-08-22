@@ -20,7 +20,7 @@ public interface ModelledParameter extends Parameter {
 
     /**
      * Sets the publication of this parameter
-     * @param publication
+     * @param publication : the publication
      */
     public void setPublication(Publication publication);
 }

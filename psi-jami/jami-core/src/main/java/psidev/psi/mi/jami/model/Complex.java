@@ -17,7 +17,7 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
      * The physical properties for this complex.
      * It is a shortcut which should point to the first complex-properties annotation in the collection of annotations.
      * Example: Molecular mass = 154 kDa
-     * @return
+     * @return the properties
      */
     public String getPhysicalProperties();
 
@@ -26,14 +26,14 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
      * It will remove the old complex-properties annotation from the collection of annotations and replace it
      * with the new complex-properties annotation. If the new complex-properties is null, all the existing complex-properties annotations will be removed from the
      * collection of annotations
-     * @param properties
+     * @param properties : complex properties
      */
     public void setPhysicalProperties(String properties);
 
     /**
      * The recommended name of a complex.
      * It is a shortcut which should point to the first complex recommended name alias in the collection of aliases.
-     * @return
+     * @return the recommended name
      */
     public String getRecommendedName();
 
@@ -42,14 +42,14 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
      * It will remove the old recommended name from the collection of aliases and replace it
      * with the new recommended name. If the new recommended name is null, all the existing recommended names will be removed from the
      * collection of aliases
-     * @param name
+     * @param name : the recommended name
      */
     public void setRecommendedName(String name);
 
     /**
      * The systematic name of a complex.
      * It is a shortcut which should point to the first complex systematic name alias in the collection of aliases.
-     * @return
+     * @return the systematic name
      */
     public String getSystematicName();
 
@@ -58,7 +58,7 @@ public interface Complex extends Interactor, ModelledInteraction, NamedInteracti
      * It will remove the old systematic name from the collection of aliases and replace it
      * with the new systematic name. If the new systematic name is null, all the existing systematic names will be removed from the
      * collection of aliases
-     * @param name
+     * @param name  : the systematic name
      */
     public void setSystematicName(String name);
 }

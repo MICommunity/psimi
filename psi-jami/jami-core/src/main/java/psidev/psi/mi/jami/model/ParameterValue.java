@@ -5,7 +5,7 @@ import psidev.psi.mi.jami.utils.comparator.parameter.ParameterValueComparator;
 import java.math.BigDecimal;
 
 /**
- * A parameter numeric value
+ * A parameter numeric value.
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$

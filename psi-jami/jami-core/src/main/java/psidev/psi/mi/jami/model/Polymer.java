@@ -15,13 +15,13 @@ public interface Polymer extends Molecule{
 
     /**
      * The sequence of the polymer. Null if it is not known
-     * @return
+     * @return the sequence
      */
     public String getSequence();
 
     /**
      * Sets the sequence of the polymer.
-     * @param sequence
+     * @param sequence : sequence to set
      */
     public void setSequence(String sequence);
 }
