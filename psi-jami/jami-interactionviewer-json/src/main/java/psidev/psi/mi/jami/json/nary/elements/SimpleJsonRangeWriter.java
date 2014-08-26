@@ -42,7 +42,7 @@ public class SimpleJsonRangeWriter implements JsonElementWriter<Range>{
                 MIJsonUtils.writeStartObject(writer);
                 MIJsonUtils.writeProperty("pos", RangeUtils.convertRangeToString(object), writer);
                 MIJsonUtils.writeSeparator(writer);
-                MIJsonUtils.writeProperty("interactorRef", key, writer);
+                MIJsonUtils.writeProperty("interactorRef", Integer.toString(this.processedInteractors.get(key)), writer);
                 if (object.getResultingSequence() != null && object.getResultingSequence().getNewSequence() != null){
                     MIJsonUtils.writeSeparator(writer);
                     MIJsonUtils.writeProperty("resultingSequence", JSONValue.escape(object.getResultingSequence().getNewSequence()), writer);
