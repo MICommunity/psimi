@@ -2,6 +2,9 @@ package psidev.psi.mi.jami.json.nary.elements;
 
 import org.json.simple.JSONValue;
 import psidev.psi.mi.jami.json.MIJsonUtils;
+import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Range;
 import psidev.psi.mi.jami.utils.RangeUtils;
 
@@ -17,7 +20,7 @@ import java.util.Map;
  * @since <pre>18/07/14</pre>
  */
 
-public class SimpleJsonRangeWriter implements JsonElementWriter<Range>{
+public class SimpleJsonRangeWriter implements JsonRangeWriter{
 
     private Writer writer;
     private Map<String, Integer> processedInteractors;
@@ -34,34 +37,39 @@ public class SimpleJsonRangeWriter implements JsonElementWriter<Range>{
     }
 
     public void write(Range object) throws IOException {
-        if (object.getParticipant() != null){
+        write(object, null);
+    }
+
+    public void write(Range object, Feature parent) throws IOException {
+        // start object
+        MIJsonUtils.writeStartObject(writer);
+        // position
+        MIJsonUtils.writeProperty("pos", RangeUtils.convertRangeToString(object), writer);
+        // resulting sequence
+        if (object.getResultingSequence() != null && object.getResultingSequence().getNewSequence() != null){
+            MIJsonUtils.writeSeparator(writer);
+            MIJsonUtils.writeProperty("resultingSequence", JSONValue.escape(object.getResultingSequence().getNewSequence()), writer);
+        }
+
+        Interactor interactor = null;
+        if (object.getParticipant() != null && !(object.getParticipant().getInteractor() instanceof Complex)){
+            interactor = object.getParticipant().getInteractor();
+        }
+        else if (parent != null && parent.getParticipant() != null && !(parent.getParticipant().getInteractor() instanceof Complex)){
+           interactor = object.getParticipant().getInteractor();
+        }
+        if (interactor != null){
             String[] extractedInteractorId =  MIJsonUtils.extractInteractorId(object.getParticipant().getInteractor().getPreferredIdentifier(), object.getParticipant().getInteractor());
             String key = extractedInteractorId[0]+"_"+extractedInteractorId[1];
 
             if (this.processedInteractors.containsKey(key)){
-                MIJsonUtils.writeStartObject(writer);
-                MIJsonUtils.writeProperty("pos", RangeUtils.convertRangeToString(object), writer);
+
                 MIJsonUtils.writeSeparator(writer);
                 MIJsonUtils.writeProperty("interactorRef", Integer.toString(this.processedInteractors.get(key)), writer);
-                if (object.getResultingSequence() != null && object.getResultingSequence().getNewSequence() != null){
-                    MIJsonUtils.writeSeparator(writer);
-                    MIJsonUtils.writeProperty("resultingSequence", JSONValue.escape(object.getResultingSequence().getNewSequence()), writer);
-                }
-                MIJsonUtils.writeEndObject(writer);
-            }
-            else if (object.getResultingSequence() != null && object.getResultingSequence().getNewSequence() != null){
-                MIJsonUtils.writeStartObject(writer);
-                MIJsonUtils.writeProperty("pos", RangeUtils.convertRangeToString(object), writer);
-                MIJsonUtils.writeSeparator(writer);
-                MIJsonUtils.writeProperty("resultingSequence", JSONValue.escape(object.getResultingSequence().getNewSequence()), writer);
-                MIJsonUtils.writeEndObject(writer);
-            }
-            else{
-                MIJsonUtils.writePropertyValue(RangeUtils.convertRangeToString(object), writer);
             }
         }
-        else{
-            MIJsonUtils.writePropertyValue(RangeUtils.convertRangeToString(object), writer);
-        }
+        // end object
+        MIJsonUtils.writeEndObject(writer);
+
     }
 }

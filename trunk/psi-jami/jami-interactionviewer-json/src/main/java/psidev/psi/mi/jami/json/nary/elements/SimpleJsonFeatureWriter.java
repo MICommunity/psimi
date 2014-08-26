@@ -23,7 +23,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
     private Writer writer;
     private JsonElementWriter<CvTerm> cvWriter;
     private JsonElementWriter<Xref> identifierWriter;
-    private JsonElementWriter<Range> rangeWriter;
+    private JsonRangeWriter rangeWriter;
     private Map<Feature, Integer> processedFeatures;
     private Map<String, Integer> processedInteractors;
     private IncrementalIdGenerator idGenerator;
@@ -110,7 +110,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
 
             Iterator<Range> rangeIterator = object.getRanges().iterator();
             while (rangeIterator.hasNext()){
-                getRangeWriter().write(rangeIterator.next());
+                getRangeWriter().write(rangeIterator.next(), object);
                 if (rangeIterator.hasNext()){
                     MIJsonUtils.writeSeparator(writer);
                 }
@@ -179,14 +179,14 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
         this.identifierWriter = identifierWriter;
     }
 
-    public JsonElementWriter<Range> getRangeWriter() {
+    public JsonRangeWriter getRangeWriter() {
         if (this.rangeWriter == null){
            this.rangeWriter = new SimpleJsonRangeWriter(writer, processedInteractors);
         }
         return rangeWriter;
     }
 
-    public void setRangeWriter(JsonElementWriter<Range> rangeWriter) {
+    public void setRangeWriter(JsonRangeWriter rangeWriter) {
         this.rangeWriter = rangeWriter;
     }
 
