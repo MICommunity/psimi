@@ -55,7 +55,9 @@ public class SimpleJsonRangeWriter implements JsonRangeWriter{
         if (object.getParticipant() != null && !(object.getParticipant().getInteractor() instanceof Complex)){
             interactor = object.getParticipant().getInteractor();
         }
-        else if (parent != null && parent.getParticipant() != null && !(parent.getParticipant().getInteractor() instanceof Complex)){
+        else if (object.getParticipant() == null &&
+                parent != null && parent.getParticipant() != null &&
+                !(parent.getParticipant().getInteractor() instanceof Complex)){
            interactor = object.getParticipant().getInteractor();
         }
         if (interactor != null){
