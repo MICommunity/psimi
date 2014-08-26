@@ -21,7 +21,7 @@
         <jetty.port>9095</jetty.port>
         <jetty.stopPort>9999</jetty.stopPort>
         <jetty.stopKey>stopJetty</jetty.stopKey>
-        <jetty.contextPath>/jami/crosslink</jetty.contextPath>
+        <jetty.contextPath>/crosslink</jetty.contextPath>
     </properties>
 
     <build>
