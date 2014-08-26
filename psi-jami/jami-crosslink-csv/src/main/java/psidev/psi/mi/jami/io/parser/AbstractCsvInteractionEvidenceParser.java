@@ -2,11 +2,9 @@ package psidev.psi.mi.jami.io.parser;
 
 import com.googlecode.jcsv.reader.CSVEntryParser;
 import psidev.psi.mi.jami.extension.*;
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
+import psidev.psi.mi.jami.model.impl.DefaultPosition;
 import psidev.psi.mi.jami.utils.CsvUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
@@ -130,52 +128,107 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         return null;
     }
 
-    protected abstract T instantiateInteractionEvidence(int linePosition);
-
-    protected ParticipantEvidence createParticipantEvidence(String protein1, int protein1Index, String pepPos, int pepPos1Index, String linkedPos, int linkedPosIndex) {
+    protected ParticipantEvidence createParticipantEvidence(String protein1, int protein1Index, String pepPos, int pepPos1Index, String linkedPos,
+                                                            int linkedPosIndex) {
         // parse proteins
         List<CsvProtein> csvProteins1 = createProteinsFromString(protein1, currentLineIndex, protein1Index);
+
+        List<CsvRange> positions = parseCrossLinkingFeatures(pepPos, linkedPos, currentLineIndex, pepPos1Index, linkedPosIndex);
+
+        // check if we have more than one position and we need adjusting
+        if (!positions.isEmpty()){
+            // the same protein has different ranges and need to be duplicated in a participant set
+            if (positions.size() > 1 && csvProteins1.size() == 1){
+                CsvProtein firstProt = csvProteins1.iterator().next();
+                // we duplicate the protein
+                for (int i=1; i < positions.size(); i++){
+                    csvProteins1.add(firstProt);
+                }
+            }
+        }
 
         // parse participantEvidence
         ParticipantEvidence participantEvidence1 = null;
         // simple participant
-        if (csvProteins1.size() == 1){
-            participantEvidence1 = createParticipantEvidence(csvProteins1.iterator().next(), currentLineIndex, protein1Index);
+        if (csvProteins1.size() == 1 && positions.size() == 1){
+            participantEvidence1 = createParticipantEvidence(csvProteins1.iterator().next(), currentLineIndex, protein1Index, positions.iterator().next());
+        }
+        // participant no linked features
+        else if (csvProteins1.size() == 1 && positions.isEmpty()){
+            participantEvidence1 = createParticipantEvidence(csvProteins1.iterator().next(), currentLineIndex, protein1Index, null);
+        }
+        // we have an error, the number of positions does not match the number of proteins and we have ambiguous results
+        else if (positions.size() > 0 && positions.size() != csvProteins1.size()){
+            processMismatchPositions();
         }
         // participant pool
         else {
-            participantEvidence1 = createExperimentalParticipantPool(csvProteins1, currentLineIndex, protein1Index);
-        }
-
-        // deal with linked features
-        if (participantEvidence1 != null){
-            // the position is relative to the peptide
-            if (pepPos != null && linkedPos != null){
-
-            }
-            // the position is absolute
-            else if (pepPos == null && linkedPos != null){
-                List<Integer> positions = parsePositions(linkedPos);
-
-
-            }
+            participantEvidence1 = createExperimentalParticipantPool(csvProteins1, currentLineIndex, protein1Index, positions);
         }
 
         return participantEvidence1;
     }
 
-    protected List<Integer> parsePositions(String pos){
+    protected List<CsvRange> parseCrossLinkingFeatures(String pepPos, String linkedPos, int lineNumber, int pepColumnNumber, int linkedColumnNumber) {
+        List<CsvRange> positions = Collections.EMPTY_LIST;
+
+        // parse positions
+        // the position is relative to the peptide
+        if (pepPos != null && linkedPos != null){
+            List<CsvRange> peptidePositions = parsePositions(pepPos, lineNumber, pepColumnNumber);
+            List<CsvRange> relativePositions = parsePositions(linkedPos, lineNumber, linkedColumnNumber);
+
+            if (!peptidePositions.isEmpty() && !relativePositions.isEmpty()){
+                // the same protein has different ranges and need to be duplicated in a participant set
+                if (relativePositions.size() > 1 && peptidePositions.size() == 1){
+                    CsvRange firstPepPosition = peptidePositions.iterator().next();
+                    // we duplicate the protein
+                    for (int i=1; i < relativePositions.size(); i++){
+                        relativePositions.add(firstPepPosition);
+                    }
+                }
+                // we have an error, the number of positions does not match the number of peptide positions and we have ambiguous results
+                else if (relativePositions.size() > 0 && relativePositions.size() != peptidePositions.size()){
+                    processMismatchPeptidePositions();
+                }
+
+                // compute final positions
+                positions = new ArrayList<CsvRange>(relativePositions.size());
+                for (int i=0; i < relativePositions.size(); i++){
+                    CsvRange finalRange = new CsvRange(
+                            new DefaultPosition(relativePositions.get(i).getStart().getStart() + peptidePositions.get(i).getStart().getStart()),
+                            new DefaultPosition(relativePositions.get(i).getEnd().getEnd() + peptidePositions.get(i).getEnd().getEnd()));
+                    finalRange.setSourceLocator(relativePositions.get(i).getSourceLocator());
+                    positions.add(finalRange);
+                }
+            }
+            else{
+                processMismatchPeptidePositions();
+            }
+        }
+        // the position is absolute
+        else if (pepPos == null && linkedPos != null){
+            positions = parsePositions(linkedPos, lineNumber, linkedColumnNumber);
+        }
+        return positions;
+    }
+
+    protected List<CsvRange> parsePositions(String pos, int lineNumber, int colNumber){
         // several ranges are present
         if (pos.contains(CsvUtils.PROTEIN_SEPARATOR)){
             String[] ranges = pos.split(CsvUtils.PROTEIN_SEPARATOR);
 
-            List<Integer> positions = new ArrayList<Integer>(ranges.length);
+            List<CsvRange> positions = new ArrayList<CsvRange>(ranges.length);
             for (String p : ranges){
                 try {
-                    positions.add(Integer.parseInt(p));
+                    Long posValue = Long.parseLong(p.trim());
+                    CsvRange range = new CsvRange(new DefaultPosition(posValue), new DefaultPosition(posValue));
+                    range.setSourceLocator(new CsvSourceLocator(lineNumber, -1, colNumber));
+                    positions.add(range);
                 }
                 catch (NumberFormatException e){
                     processInvalidPosition();
+                    positions.add(null);
                     return Collections.EMPTY_LIST;
                 }
             }
@@ -184,7 +237,10 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         // only one range
         else{
             try {
-                return Arrays.asList(Integer.parseInt(pos));
+                Long posValue = Long.parseLong(pos.trim());
+                CsvRange range = new CsvRange(new DefaultPosition(posValue), new DefaultPosition(posValue));
+                range.setSourceLocator(new CsvSourceLocator(lineNumber, -1, colNumber));
+                return Arrays.asList(range);
             }
             catch (NumberFormatException e){
                 processInvalidPosition();
@@ -193,9 +249,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         }
     }
 
-    protected abstract void processInvalidPosition();
-
-    protected CsvParticipantEvidence createParticipantEvidence(CsvProtein csvProtein, int lineNumber, int columnNumber) {
+    protected CsvParticipantEvidence createParticipantEvidence(CsvProtein csvProtein, int lineNumber, int columnNumber, CsvRange range) {
         CsvParticipantEvidence participant = new CsvParticipantEvidence(csvProtein);
 
         // inti bio role
@@ -207,10 +261,30 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
 
         participant.setSourceLocator(new CsvSourceLocator(lineNumber, -1, columnNumber));
 
+        // range not null, create feature
+        if (range != null){
+            CsvFeatureEvidence featureEvidence = createCrossLinkFeatureEvidence(range);
+
+            // add feature to participant
+            participant.addFeature(featureEvidence);
+        }
+
         return participant;
     }
 
-    protected CsvExperimentalParticipantPool createExperimentalParticipantPool(List<CsvProtein> csvProteins, int lineNumber, int columnNumber) {
+    protected CsvFeatureEvidence createCrossLinkFeatureEvidence(CsvRange range) {
+        CsvFeatureEvidence featureEvidence = new CsvFeatureEvidence();
+        // set type to crosslinker
+        featureEvidence.setType(CvTermUtils.createMICvTerm(CsvUtils.CROSS_LINKER, CsvUtils.CROSS_LINKER_MI));
+        // set source locator
+        featureEvidence.setSourceLocator(range.getSourceLocator());
+        // add range
+        featureEvidence.getRanges().add(range);
+        return featureEvidence;
+    }
+
+    protected CsvExperimentalParticipantPool createExperimentalParticipantPool(List<CsvProtein> csvProteins, int lineNumber, int columnNumber,
+                                                                               List<CsvRange> csvRanges) {
         CsvExperimentalParticipantPool participant = new CsvExperimentalParticipantPool("interactor set "+lineNumber+"-"+columnNumber);
 
         // inti bio role
@@ -222,10 +296,20 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
 
         participant.setSourceLocator(new CsvSourceLocator(lineNumber, -1, columnNumber));
 
-        for (CsvProtein prot : csvProteins){
+        for (int i = 0; i < csvProteins.size(); i++){
+            CsvProtein prot = csvProteins.get(i);
+            CsvRange range = csvRanges.isEmpty() ? null : csvRanges.get(i);
             CsvExperimentalParticipantCandidate candidate = new CsvExperimentalParticipantCandidate(prot);
             candidate.setSourceLocator(prot.getSourceLocator());
             participant.add(candidate);
+
+            // range not null, create feature
+            if (range != null){
+                CsvFeatureEvidence featureEvidence = createCrossLinkFeatureEvidence(range);
+
+                // add feature to participant
+                candidate.addFeature(featureEvidence);
+            }
         }
 
         return participant;
@@ -267,7 +351,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                 return null;
             }
             else{
-                CsvProtein prot = new CsvProtein(identifiers[2], new CsvXref(CvTermUtils.createUniprotkbDatabase(), identifiers[1],
+                CsvProtein prot = new CsvProtein(identifiers[2], new CsvXref(CvTermUtils.createUniprotkbDatabase(), identifiers[1].trim(),
                         CvTermUtils.createIdentityQualifier()));
                 prot.setSourceLocator(new CsvSourceLocator(lineNumber, -1, columnNumber));
                 return prot;
@@ -275,12 +359,20 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         }
         // the name and identifier will be the same
         else {
-            CsvProtein prot = new CsvProtein(protein, new CsvXref(CvTermUtils.createUniprotkbDatabase(), protein,
+            CsvProtein prot = new CsvProtein(protein, new CsvXref(CvTermUtils.createUniprotkbDatabase(), protein.trim(),
                     CvTermUtils.createIdentityQualifier()));
             prot.setSourceLocator(new CsvSourceLocator(lineNumber, -1, columnNumber));
             return prot;
         }
     }
+
+    protected abstract T instantiateInteractionEvidence(int linePosition);
+
+    protected abstract void processMismatchPeptidePositions();
+
+    protected abstract void processMismatchPositions();
+
+    protected abstract void processInvalidPosition();
 
     protected abstract void processProteinIdentifiersError();
 
@@ -290,7 +382,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         int index = 0;
         List<CrossLinkCSVColumns> existingNames = Arrays.asList(CrossLinkCSVColumns.values());
         for (String name : data){
-            CrossLinkCSVColumns colName = CrossLinkCSVColumns.convertFromString(name);
+            CrossLinkCSVColumns colName = CrossLinkCSVColumns.convertFromString(name.trim());
             if (colName != null){
                 columnsIndex.put(index, colName);
             }
