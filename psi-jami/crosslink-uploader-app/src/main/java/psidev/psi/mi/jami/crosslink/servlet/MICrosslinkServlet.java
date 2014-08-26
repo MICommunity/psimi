@@ -73,6 +73,7 @@ public class MICrosslinkServlet extends HttpServlet{
         }
         catch (NumberFormatException e){
             resp.sendError(400, "The host organism taxId is not a valid taxId.");
+            return;
         }
         String publicationId = req.getParameter(PUBLICATION_PARAM);
         String sourceName = req.getParameter(SOURCE_NAME_PARAM);
@@ -82,6 +83,7 @@ public class MICrosslinkServlet extends HttpServlet{
         if ( publicationId == null || sourceName == null || output == null){
             resp.sendError(400, "The host organism taxId, publication identifiers, source name (and MI identifier recommended) and output format are required parameters to generate " +
                     "valid PSI-MI XML or MITAB files.");
+            return;
         }
 
         // Set response content type
