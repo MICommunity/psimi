@@ -1,8 +1,8 @@
 package psidev.psi.mi.jami.crosslink.io.parser;
 
+import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.crosslink.extension.CsvBinaryInteractionEvidence;
 import psidev.psi.mi.jami.crosslink.extension.CsvSourceLocator;
-import psidev.psi.mi.jami.model.InteractionEvidence;
 
 /**
  * Binary Interaction evidence crosslink CSV parser
@@ -12,9 +12,9 @@ import psidev.psi.mi.jami.model.InteractionEvidence;
  * @since <pre>26/08/14</pre>
  */
 
-public class CsvBinaryInteractionEvidenceParser extends AbstractCsvInteractionEvidenceParser<InteractionEvidence> {
+public class CsvBinaryInteractionEvidenceParser extends AbstractCsvInteractionEvidenceParser<BinaryInteractionEvidence> {
     @Override
-    protected InteractionEvidence instantiateInteractionEvidence(int linePosition) {
+    protected BinaryInteractionEvidence instantiateInteractionEvidence(int linePosition) {
         CsvBinaryInteractionEvidence interaction = new CsvBinaryInteractionEvidence();
         interaction.setSourceLocator(new CsvSourceLocator(linePosition, 1, -1));
         return interaction;
