@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.io.parser;
+package psidev.psi.mi.jami.crosslink.io.parser;
 
 /**
  * Enum listing possible column names
