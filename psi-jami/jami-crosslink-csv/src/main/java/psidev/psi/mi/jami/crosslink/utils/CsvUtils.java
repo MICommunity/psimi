@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.utils;
+package psidev.psi.mi.jami.crosslink.utils;
 
 /**
  * Crosslink CSV utils class

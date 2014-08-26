@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.extension;
+package psidev.psi.mi.jami.crosslink.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;

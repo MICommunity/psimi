@@ -1,11 +1,17 @@
-package psidev.psi.mi.jami.io.parser;
+package psidev.psi.mi.jami.crosslink.io.parser;
 
 import com.googlecode.jcsv.reader.CSVEntryParser;
-import psidev.psi.mi.jami.extension.*;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.crosslink.extension.*;
+import psidev.psi.mi.jami.crosslink.listener.CsvParserListener;
+import psidev.psi.mi.jami.crosslink.utils.CsvUtils;
+import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.model.Experiment;
+import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPosition;
-import psidev.psi.mi.jami.utils.CsvUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
 import java.util.*;
@@ -22,6 +28,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
 
     private Map<Integer, CrossLinkCSVColumns> columnsIndex=null;
     private int currentLineIndex=0;
+    private CsvParserListener parserListener;
 
     public T parseEntry(String... data) {
         if (data == null){
@@ -121,11 +128,19 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                 }
             }
             else{
-                processNoProtein1Error();
+                processNoProtein1Error(currentLineIndex);
                 return null;
             }
         }
         return null;
+    }
+
+    public CsvParserListener getParserListener() {
+        return parserListener;
+    }
+
+    public void setParserListener(CsvParserListener parserListener) {
+        this.parserListener = parserListener;
     }
 
     protected ParticipantEvidence createParticipantEvidence(String protein1, int protein1Index, String pepPos, int pepPos1Index, String linkedPos,
@@ -159,7 +174,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         }
         // we have an error, the number of positions does not match the number of proteins and we have ambiguous results
         else if (positions.size() > 0 && positions.size() != csvProteins1.size()){
-            processMismatchPositions();
+            processMismatchProteinPositions(positions, csvProteins1);
         }
         // participant pool
         else {
@@ -189,7 +204,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                 }
                 // we have an error, the number of positions does not match the number of peptide positions and we have ambiguous results
                 else if (relativePositions.size() > 0 && relativePositions.size() != peptidePositions.size()){
-                    processMismatchPeptidePositions();
+                    processMismatchPeptidePositions(peptidePositions, relativePositions);
                 }
 
                 // compute final positions
@@ -203,7 +218,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                 }
             }
             else{
-                processMismatchPeptidePositions();
+                processMismatchPeptidePositions(peptidePositions, relativePositions);
             }
         }
         // the position is absolute
@@ -227,7 +242,8 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                     positions.add(range);
                 }
                 catch (NumberFormatException e){
-                    processInvalidPosition();
+                    processInvalidPosition("Invalid range positions: "+
+                            e.getMessage(), new DefaultFileSourceContext(new CsvSourceLocator(lineNumber, -1, colNumber)));
                     positions.add(null);
                     return Collections.EMPTY_LIST;
                 }
@@ -243,7 +259,8 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                 return Arrays.asList(range);
             }
             catch (NumberFormatException e){
-                processInvalidPosition();
+                processInvalidPosition("Invalid range positions: "+
+                        e.getMessage(), new DefaultFileSourceContext(new CsvSourceLocator(lineNumber, -1, colNumber)));
                 return Collections.EMPTY_LIST;
             }
         }
@@ -347,7 +364,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         if (protein.contains(CsvUtils.XREF_SEPARATOR)){
             String[] identifiers = protein.split(CsvUtils.XREF_SEPARATOR);
             if (identifiers.length != 3){
-                processProteinIdentifiersError();
+                processProteinIdentifiersError(identifiers, lineNumber, columnNumber);
                 return null;
             }
             else{
@@ -368,19 +385,38 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
 
     protected abstract T instantiateInteractionEvidence(int linePosition);
 
-    protected abstract void processMismatchPeptidePositions();
+    protected void processMismatchPeptidePositions(List<CsvRange> peptidePositions, List<CsvRange> linkedPositions){
+        if (this.parserListener != null){
+            this.parserListener.onMismatchBetweenPeptideAndLinkedPositions(peptidePositions, linkedPositions);
+        }
+    }
 
-    protected abstract void processMismatchPositions();
+    protected void processMismatchProteinPositions(List<CsvRange> rangePositions, List<CsvProtein> proteins){
+        if (this.parserListener != null){
+            this.parserListener.oneMismatchBetweenRangePositionsAndProteins(rangePositions, proteins);
+        }
+    }
 
-    protected abstract void processInvalidPosition();
+    protected void processInvalidPosition(String message, FileSourceContext context){
+        if (this.parserListener != null){
+            this.parserListener.onInvalidPosition(message, context);
+        }
+    }
 
-    protected abstract void processProteinIdentifiersError();
+    protected void processProteinIdentifiersError(String[] identifiers, int lineNumber, int columnNumber){
+        if (this.parserListener != null){
+            this.parserListener.onInvalidProteinIdentifierSyntax(identifiers, lineNumber, columnNumber);
+        }
+    }
 
-    protected abstract void processNoProtein1Error();
+    protected void processNoProtein1Error(int lineNumber){
+        if (this.parserListener != null){
+            this.parserListener.onMissingProtein1Column(lineNumber);
+        }
+    }
 
     private void initialiseColumnNames(String... data){
         int index = 0;
-        List<CrossLinkCSVColumns> existingNames = Arrays.asList(CrossLinkCSVColumns.values());
         for (String name : data){
             CrossLinkCSVColumns colName = CrossLinkCSVColumns.convertFromString(name.trim());
             if (colName != null){
