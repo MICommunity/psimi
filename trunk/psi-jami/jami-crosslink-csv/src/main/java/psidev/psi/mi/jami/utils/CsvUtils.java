@@ -21,4 +21,7 @@ public class CsvUtils {
 
     public static final String CROSS_LINK = "crosslink";
     public static final String CROSS_LINK_MI = "MI:0030";
+
+    public static final String CROSS_LINKER= "cross linker";
+    public static final String CROSS_LINKER_MI = "MI:0911";
 }
