@@ -20,16 +20,16 @@
 
 <p>You can upload Cross-link CSV files and ask for any standard output format (MITAB or PSI-MI XML format) The fields with a '*' are mandatory</p>
 
-<form id="form1_2" action="miCsvUpload" method="POST" enctype="multipart/form-data" name="file_form">
-    Upload your CSV File*: <input id="inputFile" type="file" name="file" required/>
+<form id="form1_2" action="miCsvUpload" method="post" enctype="multipart/form-data" name="file_form">
+    Upload your CSV File*: <input id="inputFile" type="file" name="file"/>
     <br/>
     Host organism name: <input id="inputOrganismName" type="text" name="organismName"/>
     <br/>
-    Host organism TaxId*: <input id="inputOrganismTaxId" type="text" name="organismTaxId" required/>
+    Host organism TaxId*: <input id="inputOrganismTaxId" type="text" name="organismTaxId"/>
     <br/>
-    Pubmed identifier*: <input id="inputPublicationIdentifier" type="text" name="publicationId" required/>
+    Pubmed identifier*: <input id="inputPublicationIdentifier" type="text" name="publicationId"/>
     <br/>
-    Institution name*: <input id="institutionNameInput" type="text" name="institutionName" required/>
+    Institution name*: <input id="institutionNameInput" type="text" name="institutionName"/>
     <br/>
     Institution MI identifier (<a href="http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&amp;termId=MI%3A0444&amp;termName=database%20citation">See choices in MI ontology</a>): <input id="institutionIdInput" type="text" name="institutionMI"/>
     <br/>
