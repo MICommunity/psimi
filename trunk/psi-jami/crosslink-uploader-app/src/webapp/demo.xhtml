@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="description" content="JAMI-Crosslink-uploader"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="en-GB"/>
+<meta http-equiv="Window-target" content="_top"/>
+<meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1.0, maximum-scale = 1.0, user-scalable = no" />
+
+<title>
+    JAMI-Crosslink uploader/exporter
+</title>
+</head>
+<body>
+
+<h2>JAMI-CrossLink uploader</h2>
+
+<p>You can upload Cross-link CSV files and ask for any standard output format (MITAB or PSI-MI XML format) The fields with a '*' are mandatory</p>
+
+<form id="form1_2" action="miCsvUpload" method="POST" enctype="multipart/form-data" name="file_form">
+    Upload your CSV File*: <input id="inputFile" type="file" name="file" required/>
+    <br/>
+    Host organism name: <input id="inputOrganismName" type="text" name="organismName"/>
+    <br/>
+    Host organism TaxId*: <input id="inputOrganismTaxId" type="text" name="organismTaxId" required/>
+    <br/>
+    Pubmed identifier*: <input id="inputPublicationIdentifier" type="text" name="publicationId" required/>
+    <br/>
+    Institution name*: <input id="institutionNameInput" type="text" name="institutionName" required/>
+    <br/>
+    Institution MI identifier (<a href="http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&amp;termId=MI%3A0444&amp;termName=database%20citation">See choices in MI ontology</a>): <input id="institutionIdInput" type="text" name="institutionMI"/>
+    <br/>
+    Choose the output
+    <input type="radio" name="output" value="xml25">PSI-MI XML 2.5</input><br/>
+    <input type="radio" name="output" value="tab25">MITAB 2.5</input><br/>
+    <input type="radio" name="output" value="tab26">MITAB 2.6</input><br/>
+    <input type="radio" name="output" value="tab27">MITAB 2.7</input><br/>
+
+    <input id="submitFile" type="submit" value="Submit" />
+</form>
+
+</body>
+</html>
