@@ -29,7 +29,7 @@ public interface CsvParserListener extends MIFileParserListener{
      * @param rangePositions : feature ranges
      * @param proteins : proteins
      */
-    public void oneMismatchBetweenRangePositionsAndProteins(List<CsvRange> rangePositions, List<CsvProtein> proteins);
+    public void onMismatchBetweenRangePositionsAndProteins(List<CsvRange> rangePositions, List<CsvProtein> proteins);
 
     /**
      * Event fired when we don't find protein xrefs with db|uniprotId|name

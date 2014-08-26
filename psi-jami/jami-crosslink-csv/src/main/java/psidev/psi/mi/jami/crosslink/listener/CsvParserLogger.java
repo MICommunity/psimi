@@ -31,7 +31,7 @@ public class CsvParserLogger extends MIFileParserLogger implements CsvParserList
                 "These positions will be ignored as too ambiguous.");
     }
 
-    public void oneMismatchBetweenRangePositionsAndProteins(List<CsvRange> rangePositions, List<CsvProtein> proteins) {
+    public void onMismatchBetweenRangePositionsAndProteins(List<CsvRange> rangePositions, List<CsvProtein> proteins) {
         FileSourceLocator locator1 = rangePositions.isEmpty() ? null : rangePositions.iterator().next().getSourceLocator();
         FileSourceLocator locator2 = proteins.isEmpty() ? null : proteins.iterator().next().getSourceLocator();
 

@@ -29,8 +29,10 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
     private Map<Integer, CrossLinkCSVColumns> columnsIndex=null;
     private int currentLineIndex=0;
     private CsvParserListener parserListener;
+    private boolean isStarted = false;
 
     public T parseEntry(String... data) {
+        isStarted = true;
         if (data == null){
             return null;
         }
@@ -141,6 +143,10 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
 
     public void setParserListener(CsvParserListener parserListener) {
         this.parserListener = parserListener;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
     }
 
     protected ParticipantEvidence createParticipantEvidence(String protein1, int protein1Index, String pepPos, int pepPos1Index, String linkedPos,
@@ -393,7 +399,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
 
     protected void processMismatchProteinPositions(List<CsvRange> rangePositions, List<CsvProtein> proteins){
         if (this.parserListener != null){
-            this.parserListener.oneMismatchBetweenRangePositionsAndProteins(rangePositions, proteins);
+            this.parserListener.onMismatchBetweenRangePositionsAndProteins(rangePositions, proteins);
         }
     }
 
