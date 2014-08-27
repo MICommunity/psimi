@@ -452,7 +452,7 @@ public class MIWriterOptionFactory {
             try {
                 DatatypeFactory datatypeFactory = null;
                 datatypeFactory = DatatypeFactory.newInstance();
-                options.put(PsiXmlWriterOptions.DEFAULT_RELEASE_DATE_OPTION, datatypeFactory.newXMLGregorianCalendar());
+                options.put(PsiXmlWriterOptions.DEFAULT_RELEASE_DATE_OPTION, datatypeFactory.newXMLGregorianCalendar(new GregorianCalendar()));
 
             } catch (DatatypeConfigurationException e) {
                 System.out.println(e);
