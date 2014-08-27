@@ -61,7 +61,7 @@ public class SimpleJsonRangeWriter implements JsonRangeWriter{
            interactor = parent.getParticipant().getInteractor();
         }
         if (interactor != null){
-            String[] extractedInteractorId =  MIJsonUtils.extractInteractorId(object.getParticipant().getInteractor().getPreferredIdentifier(), object.getParticipant().getInteractor());
+            String[] extractedInteractorId =  MIJsonUtils.extractInteractorId(interactor.getPreferredIdentifier(), interactor);
             String key = extractedInteractorId[0]+"_"+extractedInteractorId[1];
 
             if (this.processedInteractors.containsKey(key)){
