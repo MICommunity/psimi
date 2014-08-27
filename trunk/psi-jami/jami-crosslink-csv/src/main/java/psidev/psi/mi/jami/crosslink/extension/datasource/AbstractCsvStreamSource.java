@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.crosslink.extension.datasource;
 
+import com.googlecode.jcsv.CSVStrategy;
 import com.googlecode.jcsv.reader.CSVReader;
 import com.googlecode.jcsv.reader.internal.CSVReaderBuilder;
 import psidev.psi.mi.jami.crosslink.extension.CsvProtein;
@@ -108,7 +109,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         else if (options.containsKey(MIFileDataSourceOptions.INPUT_OPTION_KEY)){
             Object input = options.get(MIFileDataSourceOptions.INPUT_OPTION_KEY);
             if (input instanceof URL){
-               initialiseURL((URL) input);
+                initialiseURL((URL) input);
             }
             else if (input instanceof File){
                 initialiseFile((File) input);
@@ -447,7 +448,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         }
         // reset parser if possible
         if (this.lineParser.isStarted()){
-           reInit();
+            reInit();
         }
         return createCsvIterator();
     }
@@ -467,8 +468,6 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
 
     protected void reInit() throws MIIOException{
         if (isInitialised){
-            this.lineParser = instantiateLineParser();
-            this.lineParser.setParserListener(this);
 
             if (this.originalFile != null){
                 // close the previous stream
@@ -483,10 +482,6 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                 try {
                     this.originalStream = new BufferedInputStream(new FileInputStream(this.originalFile));
                     this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
-
-                    this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
-                    this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
-
                 } catch (FileNotFoundException e) {
                     throw new MIIOException("We cannot open the file " + this.originalFile.getName(), e);
                 } catch (IOException e) {
@@ -506,10 +501,6 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                 try {
                     this.originalStream = originalURL.openStream();
                     this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
-
-                    this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
-                    this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
-
                 } catch (IOException e) {
                     throw new MIIOException("We cannot open the URL " + this.originalURL.toExternalForm(), e);
                 }
@@ -520,9 +511,6 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                     try {
                         this.originalStream.reset();
                         this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
-
-                        this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
-                        this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
 
                     } catch (IOException e) {
                         throw new MIIOException("The inputStream has been consumed and cannot be reset", e);
@@ -537,8 +525,6 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                 if (this.originalReader.markSupported()){
                     try {
                         this.originalReader.reset();
-                        this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
-                        this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
                     } catch (IOException e) {
                         throw new MIIOException("The reader has been consumed and cannot be reset", e);
                     }
@@ -547,6 +533,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                     throw new MIIOException("The reader has been consumed and cannot be reset");
                 }
             }
+            createCsvReader();
         }
     }
 
@@ -561,15 +548,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         this.originalStream = null;
         this.originalURL = null;
 
-        this.lineParser = instantiateLineParser();
-        this.lineParser.setParserListener(this);
-
-        this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
-        try {
-            this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
-        } catch (IOException e) {
-            throw new MIIOException("The CSV file does not have valid headers", e);
-        }
+        createCsvReader();
     }
 
     private void initialiseInputStream(InputStream input) {
@@ -581,15 +560,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         this.originalURL = null;
         this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
 
-        this.lineParser = instantiateLineParser();
-        this.lineParser.setParserListener(this);
-
-        this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
-        try {
-            this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
-        } catch (IOException e) {
-            throw new MIIOException("The CSV file does not have valid headers", e);
-        }
+        createCsvReader();
     }
 
     private void initialiseFile(File file)  {
@@ -607,15 +578,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         }
         this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
         this.originalURL = null;
-        this.lineParser = instantiateLineParser();
-        this.lineParser.setParserListener(this);
-
-        this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
-        try {
-            this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
-        } catch (IOException e) {
-            throw new MIIOException("The CSV file does not have valid headers", e);
-        }
+        createCsvReader();
     }
 
     private void initialiseURL(URL url)  {
@@ -631,10 +594,17 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
         this.originalFile = null;
 
+        createCsvReader();
+    }
+
+    private void createCsvReader() {
         this.lineParser = instantiateLineParser();
         this.lineParser.setParserListener(this);
 
-        this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+        this.csvReader = new CSVReaderBuilder<T>(this.originalReader).
+                entryParser(this.lineParser).
+                strategy(CSVStrategy.UK_DEFAULT).
+                build();
         try {
             this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
         } catch (IOException e) {
