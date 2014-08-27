@@ -65,42 +65,8 @@ public class MICrosslinkServlet extends HttpServlet{
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String organismName = req.getParameter(ORGANISM_NAME_PARAM);
-        int organismTaxid=-3;
-        try{
-            organismTaxid = Integer.parseInt(req.getParameter(ORGANISM_TAXID_PARAM));
-        }
-        catch (NumberFormatException e){
-            resp.sendError(400, "The host organism taxId is not a valid taxId.");
-            return;
-        }
-        String publicationId = req.getParameter(PUBLICATION_PARAM);
-        String sourceName = req.getParameter(SOURCE_NAME_PARAM);
-        String sourceMI = req.getParameter(SOURCE_MI_PARAM);
-        String output = req.getParameter(OUTPUT_PARAM);
-
-        if ( publicationId == null || sourceName == null || output == null){
-            resp.sendError(400, "The host organism taxId, publication identifiers, source name (and MI identifier recommended) and output format are required parameters to generate " +
-                    "valid PSI-MI XML or MITAB files.");
-            return;
-        }
-
-        // Set response content type
-        if (output.equalsIgnoreCase(XML25_OUTPUT)){
-            resp.setContentType("application/xml");
-        }
-        else {
-            resp.setContentType("text/plain");
-        }
-
         // Actual logic goes here.
-        Organism organism = new DefaultOrganism(organismTaxid, organismName);
-        Publication publication = new DefaultPublication(publicationId);
-        Source source = new DefaultSource(sourceName);
-        source.setMIIdentifier(sourceMI);
-        publication.setSource(source);
-        processFile(req, resp, organism, publication, output);
+        processFile(req, resp);
     }
 
     public int getTimeOut() {
@@ -112,10 +78,10 @@ public class MICrosslinkServlet extends HttpServlet{
     }
 
     private void processMIData(String request, HttpServletResponse resp,
-                                            Writer writer, InputStream stream,
-                                            Organism organism,
-                                            Publication publication,
-                                            String output) throws IOException {
+                               Writer writer, InputStream stream,
+                               Organism organism,
+                               Publication publication,
+                               String output) throws IOException {
         CsvBinaryEvidenceStreamSource csvSource=null;
         try{
             csvSource = new CsvBinaryEvidenceStreamSource(stream);
@@ -183,12 +149,23 @@ public class MICrosslinkServlet extends HttpServlet{
         }
     }
 
-    private void processFile(HttpServletRequest req, HttpServletResponse resp, Organism organism, Publication publication, String output) throws IOException {
+    private void processFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Writer writer = resp.getWriter();
 
         InputStream stream = null;
         InteractionStream miDataSource = null;
+        Organism organism = null;
+        Publication publication = null;
+        String output = null;
+
         try {
+            String filename = null;
+            String organismName = null;
+            int organismTaxid=-3;
+            String publicationId = null;
+            String sourceName = null;
+            String sourceMI = null;
+
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
             for (FileItem item : items) {
                 // process only files
@@ -196,13 +173,65 @@ public class MICrosslinkServlet extends HttpServlet{
                     // Process form file field (input type="file").
                     String fieldname = item.getFieldName();
                     if (fieldname != null && fieldname.equals(FILE_PARAM)){
-                        String filename = FilenameUtils.getName(item.getName());
+                        filename = FilenameUtils.getName(item.getName());
                         stream = item.getInputStream();
-                        // read CSV and export to file
-                        processMIData(filename, resp, writer, stream, organism, publication, output);
+                    }
+                }
+                else{
+                    String fieldname = item.getFieldName();
+                    if (fieldname != null && fieldname.equals(ORGANISM_NAME_PARAM)){
+                        organismName = item.getString();
+                    }
+                    else if (fieldname != null && fieldname.equals(ORGANISM_TAXID_PARAM)){
+                        try{
+                            organismTaxid = Integer.parseInt(item.getString());
+                        }
+                        catch (NumberFormatException e){
+                            resp.sendError(400, "The host organism taxId is not a valid taxId.");
+                            return;
+                        }
+                    }
+                    else if (fieldname != null && fieldname.equals(PUBLICATION_PARAM)){
+                        publicationId = item.getString();
+                    }
+                    else if (fieldname != null && fieldname.equals(SOURCE_NAME_PARAM)){
+                        sourceName = item.getString();
+                    }
+                    else if (fieldname != null && fieldname.equals(SOURCE_MI_PARAM)){
+                        sourceMI = item.getString();
+                    }
+                    else if (fieldname != null && fieldname.equals(OUTPUT_PARAM)){
+                        output = item.getString();
                     }
                 }
             }
+
+            if ( publicationId == null || publicationId.length() == 0 || sourceName == null || sourceName.length() == 0
+                    || output == null || output.length() == 0){
+                resp.sendError(400, "The host organism taxId, publication identifiers, source name (and MI identifier recommended) and output format are required parameters to generate " +
+                        "valid PSI-MI XML or MITAB files.");
+                return;
+            }
+
+            // Set response content type
+            if (output.equalsIgnoreCase(XML25_OUTPUT)){
+                resp.setContentType("application/xml");
+            }
+            else {
+                resp.setContentType("text/plain");
+            }
+
+            // Actual logic goes here.
+            organism = new DefaultOrganism(organismTaxid, organismName);
+            publication = new DefaultPublication(publicationId);
+            Source source = new DefaultSource(sourceName);
+            if (sourceMI != null && sourceMI.length() > 0){
+                source.setMIIdentifier(sourceMI);
+            }
+            publication.setSource(source);
+
+            // read CSV and export to file
+            processMIData(filename, resp, writer, stream, organism, publication, output);
 
         } catch (FileUploadException e) {
             logger.log(Level.SEVERE, "The uploaded file is not a valid file.", e);
