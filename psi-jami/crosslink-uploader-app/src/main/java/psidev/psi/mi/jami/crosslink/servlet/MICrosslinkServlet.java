@@ -8,6 +8,7 @@ import org.apache.commons.io.FilenameUtils;
 import psidev.psi.mi.jami.commons.MIWriterOptionFactory;
 import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.crosslink.extension.datasource.CsvBinaryEvidenceSource;
+import psidev.psi.mi.jami.crosslink.extension.datasource.CsvMixedEvidenceSource;
 import psidev.psi.mi.jami.crosslink.extension.datasource.CsvNaryEvidenceSource;
 import psidev.psi.mi.jami.crosslink.extension.datasource.CsvSource;
 import psidev.psi.mi.jami.datasource.InteractionStream;
@@ -51,9 +52,10 @@ public class MICrosslinkServlet extends HttpServlet{
     public final static String SOURCE_NAME_PARAM="institutionName";
     public final static String SOURCE_MI_PARAM="institutionMI";
     public final static String OUTPUT_PARAM="output";
-    public final static String COMPLEX_PARAM="complex";
     public final static String FILE_PARAM="file";
-    public final static String XML25_OUTPUT="xml25";
+    public final static String XML25_OUTPUT="xml25_mix";
+    public final static String XML25_NARY_OUTPUT="xml25_single";
+    public final static String XML25_BINARY_OUTPUT="xml25_binary";
     public final static String TAB25_OUTPUT="tab25";
     public final static String TAB26_OUTPUT="tab26";
     public final static String TAB27_OUTPUT="tab27";
@@ -83,11 +85,9 @@ public class MICrosslinkServlet extends HttpServlet{
                                Writer writer, InputStream stream,
                                Organism organism,
                                Publication publication,
-                               String output,
-                               boolean singleComplex) throws IOException {
+                               String output) throws IOException {
         CsvSource csvSource=null;
         try{
-            csvSource = singleComplex ? new CsvNaryEvidenceSource(stream) : new CsvBinaryEvidenceSource(stream);
             InteractionWriter interactionWriter = null;
 
             InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
@@ -96,30 +96,54 @@ public class MICrosslinkServlet extends HttpServlet{
             Map<String, Object> options;
             // xml 2.5
             if (output.equalsIgnoreCase(XML25_OUTPUT)){
+                csvSource = new CsvMixedEvidenceSource(stream);
+
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".xml");
-                options = optionsFactory.getDefaultXmlOptions(writer, InteractionCategory.evidence, singleComplex ? ComplexType.n_ary : ComplexType.binary,
+                options = optionsFactory.getDefaultXmlOptions(writer, InteractionCategory.evidence, ComplexType.n_ary,
+                        PsiXmlType.compact, PsiXmlVersion.v2_5_4);
+            }
+            else if (output.equalsIgnoreCase(XML25_BINARY_OUTPUT)){
+                csvSource = new CsvBinaryEvidenceSource(stream);
+
+                // set attachment header
+                resp.setHeader("Content-disposition","attachment; filename="+request+".xml");
+                options = optionsFactory.getDefaultXmlOptions(writer, InteractionCategory.evidence, ComplexType.binary,
+                        PsiXmlType.compact, PsiXmlVersion.v2_5_4);
+            }
+            else if (output.equalsIgnoreCase(XML25_NARY_OUTPUT)){
+                csvSource = new CsvNaryEvidenceSource(stream);
+
+                // set attachment header
+                resp.setHeader("Content-disposition","attachment; filename="+request+".xml");
+                options = optionsFactory.getDefaultXmlOptions(writer, InteractionCategory.evidence, ComplexType.n_ary,
                         PsiXmlType.compact, PsiXmlVersion.v2_5_4);
             }
             // mitab 2.5
             else if (output.equalsIgnoreCase(TAB25_OUTPUT)){
+                csvSource = new CsvBinaryEvidenceSource(stream);
+
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
-                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, singleComplex ? ComplexType.n_ary : ComplexType.binary,
+                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, ComplexType.binary,
                         null, true, MitabVersion.v2_5, false);
             }
             // mitab 2.6
-            else if (output.equalsIgnoreCase(TAB25_OUTPUT)){
+            else if (output.equalsIgnoreCase(TAB26_OUTPUT)){
+                csvSource = new CsvBinaryEvidenceSource(stream);
+
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
-                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, singleComplex ? ComplexType.n_ary : ComplexType.binary,
+                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, ComplexType.binary,
                         null, true, MitabVersion.v2_6, false);
             }
             // mitab 2.7
             else {
+                csvSource = new CsvBinaryEvidenceSource(stream);
+
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
-                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, singleComplex ? ComplexType.n_ary : ComplexType.binary,
+                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, ComplexType.binary,
                         null, true, MitabVersion.v2_7, false);
             }
 
@@ -169,7 +193,6 @@ public class MICrosslinkServlet extends HttpServlet{
             String publicationId = null;
             String sourceName = null;
             String sourceMI = null;
-            boolean complex = false;
 
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
             for (FileItem item : items) {
@@ -208,11 +231,6 @@ public class MICrosslinkServlet extends HttpServlet{
                     else if (fieldname != null && fieldname.equals(OUTPUT_PARAM)){
                         output = item.getString();
                     }
-                    else if (fieldname != null && fieldname.equals(COMPLEX_PARAM)){
-                        if (item.getString() != null && item.getString().equalsIgnoreCase("yes")){
-                            complex = true;
-                        }
-                    }
                 }
             }
 
@@ -224,7 +242,7 @@ public class MICrosslinkServlet extends HttpServlet{
             }
 
             // Set response content type
-            if (output.equalsIgnoreCase(XML25_OUTPUT)){
+            if (output.equalsIgnoreCase(XML25_OUTPUT) || output.equalsIgnoreCase(XML25_BINARY_OUTPUT) || output.equalsIgnoreCase(XML25_NARY_OUTPUT)){
                 resp.setContentType("application/xml");
             }
             else {
@@ -241,7 +259,7 @@ public class MICrosslinkServlet extends HttpServlet{
             publication.setSource(source);
 
             // read CSV and export to file
-            processMIData(filename, resp, writer, stream, organism, publication, output, complex);
+            processMIData(filename, resp, writer, stream, organism, publication, output);
 
         } catch (FileUploadException e) {
             logger.log(Level.SEVERE, "The uploaded file is not a valid file.", e);
