@@ -42,16 +42,12 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
 
         // initialise columns
         if (columnsIndex == null) {
-            columnsIndex = new HashMap<Integer, CrossLinkCSVColumns>(CrossLinkCSVColumns.values().length);
-            initialiseColumnNames(data);
-            // we may have an empty line
-            if (columnsIndex.isEmpty()){
-                columnsIndex = null;
-            }
             return null;
         }
         // parse data
         else{
+            T interaction = instantiateInteractionEvidence(currentLineIndex);
+
             String protein1 = null;
             String protein2 = null;
             String pepPos1 = null;
@@ -110,7 +106,6 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                 }
 
                 if (participant1 != null){
-                    T interaction = instantiateInteractionEvidence(currentLineIndex);
                     interaction.addParticipant(participant1);
 
                     if (participant2 != null){
@@ -131,10 +126,10 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
             }
             else{
                 processNoProtein1Error(currentLineIndex);
-                return null;
+                return interaction;
             }
+            return interaction;
         }
-        return null;
     }
 
     public CsvParserListener getParserListener() {
@@ -421,7 +416,9 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         }
     }
 
-    private void initialiseColumnNames(String... data){
+    public void initialiseColumnNames(List<String> data){
+        currentLineIndex++;
+        columnsIndex = new HashMap<Integer, CrossLinkCSVColumns>(CrossLinkCSVColumns.values().length);
         int index = 0;
         for (String name : data){
             CrossLinkCSVColumns colName = CrossLinkCSVColumns.convertFromString(name.trim());

@@ -485,9 +485,12 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                     this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
 
                     this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+                    this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
 
                 } catch (FileNotFoundException e) {
                     throw new MIIOException("We cannot open the file " + this.originalFile.getName(), e);
+                } catch (IOException e) {
+                    throw new MIIOException("The CSV file does not have valid headers: " + this.originalFile.getName(), e);
                 }
             }
             else if (this.originalURL != null){
@@ -505,6 +508,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                     this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
 
                     this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+                    this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
 
                 } catch (IOException e) {
                     throw new MIIOException("We cannot open the URL " + this.originalURL.toExternalForm(), e);
@@ -518,6 +522,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                         this.originalReader = new BufferedReader(new InputStreamReader(this.originalStream));
 
                         this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+                        this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
 
                     } catch (IOException e) {
                         throw new MIIOException("The inputStream has been consumed and cannot be reset", e);
@@ -533,6 +538,7 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
                     try {
                         this.originalReader.reset();
                         this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+                        this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
                     } catch (IOException e) {
                         throw new MIIOException("The reader has been consumed and cannot be reset", e);
                     }
@@ -559,6 +565,11 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         this.lineParser.setParserListener(this);
 
         this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+        try {
+            this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
+        } catch (IOException e) {
+            throw new MIIOException("The CSV file does not have valid headers", e);
+        }
     }
 
     private void initialiseInputStream(InputStream input) {
@@ -574,6 +585,11 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         this.lineParser.setParserListener(this);
 
         this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+        try {
+            this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
+        } catch (IOException e) {
+            throw new MIIOException("The CSV file does not have valid headers", e);
+        }
     }
 
     private void initialiseFile(File file)  {
@@ -595,6 +611,11 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         this.lineParser.setParserListener(this);
 
         this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+        try {
+            this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
+        } catch (IOException e) {
+            throw new MIIOException("The CSV file does not have valid headers", e);
+        }
     }
 
     private void initialiseURL(URL url)  {
@@ -614,6 +635,11 @@ public abstract class AbstractCsvStreamSource<T extends InteractionEvidence> imp
         this.lineParser.setParserListener(this);
 
         this.csvReader = new CSVReaderBuilder<T>(this.originalReader).entryParser(this.lineParser).build();
+        try {
+            this.lineParser.initialiseColumnNames(this.csvReader.readHeader());
+        } catch (IOException e) {
+            throw new MIIOException("The CSV file does not have valid headers", e);
+        }
     }
 
     protected void setOriginalFile(File originalFile) {
