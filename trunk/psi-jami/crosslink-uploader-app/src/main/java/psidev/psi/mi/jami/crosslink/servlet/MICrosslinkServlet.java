@@ -5,10 +5,11 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
-import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.commons.MIWriterOptionFactory;
 import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.crosslink.extension.datasource.CsvBinaryEvidenceSource;
+import psidev.psi.mi.jami.crosslink.extension.datasource.CsvNaryEvidenceSource;
+import psidev.psi.mi.jami.crosslink.extension.datasource.CsvSource;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
@@ -50,6 +51,7 @@ public class MICrosslinkServlet extends HttpServlet{
     public final static String SOURCE_NAME_PARAM="institutionName";
     public final static String SOURCE_MI_PARAM="institutionMI";
     public final static String OUTPUT_PARAM="output";
+    public final static String COMPLEX_PARAM="complex";
     public final static String FILE_PARAM="file";
     public final static String XML25_OUTPUT="xml25";
     public final static String TAB25_OUTPUT="tab25";
@@ -81,10 +83,11 @@ public class MICrosslinkServlet extends HttpServlet{
                                Writer writer, InputStream stream,
                                Organism organism,
                                Publication publication,
-                               String output) throws IOException {
-        CsvBinaryEvidenceSource csvSource=null;
+                               String output,
+                               boolean singleComplex) throws IOException {
+        CsvSource csvSource=null;
         try{
-            csvSource = new CsvBinaryEvidenceSource(stream);
+            csvSource = singleComplex ? new CsvNaryEvidenceSource(stream) : new CsvBinaryEvidenceSource(stream);
             InteractionWriter interactionWriter = null;
 
             InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
@@ -95,28 +98,28 @@ public class MICrosslinkServlet extends HttpServlet{
             if (output.equalsIgnoreCase(XML25_OUTPUT)){
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".xml");
-                options = optionsFactory.getDefaultXmlOptions(writer, InteractionCategory.evidence, ComplexType.binary,
+                options = optionsFactory.getDefaultXmlOptions(writer, InteractionCategory.evidence, singleComplex ? ComplexType.n_ary : ComplexType.binary,
                         PsiXmlType.compact, PsiXmlVersion.v2_5_4);
             }
             // mitab 2.5
             else if (output.equalsIgnoreCase(TAB25_OUTPUT)){
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
-                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, ComplexType.binary,
+                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, singleComplex ? ComplexType.n_ary : ComplexType.binary,
                         null, true, MitabVersion.v2_5, false);
             }
             // mitab 2.6
             else if (output.equalsIgnoreCase(TAB25_OUTPUT)){
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
-                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, ComplexType.binary,
+                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, singleComplex ? ComplexType.n_ary : ComplexType.binary,
                         null, true, MitabVersion.v2_6, false);
             }
             // mitab 2.7
             else {
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
-                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, ComplexType.binary,
+                options = optionsFactory.getMitabOptions(writer, InteractionCategory.evidence, singleComplex ? ComplexType.n_ary : ComplexType.binary,
                         null, true, MitabVersion.v2_7, false);
             }
 
@@ -130,8 +133,9 @@ public class MICrosslinkServlet extends HttpServlet{
             // then write
             interactionWriter.start();
 
-            Collection<BinaryInteractionEvidence> interactions = csvSource.getInteractions();
-            for (BinaryInteractionEvidence interaction : interactions){
+            Collection interactions = csvSource.getInteractions();
+            for (Object obj : interactions){
+                InteractionEvidence interaction = (InteractionEvidence)obj;
                 interaction.getExperiment().setPublication(publication);
                 interaction.getExperiment().setHostOrganism(organism);
             }
@@ -165,6 +169,7 @@ public class MICrosslinkServlet extends HttpServlet{
             String publicationId = null;
             String sourceName = null;
             String sourceMI = null;
+            boolean complex = false;
 
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(req);
             for (FileItem item : items) {
@@ -203,6 +208,11 @@ public class MICrosslinkServlet extends HttpServlet{
                     else if (fieldname != null && fieldname.equals(OUTPUT_PARAM)){
                         output = item.getString();
                     }
+                    else if (fieldname != null && fieldname.equals(COMPLEX_PARAM)){
+                        if (item.getString() != null && item.getString().equalsIgnoreCase("yes")){
+                            complex = true;
+                        }
+                    }
                 }
             }
 
@@ -231,7 +241,7 @@ public class MICrosslinkServlet extends HttpServlet{
             publication.setSource(source);
 
             // read CSV and export to file
-            processMIData(filename, resp, writer, stream, organism, publication, output);
+            processMIData(filename, resp, writer, stream, organism, publication, output, complex);
 
         } catch (FileUploadException e) {
             logger.log(Level.SEVERE, "The uploaded file is not a valid file.", e);
