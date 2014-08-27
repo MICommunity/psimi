@@ -43,6 +43,9 @@ public class CsvInteractionEvidenceIterator<T extends InteractionEvidence> imple
     private void processNextInteraction() throws MIIOException{
         try {
             this.nextInteraction = this.lineParser.readNext();
+            while (this.nextInteraction != null && this.nextInteraction.getParticipants().isEmpty()){
+                this.nextInteraction = this.lineParser.readNext();
+            }
         } catch (Exception e) {
             if (this.parserListener != null){
                 this.parserListener.onInvalidSyntax(new DefaultFileSourceContext(), e);
