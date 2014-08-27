@@ -423,7 +423,7 @@ public class MIWriterOptionFactory {
         options.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, output);
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psimi_xml.toString());
         if (objectCategory != null){
-            options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, InteractionCategory.mixed);
+            options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, objectCategory != null ? objectCategory : InteractionCategory.mixed);
         }
         options.put(InteractionWriterOptions.COMPLEX_TYPE_OPTION_KEY, complexType != null ? complexType : ComplexType.n_ary);
         options.put(PsiXmlWriterOptions.XML_TYPE_OPTION, xmlType != null ? xmlType : PsiXmlType.expanded);
