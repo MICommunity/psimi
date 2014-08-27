@@ -637,7 +637,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_bibref() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/19411066_bibref.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
 
         InteractionEvidence interaction = (InteractionEvidence)parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -795,7 +795,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_resulting_sequence() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/7566652_variant.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
 
         InteractionEvidence interaction = (InteractionEvidence)parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -834,7 +834,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_stoichiometry() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/11779463_stoichiometry.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
 
         InteractionEvidence interaction = (InteractionEvidence)parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -859,7 +859,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_stoichiometry_range() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/gaba_receptor_abstract.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
 
         ModelledInteraction interaction = (ModelledInteraction)parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -882,7 +882,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_feature_parameters() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/23334297_feature_parameter.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
 
         InteractionEvidence interaction = (InteractionEvidence)parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -914,7 +914,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_abstract() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/CI-example_1_allostery_abstract.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
 
         ExtendedPsiXmlModelledInteraction interaction = (ExtendedPsiXmlModelledInteraction)parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -988,7 +988,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_preassembly() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/CI-example_2_preassembly_abstract.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
 
         ExtendedPsiXmlModelledInteraction interaction = (ExtendedPsiXmlModelledInteraction)parser.parseNextInteraction();
         Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
@@ -1045,7 +1045,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_complex_binding_site() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/CI-example_3_p27-Cks1-Skp2_abstract.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
         parser.parseNextInteraction();
 
         ExtendedPsiXmlModelledInteraction interaction = (ExtendedPsiXmlModelledInteraction)parser.parseNextInteraction();
@@ -1072,7 +1072,7 @@ public class XmlParserTest {
     public void test_read_valid_xml30_variable_parameters() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/several_variable_parameters.xml");
 
-        PsiXmlParser<Interaction<? extends Participant>> parser = new XmlParser(stream);
+        PsiXmlParser<Interaction> parser = new XmlParser(stream);
 
         psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEvidence interaction =
                 (psidev.psi.mi.jami.xml.model.extension.xml300.ExtendedPsiXmlInteractionEvidence)parser.parseNextInteraction();

@@ -105,14 +105,6 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
             initialiseDefaultElementCache();
         }
 
-        // version
-        if (options.containsKey(PsiXmlWriterOptions.XML_VERSION_OPTION)){
-            setVersion((PsiXmlVersion)options.get(PsiXmlWriterOptions.XML_VERSION_OPTION));
-        }
-        else{
-            setVersion(PsiXmlVersion.v2_5_4);
-        }
-
         if (options == null && !isInitialised){
             throw new IllegalArgumentException("The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
         }
@@ -165,6 +157,14 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
         }
         else if (!isInitialised){
             throw new IllegalArgumentException("The options for the PSI-XML writer should contains at least "+ InteractionWriterOptions.OUTPUT_OPTION_KEY + " to know where to write the interactions.");
+        }
+
+        // version
+        if (options.containsKey(PsiXmlWriterOptions.XML_VERSION_OPTION)){
+            setVersion((PsiXmlVersion)options.get(PsiXmlWriterOptions.XML_VERSION_OPTION));
+        }
+        else{
+            setVersion(PsiXmlVersion.v2_5_4);
         }
 
         if (options.containsKey(PsiXmlWriterOptions.WRITE_COMPLEX_AS_INTERACTOR_OPTION)){
