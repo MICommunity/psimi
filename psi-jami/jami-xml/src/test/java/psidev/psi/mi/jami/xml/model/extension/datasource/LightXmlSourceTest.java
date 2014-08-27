@@ -4,7 +4,6 @@ import junit.framework.Assert;
 import org.junit.Test;
 import psidev.psi.mi.jami.factory.options.MIFileDataSourceOptions;
 import psidev.psi.mi.jami.model.Interaction;
-import psidev.psi.mi.jami.model.Participant;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +62,7 @@ public class LightXmlSourceTest {
     @Test
     public void parse_valid_file() throws IOException {
         LightXmlSource dataSource = new LightXmlSource(new File(LightXmlSourceTest.class.getResource("/samples/10049915.xml").getFile()));
-        Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertFalse(iterator.hasNext());
@@ -85,7 +84,7 @@ public class LightXmlSourceTest {
     @Test
     public void iterate_invalid_file(){
         LightXmlSource dataSource = new LightXmlSource(new File(LightXmlSourceTest.class.getResource("/samples/empty.xml").getFile()));
-        Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
         Assert.assertFalse(iterator.hasNext());
         Assert.assertFalse(dataSource.validateSyntax());
         dataSource.close();
@@ -104,7 +103,7 @@ public class LightXmlSourceTest {
     public void test_validate_datasource_impossible_to_reinit(){
         LightXmlSource dataSource = new LightXmlSource(LightXmlSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         Assert.assertTrue(dataSource.validateSyntax());
-        Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
     }
 
     @Test(expected = RuntimeException.class)
@@ -115,14 +114,14 @@ public class LightXmlSourceTest {
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, LightXmlSourceTest.class.getResourceAsStream("/samples/21703451.xml"));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
-        Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
     }
 
     @Test
     public void test_validate_datasource_reinit() throws IOException {
         LightXmlSource dataSource = new LightXmlSource(new File(LightXmlSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         Assert.assertTrue(dataSource.validateSyntax());
-        Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertFalse(iterator.hasNext());
@@ -139,7 +138,7 @@ public class LightXmlSourceTest {
         options.put(MIFileDataSourceOptions.INPUT_OPTION_KEY, new File(LightXmlSourceTest.class.getResource("/samples/10049915.xml").getFile()));
         dataSource.initialiseContext(options);
         Assert.assertTrue(dataSource.validateSyntax());
-        Iterator<Interaction<? extends Participant>> iterator = dataSource.getInteractionsIterator();
+        Iterator<Interaction> iterator = dataSource.getInteractionsIterator();
         Interaction i1 = iterator.next();
         Assert.assertNotNull(i1);
         Assert.assertFalse(iterator.hasNext());
