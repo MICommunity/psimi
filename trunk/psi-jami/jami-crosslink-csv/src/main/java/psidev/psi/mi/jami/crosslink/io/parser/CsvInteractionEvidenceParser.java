@@ -14,9 +14,10 @@ import psidev.psi.mi.jami.model.InteractionEvidence;
 
 public class CsvInteractionEvidenceParser extends AbstractCsvInteractionEvidenceParser<InteractionEvidence> {
     @Override
-    protected InteractionEvidence instantiateInteractionEvidence(int linePosition) {
+    protected InteractionEvidence instantiateInteractionEvidence(int linePosition, String bait) {
         CsvInteractionEvidence interaction = new CsvInteractionEvidence();
         interaction.setSourceLocator(new CsvSourceLocator(linePosition, 1, -1));
+        interaction.setBait(bait);
         return interaction;
     }
 }
