@@ -14,9 +14,10 @@ import psidev.psi.mi.jami.model.ParticipantEvidence;
  * @since <pre>20/06/13</pre>
  */
 
-public class CsvBinaryInteractionEvidence extends DefaultBinaryInteractionEvidence implements FileSourceContext {
+public class CsvBinaryInteractionEvidence extends DefaultBinaryInteractionEvidence implements FileSourceContext, CrosslinkCsvInteraction {
 
     private FileSourceLocator sourceLocator;
+    private String bait;
 
     public CsvBinaryInteractionEvidence() {
         super();
@@ -68,6 +69,14 @@ public class CsvBinaryInteractionEvidence extends DefaultBinaryInteractionEviden
 
     public void setSourceLocator(FileSourceLocator sourceLocator) {
         this.sourceLocator = sourceLocator;
+    }
+
+    public String getBait() {
+        return bait;
+    }
+
+    public void setBait(String bait) {
+        this.bait = bait;
     }
 
     @Override

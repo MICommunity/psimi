@@ -16,9 +16,10 @@ import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
  * @since <pre>11/06/13</pre>
  */
 
-public class CsvInteractionEvidence extends DefaultInteractionEvidence implements FileSourceContext {
+public class CsvInteractionEvidence extends DefaultInteractionEvidence implements FileSourceContext, CrosslinkCsvInteraction {
 
     private FileSourceLocator sourceLocator;
+    private String bait;
 
     public CsvInteractionEvidence(Experiment experiment) {
         super(experiment);
@@ -91,5 +92,13 @@ public class CsvInteractionEvidence extends DefaultInteractionEvidence implement
     @Override
     public String toString() {
         return "Interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+    }
+
+    public String getBait() {
+        return bait;
+    }
+
+    public void setBait(String bait) {
+        this.bait = bait;
     }
 }

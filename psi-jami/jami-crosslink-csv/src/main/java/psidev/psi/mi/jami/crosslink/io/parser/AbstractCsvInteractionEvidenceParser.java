@@ -43,8 +43,6 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         }
         // parse data
         else{
-            T interaction = instantiateInteractionEvidence(currentLineIndex);
-
             String protein1 = null;
             String protein2 = null;
             String pepPos1 = null;
@@ -59,6 +57,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
             int pepPos2Index  = -1;
             int linkPos1Index  = -1;
             int linkPos2Index  = -1;
+            String bait=null;
 
             for (String value : data){
                 // the column index is recognized
@@ -90,10 +89,15 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                             linkPos2 = value;
                             linkPos2Index = index;
                             break;
+                        case bait:
+                            bait = value;
+                            break;
                     }
                 }
                 index++;
             }
+
+            T interaction = instantiateInteractionEvidence(currentLineIndex, bait);
 
             if (protein1 != null){
                 ParticipantEvidence participant1 = createParticipantEvidence(protein1, protein1Index, pepPos1, pepPos1Index, linkPos1, linkPos1Index);
@@ -388,7 +392,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
         }
     }
 
-    protected abstract T instantiateInteractionEvidence(int linePosition);
+    protected abstract T instantiateInteractionEvidence(int linePosition, String bait);
 
     protected void processMismatchPeptidePositions(List<CsvRange> peptidePositions, List<CsvRange> linkedPositions){
         if (this.parserListener != null){
