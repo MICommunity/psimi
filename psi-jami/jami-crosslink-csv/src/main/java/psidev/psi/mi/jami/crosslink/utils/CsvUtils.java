@@ -16,8 +16,8 @@ public class CsvUtils {
     public static final String SEQUENCE_TAG = "sequence tag";
     public static final String SEQUENCE_TAG_MI = "MI:0102";
 
-    public static final String DIRECT_INTERACTION = "direct interaction";
-    public static final String DIRECT_INTERACTION_MI = "MI:0407";
+    public static final String PHYSICAL_INTERACTION = "physical association";
+    public static final String PHYSICAL_INTERACTION_MI = "MI:0915";
 
     public static final String CROSS_LINK = "crosslink";
     public static final String CROSS_LINK_MI = "MI:0030";
