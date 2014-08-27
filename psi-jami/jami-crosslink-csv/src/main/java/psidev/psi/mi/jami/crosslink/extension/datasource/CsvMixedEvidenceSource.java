@@ -269,6 +269,7 @@ public class CsvMixedEvidenceSource implements CsvSource<InteractionEvidence>{
                 mergeOrRegisterParticipant(p2, processedInteraction);
 
                 this.evidences.add(nary);
+                this.processedInteractions.put(csvBinary.getBait(), processedInteraction);
             }
         }
     }
