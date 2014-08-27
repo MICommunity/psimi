@@ -363,7 +363,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
     protected CsvProtein createProteinFromNameAndIdentifier(String protein, int lineNumber, int columnNumber){
         // we have identifier and name
         if (protein.contains(CsvUtils.XREF_SEPARATOR)){
-            String[] identifiers = protein.split(CsvUtils.XREF_SEPARATOR);
+            String[] identifiers = protein.split("\\"+CsvUtils.XREF_SEPARATOR);
             if (identifiers.length != 3){
                 processProteinIdentifiersError(identifiers, lineNumber, columnNumber);
                 return null;
