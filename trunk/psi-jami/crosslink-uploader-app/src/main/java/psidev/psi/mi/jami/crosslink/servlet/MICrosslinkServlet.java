@@ -8,7 +8,7 @@ import org.apache.commons.io.FilenameUtils;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.commons.MIWriterOptionFactory;
 import psidev.psi.mi.jami.commons.PsiJami;
-import psidev.psi.mi.jami.crosslink.extension.datasource.CsvBinaryEvidenceStreamSource;
+import psidev.psi.mi.jami.crosslink.extension.datasource.CsvBinaryEvidenceSource;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Writer;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -82,9 +82,9 @@ public class MICrosslinkServlet extends HttpServlet{
                                Organism organism,
                                Publication publication,
                                String output) throws IOException {
-        CsvBinaryEvidenceStreamSource csvSource=null;
+        CsvBinaryEvidenceSource csvSource=null;
         try{
-            csvSource = new CsvBinaryEvidenceStreamSource(stream);
+            csvSource = new CsvBinaryEvidenceSource(stream);
             InteractionWriter interactionWriter = null;
 
             InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
@@ -96,7 +96,7 @@ public class MICrosslinkServlet extends HttpServlet{
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".xml");
                 options = optionsFactory.getDefaultXmlOptions(writer, InteractionCategory.evidence, ComplexType.binary,
-                        PsiXmlType.expanded, PsiXmlVersion.v2_5_4);
+                        PsiXmlType.compact, PsiXmlVersion.v2_5_4);
             }
             // mitab 2.5
             else if (output.equalsIgnoreCase(TAB25_OUTPUT)){
@@ -130,15 +130,15 @@ public class MICrosslinkServlet extends HttpServlet{
             // then write
             interactionWriter.start();
 
-            Iterator<BinaryInteractionEvidence> interactionIterator = csvSource.getInteractionsIterator();
-            while(interactionIterator.hasNext()){
-                BinaryInteractionEvidence interaction = interactionIterator.next();
+            Collection<BinaryInteractionEvidence> interactions = csvSource.getInteractions();
+            for (BinaryInteractionEvidence interaction : interactions){
                 interaction.getExperiment().setPublication(publication);
                 interaction.getExperiment().setHostOrganism(organism);
-                interactionWriter.write(interaction);
-
-                interactionWriter.flush();
             }
+            interactionWriter.write(interactions);
+
+            interactionWriter.flush();
+
 
             interactionWriter.end();
             resp.setStatus(200);
