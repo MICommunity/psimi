@@ -267,6 +267,8 @@ public class CsvMixedEvidenceSource implements CsvSource<InteractionEvidence>{
                 ProcessedInteraction processedInteraction = new ProcessedInteraction(nary);
                 mergeOrRegisterParticipant(p1, processedInteraction);
                 mergeOrRegisterParticipant(p2, processedInteraction);
+
+                this.evidences.add(nary);
             }
         }
     }
