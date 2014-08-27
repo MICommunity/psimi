@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.crosslink.listener.CsvParserListener;
 import psidev.psi.mi.jami.crosslink.utils.CsvUtils;
 import psidev.psi.mi.jami.datasource.DefaultFileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
-import psidev.psi.mi.jami.model.Experiment;
-import psidev.psi.mi.jami.model.InteractionEvidence;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultExperiment;
 import psidev.psi.mi.jami.model.impl.DefaultPosition;
 import psidev.psi.mi.jami.utils.CvTermUtils;
@@ -110,10 +107,17 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
 
                     if (participant2 != null){
                         interaction.addParticipant(participant2);
+
+                        if (participant1.getFeatures().size() == 1 && participant2.getFeatures().size() == 1){
+                            FeatureEvidence f1 = participant1.getFeatures().iterator().next();
+                            FeatureEvidence f2 = participant2.getFeatures().iterator().next();
+                            f1.getLinkedFeatures().add(f2);
+                            f2.getLinkedFeatures().add(f1);
+                        }
                     }
 
                     // set interaction type
-                    interaction.setInteractionType(CvTermUtils.createMICvTerm(CsvUtils.DIRECT_INTERACTION, CsvUtils.DIRECT_INTERACTION_MI));
+                    interaction.setInteractionType(CvTermUtils.createMICvTerm(CsvUtils.PHYSICAL_INTERACTION, CsvUtils.PHYSICAL_INTERACTION_MI));
                     // create experiment
                     Experiment exp = new DefaultExperiment(null);
                     // set interaction detection method
