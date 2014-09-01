@@ -15,15 +15,8 @@ public class DefaultParticipantCandidate extends AbstractParticipantCandidate<Pa
         super(interactor);
     }
 
-    public DefaultParticipantCandidate(Interactor interactor, CvTerm bioRole) {
-        super(interactor, bioRole);
-    }
-
     public DefaultParticipantCandidate(Interactor interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
     }
 
-    public DefaultParticipantCandidate(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
-        super(interactor, bioRole, stoichiometry);
-    }
 }

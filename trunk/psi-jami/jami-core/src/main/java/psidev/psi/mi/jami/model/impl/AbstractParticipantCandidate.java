@@ -18,16 +18,8 @@ public abstract class AbstractParticipantCandidate<P extends ParticipantPool, F 
         super(interactor);
     }
 
-    public AbstractParticipantCandidate(Interactor interactor, CvTerm bioRole) {
-        super(interactor, bioRole);
-    }
-
     public AbstractParticipantCandidate(Interactor interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
-    }
-
-    public AbstractParticipantCandidate(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
-        super(interactor, bioRole, stoichiometry);
     }
 
     public P getParentPool() {

@@ -29,20 +29,8 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
         this.interactor = interactor;
     }
 
-    public AbstractEntity(Interactor interactor, CvTerm bioRole){
-        if (interactor == null){
-            throw new IllegalArgumentException("The interactor cannot be null.");
-        }
-        this.interactor = interactor;
-    }
-
     public AbstractEntity(Interactor interactor, Stoichiometry stoichiometry){
         this(interactor);
-        this.stoichiometry = stoichiometry;
-    }
-
-    public AbstractEntity(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry){
-        this(interactor, bioRole);
         this.stoichiometry = stoichiometry;
     }
 
