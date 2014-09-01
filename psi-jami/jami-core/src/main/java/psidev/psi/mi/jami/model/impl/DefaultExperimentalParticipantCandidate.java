@@ -16,15 +16,7 @@ public class DefaultExperimentalParticipantCandidate extends
         super(interactor);
     }
 
-    public DefaultExperimentalParticipantCandidate(Interactor interactor, CvTerm bioRole) {
-        super(interactor, bioRole);
-    }
-
     public DefaultExperimentalParticipantCandidate(Interactor interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
-    }
-
-    public DefaultExperimentalParticipantCandidate(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
-        super(interactor, bioRole, stoichiometry);
     }
 }

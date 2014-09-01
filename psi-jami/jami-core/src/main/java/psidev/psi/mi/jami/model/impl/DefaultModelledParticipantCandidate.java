@@ -16,15 +16,7 @@ public class DefaultModelledParticipantCandidate extends AbstractParticipantCand
         super(interactor);
     }
 
-    public DefaultModelledParticipantCandidate(Interactor interactor, CvTerm bioRole) {
-        super(interactor, bioRole);
-    }
-
     public DefaultModelledParticipantCandidate(Interactor interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
-    }
-
-    public DefaultModelledParticipantCandidate(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
-        super(interactor, bioRole, stoichiometry);
     }
 }
