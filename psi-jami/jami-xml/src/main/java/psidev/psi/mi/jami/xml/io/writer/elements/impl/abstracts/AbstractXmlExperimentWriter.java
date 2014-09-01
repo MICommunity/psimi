@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
+import psidev.psi.mi.jami.utils.ExperimentUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.*;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
@@ -120,7 +121,8 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
     }
 
     @Override
-    public void write(Experiment object) throws MIIOException {
+    public CvTerm writeExperiment(Experiment object) throws MIIOException {
+        CvTerm det = null;
         try {
             // write start
             this.streamWriter.writeStartElement("experimentDescription");
@@ -136,6 +138,8 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
             writeHostOrganism(object);
             // write interaction detection method
             writeInteractiondetectionMethod(object);
+            // write participant identification method
+            det = writeParticipantIdentificationMethod(object);
             // write other properties
             writeOtherProperties(object);
             // write confidences
@@ -148,9 +152,31 @@ public abstract class AbstractXmlExperimentWriter implements PsiXmlExperimentWri
             // write end experiment
             this.streamWriter.writeEndElement();
 
+            return det;
+
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to write the experiment : "+object.toString(), e);
         }
+    }
+
+    @Override
+    public void write(Experiment object) throws MIIOException {
+        writeExperiment(object);
+    }
+
+    @Override
+    public CvTerm extractDefaultParticipantIdentificationMethod(Experiment exp) {
+        return ExperimentUtils.extractMostCommonParticipantDetectionMethodFrom(exp);
+    }
+
+    protected CvTerm writeParticipantIdentificationMethod(Experiment object){
+        CvTerm pdet = ExperimentUtils.extractMostCommonParticipantDetectionMethodFrom(object);
+
+        if (pdet != null){
+            // write cv
+            getDetectionMethodWriter().write(pdet, "participantIdentificationMethod");
+        }
+        return pdet;
     }
 
     protected abstract void writeVariableParameters(Experiment object) throws XMLStreamException;

@@ -1,9 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml25;
 
-import psidev.psi.mi.jami.model.Annotation;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
-import psidev.psi.mi.jami.model.Stoichiometry;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlDbXrefWriter;
@@ -98,7 +95,7 @@ public abstract class AbstractXmlParticipantWriter
     }
 
     @Override
-    protected void writeParticipantIdentificationMethods(Participant object) {
+    protected void writeParticipantIdentificationMethods(Participant object, CvTerm method) {
         // nothing to do
     }
 

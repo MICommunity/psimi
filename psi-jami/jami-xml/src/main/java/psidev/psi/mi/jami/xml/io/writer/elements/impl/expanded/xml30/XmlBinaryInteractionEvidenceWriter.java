@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30;
 import psidev.psi.mi.jami.binary.BinaryInteractionEvidence;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.ExpandedPsiXmlElementWriter;
 
@@ -36,9 +37,9 @@ public class XmlBinaryInteractionEvidenceWriter extends psidev.psi.mi.jami.xml.i
     }
 
     @Override
-    protected void writeExperiments(BinaryInteractionEvidence object) throws XMLStreamException {
+    protected CvTerm writeExperiments(BinaryInteractionEvidence object) throws XMLStreamException {
         super.writeExperiments(object);
-        writeExperimentDescription();
+        return writeExperimentDescription();
     }
 
     @Override

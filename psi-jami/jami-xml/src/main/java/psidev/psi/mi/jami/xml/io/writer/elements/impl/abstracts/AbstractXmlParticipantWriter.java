@@ -119,6 +119,11 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
 
     @Override
     public void write(P object) throws MIIOException {
+        writeParticipant(object, null);
+    }
+
+    @Override
+    public void writeParticipant(P object, CvTerm detectionMethod) throws MIIOException {
         try {
             // write start
             this.streamWriter.writeStartElement("participant");
@@ -132,7 +137,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
             // write interactor
             writeInteractor(object);
             // write participant identification methods
-            writeParticipantIdentificationMethods(object);
+            writeParticipantIdentificationMethods(object, detectionMethod);
             // write biological role
             writeBiologicalRole(object);
             // write experimental roles
@@ -251,7 +256,7 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
     protected abstract void writeMolecule(Interactor interactor) throws XMLStreamException ;
     protected abstract void writeExperimentalPreparations(P object) throws XMLStreamException;
     protected abstract void writeExperimentalRoles(P object) throws XMLStreamException;
-    protected abstract void writeParticipantIdentificationMethods(P object) throws XMLStreamException;
+    protected abstract void writeParticipantIdentificationMethods(P object, CvTerm method) throws XMLStreamException;
     protected abstract void writeExperimentalInteractor(P object) throws XMLStreamException;
     protected abstract void writeHostOrganisms(P object) throws XMLStreamException;
     protected abstract void writeConfidences(P object) throws XMLStreamException;

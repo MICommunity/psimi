@@ -198,7 +198,7 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     }
 
     @Override
-    protected void writeExperimentRef() throws XMLStreamException {
+    protected CvTerm writeExperimentRef() throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentList");
         for (Experiment experiment : getDefaultExperiments()){
             getStreamWriter().writeStartElement("experimentRef");
@@ -206,19 +206,24 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
             getStreamWriter().writeEndElement();
         }
         getStreamWriter().writeEndElement();
+        return getDefaultExperiments().size() == 1 ?
+                getExperimentWriter().extractDefaultParticipantIdentificationMethod(getDefaultExperiments().iterator().next()):null;
     }
 
     @Override
-    protected void writeExperimentDescription() throws XMLStreamException {
+    protected CvTerm writeExperimentDescription() throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentList");
+        CvTerm firstMethod = null;
         for (Experiment experiment : getDefaultExperiments()){
-            getExperimentWriter().write(experiment);
+            firstMethod = getExperimentWriter().writeExperiment(experiment);
         }
         getStreamWriter().writeEndElement();
+        return getDefaultExperiments().size() == 1 ?
+                firstMethod : null;
     }
 
     @Override
-    protected void writeExperiments(I object) throws XMLStreamException {
+    protected CvTerm writeExperiments(I object) throws XMLStreamException {
         if (object instanceof ExtendedPsiXmlInteractionEvidence){
             ExtendedPsiXmlInteractionEvidence xmlInteraction = (ExtendedPsiXmlInteractionEvidence)object;
             // set default experimental evidences
@@ -226,5 +231,9 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
                 setDefaultExperiments(xmlInteraction.getExperiments());
             }
         }
+        else {
+            super.writeExperiments(object);
+        }
+        return null;
     }
 }

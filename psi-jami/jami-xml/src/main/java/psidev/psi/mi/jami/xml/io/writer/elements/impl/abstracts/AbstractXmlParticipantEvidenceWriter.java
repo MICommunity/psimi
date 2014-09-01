@@ -99,13 +99,22 @@ public abstract class AbstractXmlParticipantEvidenceWriter
     }
 
     @Override
-    protected void writeParticipantIdentificationMethods(ParticipantEvidence object) throws XMLStreamException {
+    protected void writeParticipantIdentificationMethods(ParticipantEvidence object, CvTerm experimentMethod) throws XMLStreamException {
         if (!object.getIdentificationMethods().isEmpty()){
-            getStreamWriter().writeStartElement("participantIdentificationMethodList");
-            for (CvTerm method : object.getIdentificationMethods()){
-                getExperimentalCvWriter().write(method, "participantIdentificationMethod");
+            // in case participant identification methods is the same as experiment method, no need to write it again
+            if (object.getIdentificationMethods().size() == 1
+                    && experimentMethod != null
+                    && experimentMethod.equals(object.getIdentificationMethods().iterator().next())){
+                 // nothing to write as already written in experiment
             }
-            getStreamWriter().writeEndElement();
+            else {
+                getStreamWriter().writeStartElement("participantIdentificationMethodList");
+
+                for (CvTerm method : object.getIdentificationMethods()){
+                    getExperimentalCvWriter().write(method, "participantIdentificationMethod");
+                }
+                getStreamWriter().writeEndElement();
+            }
         }
     }
 

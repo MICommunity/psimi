@@ -154,7 +154,7 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     }
 
     @Override
-    protected void writeExperiments(I object) throws XMLStreamException {
+    protected CvTerm writeExperiments(I object) throws XMLStreamException {
         // write experimental evidences
         if (!object.getCooperativeEffects().isEmpty()){
             CooperativeEffect effect = object.getCooperativeEffects().iterator().next();
@@ -168,6 +168,7 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
                 }
             }
         }
+        return null;
     }
 
     @Override
