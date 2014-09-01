@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25;
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.Checksum;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25.AbstractXmlModelledInteractionWriter;
@@ -33,9 +34,9 @@ public class XmlModelledBinaryInteractionWriter extends AbstractXmlModelledInter
     }
 
     @Override
-    protected void writeExperiments(ModelledBinaryInteraction object) throws XMLStreamException {
+    protected CvTerm writeExperiments(ModelledBinaryInteraction object) throws XMLStreamException {
         super.writeExperiments(object);
-        writeExperimentRef();
+        return writeExperimentRef();
     }
 
     @Override

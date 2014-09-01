@@ -106,7 +106,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
         this.checksumWriter = checksumWriter;
     }
 
-    public PsiXmlElementWriter<Experiment> getExperimentWriter() {
+    public PsiXmlExperimentWriter getExperimentWriter() {
         if (this.experimentWriter == null){
             initialiseExperimentWriter();
         }
@@ -156,9 +156,9 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
             // write availability
             writeAvailability(object);
             // write experiments
-            writeExperiments(object);
+            CvTerm participantMethod = writeExperiments(object);
             // write participants
-            writeParticipants(object);
+            writeParticipants(object, participantMethod);
             // write inferred interactions
             writeInferredInteractions(object);
             // write interaction type
@@ -249,11 +249,11 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     protected abstract void writeInferredInteractions(T object) throws XMLStreamException;
 
-    protected void writeParticipants(T object) throws XMLStreamException {
+    protected void writeParticipants(T object, CvTerm method) throws XMLStreamException {
         if (!object.getParticipants().isEmpty()){
             this.streamWriter.writeStartElement("participantList");
             for (Object participant : object.getParticipants()){
-                getParticipantWriter().write((P)participant);
+                getParticipantWriter().writeParticipant((P)participant, method);
             }
             this.streamWriter.writeEndElement();
         }
@@ -273,7 +273,7 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     }
 
     protected abstract void writeAvailability(T object) throws XMLStreamException;
-    protected abstract void writeExperiments(T object) throws XMLStreamException;
+    protected abstract CvTerm writeExperiments(T object) throws XMLStreamException;
     protected abstract void writeOtherAttributes(T object) throws XMLStreamException;
     protected void writeIntraMolecular(T object) throws XMLStreamException{
         if (InteractionUtils.findInteractionCategoryOf(object,true).equals(ComplexType.self_intra_molecular)){
@@ -371,18 +371,21 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
 
     protected abstract void writeNegative(T object) throws XMLStreamException;
 
-    protected void writeExperimentRef() throws XMLStreamException {
+    protected CvTerm writeExperimentRef() throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentList");
         getStreamWriter().writeStartElement("experimentRef");
         getStreamWriter().writeCharacters(Integer.toString(getObjectIndex().extractIdForExperiment(getDefaultExperiment())));
         getStreamWriter().writeEndElement();
         getStreamWriter().writeEndElement();
+
+        return getExperimentWriter().extractDefaultParticipantIdentificationMethod(getDefaultExperiment());
     }
 
-    protected void writeExperimentDescription() throws XMLStreamException {
+    protected CvTerm writeExperimentDescription() throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentList");
-        getExperimentWriter().write(getDefaultExperiment());
+        CvTerm det = getExperimentWriter().writeExperiment(getDefaultExperiment());
         getStreamWriter().writeEndElement();
+        return det;
     }
 
     protected void initialiseDefaultExperiment(){

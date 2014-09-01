@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.CompactPsiXmlElementWriter;
@@ -33,8 +34,8 @@ public class XmlInteractionEvidenceWriter extends psidev.psi.mi.jami.xml.io.writ
     }
 
     @Override
-    protected void writeExperiments(InteractionEvidence object) throws XMLStreamException {
+    protected CvTerm writeExperiments(InteractionEvidence object) throws XMLStreamException {
         super.writeExperiments(object);
-        writeExperimentRef();
+        return writeExperimentRef();
     }
 }

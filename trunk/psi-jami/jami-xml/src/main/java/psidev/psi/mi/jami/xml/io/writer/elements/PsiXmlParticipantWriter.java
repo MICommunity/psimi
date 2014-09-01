@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.xml.io.writer.elements;
 
+import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Participant;
 
 /**
@@ -25,4 +27,13 @@ public interface PsiXmlParticipantWriter<T extends Participant> extends PsiXmlEl
      * @param complexAsInteractor
      */
     public void setComplexAsInteractor(boolean complexAsInteractor);
+
+    /**
+     *
+     * @param participant : participant to write
+     * @param generalParticipantDetectionMethod : the experiment participant identification method which can be overridden by
+     *                                          the participant
+     * @throws MIIOException
+     */
+    public void writeParticipant(T participant, CvTerm generalParticipantDetectionMethod) throws MIIOException;
 }

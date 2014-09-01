@@ -147,18 +147,21 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     }
 
     @Override
-    protected void writeExperimentRef() throws XMLStreamException {
+    protected CvTerm writeExperimentRef() throws XMLStreamException {
         // nothing to do
+        return null;
     }
 
     @Override
-    protected void writeExperimentDescription() throws XMLStreamException {
+    protected CvTerm writeExperimentDescription() throws XMLStreamException {
         // nothing to do
+        return null;
     }
 
     @Override
-    protected void writeExperiments(I object) throws XMLStreamException {
+    protected CvTerm writeExperiments(I object) throws XMLStreamException {
         // nothing to write
+        return null;
     }
 
     @Override

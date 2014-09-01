@@ -89,10 +89,11 @@ public abstract class AbstractXmlInteractionEvidenceWriter<I extends Interaction
     }
 
     @Override
-    protected void writeExperiments(I object) throws XMLStreamException {
+    protected CvTerm writeExperiments(I object) throws XMLStreamException {
         if (object.getExperiment() != null){
             setDefaultExperiment(object.getExperiment());
         }
+        return null;
     }
 
     @Override

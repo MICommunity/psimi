@@ -126,7 +126,7 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
     }
 
     @Override
-    protected void writeExperimentRef() throws XMLStreamException {
+    protected CvTerm writeExperimentRef() throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentList");
         for (Experiment experiment : getDefaultExperiments()){
             getStreamWriter().writeStartElement("experimentRef");
@@ -134,19 +134,21 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
             getStreamWriter().writeEndElement();
         }
         getStreamWriter().writeEndElement();
+        return null;
     }
 
     @Override
-    protected void writeExperimentDescription() throws XMLStreamException {
+    protected CvTerm writeExperimentDescription() throws XMLStreamException {
         getStreamWriter().writeStartElement("experimentList");
         for (Experiment experiment : getDefaultExperiments()){
             getExperimentWriter().write(experiment);
         }
         getStreamWriter().writeEndElement();
+        return null;
     }
 
     @Override
-    protected void writeExperiments(I object) throws XMLStreamException {
+    protected CvTerm writeExperiments(I object) throws XMLStreamException {
         // set default experiments
         if (!object.getCooperativeEffects().isEmpty()){
             List<Experiment> defExps = new ArrayList<Experiment>(object.getCooperativeEffects().size());
@@ -164,6 +166,7 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
 
             setDefaultExperiments(defExps);
         }
+        return null;
     }
 
     protected void writeInferredInteractions(I object) throws XMLStreamException {

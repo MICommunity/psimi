@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.xml25;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Experiment;
 import psidev.psi.mi.jami.model.Organism;
+import psidev.psi.mi.jami.utils.ExperimentUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlCvTermWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.XmlConfidenceWriter;
@@ -31,7 +32,7 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
     }
 
     @Override
-    protected void writeOtherProperties(Experiment object) throws XMLStreamException {
+    protected CvTerm writeParticipantIdentificationMethod(Experiment object) {
         if (object instanceof ExtendedPsiXmlExperiment){
             ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
             // write participant identification method
@@ -39,7 +40,19 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
             if (identificationMethod != null){
                 // write cv
                 getDetectionMethodWriter().write(identificationMethod,"participantIdentificationMethod");
+                return identificationMethod;
             }
+            else {
+                return super.writeParticipantIdentificationMethod(object);
+            }
+        }
+        return super.writeParticipantIdentificationMethod(object);
+    }
+
+    @Override
+    protected void writeOtherProperties(Experiment object) throws XMLStreamException {
+        if (object instanceof ExtendedPsiXmlExperiment){
+            ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)object;
             // write feature detection method
             CvTerm featureMethod = xmlExperiment.getFeatureDetectionMethod();
             if (featureMethod != null){
@@ -47,6 +60,19 @@ public class XmlExperimentWriter extends XmlNamedExperimentWriter {
                 getDetectionMethodWriter().write(featureMethod,"featureDetectionMethod");
             }
         }
+    }
+
+    @Override
+    public CvTerm extractDefaultParticipantIdentificationMethod(Experiment exp) {
+        if (exp instanceof ExtendedPsiXmlExperiment){
+            ExtendedPsiXmlExperiment xmlExperiment = (ExtendedPsiXmlExperiment)exp;
+            // write participant identification method
+            CvTerm identificationMethod = xmlExperiment.getParticipantIdentificationMethod();
+            if (identificationMethod != null){
+                return identificationMethod;
+            }
+        }
+        return ExperimentUtils.extractMostCommonParticipantDetectionMethodFrom(exp);
     }
 
     @Override

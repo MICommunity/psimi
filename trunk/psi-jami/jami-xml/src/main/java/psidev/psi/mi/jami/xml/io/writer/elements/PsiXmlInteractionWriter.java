@@ -18,14 +18,13 @@ public interface PsiXmlInteractionWriter<T extends Interaction> extends PsiXmlEl
      * The default experiment that will be used to write a valid XML 2.5 file but is not a real experiment attached
      * to the interaction.
      * It can be null in some specific cases.
-     * @return
+     * @return the default experiment used by this writer
      */
     public Experiment getDefaultExperiment();
 
     /**
      * Sets the default experiment that will be used to write a valid XML 2.5 file even if the interaction does not have any valid experiment
-     * @param exp
-     * @throws IllegalArgumentException when default experiment is null
+     * @param exp : default experiment
      */
     public void setDefaultExperiment(Experiment exp);
 

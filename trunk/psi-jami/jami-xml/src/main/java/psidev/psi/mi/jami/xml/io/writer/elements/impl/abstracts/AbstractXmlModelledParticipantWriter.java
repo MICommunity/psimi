@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
@@ -37,7 +38,7 @@ public abstract class AbstractXmlModelledParticipantWriter extends AbstractXmlPa
     }
 
     @Override
-    protected void writeParticipantIdentificationMethods(ModelledParticipant object) {
+    protected void writeParticipantIdentificationMethods(ModelledParticipant object, CvTerm method) {
         // nothing to do
     }
 
