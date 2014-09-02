@@ -1,8 +1,11 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.collection.AbstractListHavingProperties;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,18 +18,21 @@ import java.util.List;
  * @since <pre>30/10/13</pre>
  */
 
-public class XmlParticipantWrapper implements ModelledParticipant {
+public class XmlParticipantWrapper implements ModelledParticipant, ExtendedPsiXmlParticipant<ModelledInteraction, ModelledFeature>,
+        FileSourceContext {
 
-    private Participant<Interaction,Feature> participant;
+    private ExtendedPsiXmlParticipant<Interaction,Feature> participant;
     private ModelledInteraction parent;
     private SynchronizedFeatureList modelledFeatures;
 
-    public XmlParticipantWrapper(Participant part, ModelledInteraction wrapper){
+    public XmlParticipantWrapper(ExtendedPsiXmlParticipant part, ModelledInteraction wrapper){
         if (part == null){
             throw new IllegalArgumentException("A participant wrapper needs a non null participant");
         }
         this.participant = part;
         this.parent = wrapper;
+        // register participant as complex participant
+        XmlEntryContext.getInstance().registerComplexParticipant(participant.getId(), this);
     }
 
     @Override
@@ -165,7 +171,7 @@ public class XmlParticipantWrapper implements ModelledParticipant {
     protected void initialiseFeatures(){
         this.modelledFeatures = new SynchronizedFeatureList();
         for (Feature feature : this.participant.getFeatures()){
-            this.modelledFeatures.addOnly(new XmlFeatureWrapper(feature, this));
+            this.modelledFeatures.addOnly(new XmlFeatureWrapper((ExtendedPsiXmlFeature)feature, this));
         }
     }
 
@@ -174,7 +180,7 @@ public class XmlParticipantWrapper implements ModelledParticipant {
         return this.participant.toString();
     }
 
-    public Participant<Interaction, Feature> getWrappedParticipant(){
+    public ExtendedPsiXmlParticipant<Interaction, Feature> getWrappedParticipant(){
         return this.participant;
     }
 
@@ -200,6 +206,48 @@ public class XmlParticipantWrapper implements ModelledParticipant {
     @Override
     public void setInteraction(ModelledInteraction interaction) {
         this.parent = interaction;
+    }
+
+    @Override
+    public FileSourceLocator getSourceLocator() {
+        return ((FileSourceContext)participant).getSourceLocator();
+    }
+
+    @Override
+    public void setSourceLocator(FileSourceLocator locator) {
+        ((FileSourceContext)participant).setSourceLocator(locator);
+    }
+
+    @Override
+    public int getId() {
+        return participant.getId();
+    }
+
+    @Override
+    public void setId(int id) {
+        participant.setId(id);
+        // register participant as complex participant
+        XmlEntryContext.getInstance().registerComplexParticipant(participant.getId(), this);
+    }
+
+    @Override
+    public String getShortName() {
+        return participant.getShortName();
+    }
+
+    @Override
+    public void setShortName(String name) {
+        participant.setShortName(name);
+    }
+
+    @Override
+    public String getFullName() {
+        return participant.getShortName();
+    }
+
+    @Override
+    public void setFullName(String name) {
+        participant.setShortName(name);
     }
 
     ////////////////////////////////////// classes

@@ -1,15 +1,17 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.CvTermUtils;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Wrapper for Xml participants
+ * Wrapper for Xml participants candidates
  *
  * Addeding new modelled feature to this participant will not add new feature evidences to the wrapped participant evidence as they are incompatibles.
  *
@@ -18,46 +20,21 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlExperimentalParticipantCandidateWrapper implements ModelledParticipant {
+public class XmlExperimentalParticipantCandidateWrapper implements ModelledParticipantCandidate, ExtendedPsiXmlEntity<ModelledFeature>,
+        FileSourceContext {
 
     private ExperimentalParticipantCandidate participant;
     private Collection<ModelledFeature> modelledFeatures;
-    private ModelledInteraction parent;
+    private ModelledParticipantPool parent;
 
-    private Collection<Alias> aliases;
-    private Collection<Xref> xrefs;
-    private Collection<Annotation> annotations;
-
-    private CvTerm bioRole;
-
-    public XmlExperimentalParticipantCandidateWrapper(ExperimentalParticipantCandidate part, XmlInteractionEvidenceComplexWrapper wrapper){
+    public XmlExperimentalParticipantCandidateWrapper(ExperimentalParticipantCandidate part, ModelledParticipantPool wrapper){
         if (part == null){
-            throw new IllegalArgumentException("A participant evidence wrapper needs a non null participant");
+            throw new IllegalArgumentException("A experimental participant candidate wrapper needs a non null participant");
         }
         this.participant = part;
-        setInteraction(wrapper);
-    }
-
-    @Override
-    public Collection<Alias> getAliases() {
-        if (this.participant.getParentPool() != null){
-            return this.participant.getParentPool().getAliases();
-        }
-        else if (this.aliases == null){
-            this.aliases = new ArrayList<Alias>();
-        }
-        return this.aliases;
-    }
-
-    @Override
-    public Collection<Xref> getXrefs() {
-        if (this.participant.getParentPool() != null){
-            return this.participant.getParentPool().getXrefs();
-        }
-        else if (this.xrefs == null){
-            this.xrefs = new ArrayList<Xref>();
-        }
-        return this.xrefs;
+        setParentPool(wrapper);
+        // register feature as complex participant
+        XmlEntryContext.getInstance().registerComplexParticipant(((ExtendedPsiXmlEntity)this.participant).getId(), this);
     }
 
     @Override
@@ -73,17 +50,6 @@ public class XmlExperimentalParticipantCandidateWrapper implements ModelledParti
     @Override
     public Collection<CausalRelationship> getCausalRelationships() {
         return this.participant.getCausalRelationships();
-    }
-
-    @Override
-    public Collection<Annotation> getAnnotations() {
-        if (this.participant.getParentPool() != null){
-            return this.participant.getParentPool().getAnnotations();
-        }
-        else if (this.annotations == null){
-            this.annotations = new ArrayList<Annotation>();
-        }
-        return this.annotations;
     }
 
     @Override
@@ -184,53 +150,24 @@ public class XmlExperimentalParticipantCandidateWrapper implements ModelledParti
     }
 
     @Override
-    public CvTerm getBiologicalRole() {
-        if (this.bioRole == null && this.participant.getParentPool() == null){
-            this.bioRole = new XmlCvTerm(Participant.UNSPECIFIED_ROLE,
-                    new XmlXref(CvTermUtils.createPsiMiDatabase(),Interactor.UNKNOWN_INTERACTOR_MI, CvTermUtils.createIdentityQualifier()));
-        }
-        else if (this.bioRole == null){
-            this.bioRole = this.participant.getParentPool().getBiologicalRole();
-        }
-        return this.bioRole;
-    }
-
-    @Override
-    public void setBiologicalRole(CvTerm bioRole) {
-        this.bioRole = bioRole;
-    }
-
-    @Override
     public String toString() {
         return this.participant.toString();
     }
 
-
     @Override
-    public void setInteractionAndAddParticipant(ModelledInteraction interaction) {
-        if (this.parent != null){
-            this.parent.removeParticipant(this);
-        }
-
-        if (interaction != null){
-            interaction.addParticipant(this);
-        }
-    }
-
-    @Override
-    public ModelledInteraction getInteraction() {
+    public ModelledParticipantPool getParentPool() {
         if (this.parent == null &&
                 this.participant.getParentPool() != null &&
-                this.participant.getParentPool().getInteraction() instanceof ExtendedPsiXmlInteractionEvidence){
-            this.parent = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)this.participant.
-                    getParentPool().getInteraction());
+                this.participant.getParentPool() instanceof ExperimentalParticipantPool){
+            this.parent = new XmlExperimentalParticipantPoolWrapper(this.participant.
+                    getParentPool(), null);
         }
         return this.parent;
     }
 
     @Override
-    public void setInteraction(ModelledInteraction interaction) {
-        this.parent = interaction;
+    public void setParentPool(ModelledParticipantPool pool) {
+        this.parent = pool;
     }
 
     public ExperimentalParticipantCandidate getWrappedParticipant(){
@@ -240,13 +177,29 @@ public class XmlExperimentalParticipantCandidateWrapper implements ModelledParti
     protected void initialiseFeatures(){
         this.modelledFeatures = new ArrayList<ModelledFeature>();
         for (FeatureEvidence feature : this.participant.getFeatures()){
-            this.modelledFeatures.add(new XmlFeatureEvidenceWrapper(feature, this));
+            this.modelledFeatures.add(new XmlFeatureEvidenceWrapper((ExtendedPsiXmlFeatureEvidence)feature, this));
         }
-        // add parent pool features
-        if (participant.getParentPool() != null){
-            for (Object feature : this.participant.getParentPool().getFeatures()){
-                this.modelledFeatures.add(new XmlFeatureWrapper((Feature)feature, this));
-            }
-        }
+    }
+
+    @Override
+    public FileSourceLocator getSourceLocator() {
+        return ((FileSourceContext)participant).getSourceLocator();
+    }
+
+    @Override
+    public void setSourceLocator(FileSourceLocator locator) {
+        ((FileSourceContext)participant).setSourceLocator(locator);
+    }
+
+    @Override
+    public int getId() {
+        return ((ExtendedPsiXmlEntity)participant).getId();
+    }
+
+    @Override
+    public void setId(int id) {
+        ((ExtendedPsiXmlEntity)participant).setId(id);
+        // register participant  as complex participant
+        XmlEntryContext.getInstance().registerComplexParticipant(((ExtendedPsiXmlEntity)this.participant).getId(), this);
     }
 }

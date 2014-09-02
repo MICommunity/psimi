@@ -1,7 +1,10 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
@@ -17,18 +20,21 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlParticipantEvidenceWrapper implements ModelledParticipant {
+public class XmlParticipantEvidenceWrapper implements ModelledParticipant, ExtendedPsiXmlParticipant<ModelledInteraction, ModelledFeature>,
+        FileSourceContext{
 
-    private ParticipantEvidence participant;
+    private ExtendedPsiXmlParticipantEvidence participant;
     private Collection<ModelledFeature> modelledFeatures;
     private ModelledInteraction parent;
 
-    public XmlParticipantEvidenceWrapper(ParticipantEvidence part, XmlInteractionEvidenceComplexWrapper wrapper){
+    public XmlParticipantEvidenceWrapper(ExtendedPsiXmlParticipantEvidence part, XmlInteractionEvidenceComplexWrapper wrapper){
         if (part == null){
             throw new IllegalArgumentException("A participant evidence wrapper needs a non null participant");
         }
         this.participant = part;
         setInteraction(wrapper);
+        // register participant as complex participant
+        XmlEntryContext.getInstance().registerComplexParticipant(participant.getId(), this);
     }
 
     @Override
@@ -194,14 +200,56 @@ public class XmlParticipantEvidenceWrapper implements ModelledParticipant {
         this.parent = interaction;
     }
 
-    public ParticipantEvidence getWrappedParticipant(){
+    public ExtendedPsiXmlParticipantEvidence getWrappedParticipant(){
         return this.participant;
+    }
+
+    @Override
+    public FileSourceLocator getSourceLocator() {
+        return ((FileSourceContext)participant).getSourceLocator();
+    }
+
+    @Override
+    public void setSourceLocator(FileSourceLocator locator) {
+        ((FileSourceContext)participant).setSourceLocator(locator);
+    }
+
+    @Override
+    public int getId() {
+        return participant.getId();
+    }
+
+    @Override
+    public void setId(int id) {
+        participant.setId(id);
+        // register participant as complex participant
+        XmlEntryContext.getInstance().registerComplexParticipant(participant.getId(), this);
+    }
+
+    @Override
+    public String getShortName() {
+        return participant.getShortName();
+    }
+
+    @Override
+    public void setShortName(String name) {
+        participant.setShortName(name);
+    }
+
+    @Override
+    public String getFullName() {
+        return participant.getShortName();
+    }
+
+    @Override
+    public void setFullName(String name) {
+        participant.setShortName(name);
     }
 
     protected void initialiseFeatures(){
         this.modelledFeatures = new ArrayList<ModelledFeature>();
         for (FeatureEvidence feature : this.participant.getFeatures()){
-            this.modelledFeatures.add(new XmlFeatureEvidenceWrapper(feature, this));
+            this.modelledFeatures.add(new XmlFeatureEvidenceWrapper((ExtendedPsiXmlFeatureEvidence)feature, this));
         }
     }
 }

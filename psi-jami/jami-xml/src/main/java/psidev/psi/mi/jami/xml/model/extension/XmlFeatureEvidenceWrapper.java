@@ -1,6 +1,11 @@
 package psidev.psi.mi.jami.xml.model.extension;
 
+import psidev.psi.mi.jami.datasource.FileSourceContext;
+import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
+import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
+import psidev.psi.mi.jami.xml.model.reference.AbstractFeatureRef;
 
 import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
@@ -17,17 +22,19 @@ import java.util.Collection;
  * @since <pre>11/10/13</pre>
  */
 @XmlTransient
-public class XmlFeatureEvidenceWrapper implements ModelledFeature {
-    private FeatureEvidence feature;
+public class XmlFeatureEvidenceWrapper implements ModelledFeature, ExtendedPsiXmlFeature<ModelledEntity,ModelledFeature>, FileSourceContext{
+    private ExtendedPsiXmlFeatureEvidence feature;
     private ModelledEntity parent;
     private Collection<ModelledFeature> linkedFeatures;
 
-    public XmlFeatureEvidenceWrapper(FeatureEvidence part, ModelledParticipant wrapper){
+    public XmlFeatureEvidenceWrapper(ExtendedPsiXmlFeatureEvidence part, ModelledEntity wrapper){
         if (part == null){
             throw new IllegalArgumentException("A feature evidence wrapper needs a non null feature");
         }
         this.feature = part;
         this.parent = wrapper;
+        // register feature as complex feature
+        XmlEntryContext.getInstance().registerComplexFeature(this.feature.getId(), this);
     }
 
     @Override
@@ -102,8 +109,8 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature {
 
     @Override
     public ModelledEntity getParticipant() {
-        if (this.parent == null && this.feature.getParticipant()instanceof ParticipantEvidence){
-            this.parent = new XmlParticipantEvidenceWrapper((ParticipantEvidence)this.feature.getParticipant(), null);
+        if (this.parent == null && this.feature.getParticipant()instanceof ExtendedPsiXmlParticipantEvidence){
+            this.parent = new XmlParticipantEvidenceWrapper((ExtendedPsiXmlParticipantEvidence)this.feature.getParticipant(), null);
         }
         return this.parent;
     }
@@ -138,18 +145,90 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature {
     }
 
     @Override
+    public FileSourceLocator getSourceLocator() {
+        return ((FileSourceContext)this.feature).getSourceLocator();
+    }
+
+    @Override
+    public void setSourceLocator(FileSourceLocator locator) {
+        ((FileSourceContext)this.feature).setSourceLocator(locator);
+    }
+
+    @Override
     public String toString() {
         return this.feature.toString();
     }
 
-    public FeatureEvidence getWrappedFeature(){
+    public ExtendedPsiXmlFeatureEvidence getWrappedFeature(){
         return this.feature;
     }
 
     protected void initialiseLinkedFeatures(){
         this.linkedFeatures = new ArrayList<ModelledFeature>(this.feature.getLinkedFeatures().size());
         for (FeatureEvidence feature : this.feature.getLinkedFeatures()){
-            this.linkedFeatures.add(new XmlFeatureWrapper(feature, null));
+            ExtendedPsiXmlFeature extendedFeature = (ExtendedPsiXmlFeature)feature;
+            this.linkedFeatures.add(new FeatureRef(extendedFeature.getId()));
+        }
+    }
+
+    @Override
+    public int getId() {
+        return this.feature.getId();
+    }
+
+    @Override
+    public void setId(int id) {
+        this.feature.setId(id);
+        // register feature as complex feature
+        XmlEntryContext.getInstance().registerComplexFeature(id, this);
+    }
+
+    private class FeatureRef extends AbstractFeatureRef<ModelledEntity, ModelledFeature> implements ModelledFeature{
+        public FeatureRef(int ref) {
+            super(ref);
+        }
+
+        public boolean resolve(PsiXmlIdCache parsedObjects) {
+            if (parsedObjects.containsComplexFeature(this.ref)){
+                ModelledFeature f = parsedObjects.getComplexFeature(this.ref);
+                if (f != null){
+                    linkedFeatures.remove(this);
+                    linkedFeatures.add(f);
+                    return true;
+                }
+            }
+            else if (parsedObjects.containsFeature(this.ref)){
+                Feature f = parsedObjects.getFeature(this.ref);
+                if (f != null){
+                    ModelledFeature reloadedObject = parsedObjects.registerModelledFeatureLoadedFrom(f);
+                    if (reloadedObject != null){
+                        linkedFeatures.remove(this);
+                        linkedFeatures.add(reloadedObject);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "Feature Reference in inferred participant: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+        }
+
+        @Override
+        protected void initialiseFeatureDelegate() {
+            XmlModelledFeature modelled = new XmlModelledFeature();
+            modelled.setId(this.ref);
+            setDelegate(modelled);
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            return XmlFeatureEvidenceWrapper.this.getSourceLocator();
+        }
+
+        public void setSourceLocator(FileSourceLocator locator) {
+            throw new UnsupportedOperationException("Cannot set the source locator of a feature ref");
         }
     }
 }

@@ -61,6 +61,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private Map<EntryLocation, Long> featurePositions;
     private Map<EntryLocation, Long> variableParameterValuePositions;
     private Map<EntryLocation, Long> complexPositions;
+    private Map<EntryLocation, Long> complexParticipantPositions;
+    private Map<EntryLocation, Long> complexFeaturePositions;
 
     private Map<Integer, Experiment> experimentWeakMap;
     private Map<Integer, Interactor> interactorWeakMap;
@@ -69,6 +71,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private Map<Integer, Feature> featureWeakMap;
     private Map<Integer, VariableParameterValue> variableParameterValueWeakMap;
     private Map<Integer, Complex> complexWeakMap;
+    private Map<Integer, ModelledEntity> complexParticipantWeakMap;
+    private Map<Integer, ModelledFeature> complexFeatureWeakMap;
 
     private int numberOfEntries=1;
 
@@ -92,6 +96,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.featurePositions = new HashMap<EntryLocation, Long>();
         this.variableParameterValuePositions = new HashMap<EntryLocation, Long>();
         this.complexPositions = new HashMap<EntryLocation, Long>();
+        this.complexParticipantPositions = new HashMap<EntryLocation, Long>();
+        this.complexFeaturePositions = new HashMap<EntryLocation, Long>();
 
         this.experimentWeakMap = new WeakHashMap<Integer, Experiment>();
         this.interactorWeakMap = new WeakHashMap<Integer, Interactor>();
@@ -100,6 +106,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.featureWeakMap = new WeakHashMap<Integer, Feature>();
         this.variableParameterValueWeakMap = new WeakHashMap<Integer, VariableParameterValue>();
         this.complexWeakMap = new WeakHashMap<Integer, Complex>();
+        this.complexParticipantWeakMap = new WeakHashMap<Integer, ModelledEntity>();
+        this.complexFeatureWeakMap = new WeakHashMap<Integer, ModelledFeature>();
 
         switch (version){
             case v2_5_4:
@@ -123,7 +131,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this(file,
                 JaxbUnmarshallerFactory.getInstance().createUnmarshaller(version != null ? version : PsiXmlVersion.v2_5_4,
                         category != null ? category : InteractionCategory.evidence),
-                version);
+                version
+        );
     }
 
     @Override
@@ -347,6 +356,145 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     }
 
     @Override
+    public void registerComplexParticipant(int id, ModelledEntity object) {
+        this.complexParticipantWeakMap.put(id, object);
+    }
+
+    @Override
+    public ModelledEntity getComplexParticipant(int id) {
+        if (this.complexParticipantWeakMap.containsKey(id)){
+            return this.complexParticipantWeakMap.get(id);
+        }
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.complexParticipantPositions.containsKey(location)){
+            return null;
+        }
+        else {
+            try {
+                Interaction originalInteraction = loadFromFile(this.complexParticipantPositions.get(location));
+                Complex originalComplex = reloadOriginalComplex(originalInteraction);
+                if (originalComplex == null){
+                    logger.log(Level.SEVERE, "cannot reload complex participant "+id);
+                }
+                else{
+                    for (ModelledParticipant p : originalComplex.getParticipants()){
+                        ExtendedPsiXmlParticipant participant = (ExtendedPsiXmlParticipant)p;
+                        if (participant.getId() == id){
+                            return p;
+                        }
+                        else if (participant instanceof ModelledParticipantPool){
+                            ModelledParticipantPool pool = (ModelledParticipantPool)participant;
+                            for (ModelledParticipantCandidate candidate : pool){
+                                ExtendedPsiXmlEntity extendedEntity = (ExtendedPsiXmlEntity)candidate;
+                                if (extendedEntity.getId() == id){
+                                    return candidate;
+                                }
+                            }
+                        }
+                    }
+                    logger.log(Level.SEVERE, "cannot reload complex participant "+id);
+                    return null;
+                }
+
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "cannot reload complex participant "+id, e);
+                throw new MIIOException("cannot reload complex participant "+id, e);
+            } catch (JAXBException e) {
+                logger.log(Level.SEVERE, "cannot reload complex participant "+id, e);
+                throw new MIIOException("cannot reload complex participant "+id, e);
+            } catch (XMLStreamException e) {
+                logger.log(Level.SEVERE, "cannot reload complex participant "+id, e);
+                throw new MIIOException("cannot reload complex participant "+id, e);
+            }
+            return null;
+        }
+    }
+
+    private Complex reloadOriginalComplex(Interaction originalInteraction){
+        if (originalInteraction instanceof Complex){
+            return (Complex)originalInteraction;
+        }
+        // convert interaction evidence in a complex
+        else if (originalInteraction instanceof ExtendedPsiXmlInteractionEvidence){
+            return new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)originalInteraction);
+        }
+        // wrap modelled interaction
+        else if (originalInteraction instanceof ExtendedPsiXmlModelledInteraction){
+            return new XmlModelledInteractionComplexWrapper((ExtendedPsiXmlModelledInteraction)originalInteraction);
+        }
+        // wrap basic interaction
+        else if (originalInteraction instanceof ExtendedPsiXmlInteraction){
+            return new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)originalInteraction);
+        }
+        else{
+            return null;
+        }
+    }
+
+    @Override
+    public void registerComplexFeature(int id, ModelledFeature object) {
+         this.complexFeatureWeakMap.put(id, object);
+    }
+
+    @Override
+    public ModelledFeature getComplexFeature(int id) {
+        if (this.complexFeatureWeakMap.containsKey(id)){
+            return this.complexFeatureWeakMap.get(id);
+        }
+
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        if (!this.complexFeaturePositions.containsKey(location)){
+            return null;
+        }
+        else {
+            try {
+                Interaction originalInteraction = loadFromFile(this.complexParticipantPositions.get(location));
+                Complex originalComplex = reloadOriginalComplex(originalInteraction);
+                if (originalComplex == null){
+                    logger.log(Level.SEVERE, "cannot reload complex feature "+id);
+                }
+                else{
+                    for (ModelledParticipant p : originalComplex.getParticipants()){
+                        ExtendedPsiXmlParticipant participant = (ExtendedPsiXmlParticipant)p;
+                        for (ModelledFeature f : p.getFeatures()){
+                            ExtendedPsiXmlFeature feature = (ExtendedPsiXmlFeature)f;
+                            if (feature.getId() == id){
+                                return f;
+                            }
+                        }
+
+                        if (participant instanceof ModelledParticipantPool){
+                            ModelledParticipantPool pool = (ModelledParticipantPool)participant;
+                            for (ModelledParticipantCandidate candidate : pool){
+                                for (ModelledFeature f : candidate.getFeatures()){
+                                    ExtendedPsiXmlFeature feature = (ExtendedPsiXmlFeature)f;
+                                    if (feature.getId() == id){
+                                        return f;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    logger.log(Level.SEVERE, "cannot reload complex feature "+id);
+                    return null;
+                }
+
+            } catch (IOException e) {
+                logger.log(Level.SEVERE, "cannot reload complex feature "+id, e);
+                throw new MIIOException("cannot reload complex feature "+id, e);
+            } catch (JAXBException e) {
+                logger.log(Level.SEVERE, "cannot reload complex feature "+id, e);
+                throw new MIIOException("cannot reload complex feature "+id, e);
+            } catch (XMLStreamException e) {
+                logger.log(Level.SEVERE, "cannot reload complex feature "+id, e);
+                throw new MIIOException("cannot reload complex feature "+id, e);
+            }
+            return null;
+        }
+    }
+
+    @Override
     public void registerComplex(int id, Complex object) {
         this.complexWeakMap.put(id, object);
     }
@@ -460,6 +608,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.participantWeakMap.clear();
         this.featureWeakMap.clear();
         this.variableParameterValueWeakMap.clear();
+        this.complexParticipantWeakMap.clear();
+        this.complexFeatureWeakMap.clear();
 
         // clear method is called after each entry so we increase the number of parsed entries when clear method is called
         this.numberOfEntries++;
@@ -477,6 +627,8 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.participantPositions.clear();
         this.featurePositions.clear();
         this.variableParameterValuePositions.clear();
+        this.complexParticipantPositions.clear();
+        this.complexFeaturePositions.clear();
         this.encoding = null;
 
         try {
@@ -526,7 +678,44 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     @Override
     public boolean containsComplex(int id) {
         EntryLocation location = new EntryLocation(this.numberOfEntries, id);
-        return this.complexWeakMap.containsKey(id) || this.complexPositions.containsKey(location);    }
+        return this.complexWeakMap.containsKey(id) || this.complexPositions.containsKey(location);
+    }
+
+    @Override
+    public boolean containsComplexParticipant(int id) {
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.complexParticipantWeakMap.containsKey(id) || this.complexParticipantPositions.containsKey(location);
+    }
+
+    @Override
+    public boolean containsComplexFeature(int id) {
+        EntryLocation location = new EntryLocation(this.numberOfEntries, id);
+        return this.complexFeatureWeakMap.containsKey(id) || this.complexFeaturePositions.containsKey(location);
+    }
+
+    @Override
+    public ModelledFeature registerModelledFeatureLoadedFrom(Feature f) {
+        if (f instanceof ExtendedPsiXmlFeature){
+            return getComplexFeature(((ExtendedPsiXmlFeature)f).getId());
+        }
+        return null;
+    }
+
+    @Override
+    public ModelledEntity registerModelledParticipantLoadedFrom(Entity f) {
+        if (f instanceof ExtendedPsiXmlParticipant){
+            return getComplexParticipant(((ExtendedPsiXmlParticipant)f).getId());
+        }
+        return null;
+    }
+
+    @Override
+    public Complex registerComplexLoadedFrom(Interaction f) {
+        if (f instanceof PsiXmlInteraction){
+            return getComplex(((PsiXmlInteraction)f).getId());
+        }
+        return null;
+    }
 
     private <T extends Object> T loadFromFile(long id) throws IOException, JAXBException, XMLStreamException {
 

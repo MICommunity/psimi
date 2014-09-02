@@ -6,7 +6,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultCooperativeEffect;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
-import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
+import psidev.psi.mi.jami.xml.model.reference.AbstractEntityRef;
 
 /**
  * XML implementation of Allostery
@@ -16,11 +16,11 @@ import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
  * @since <pre>15/11/13</pre>
  */
 
-public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperativeEffect implements FileSourceContext {
+public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperativeEffect implements FileSourceContext, Allostery<T> {
     private PsiXmlLocator sourceLocator;
     private CvTerm allostericMechanism;
     private CvTerm allosteryType;
-    private ModelledParticipant allostericMolecule;
+    private ModelledEntity allostericMolecule;
     private T allostericEffector;
 
     public XmlAllostery(CvTerm outcome) {
@@ -72,11 +72,11 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         this.allosteryType = type;
     }
 
-    public ModelledParticipant getAllostericMolecule() {
+    public ModelledEntity getAllostericMolecule() {
         return this.allostericMolecule;
     }
 
-    public void setAllostericMolecule(ModelledParticipant participant) {
+    public void setAllostericMolecule(ModelledEntity participant) {
         if (participant == null){
             throw new IllegalArgumentException("The allosteric molecule cannot be null");
         }
@@ -115,7 +115,7 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
     /**
      * participant ref for allosteric molecule
      */
-    private class AllostericMoleculeRef extends AbstractParticipantRef<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
+    private class AllostericMoleculeRef extends AbstractEntityRef<ModelledFeature> implements ModelledEntity{
         private PsiXmlLocator sourceLocator;
 
         public AllostericMoleculeRef(int ref, PsiXmlLocator locator) {
@@ -124,44 +124,31 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.containsParticipant(this.ref)){
+            // have a complex participant, load it
+            if (parsedObjects.containsComplexParticipant(this.ref)){
+                ModelledEntity object = parsedObjects.getComplexParticipant(this.ref);
+                if (object == null){
+                    return false;
+                }
+                // use complex participant
+                else {
+                    setAllostericMolecule(object);
+                    return true;
+                }
+            }
+            // have a participant evidence, load the interaction as complex and then set participant
+            else if (parsedObjects.containsParticipant(this.ref)){
                 Entity object = parsedObjects.getParticipant(this.ref);
                 if (object == null){
                     return false;
                 }
-                // convert participant evidence in a complex
-                else if (object instanceof ParticipantEvidence){
-                    ModelledParticipant participant = new XmlParticipantEvidenceWrapper((ParticipantEvidence)object, null);
-                    setAllostericMolecule(participant);
-                    return true;
-                }
-                // wrap modelled interaction
-                else if (object instanceof ModelledParticipant){
-                    setAllostericMolecule((ModelledParticipant) object);
-                    return true;
-                }
-                // wrap basic interaction
-                else if (object instanceof Participant){
-                    ModelledParticipant participant = new XmlParticipantWrapper((Participant)object, null);
-                    setAllostericMolecule(participant);
-                    return true;
-                }
-                // wrap basic experimental participant candidate
-                else if (object instanceof ExperimentalParticipantCandidate){
-                    ModelledParticipant participant = new XmlExperimentalParticipantCandidateWrapper((ExperimentalParticipantCandidate)object, null);
-                    setAllostericMolecule(participant);
-                    return true;
-                }
-                // wrap basic experimental modelled participant candidate
-                else if (object instanceof ModelledParticipantCandidate){
-                    ModelledParticipant participant = new XmlModelledParticipantCandidateWrapper((ModelledParticipantCandidate)object, null);
-                    setAllostericMolecule(participant);
-                    return true;
-                }
+                // convert participant evidence in a modelled participant and load previous complex
                 else {
-                    ModelledParticipant participant = new XmlParticipantCandidateWrapper((ParticipantCandidate)object, null);
-                    setAllostericMolecule(participant);
-                    return true;
+                    ModelledEntity reloadedObject = parsedObjects.registerModelledParticipantLoadedFrom(object);
+                    if (reloadedObject != null){
+                        setAllostericMolecule(reloadedObject);
+                        return true;
+                    }
                 }
             }
             return false;
@@ -198,30 +185,6 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
         public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
         }
-
-        @Override
-        public void setInteractionAndAddParticipant(ModelledInteraction interaction) {
-            if (getDelegate() == null){
-                initialiseParticipantDelegate();
-            }
-            getDelegate().setInteractionAndAddParticipant(interaction);
-        }
-
-        @Override
-        public ModelledInteraction getInteraction() {
-            if (getDelegate() == null){
-                initialiseParticipantDelegate();
-            }
-            return getDelegate().getInteraction();
-        }
-
-        @Override
-        public void setInteraction(ModelledInteraction interaction) {
-            if (getDelegate() == null){
-                initialiseParticipantDelegate();
-            }
-            getDelegate().setInteraction(interaction);
-        }
     }
 
     /**
@@ -244,30 +207,15 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
                     return true;
                 }
             }
-            if (parsedObjects.containsInteraction(this.ref)){
+            else if (parsedObjects.containsInteraction(this.ref)){
                 Interaction object = parsedObjects.getInteraction(this.ref);
-                if (object == null){
-                    return false;
-                }
-                // convert interaction evidence in a complex
-                if (object instanceof ExtendedPsiXmlInteractionEvidence){
-                    ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add(interaction);
-                    return true;
-                }
-                // wrap modelled interaction
-                else if (object instanceof ModelledInteraction){
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add((ModelledInteraction)object);
-                    return true;
-                }
-                // wrap basic interaction
-                else if (object instanceof ExtendedPsiXmlInteraction){
-                    ModelledInteraction interaction = new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object);
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add(interaction);
-                    return true;
+                if (object != null){
+                    ModelledInteraction reloadedComplex = parsedObjects.registerComplexLoadedFrom(object);
+                    if (reloadedComplex != null){
+                        getAffectedInteractions().remove(this);
+                        getAffectedInteractions().add(reloadedComplex);
+                        return true;
+                    }
                 }
             }
             return false;

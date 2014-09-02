@@ -4,7 +4,7 @@ import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
-import psidev.psi.mi.jami.xml.model.reference.AbstractParticipantRef;
+import psidev.psi.mi.jami.xml.model.reference.AbstractEntityRef;
 
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -18,13 +18,13 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlTransient
 public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext {
     private PsiXmlLocator sourceLocator;
-    private ModelledParticipant participant;
+    private ModelledEntity participant;
 
     public XmlMoleculeEffector(int participant, PsiXmlLocator locator){
         this.participant = new MoleculeEffectorRef(participant, locator);
     }
 
-    public ModelledParticipant getMolecule() {
+    public ModelledEntity getMolecule() {
         return participant;
     }
 
@@ -37,14 +37,14 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
     }
 
     public void setSourceLocator(FileSourceLocator locator) {
-        if (sourceLocator == null){
+        if (locator == null){
             this.sourceLocator = null;
         }
-        else if (sourceLocator instanceof PsiXmlLocator){
-            this.sourceLocator = (PsiXmlLocator)sourceLocator;
+        else if (locator instanceof PsiXmlLocator){
+            this.sourceLocator = (PsiXmlLocator)locator;
         }
         else {
-            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            this.sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getCharNumber(), null);
         }
     }
 
@@ -61,7 +61,7 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
     /**
      * participant ref for allosteric effector
      */
-    private class MoleculeEffectorRef extends AbstractParticipantRef<ModelledInteraction, ModelledFeature> implements ModelledParticipant{
+    private class MoleculeEffectorRef extends AbstractEntityRef<ModelledFeature> implements ModelledEntity{
         private PsiXmlLocator sourceLocator;
 
         public MoleculeEffectorRef(int ref, PsiXmlLocator locator) {
@@ -70,39 +70,31 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.containsParticipant(this.ref)){
+            // have a complex participant, load it
+            if (parsedObjects.containsComplexParticipant(this.ref)){
+                ModelledEntity object = parsedObjects.getComplexParticipant(this.ref);
+                if (object == null){
+                    return false;
+                }
+                // use complex participant
+                else {
+                    participant = object;
+                    return true;
+                }
+            }
+            // have a participant evidence, load the interaction as complex and then set participant
+            else if (parsedObjects.containsParticipant(this.ref)){
                 Entity object = parsedObjects.getParticipant(this.ref);
                 if (object == null){
                     return false;
                 }
-                // convert participant evidence in a modelled participant
-                else if (object instanceof ParticipantEvidence){
-                    participant = new XmlParticipantEvidenceWrapper((ParticipantEvidence)object, null);
-                    return true;
-                }
-                // use modelled participant
-                else if (object instanceof ModelledParticipant){
-                    participant = (ModelledParticipant)object;
-                    return true;
-                }
-                // wrap basic participant
-                else if (object instanceof Participant){
-                    participant = new XmlParticipantWrapper((Participant)object, null);
-                    return true;
-                }
-                // wrap basic experimental participant candidate
-                else if (object instanceof ExperimentalParticipantCandidate){
-                    participant = new XmlExperimentalParticipantCandidateWrapper((ExperimentalParticipantCandidate)object, null);
-                    return true;
-                }
-                // wrap basic experimental modelled participant candidate
-                else if (object instanceof ModelledParticipantCandidate){
-                    participant = new XmlModelledParticipantCandidateWrapper((ModelledParticipantCandidate)object, null);
-                    return true;
-                }
+                // convert participant evidence in a modelled participant and load previous complex
                 else {
-                    participant = new XmlParticipantCandidateWrapper((ParticipantCandidate)object, null);
-                    return true;
+                    ModelledEntity reloadedObject = parsedObjects.registerModelledParticipantLoadedFrom(object);
+                    if (reloadedObject != null){
+                        participant = reloadedObject;
+                        return true;
+                    }
                 }
             }
             return false;
@@ -138,21 +130,6 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
 
         public void setSourceLocator(PsiXmlLocator sourceLocator) {
             this.sourceLocator = sourceLocator;
-        }
-
-        @Override
-        public void setInteractionAndAddParticipant(ModelledInteraction interaction) {
-            throw new IllegalStateException("The molecule effector reference is not resolved and we cannot set the interaction of participant "+ref);
-        }
-
-        @Override
-        public ModelledInteraction getInteraction() {
-            throw new IllegalStateException("The molecule effector reference is not resolved and we don't have an interaction for participant id "+ref);
-        }
-
-        @Override
-        public void setInteraction(ModelledInteraction interaction) {
-            throw new IllegalStateException("The molecule effector reference is not resolved and we cannot set the interaction of participant "+ref);
         }
     }
 }

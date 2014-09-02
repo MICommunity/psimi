@@ -75,30 +75,15 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
                     return true;
                 }
             }
-            if (parsedObjects.containsInteraction(this.ref)){
+            else if (parsedObjects.containsInteraction(this.ref)){
                 Interaction object = parsedObjects.getInteraction(this.ref);
-                if (object == null){
-                   return false;
-                }
-                // convert interaction evidence in a complex
-                else if (object instanceof ExtendedPsiXmlInteractionEvidence){
-                    ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add(interaction);
-                    return true;
-                }
-                // wrap modelled interaction
-                else if (object instanceof ModelledInteraction){
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add((ModelledInteraction)object);
-                    return true;
-                }
-                // wrap basic interaction
-                else if (object instanceof ExtendedPsiXmlInteraction){
-                    ModelledInteraction interaction = new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object);
-                    getAffectedInteractions().remove(this);
-                    getAffectedInteractions().add(interaction);
-                    return true;
+                if (object != null){
+                    ModelledInteraction reloadedComplex = parsedObjects.registerComplexLoadedFrom(object);
+                    if (reloadedComplex != null){
+                        getAffectedInteractions().remove(this);
+                        getAffectedInteractions().add(reloadedComplex);
+                        return true;
+                    }
                 }
             }
             return false;

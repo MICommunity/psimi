@@ -139,6 +139,18 @@ public class XmlEntryContext {
         }
     }
 
+    public void registerComplexParticipant(int id, ModelledEntity o){
+        if (this.elementCache != null){
+            this.elementCache.registerComplexParticipant(id, o);
+        }
+    }
+
+    public void registerComplexFeature(int id, ModelledFeature o){
+        if (this.elementCache != null){
+            this.elementCache.registerComplexFeature(id, o);
+        }
+    }
+
     public void registerVariableParameterValue(int id, VariableParameterValue o){
         if (this.elementCache != null){
             this.elementCache.registerVariableParameterValue(id, o);

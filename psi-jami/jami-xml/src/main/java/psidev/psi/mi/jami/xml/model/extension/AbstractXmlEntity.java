@@ -6,12 +6,14 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.CausalRelationship;
+import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Stoichiometry;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
 import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
-import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
 import psidev.psi.mi.jami.xml.model.reference.AbstractInteractorRef;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
@@ -280,75 +282,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
     }
 
     //////////////////////////////////////////////////////////// classes
-
-    private class InteractionRef extends AbstractComplexRef {
-        public InteractionRef(int ref) {
-            super(ref);
-        }
-
-        @Override
-        public boolean resolve(PsiXmlIdCache parsedObjects) {
-            // take it from existing references
-            if (parsedObjects.containsComplex(this.ref)){
-                Interactor i = parsedObjects.getComplex(this.ref);
-                if (i != null){
-                    interactor = i;
-                    return true;
-                }
-                else{
-                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-                    if (listener != null){
-                        listener.onParticipantWithoutInteractor(null, this);
-                    }
-                }
-            }
-            else if (parsedObjects.containsInteraction(this.ref)){
-                Interaction object = parsedObjects.getInteraction(this.ref);
-                if (object == null){
-                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-                    if (listener != null){
-                        listener.onParticipantWithoutInteractor(null, this);
-                    }
-                    return false;
-                }
-                // convert interaction evidence in a complex
-                else if (object instanceof ExtendedPsiXmlInteractionEvidence){
-                    interactor = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
-                    return true;
-                }
-                // wrap modelled interaction
-                else if (object instanceof ExtendedPsiXmlModelledInteraction){
-                    interactor = new XmlModelledInteractionComplexWrapper((ExtendedPsiXmlModelledInteraction)object);
-                    return true;
-                }
-                // wrap basic interaction
-                else if (object instanceof ExtendedPsiXmlInteraction){
-                    interactor = new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object);
-                    return true;
-                }
-                else{
-                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-                    if (listener != null){
-                        listener.onParticipantWithoutInteractor(null, this);
-                    }
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public String toString() {
-            return "Participant Interaction Reference: "+ref+(getSourceLocator() != null ? ","+getSourceLocator().toString():super.toString());
-        }
-
-        public FileSourceLocator getSourceLocator() {
-            return getParticipantLocator();
-        }
-
-        public void setSourceLocator(FileSourceLocator locator) {
-            throw new UnsupportedOperationException("Cannot set the source locator of an interaction ref");
-        }
-    }
 
     private class InteractorRef extends AbstractInteractorRef {
         public InteractorRef(int ref) {
