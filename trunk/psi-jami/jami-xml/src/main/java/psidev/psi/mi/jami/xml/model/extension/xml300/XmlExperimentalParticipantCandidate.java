@@ -47,12 +47,6 @@ public class XmlExperimentalParticipantCandidate extends AbstractXmlEntity<Featu
     }
 
     @Override
-    @XmlElement(name = "interactionRef")
-    public void setJAXBInteractionRef(Integer value) {
-        super.setJAXBInteractionRef(value);
-    }
-
-    @Override
     @XmlElement(name = "interactorRef")
     public void setJAXBInteractorRef(Integer value) {
         super.setJAXBInteractorRef(value);

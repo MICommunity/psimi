@@ -4,6 +4,8 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.model.extension.xml300.AbstractXmlParticipantPool;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlModelledParticipantPool;
 import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
 
 import javax.xml.bind.annotation.*;
@@ -70,6 +72,12 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
     @XmlElement(name = "interactorRef")
     public void setJAXBInteractorRef(Integer value) {
         super.setJAXBInteractorRef(value);
+    }
+
+    @Override
+    @XmlElement(name="interactorCandidateList", namespace = "http://psi.hupo.org/mi/mif300", type = XmlModelledParticipantPool.class)
+    public void setJAXBInteractorCandidates(AbstractXmlParticipantPool pool) {
+        super.setJAXBInteractorCandidates(pool);
     }
 
     @Override

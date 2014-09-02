@@ -9,6 +9,8 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
+import psidev.psi.mi.jami.xml.model.extension.xml300.AbstractXmlParticipantPool;
+import psidev.psi.mi.jami.xml.model.extension.xml300.XmlExperimentalParticipantPool;
 import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
 
 import javax.xml.bind.annotation.*;
@@ -336,6 +338,12 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
     @XmlElement(name="stoichiometry", namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBStoichiometry(psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometry stoichiometry) {
         super.setJAXBStoichiometry(stoichiometry);
+    }
+
+    @Override
+    @XmlElement(name="interactorCandidateList", namespace = "http://psi.hupo.org/mi/mif300", type = XmlExperimentalParticipantPool.class)
+    public void setJAXBInteractorCandidates(AbstractXmlParticipantPool pool) {
+        super.setJAXBInteractorCandidates(pool);
     }
 
     @Override
