@@ -65,7 +65,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     private Map<Integer, Experiment> experimentWeakMap;
     private Map<Integer, Interactor> interactorWeakMap;
     private Map<Integer, Interaction> interactionWeakMap;
-    private Map<Integer, Participant> participantWeakMap;
+    private Map<Integer, Entity> participantWeakMap;
     private Map<Integer, Feature> featureWeakMap;
     private Map<Integer, VariableParameterValue> variableParameterValueWeakMap;
     private Map<Integer, Complex> complexWeakMap;
@@ -96,7 +96,7 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
         this.experimentWeakMap = new WeakHashMap<Integer, Experiment>();
         this.interactorWeakMap = new WeakHashMap<Integer, Interactor>();
         this.interactionWeakMap = new WeakHashMap<Integer, Interaction>();
-        this.participantWeakMap = new WeakHashMap<Integer, Participant>();
+        this.participantWeakMap = new WeakHashMap<Integer, Entity>();
         this.featureWeakMap = new WeakHashMap<Integer, Feature>();
         this.variableParameterValueWeakMap = new WeakHashMap<Integer, VariableParameterValue>();
         this.complexWeakMap = new WeakHashMap<Integer, Complex>();
@@ -231,12 +231,12 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
     }
 
     @Override
-    public void registerParticipant(int id, Participant object) {
+    public void registerParticipant(int id, Entity object) {
         this.participantWeakMap.put(id, object);
     }
 
     @Override
-    public Participant getParticipant(int id) {
+    public Entity getParticipant(int id) {
         if (this.participantWeakMap.containsKey(id)){
             return this.participantWeakMap.get(id);
         }
@@ -256,6 +256,15 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                         ExtendedPsiXmlParticipant participant = (ExtendedPsiXmlParticipant)p;
                         if (participant.getId() == id){
                             return participant;
+                        }
+                        else if (participant instanceof ParticipantPool){
+                            ParticipantPool pool = (ParticipantPool)participant;
+                            for (Object candidate : pool){
+                                ExtendedPsiXmlEntity extendedEntity = (ExtendedPsiXmlEntity)candidate;
+                                if (extendedEntity.getId() == id){
+                                    return extendedEntity;
+                                }
+                            }
                         }
                     }
                     logger.log(Level.SEVERE, "cannot reload participant "+id);
@@ -304,6 +313,18 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                             ExtendedPsiXmlFeature feature = (ExtendedPsiXmlFeature)f;
                             if (feature.getId() == id){
                                 return feature;
+                            }
+                        }
+
+                        if (participant instanceof ParticipantPool){
+                            ParticipantPool pool = (ParticipantPool)participant;
+                            for (Object candidate : pool){
+                                for (Object f : ((ParticipantCandidate)candidate).getFeatures()){
+                                    ExtendedPsiXmlFeature feature = (ExtendedPsiXmlFeature)f;
+                                    if (feature.getId() == id){
+                                        return feature;
+                                    }
+                                }
                             }
                         }
                     }
@@ -690,6 +711,14 @@ public class PsiXmlFileIndexCache implements PsiXmlIdCache {
                                 currentInteractionPos = startPos;
 
                                 this.variableParameterValuePositions.put(new EntryLocation(currentEntry, currentId), currentExperimentPost);
+                            }
+                            else if ( "interactorCandidate".equalsIgnoreCase( line ) ) {
+
+                                int result = getId( fis, buf );
+                                currentId = result;
+
+                                this.participantPositions.put(new EntryLocation(currentEntry, currentId), currentInteractionPos);
+
                             }
 
                             recording = false;
