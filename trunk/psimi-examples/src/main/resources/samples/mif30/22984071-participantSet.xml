@@ -365,7 +365,7 @@
                                     <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:1307" refType="identity" refTypeAc="MI:0356"/>
                                 </xref>
                             </moleculeSetType>
-                            <interactorCandidate>
+                            <interactorCandidate id="101">
                                 <interactorRef>17</interactorRef>
                                 <featureList>
                                     <feature id="22">
@@ -467,7 +467,7 @@
                                     </feature>
                                 </featureList>
                             </interactorCandidate>
-                            <interactorCandidate>
+                            <interactorCandidate id="102">
                                 <interactorRef>18</interactorRef>
                                 <featureList>
                                     <feature id="25">
