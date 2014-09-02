@@ -347,7 +347,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsParticipant(this.ref)){
-                Participant p = parsedObjects.getParticipant(this.ref);
+                Entity p = parsedObjects.getParticipant(this.ref);
                 if (p != null){
                     participant = p;
                     return true;

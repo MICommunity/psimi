@@ -127,7 +127,7 @@ public class XmlEntryContext {
         }
     }
 
-    public void registerParticipant(int id, Participant o){
+    public void registerParticipant(int id, Entity o){
         if (this.elementCache != null){
             this.elementCache.registerParticipant(id, o);
         }

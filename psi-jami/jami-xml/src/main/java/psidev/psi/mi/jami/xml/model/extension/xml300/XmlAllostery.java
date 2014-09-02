@@ -145,7 +145,7 @@ public class XmlAllostery extends AbstractXmlCooperativeEffect implements Allost
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             if (parsedObjects.containsParticipant(this.ref)){
-                Participant object = parsedObjects.getParticipant(this.ref);
+                Entity object = parsedObjects.getParticipant(this.ref);
                 if (object == null){
                     return false;
                 }
@@ -161,8 +161,26 @@ public class XmlAllostery extends AbstractXmlCooperativeEffect implements Allost
                     return true;
                 }
                 // wrap basic participant
+                // wrap basic interaction
+                else if (object instanceof Participant){
+                    ModelledParticipant participant = new XmlParticipantWrapper((Participant)object, null);
+                    setAllostericMolecule(participant);
+                    return true;
+                }
+                // wrap basic experimental participant candidate
+                else if (object instanceof ExperimentalParticipantCandidate){
+                    ModelledParticipant participant = new XmlExperimentalParticipantCandidateWrapper((ExperimentalParticipantCandidate)object, null);
+                    setAllostericMolecule(participant);
+                    return true;
+                }
+                // wrap basic experimental modelled participant candidate
+                else if (object instanceof ModelledParticipantCandidate){
+                    ModelledParticipant participant = new XmlModelledParticipantCandidateWrapper((ModelledParticipantCandidate)object, null);
+                    setAllostericMolecule(participant);
+                    return true;
+                }
                 else {
-                    ModelledParticipant participant = new XmlParticipantWrapper(object, null);
+                    ModelledParticipant participant = new XmlParticipantCandidateWrapper((ParticipantCandidate)object, null);
                     setAllostericMolecule(participant);
                     return true;
                 }

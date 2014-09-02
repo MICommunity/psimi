@@ -19,7 +19,7 @@ public class InMemoryPsiXmlCache implements PsiXmlIdCache {
     private Map<Integer, Interaction> mapOfReferencedInteractions;
     private Map<Integer, Experiment> mapOfReferencedExperiments;
     private Map<Integer, Interactor> mapOfReferencedInteractors;
-    private Map<Integer, Participant> mapOfReferencedParticipants;
+    private Map<Integer, Entity> mapOfReferencedParticipants;
     private Map<Integer, Feature> mapOfReferencedFeatures;
     private Map<Integer, VariableParameterValue> mapOfReferencedVariableParameterValues;
     private Map<Integer, AbstractAvailability> mapOfReferencedAvailabilities;
@@ -30,7 +30,7 @@ public class InMemoryPsiXmlCache implements PsiXmlIdCache {
         this.mapOfReferencedFeatures = new HashMap<Integer, Feature>();
         this.mapOfReferencedInteractions = new HashMap<Integer, Interaction>();
         this.mapOfReferencedInteractors = new HashMap<Integer, Interactor>();
-        this.mapOfReferencedParticipants = new HashMap<Integer, Participant>();
+        this.mapOfReferencedParticipants = new HashMap<Integer, Entity>();
         this.mapOfReferencedVariableParameterValues = new HashMap<Integer, VariableParameterValue>();
         this.mapOfReferencedComplexes = new HashMap<Integer, Complex>();
     }
@@ -76,12 +76,12 @@ public class InMemoryPsiXmlCache implements PsiXmlIdCache {
     }
 
     @Override
-    public void registerParticipant(int id, Participant object) {
+    public void registerParticipant(int id, Entity object) {
         this.mapOfReferencedParticipants.put(id, object);
     }
 
     @Override
-    public Participant getParticipant(int id) {
+    public Entity getParticipant(int id) {
         return this.mapOfReferencedParticipants.get(id);
     }
 
