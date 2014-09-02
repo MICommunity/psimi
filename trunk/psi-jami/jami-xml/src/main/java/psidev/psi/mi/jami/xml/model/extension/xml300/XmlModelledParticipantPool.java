@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.ModelledFeature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 import psidev.psi.mi.jami.model.ModelledParticipantCandidate;
 import psidev.psi.mi.jami.model.ModelledParticipantPool;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.model.extension.AbstractXmlParticipant;
 import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
 import psidev.psi.mi.jami.xml.model.extension.XmlModelledParticipant;
@@ -52,5 +53,12 @@ implements ModelledParticipantPool{
     @XmlElement(name = "interactorCandidate", type = XmlModelledParticipantCandidate.class, required = true)
     public Collection<ModelledParticipantCandidate> getJAXBInteractorCandidates() {
         return super.getJAXBInteractorCandidates();
+    }
+
+    @Override
+    public void setId(int id) {
+        super.setId(id);
+        // register participant as complex participant
+        XmlEntryContext.getInstance().registerComplexParticipant(id, this);
     }
 }

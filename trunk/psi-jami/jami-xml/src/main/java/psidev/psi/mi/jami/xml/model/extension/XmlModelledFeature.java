@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.ModelledEntity;
 import psidev.psi.mi.jami.model.ModelledFeature;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 
 import javax.xml.bind.annotation.*;
 
@@ -87,6 +88,9 @@ public class XmlModelledFeature extends AbstractXmlFeature<ModelledEntity, Model
     @XmlAttribute(name = "id", required = true)
     public void setJAXBId(int id) {
         super.setId(id);
+        // register feature as complex feature
+        XmlEntryContext.getInstance().registerComplexFeature(id, this);
+
     }
 
     @Override

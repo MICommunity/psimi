@@ -70,25 +70,31 @@ public class XmlFeatureModificationEffector implements FeatureModificationEffect
         }
 
         public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.containsFeature(this.ref)){
+            // have a complex feature, load it
+            if (parsedObjects.containsComplexFeature(this.ref)){
+                ModelledFeature object = parsedObjects.getComplexFeature(this.ref);
+                if (object == null){
+                    return false;
+                }
+                // use complex feature
+                else {
+                    feature = object;
+                    return true;
+                }
+            }
+            // have a feature evidence, load the interaction as complex and then set feature
+            else if (parsedObjects.containsFeature(this.ref)){
                 Feature object = parsedObjects.getFeature(this.ref);
                 if (object == null){
                     return false;
                 }
-                // convert feature evidence in a modelled feature
-                else if (object instanceof FeatureEvidence){
-                    feature = new XmlFeatureEvidenceWrapper((FeatureEvidence)object, null);
-                    return true;
-                }
-                // use modelled feature
-                else if (object instanceof ModelledFeature){
-                    feature = (ModelledFeature)object;
-                    return true;
-                }
-                // wrap basic feature
+                // convert feature evidence in a modelled feature and load previous complex
                 else {
-                    feature = new XmlFeatureWrapper(object, null);
-                    return true;
+                    ModelledFeature reloadedObject = parsedObjects.registerModelledFeatureLoadedFrom(object);
+                    if (reloadedObject != null){
+                        feature = reloadedObject;
+                        return true;
+                    }
                 }
             }
             return false;

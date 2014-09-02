@@ -4,6 +4,7 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.model.extension.*;
 import psidev.psi.mi.jami.xml.model.extension.XmlInteractor;
 
@@ -53,6 +54,8 @@ public class XmlModelledParticipantCandidate extends AbstractXmlEntity<ModelledF
     @XmlAttribute(name = "id", required = true)
     public void setJAXBId(int value) {
         super.setId(value);
+        // register participant as complex participant
+        XmlEntryContext.getInstance().registerComplexParticipant(value, this);
     }
 
     @XmlElement(name = "featureList")

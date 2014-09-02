@@ -375,7 +375,7 @@ public class XmlBasicInteractionComplexWrapper implements Complex,FileSourceCont
     protected void initialiseParticipants(){
         this.modelledParticipants = new SynchronizedModelledParticipantList();
         for (Object part : this.interaction.getParticipants()){
-            this.modelledParticipants.addOnly(new XmlParticipantWrapper((Participant)part, this));
+            this.modelledParticipants.addOnly(new XmlParticipantWrapper((ExtendedPsiXmlParticipant)part, this));
         }
     }
 

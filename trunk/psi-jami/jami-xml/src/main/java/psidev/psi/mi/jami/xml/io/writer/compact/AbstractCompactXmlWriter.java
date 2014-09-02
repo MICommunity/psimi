@@ -182,21 +182,34 @@ public abstract class AbstractCompactXmlWriter<T extends Interaction> extends Ab
     protected void registerAllInteractors(T interaction){
         for (Object o : interaction.getParticipants()){
             Participant participant = (Participant)o;
-            // we have a complex, we want to register default experiments
-            if (!writeComplexesAsInteractors() && participant.getInteractor() instanceof Complex){
-                Complex complex = (Complex)participant.getInteractor();
-                // the complex will be written as interactor as it does not have any participants
-                if (complex.getParticipants().isEmpty()){
-                    this.interactors.add(complex);
-                }
-                else {
-                    registerAllInteractorsAndExperimentsFrom(complex);
+            // in case of a pool, we register all interactors of this pool
+            if (participant instanceof ParticipantPool){
+                ParticipantPool pool = (ParticipantPool)participant;
+                for (Object candidate : pool){
+                    registerParticipantInteractor((ParticipantCandidate)candidate);
                 }
             }
-            // register interactor
             else{
-                this.interactors.add(participant.getInteractor());
+                registerParticipantInteractor(participant);
             }
+        }
+    }
+
+    protected void registerParticipantInteractor(Entity participant) {
+        // we have a complex, we want to register default experiments
+        if (!writeComplexesAsInteractors() && participant.getInteractor() instanceof Complex){
+            Complex complex = (Complex)participant.getInteractor();
+            // the complex will be written as interactor as it does not have any participants
+            if (complex.getParticipants().isEmpty()){
+                this.interactors.add(complex);
+            }
+            else {
+                registerAllInteractorsAndExperimentsFrom(complex);
+            }
+        }
+        // register interactor
+        else{
+            this.interactors.add(participant.getInteractor());
         }
     }
 

@@ -98,6 +98,34 @@ public interface PsiXmlIdCache {
     public Feature getFeature(int id);
 
     /**
+     * Register a participant involved in a complex with an id
+     * @param id
+     * @param object
+     */
+    public void registerComplexParticipant(int id, ModelledEntity object);
+
+    /**
+     *
+     * @param id
+     * @return the participant registered with this id, null if it does not exist
+     */
+    public ModelledEntity getComplexParticipant(int id);
+
+    /**
+     * Register a complex feature with an id
+     * @param id
+     * @param object
+     */
+    public void registerComplexFeature(int id, ModelledFeature object);
+
+    /**
+     *
+     * @param id
+     * @return the feature registered with this id, null if it does not exist
+     */
+    public ModelledFeature getComplexFeature(int id);
+
+    /**
      * Register a complex with an id
      * @param id
      * @param object
@@ -191,4 +219,39 @@ public interface PsiXmlIdCache {
      * @return
      */
     public boolean containsComplex(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsComplexParticipant(int id);
+
+    /**
+     * To know if it contains a specific id
+     * @param id
+     * @return
+     */
+    public boolean containsComplexFeature(int id);
+
+    /**
+     *
+     * @param f : the loaded feature
+     * @return the converted and registered modelled feature
+     */
+    public ModelledFeature registerModelledFeatureLoadedFrom(Feature f);
+
+    /**
+     *
+     * @param f : the loaded participant
+     * @return the converted and registered modelled participant
+     */
+    public ModelledEntity registerModelledParticipantLoadedFrom(Entity f);
+
+    /**
+     *
+     * @param f : the loaded interaction
+     * @return the converted and registered complex
+     */
+    public Complex registerComplexLoadedFrom(Interaction f);
 }

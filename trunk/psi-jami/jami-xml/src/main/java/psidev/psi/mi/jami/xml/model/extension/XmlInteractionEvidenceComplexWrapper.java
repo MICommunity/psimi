@@ -297,7 +297,7 @@ public class XmlInteractionEvidenceComplexWrapper implements Complex,FileSourceC
     protected void initialiseParticipants(){
         this.modelledParticipants = new ArrayList<ModelledParticipant>();
         for (ParticipantEvidence part : this.interactionEvidence.getParticipants()){
-            this.modelledParticipants.add(new XmlParticipantEvidenceWrapper(part, this));
+            this.modelledParticipants.add(new XmlParticipantEvidenceWrapper((ExtendedPsiXmlParticipantEvidence)part, this));
         }
     }
 

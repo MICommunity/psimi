@@ -314,7 +314,7 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         public boolean resolve(PsiXmlIdCache parsedObjects) {
             // take it from existing references
             if (parsedObjects.containsComplex(this.ref)){
-                Interactor i = parsedObjects.getComplex(this.ref);
+                Complex i = parsedObjects.getComplex(this.ref);
                 if (i != null){
                     setInteractor(i);
                     return true;
@@ -328,27 +328,18 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
             }
             else if (parsedObjects.containsInteraction(this.ref)){
                 Interaction object = parsedObjects.getInteraction(this.ref);
-                if (object == null){
-                    PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-                    if (listener != null){
-                        listener.onParticipantWithoutInteractor(null, this);
+                if (object != null){
+                    Complex reloadedComplex = parsedObjects.registerComplexLoadedFrom(object);
+                    if (reloadedComplex != null){
+                        setInteractor(reloadedComplex);
+                        return true;
                     }
-                    return false;
-                }
-                // convert interaction evidence in a complex
-                else if (object instanceof ExtendedPsiXmlInteractionEvidence){
-                    setInteractor(new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object));
-                    return true;
-                }
-                // wrap modelled interaction
-                else if (object instanceof ExtendedPsiXmlModelledInteraction){
-                    setInteractor(new XmlModelledInteractionComplexWrapper((ExtendedPsiXmlModelledInteraction)object));
-                    return true;
-                }
-                // wrap basic interaction
-                else if (object instanceof ExtendedPsiXmlInteraction){
-                    setInteractor( new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object));
-                    return true;
+                    else{
+                        PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
+                        if (listener != null){
+                            listener.onParticipantWithoutInteractor(null, this);
+                        }
+                    }
                 }
                 else{
                     PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();

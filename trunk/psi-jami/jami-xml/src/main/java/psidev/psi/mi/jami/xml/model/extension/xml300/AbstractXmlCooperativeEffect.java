@@ -8,8 +8,9 @@ import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
-import psidev.psi.mi.jami.xml.model.extension.*;
-import psidev.psi.mi.jami.xml.model.extension.ExtendedPsiXmlInteractionEvidence;
+import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
+import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
+import psidev.psi.mi.jami.xml.model.extension.XmlXref;
 import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
 
 import javax.xml.bind.annotation.*;
@@ -415,28 +416,13 @@ public abstract class AbstractXmlCooperativeEffect implements CooperativeEffect,
                 }
                 else if (parsedObjects.containsInteraction(this.ref)){
                     Interaction object = parsedObjects.getInteraction(this.ref);
-                    if (object == null){
-                        return false;
-                    }
-                    // convert interaction evidence in a complex
-                    else if (object instanceof ExtendedPsiXmlInteractionEvidence){
-                        ModelledInteraction interaction = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
-                        affectedInteractions.remove(this);
-                        affectedInteractions.add(interaction);
-                        return true;
-                    }
-                    // wrap modelled interaction
-                    else if (object instanceof ModelledInteraction){
-                        affectedInteractions.remove(this);
-                        affectedInteractions.add((ModelledInteraction) object);
-                        return true;
-                    }
-                    // wrap basic interaction
-                    else if (object instanceof ExtendedPsiXmlInteraction){
-                        ModelledInteraction interaction = new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object);
-                        affectedInteractions.remove(this);
-                        affectedInteractions.add(interaction);
-                        return true;
+                    if (object != null){
+                        ModelledInteraction reloadedComplex = parsedObjects.registerComplexLoadedFrom(object);
+                        if (reloadedComplex != null){
+                            affectedInteractions.remove(this);
+                            affectedInteractions.add(reloadedComplex);
+                            return true;
+                        }
                     }
                 }
                 return false;
