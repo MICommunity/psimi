@@ -247,12 +247,23 @@ public abstract class AbstractXmlParticipantWriter<P extends Participant, F exte
                 this.objectIndex.registerSubComplex((Complex)interactor);
             }
         }
+        // write participant candidates
+        else if (object instanceof ParticipantPool){
+             ParticipantPool pool = (ParticipantPool)object;
+            if (!pool.isEmpty()){
+                writeParticipantPool(pool);
+            }
+            else{
+                writeMolecule(interactor);
+            }
+        }
         // write interactor ref or interactor
         else{
             writeMolecule(interactor);
         }
     }
 
+    protected abstract void writeParticipantPool(ParticipantPool pool) throws XMLStreamException;
     protected abstract void writeMolecule(Interactor interactor) throws XMLStreamException ;
     protected abstract void writeExperimentalPreparations(P object) throws XMLStreamException;
     protected abstract void writeExperimentalRoles(P object) throws XMLStreamException;

@@ -29,6 +29,11 @@ public class XmlModelledParticipantWriter extends AbstractXmlModelledParticipant
     }
 
     @Override
+    protected void initialiseParticipantCandidateWriter() {
+        super.setParticipantCandidateWriter(new XmlModelledParticipantCandidateWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
     protected void writeMolecule(Interactor interactor) throws XMLStreamException {
         super.writeMoleculeDescription(interactor);
     }

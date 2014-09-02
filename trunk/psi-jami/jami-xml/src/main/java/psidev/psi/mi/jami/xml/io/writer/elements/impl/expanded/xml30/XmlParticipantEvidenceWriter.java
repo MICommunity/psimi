@@ -23,6 +23,11 @@ public class XmlParticipantEvidenceWriter extends AbstractXmlParticipantEvidence
     }
 
     @Override
+    protected void initialiseParticipantCandidateWriter() {
+        super.setParticipantCandidateWriter(new XmlExperimentalParticipantCandidateWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    @Override
     protected void writeMolecule(Interactor interactor) throws XMLStreamException {
         super.writeMoleculeDescription(interactor);
     }

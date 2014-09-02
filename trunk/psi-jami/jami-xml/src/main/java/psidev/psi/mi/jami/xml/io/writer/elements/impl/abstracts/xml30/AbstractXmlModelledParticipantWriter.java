@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml30;
 
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.ModelledParticipant;
-import psidev.psi.mi.jami.model.Stoichiometry;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.XmlCvTermWriter;
@@ -26,6 +24,7 @@ public abstract class AbstractXmlModelledParticipantWriter
         extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlModelledParticipantWriter {
 
     private PsiXmlElementWriter<Stoichiometry> stoichiometryWriter;
+    private PsiXmlElementWriter<ModelledParticipantCandidate> participantCandidateWriter;
 
     public AbstractXmlModelledParticipantWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
@@ -105,5 +104,31 @@ public abstract class AbstractXmlModelledParticipantWriter
     @Override
     protected void writeParameters(ModelledParticipant object) {
         // nothing to do
+    }
+
+    public PsiXmlElementWriter<ModelledParticipantCandidate> getParticipantCandidateWriter() {
+        if (this.participantCandidateWriter == null){
+            initialiseParticipantCandidateWriter();
+        }
+        return participantCandidateWriter;
+    }
+
+    protected abstract void initialiseParticipantCandidateWriter();
+
+    public void setParticipantCandidateWriter(PsiXmlElementWriter<ModelledParticipantCandidate> participantCandidateWriter) {
+        this.participantCandidateWriter = participantCandidateWriter;
+    }
+
+    @Override
+    protected void writeParticipantPool(ParticipantPool pool) throws XMLStreamException {
+        getStreamWriter().writeStartElement("interactorCandidateList");
+        // write participant candidate type
+        getBiologicalRoleWriter().write(pool.getType(), "moleculeSetType");
+        // write candidates
+        for (Object candidate : pool){
+            getParticipantCandidateWriter().write((ModelledParticipantCandidate)candidate);
+        }
+        // end list
+        getStreamWriter().writeEndElement();
     }
 }

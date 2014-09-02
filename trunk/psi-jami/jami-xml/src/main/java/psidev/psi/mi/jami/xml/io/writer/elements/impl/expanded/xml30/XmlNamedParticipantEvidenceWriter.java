@@ -39,4 +39,9 @@ public class XmlNamedParticipantEvidenceWriter extends AbstractXmlParticipantEvi
                 xmlParticipant.getFullName(), xmlParticipant.getAliases(), getStreamWriter(),
                 getAliasWriter());
     }
+
+    @Override
+    protected void initialiseParticipantCandidateWriter() {
+        super.setParticipantCandidateWriter(new XmlExperimentalParticipantCandidateWriter(getStreamWriter(), getObjectIndex()));
+    }
 }
