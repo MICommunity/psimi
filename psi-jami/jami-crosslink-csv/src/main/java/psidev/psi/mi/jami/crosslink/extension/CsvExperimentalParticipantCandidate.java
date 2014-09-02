@@ -2,7 +2,6 @@ package psidev.psi.mi.jami.crosslink.extension;
 
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Stoichiometry;
 import psidev.psi.mi.jami.model.impl.DefaultExperimentalParticipantCandidate;
@@ -24,16 +23,8 @@ public class CsvExperimentalParticipantCandidate extends DefaultExperimentalPart
         super(interactor);
     }
 
-    public CsvExperimentalParticipantCandidate(Interactor interactor, CvTerm bioRole) {
-        super(interactor, bioRole);
-    }
-
     public CsvExperimentalParticipantCandidate(Interactor interactor, Stoichiometry stoichiometry) {
         super(interactor, stoichiometry);
-    }
-
-    public CsvExperimentalParticipantCandidate(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry) {
-        super(interactor, bioRole, stoichiometry);
     }
 
     public FileSourceLocator getSourceLocator() {
