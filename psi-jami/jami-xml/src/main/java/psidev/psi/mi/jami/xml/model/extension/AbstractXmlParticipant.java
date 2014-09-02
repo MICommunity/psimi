@@ -5,17 +5,15 @@ import com.sun.xml.bind.annotation.XmlLocation;
 import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
-import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.model.extension.factory.XmlInteractorFactory;
+import psidev.psi.mi.jami.xml.model.extension.xml300.AbstractXmlParticipantPool;
 import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
 import psidev.psi.mi.jami.xml.model.reference.AbstractComplexRef;
-import psidev.psi.mi.jami.xml.model.reference.AbstractInteractorRef;
 import psidev.psi.mi.jami.xml.utils.PsiXmlUtils;
 
 import javax.xml.bind.annotation.*;
@@ -31,66 +29,65 @@ import java.util.List;
  * @since <pre>07/10/13</pre>
  */
 @XmlTransient
-public abstract class AbstractXmlParticipant<I extends Interaction, F extends Feature> implements ExtendedPsiXmlParticipant<I, F>, FileSourceContext, Locatable{
+public abstract class AbstractXmlParticipant<I extends Interaction, F extends Feature> extends AbstractXmlEntity<F>
+        implements ExtendedPsiXmlParticipant<I, F>, FileSourceContext, Locatable{
 
     private I interaction;
-    private Interactor interactor;
     private CvTerm biologicalRole;
-    private Collection<CausalRelationship> causalRelationships;
-    private PsiXmlLocator sourceLocator;
     private NamesContainer namesContainer;
     private XrefContainer xrefContainer;
-    private XmlInteractorFactory interactorFactory;
-    private EntityInteractorChangeListener changeListener;
-    private int id;
 
     private JAXBAttributeWrapper jaxbAttributeWrapper;
-    private JAXBFeatureWrapper<F> jaxbFeatureWrapper;
 
-    private Stoichiometry stoichiometry;
+    private AbstractXmlParticipantPool jaxbPool;
 
     public AbstractXmlParticipant(){
-        this.interactorFactory = XmlEntryContext.getInstance().getInteractorFactory();
+        super();
     }
 
     public AbstractXmlParticipant(Interactor interactor){
-        if (interactor == null){
-            throw new IllegalArgumentException("The interactor cannot be null.");
-        }
-        this.interactor = interactor;
+        super(interactor);
         this.biologicalRole = new XmlCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier()));
-        this.interactorFactory = XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public AbstractXmlParticipant(Interactor interactor, CvTerm bioRole){
-        if (interactor == null){
-            throw new IllegalArgumentException("The interactor cannot be null.");
-        }
-        this.interactor = interactor;
+        super(interactor);
         this.biologicalRole = bioRole != null ? bioRole : new XmlCvTerm(Participant.UNSPECIFIED_ROLE, new XmlXref(CvTermUtils.createPsiMiDatabase(), Participant.UNSPECIFIED_ROLE_MI, CvTermUtils.createIdentityQualifier()));
-        this.interactorFactory =  XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public AbstractXmlParticipant(Interactor interactor, Stoichiometry stoichiometry){
-        this(interactor);
-        setStoichiometry(stoichiometry);
-        this.interactorFactory =  XmlEntryContext.getInstance().getInteractorFactory();
+        super(interactor, stoichiometry);
     }
 
     public AbstractXmlParticipant(Interactor interactor, CvTerm bioRole, Stoichiometry stoichiometry){
         this(interactor, bioRole);
         setStoichiometry(stoichiometry);
-        this.interactorFactory =  XmlEntryContext.getInstance().getInteractorFactory();
     }
 
     public void setInteractionAndAddParticipant(I interaction) {
 
         if (this.interaction != null){
-            this.interaction.removeParticipant(this);
+            // normal participant
+            if (this.jaxbPool == null){
+                this.interaction.removeParticipant(this);
+            }
+            // participant pool
+            else{
+                this.interaction.removeParticipant(this.jaxbPool);
+                this.interaction = null;
+            }
         }
 
         if (interaction != null){
-            interaction.addParticipant(this);
+            // normal participant
+            if (this.jaxbPool == null){
+                interaction.addParticipant(this);
+            }
+            // participant pool
+            else{
+                interaction.addParticipant(this.jaxbPool);
+                this.interaction = interaction;
+            }
         }
     }
 
@@ -100,6 +97,9 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
 
     public void setInteraction(I interaction) {
         this.interaction = interaction;
+        if (this.jaxbPool != null){
+           this.jaxbPool.setInteraction(this.interaction);
+        }
     }
 
     @Override
@@ -143,32 +143,6 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         return this.xrefContainer.getXrefs();
     }
 
-    public Interactor getInteractor() {
-        if (this.interactor == null){
-            initialiseUnspecifiedInteractor();
-        }
-        return this.interactor;
-    }
-
-    public void setInteractor(Interactor interactor) {
-        if (interactor == null){
-            throw new IllegalArgumentException("The interactor cannot be null.");
-        }
-        Interactor oldInteractor = this.interactor;
-
-        this.interactor = interactor;
-        if (this.changeListener != null){
-            this.changeListener.onInteractorUpdate(this, oldInteractor);
-        }
-    }
-
-    public Collection<CausalRelationship> getCausalRelationships() {
-        if (this.causalRelationships == null){
-            this.causalRelationships = new ArrayList<CausalRelationship>();
-        }
-        return this.causalRelationships;
-    }
-
     public Collection<Annotation> getAnnotations() {
         if (this.jaxbAttributeWrapper == null){
             initialiseAnnotationWrapper();
@@ -177,42 +151,34 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
     }
 
     public Stoichiometry getStoichiometry() {
-        if (this.stoichiometry == null){
+        if (super.getStoichiometry() == null){
             initialiseStoichiometry();
         }
-        return this.stoichiometry;
+        return super.getStoichiometry();
     }
 
     public void setStoichiometry(Integer stoichiometry) {
         if (stoichiometry == null){
-            this.stoichiometry = null;
+            super.setStoichiometry((Integer)null);
             if (this.jaxbAttributeWrapper != null){
                 this.jaxbAttributeWrapper.stoichiometry = null;
             }
         }
         else {
-            this.stoichiometry = new XmlStoichiometry(stoichiometry);
+            super.setStoichiometry(new XmlStoichiometry(stoichiometry));
         }
     }
 
     public void setStoichiometry(Stoichiometry stoichiometry) {
         if (stoichiometry == null){
-            this.stoichiometry = null;
+            super.setStoichiometry((Stoichiometry)null);
             if (this.jaxbAttributeWrapper != null){
                 this.jaxbAttributeWrapper.stoichiometry = null;
             }
         }
         else {
-            this.stoichiometry= stoichiometry;
+            super.setStoichiometry(stoichiometry);
         }
-    }
-
-    public EntityInteractorChangeListener getChangeListener() {
-        return this.changeListener;
-    }
-
-    public void setChangeListener(EntityInteractorChangeListener listener) {
-        this.changeListener = listener;
     }
 
     /**
@@ -247,67 +213,6 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         }
     }
 
-    public Collection<F> getFeatures() {
-        if (jaxbFeatureWrapper == null){
-            initialiseFeatureWrapper();
-        }
-        return this.jaxbFeatureWrapper.features;
-    }
-
-    public boolean addFeature(F feature) {
-
-        if (feature == null){
-            return false;
-        }
-
-        if (getFeatures().add(feature)){
-            feature.setParticipant(this);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean removeFeature(F feature) {
-
-        if (feature == null){
-            return false;
-        }
-
-        if (getFeatures().remove(feature)){
-            feature.setParticipant(null);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean addAllFeatures(Collection<? extends F> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (F feature : features){
-            if (addFeature(feature)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
-    public boolean removeAllFeatures(Collection<? extends F> features) {
-        if (features == null){
-            return false;
-        }
-
-        boolean added = false;
-        for (F feature : features){
-            if (removeFeature(feature)){
-                added = true;
-            }
-        }
-        return added;
-    }
-
     /**
      * Sets the value of the namesContainer property.
      *
@@ -332,47 +237,6 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         this.xrefContainer = value;
     }
 
-    public void setJAXBInteractor(XmlInteractor interactor) {
-        if (interactor == null){
-            this.interactor = null;
-            PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
-            if (listener != null){
-                listener.onParticipantWithoutInteractor(null, this);
-            }
-        }
-        else{
-            this.interactor = this.interactorFactory.createInteractorFromXmlInteractorInstance(interactor);
-        }
-    }
-
-    /**
-     * Sets the value of the interactionRef property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBInteractionRef(Integer value) {
-        if (value != null){
-            this.interactor = new InteractionRef(value);
-        }
-    }
-
-    /**
-     * Sets the value of the interactorRef property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBInteractorRef(Integer value) {
-        if (value != null){
-            this.interactor = new InteractorRef(value);
-        }
-    }
-
     /**
      * Sets the value of the biologicalRole property.
      *
@@ -386,58 +250,42 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
     }
 
     public void setJAXBStoichiometry(psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometry stoichiometry){
-        this.stoichiometry = stoichiometry;
+        super.setStoichiometry(stoichiometry);
     }
 
     public void setJAXBStoichiometryRange(XmlStoichiometryRange stoichiometry){
-        this.stoichiometry = stoichiometry;
+        super.setStoichiometry(stoichiometry);
     }
 
     /**
-     * Gets the value of the id property.
+     * Sets the value of the interactionRef property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
      *
      */
-    public int getId() {
-        return id;
+    public void setJAXBInteractionRef(Integer value) {
+        if (value != null){
+            super.setInteractor(new InteractionRef(value));
+        }
+    }
+
+    public AbstractXmlParticipantPool getJAXBInteractorCandidates() {
+        return jaxbPool;
     }
 
     /**
-     * Sets the value of the id property.
+     * Sets the value of the interactor candidates property.
+     *
+     * @param value
+     *     allowed object is
+     *     {@link Integer }
      *
      */
-    public void setId(int value) {
-        this.id = value;
-        XmlEntryContext.getInstance().registerParticipant(this.id, this);
-        if (getSourceLocator() != null){
-            this.sourceLocator.setObjectId(this.id);
-        }
-    }
-
-    @Override
-    public Locator sourceLocation() {
-        return (Locator)getSourceLocator();
-    }
-
-    public FileSourceLocator getSourceLocator() {
-        return sourceLocator;
-    }
-
-    public void setSourceLocator(FileSourceLocator sourceLocator) {
-        if (sourceLocator == null){
-            this.sourceLocator = null;
-        }
-        else if (sourceLocator instanceof PsiXmlLocator){
-            this.sourceLocator = (PsiXmlLocator)sourceLocator;
-            this.sourceLocator.setObjectId(getId());
-        }
-        else {
-            this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), getId());
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Participant: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+    public void setJAXBInteractorCandidates(AbstractXmlParticipantPool value) {
+        this.jaxbPool = value;
+        this.jaxbPool.setDelegate(this);
     }
 
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
@@ -447,38 +295,12 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
     protected void initialiseStoichiometry() {
 
         if (this.jaxbAttributeWrapper != null && this.jaxbAttributeWrapper.stoichiometry != null){
-            this.stoichiometry = this.jaxbAttributeWrapper.stoichiometry;
+            super.setStoichiometry(this.jaxbAttributeWrapper.stoichiometry);
         }
-    }
-
-    protected void setFeatureWrapper(JAXBFeatureWrapper<F> jaxbFeatureWrapper) {
-        this.jaxbFeatureWrapper = jaxbFeatureWrapper;
-        // initialise all features because of back references
-        if (this.jaxbFeatureWrapper != null && !this.jaxbFeatureWrapper.features.isEmpty()){
-            for (F feature : this.jaxbFeatureWrapper.features){
-                processAddedFeature(feature);
-            }
-        }
-    }
-
-    protected void processAddedFeature(F feature){
-        feature.setParticipant(this);
-    }
-
-    protected void initialiseUnspecifiedInteractor() {
-        this.interactor = new XmlInteractor(PsiXmlUtils.UNSPECIFIED);
     }
 
     protected void initialiseAnnotationWrapper() {
         this.jaxbAttributeWrapper = new JAXBAttributeWrapper();
-    }
-
-    protected void initialiseFeatureWrapper(){
-        this.jaxbFeatureWrapper = new JAXBFeatureWrapper();
-    }
-
-    private FileSourceLocator getParticipantLocator(){
-        return getSourceLocator();
     }
 
     //////////////////////////////////////////////////////////// classes
@@ -494,7 +316,7 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
             if (parsedObjects.containsComplex(this.ref)){
                 Interactor i = parsedObjects.getComplex(this.ref);
                 if (i != null){
-                    interactor = i;
+                    setInteractor(i);
                     return true;
                 }
                 else{
@@ -515,17 +337,17 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
                 }
                 // convert interaction evidence in a complex
                 else if (object instanceof ExtendedPsiXmlInteractionEvidence){
-                    interactor = new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object);
+                    setInteractor(new XmlInteractionEvidenceComplexWrapper((ExtendedPsiXmlInteractionEvidence)object));
                     return true;
                 }
                 // wrap modelled interaction
                 else if (object instanceof ExtendedPsiXmlModelledInteraction){
-                    interactor = new XmlModelledInteractionComplexWrapper((ExtendedPsiXmlModelledInteraction)object);
+                    setInteractor(new XmlModelledInteractionComplexWrapper((ExtendedPsiXmlModelledInteraction)object));
                     return true;
                 }
                 // wrap basic interaction
                 else if (object instanceof ExtendedPsiXmlInteraction){
-                    interactor = new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object);
+                    setInteractor( new XmlBasicInteractionComplexWrapper((ExtendedPsiXmlInteraction)object));
                     return true;
                 }
                 else{
@@ -549,37 +371,6 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
 
         public void setSourceLocator(FileSourceLocator locator) {
             throw new UnsupportedOperationException("Cannot set the source locator of an interaction ref");
-        }
-    }
-
-    private class InteractorRef extends AbstractInteractorRef {
-        public InteractorRef(int ref) {
-            super(ref);
-        }
-
-        @Override
-        public boolean resolve(PsiXmlIdCache parsedObjects) {
-            if (parsedObjects.containsInteractor(this.ref)){
-                Interactor i = parsedObjects.getInteractor(this.ref);
-                if (i != null){
-                    interactor = i;
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        @Override
-        public String toString() {
-            return "Participant Interactor Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
-        }
-
-        public FileSourceLocator getSourceLocator() {
-            return getParticipantLocator();
-        }
-
-        public void setSourceLocator(FileSourceLocator locator) {
-            throw new UnsupportedOperationException("Cannot set the source locator of an interactor ref");
         }
     }
 
@@ -751,61 +542,6 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         @Override
         public String toString() {
             return "Participant Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
-        }
-    }
-
-    @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="featureWrapper")
-    public static class JAXBFeatureWrapper<F extends Feature> implements Locatable, FileSourceContext{
-        private PsiXmlLocator sourceLocator;
-        @XmlLocation
-        @XmlTransient
-        private Locator locator;
-        private List<F> features;
-
-        public JAXBFeatureWrapper(){
-            initialiseFeatures();
-        }
-
-        public JAXBFeatureWrapper(List<F> features){
-            this.features = features;
-        }
-
-        @Override
-        public Locator sourceLocation() {
-            return (Locator)getSourceLocator();
-        }
-
-        public FileSourceLocator getSourceLocator() {
-            if (sourceLocator == null && locator != null){
-                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
-            }
-            return sourceLocator;
-        }
-
-        public void setSourceLocator(FileSourceLocator sourceLocator) {
-            if (sourceLocator == null){
-                this.sourceLocator = null;
-            }
-            else if (sourceLocator instanceof PsiXmlLocator){
-                this.sourceLocator = (PsiXmlLocator)sourceLocator;
-            }
-            else {
-                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
-            }
-        }
-
-        protected void initialiseFeatures(){
-            this.features = new ArrayList<F>();
-        }
-
-        public List<F> getJAXBFeatures() {
-            return this.features;
-        }
-
-        @Override
-        public String toString() {
-            return "Participant Feature List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

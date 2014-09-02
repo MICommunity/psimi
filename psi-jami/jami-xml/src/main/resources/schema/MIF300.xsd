@@ -1730,7 +1730,14 @@
             <xs:documentation>The list of interactor candidates.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="interactorCandidate" type="mif:participantCandidate" maxOccurs="unbounded"/>
+            <xs:element name="moleculeSetType" type="mif:cvType" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The type of molecule set, e.g. candidate set, defined set, ...
+                        This element is controlled by the PSI-MI controlled vocabulary
+                        "interactor", root term id MI:1304.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="interactorCandidate" type="mif:participantCandidate" maxOccurs="unbounded" minOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 
@@ -1739,7 +1746,14 @@
             <xs:documentation>The list of interactor candidates.</xs:documentation>
         </xs:annotation>
         <xs:sequence>
-            <xs:element name="interactorCandidate" type="mif:abstractParticipantCandidate" maxOccurs="unbounded"/>
+            <xs:element name="moleculeSetType" type="mif:cvType" minOccurs="1">
+                <xs:annotation>
+                    <xs:documentation>The type of molecule set, e.g. candidate set, defined set, ...
+                        This element is controlled by the PSI-MI controlled vocabulary
+                        "interactor", root term id MI:1304.</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="interactorCandidate" type="mif:abstractParticipantCandidate" maxOccurs="unbounded" minOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
 

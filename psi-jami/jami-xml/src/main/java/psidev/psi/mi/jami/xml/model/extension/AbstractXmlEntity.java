@@ -193,20 +193,6 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
     }
 
     /**
-     * Sets the value of the interactionRef property.
-     *
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *
-     */
-    public void setJAXBInteractionRef(Integer value) {
-        if (value != null){
-            this.interactor = new InteractionRef(value);
-        }
-    }
-
-    /**
      * Sets the value of the interactorRef property.
      *
      * @param value
@@ -289,7 +275,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
         this.jaxbFeatureWrapper = new JAXBFeatureWrapper();
     }
 
-    private FileSourceLocator getParticipantLocator(){
+    protected FileSourceLocator getParticipantLocator(){
         return getSourceLocator();
     }
 
