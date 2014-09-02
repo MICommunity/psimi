@@ -184,7 +184,13 @@ public abstract class AbstractCompactXmlWriter<T extends Interaction> extends Ab
             Participant participant = (Participant)o;
             // in case of a pool, we register all interactors of this pool
             if (participant instanceof ParticipantPool){
-                registerParticipantPoolInteractor((ParticipantPool) participant);
+                ParticipantPool pool = (ParticipantPool)participant;
+                if (!pool.isEmpty()){
+                    registerParticipantPoolInteractor(pool);
+                }
+                else{
+                    registerParticipantInteractor(participant);
+                }
             }
             else{
                 registerParticipantInteractor(participant);
@@ -192,11 +198,17 @@ public abstract class AbstractCompactXmlWriter<T extends Interaction> extends Ab
         }
     }
 
-    protected void registerParticipantPoolInteractor(ParticipantPool participant) {
-        ParticipantPool pool = (ParticipantPool)participant;
-        for (Object candidate : pool){
-            registerParticipantInteractor((ParticipantCandidate)candidate);
+    protected void registerParticipantPoolInteractor(ParticipantPool pool) {
+        switch (getVersion()){
+            case v3_0_0:
+                for (Object candidate : pool){
+                    registerParticipantInteractor((ParticipantCandidate)candidate);
+                }
+                break;
+            default:
+                registerParticipantInteractor(pool);
         }
+
     }
 
     protected void registerParticipantInteractor(Entity participant) {

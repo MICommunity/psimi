@@ -1,7 +1,6 @@
 package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml30;
 
-import psidev.psi.mi.jami.model.ParticipantEvidence;
-import psidev.psi.mi.jami.model.Stoichiometry;
+import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.PsiXmlElementWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
@@ -24,6 +23,7 @@ public abstract class AbstractXmlParticipantEvidenceWriter
         extends psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.AbstractXmlParticipantEvidenceWriter {
 
     private PsiXmlElementWriter<Stoichiometry> stoichiometryWriter;
+    private PsiXmlElementWriter<ExperimentalParticipantCandidate> participantCandidateWriter;
 
     public AbstractXmlParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
@@ -88,5 +88,31 @@ public abstract class AbstractXmlParticipantEvidenceWriter
     @Override
     protected void initialiseInteractorWriter() {
         super.setInteractorWriter(new XmlInteractorWriter(getStreamWriter(), getObjectIndex()));
+    }
+
+    public PsiXmlElementWriter<ExperimentalParticipantCandidate> getParticipantCandidateWriter() {
+        if (this.participantCandidateWriter == null){
+            initialiseParticipantCandidateWriter();
+        }
+        return participantCandidateWriter;
+    }
+
+    protected abstract void initialiseParticipantCandidateWriter();
+
+    public void setParticipantCandidateWriter(PsiXmlElementWriter<ExperimentalParticipantCandidate> participantCandidateWriter) {
+        this.participantCandidateWriter = participantCandidateWriter;
+    }
+
+    @Override
+    protected void writeParticipantPool(ParticipantPool pool) throws XMLStreamException {
+        getStreamWriter().writeStartElement("interactorCandidateList");
+        // write participant candidate type
+        getBiologicalRoleWriter().write(pool.getType(), "moleculeSetType");
+        // write candidates
+        for (Object candidate : pool){
+             getParticipantCandidateWriter().write((ExperimentalParticipantCandidate)candidate);
+        }
+        // end list
+        getStreamWriter().writeEndElement();
     }
 }

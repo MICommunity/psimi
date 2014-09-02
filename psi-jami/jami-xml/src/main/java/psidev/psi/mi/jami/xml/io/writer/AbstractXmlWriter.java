@@ -641,6 +641,10 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
         this.processedInteractions = Collections.newSetFromMap(new IdentityHashMap<Interaction, Boolean>());
     }
 
+    protected PsiXmlVersion getVersion() {
+        return version;
+    }
+
     private void initialiseStreamWriter(XMLStreamWriter writer) {
         if (writer == null){
             throw new IllegalArgumentException("The writer cannot be null.");

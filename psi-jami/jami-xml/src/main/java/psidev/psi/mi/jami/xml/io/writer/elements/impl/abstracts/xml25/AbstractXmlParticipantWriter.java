@@ -27,6 +27,11 @@ public abstract class AbstractXmlParticipantWriter
     }
 
     @Override
+    protected void writeParticipantPool(ParticipantPool pool) throws XMLStreamException {
+        writeMolecule(pool.getInteractor());
+    }
+
+    @Override
     protected void initialiseXrefWriter() {
         super.setXrefWriter(new XmlDbXrefWriter(getStreamWriter()));
     }

@@ -5,6 +5,7 @@ import psidev.psi.mi.jami.xml.PsiXmlType;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
+import psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30.XmlModelledParticipantCandidateWriter;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.xml30.*;
 import psidev.psi.mi.jami.xml.model.extension.ExperimentalInteractor;
 import psidev.psi.mi.jami.xml.model.extension.InferredInteraction;
@@ -2028,6 +2029,10 @@ public class PsiXmlElementWriterFactory {
                 attributeWriter, primaryRefWriter, cvWriter, parameterWriter);
         PsiXmlVariableNameWriter<CvTerm> experimentalCvWriter = createExperimentalCvWriter(streamWriter, extended, objectIndex, aliasWriter,
                 primaryRefWriter);
+        PsiXmlElementWriter[] candidateWriters = createParticipantCandidateWriter(streamWriter, extended, objectIndex, version, xmlType,
+                category, interactorWriter, (PsiXmlElementWriter<ModelledFeature>) featureWriters[1],
+                (PsiXmlElementWriter<FeatureEvidence>) featureWriters[0]);
+
 
         if (extended){
             PsiXmlElementWriter<ExperimentalInteractor> experimentalInteractorWriter = createExperimentalInteractorWriter(streamWriter, objectIndex,
@@ -2045,6 +2050,7 @@ public class PsiXmlElementWriterFactory {
                             modelledWriter2.setFeatureWriter((PsiXmlElementWriter<ModelledFeature>) featureWriters[1]);
                             modelledWriter2.setInteractorWriter(interactorWriter);
                             modelledWriter2.setBiologicalRoleWriter(cvWriter);
+                            modelledWriter2.setParticipantCandidateWriter(candidateWriters[1]);
 
                             switch (category) {
                                 case modelled:
@@ -2065,6 +2071,7 @@ public class PsiXmlElementWriterFactory {
                                             attributeWriter, primaryRefWriter, openCvWriter));
                                     writer2.setExperimentalInteractorWriter((CompactPsiXmlElementWriter<ExperimentalInteractor>)
                                             experimentalInteractorWriter);
+                                    writer2.setParticipantCandidateWriter(candidateWriters[0]);
 
                                     return new PsiXmlParticipantWriter[]{writer2, modelledWriter2};
                             }
@@ -2077,6 +2084,7 @@ public class PsiXmlElementWriterFactory {
                             modelledWriter3.setFeatureWriter((PsiXmlElementWriter<ModelledFeature>) featureWriters[1]);
                             modelledWriter3.setInteractorWriter(interactorWriter);
                             modelledWriter3.setBiologicalRoleWriter(cvWriter);
+                            modelledWriter3.setParticipantCandidateWriter(candidateWriters[1]);
 
                             switch (category) {
                                 case modelled:
@@ -2097,6 +2105,7 @@ public class PsiXmlElementWriterFactory {
                                             attributeWriter, primaryRefWriter, openCvWriter));
                                     writer2.setExperimentalInteractorWriter((ExpandedPsiXmlElementWriter<ExperimentalInteractor>)
                                             experimentalInteractorWriter);
+                                    writer2.setParticipantCandidateWriter(candidateWriters[0]);
 
                                     return new PsiXmlParticipantWriter[]{writer2, modelledWriter3};
                             }
@@ -2203,6 +2212,7 @@ public class PsiXmlElementWriterFactory {
                             modelledWriter2.setFeatureWriter((PsiXmlElementWriter<ModelledFeature>) featureWriters[1]);
                             modelledWriter2.setInteractorWriter(interactorWriter);
                             modelledWriter2.setBiologicalRoleWriter(cvWriter);
+                            modelledWriter2.setParticipantCandidateWriter(candidateWriters[1]);
 
                             switch (category){
                                 case modelled:
@@ -2221,6 +2231,7 @@ public class PsiXmlElementWriterFactory {
                                     writer2.setConfidenceWriter(confidenceWriter);
                                     writer2.setHostOrganismWriter(createHostOrganismWriter(streamWriter, extended, objectIndex, aliasWriter,
                                             attributeWriter, primaryRefWriter, openCvWriter));
+                                    writer2.setParticipantCandidateWriter(candidateWriters[0]);
 
                                     return new PsiXmlParticipantWriter[]{writer2, modelledWriter2};
                             }
@@ -2233,6 +2244,7 @@ public class PsiXmlElementWriterFactory {
                             modelledWriter3.setFeatureWriter((PsiXmlElementWriter<ModelledFeature>) featureWriters[1]);
                             modelledWriter3.setInteractorWriter(interactorWriter);
                             modelledWriter3.setBiologicalRoleWriter(cvWriter);
+                            modelledWriter3.setParticipantCandidateWriter(candidateWriters[1]);
 
                             switch (category){
                                 case modelled:
@@ -2251,6 +2263,7 @@ public class PsiXmlElementWriterFactory {
                                     writer2.setConfidenceWriter(confidenceWriter);
                                     writer2.setHostOrganismWriter(createHostOrganismWriter(streamWriter, extended, objectIndex, aliasWriter,
                                             attributeWriter, primaryRefWriter, openCvWriter));
+                                    writer2.setParticipantCandidateWriter(candidateWriters[0]);
 
                                     return new PsiXmlParticipantWriter[]{writer2, modelledWriter3};
                             }
@@ -2342,6 +2355,106 @@ public class PsiXmlElementWriterFactory {
                                     return new PsiXmlParticipantWriter[]{writer2, modelledWriter3};
                             }
                     }
+            }
+        }
+    }
+
+    public static <P extends ParticipantCandidate> PsiXmlElementWriter<P>[] createParticipantCandidateWriter(XMLStreamWriter streamWriter, boolean extended,
+                                                                                               PsiXmlObjectCache objectIndex, PsiXmlVersion version,
+                                                                                               PsiXmlType xmlType,
+                                                                                               InteractionCategory category, PsiXmlElementWriter<Interactor> interactorWriter,
+                                                                                               PsiXmlElementWriter<ModelledFeature> modelledFeatureWriter,
+                                                                                               PsiXmlElementWriter<FeatureEvidence> featureEvidenceWriter){
+
+        if (extended){
+            switch (version) {
+                case v3_0_0:
+                    switch (xmlType) {
+                        case compact:
+                            XmlModelledParticipantCandidateWriter modelledWriter2 =
+                                    new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30.XmlModelledParticipantCandidateWriter(streamWriter, objectIndex);
+                            modelledWriter2.setFeatureWriter(modelledFeatureWriter);
+                            modelledWriter2.setInteractorWriter(interactorWriter);
+
+                            switch (category) {
+                                case modelled:
+                                    return new PsiXmlElementWriter[]{modelledWriter2, modelledWriter2};
+                                default:
+                                    psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30.XmlExperimentalParticipantCandidateWriter writer2 =
+                                            new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30.XmlExperimentalParticipantCandidateWriter(streamWriter, objectIndex);
+                                    writer2.setFeatureWriter(featureEvidenceWriter);
+                                    writer2.setInteractorWriter(interactorWriter);
+
+                                    return new PsiXmlElementWriter[]{writer2, modelledWriter2};
+                            }
+                        default:
+                            psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml30.XmlModelledParticipantCandidateWriter modelledWriter3 =
+                                    new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml30.XmlModelledParticipantCandidateWriter(streamWriter, objectIndex);
+                            modelledWriter3.setFeatureWriter(modelledFeatureWriter);
+                            modelledWriter3.setInteractorWriter(interactorWriter);
+
+                            switch (category) {
+                                case modelled:
+                                    return new PsiXmlElementWriter[]{modelledWriter3, modelledWriter3};
+                                default:
+                                    psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml30.XmlExperimentalParticipantCandidateWriter writer2 =
+                                            new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml30.XmlExperimentalParticipantCandidateWriter(streamWriter, objectIndex);
+
+                                    writer2.setFeatureWriter(featureEvidenceWriter);
+                                    writer2.setInteractorWriter(interactorWriter);
+
+                                    return new PsiXmlElementWriter[]{writer2, modelledWriter3};
+                            }
+                    }
+
+                default:
+                    return null;
+            }
+        }
+        else{
+            switch (version){
+                case v3_0_0:
+                    switch (xmlType){
+                        case compact:
+                            psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlModelledParticipantCandidateWriter modelledWriter2 =
+                                    new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlModelledParticipantCandidateWriter(streamWriter, objectIndex);
+                            modelledWriter2.setFeatureWriter(modelledFeatureWriter);
+                            modelledWriter2.setInteractorWriter(interactorWriter);
+
+                            switch (category){
+                                case modelled:
+                                    return new PsiXmlElementWriter[]{modelledWriter2, modelledWriter2};
+                                default:
+                                    psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlExperimentalParticipantCandidateWriter writer2 =
+                                            new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlExperimentalParticipantCandidateWriter(streamWriter, objectIndex);
+                                    writer2.setFeatureWriter(featureEvidenceWriter);
+                                    writer2.setInteractorWriter(interactorWriter);
+
+                                    return new PsiXmlElementWriter[]{writer2, modelledWriter2};
+                            }
+                        default:
+                            psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlModelledParticipantCandidateWriter modelledWriter3 =
+                                    new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlModelledParticipantCandidateWriter(streamWriter, objectIndex);
+
+                            modelledWriter3.setFeatureWriter(modelledFeatureWriter);
+                            modelledWriter3.setInteractorWriter(interactorWriter);
+
+                            switch (category){
+                                case modelled:
+                                    return new PsiXmlElementWriter[]{modelledWriter3, modelledWriter3};
+                                default:
+                                    psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlExperimentalParticipantCandidateWriter writer2 =
+                                            new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlExperimentalParticipantCandidateWriter(streamWriter, objectIndex);
+                                    writer2.setFeatureWriter(featureEvidenceWriter);
+                                    writer2.setInteractorWriter(interactorWriter);
+
+                                    return new PsiXmlElementWriter[]{writer2, modelledWriter3};
+                            }
+                    }
+
+                default:
+
+                    return null;
             }
         }
     }

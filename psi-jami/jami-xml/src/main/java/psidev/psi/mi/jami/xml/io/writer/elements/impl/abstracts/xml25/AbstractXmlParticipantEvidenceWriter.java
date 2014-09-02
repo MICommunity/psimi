@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.xml.io.writer.elements.impl.abstracts.xml25;
 
 import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
+import psidev.psi.mi.jami.model.ParticipantPool;
 import psidev.psi.mi.jami.model.Stoichiometry;
 import psidev.psi.mi.jami.xml.cache.PsiXmlObjectCache;
 import psidev.psi.mi.jami.xml.io.writer.elements.impl.*;
@@ -25,6 +26,11 @@ public abstract class AbstractXmlParticipantEvidenceWriter
 
     public AbstractXmlParticipantEvidenceWriter(XMLStreamWriter writer, PsiXmlObjectCache objectIndex) {
         super(writer, objectIndex);
+    }
+
+    @Override
+    protected void writeParticipantPool(ParticipantPool pool) throws XMLStreamException {
+        writeMolecule(pool.getInteractor());
     }
 
     @Override

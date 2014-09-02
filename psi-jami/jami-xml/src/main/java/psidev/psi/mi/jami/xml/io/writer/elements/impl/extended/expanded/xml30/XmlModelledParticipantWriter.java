@@ -40,4 +40,9 @@ public class XmlModelledParticipantWriter extends psidev.psi.mi.jami.xml.io.writ
     protected void initialiseInteractorWriter() {
         super.setInteractorWriter(new XmlInteractorWriter(getStreamWriter(), getObjectIndex()));
     }
+
+    @Override
+    protected void initialiseParticipantCandidateWriter() {
+        super.setParticipantCandidateWriter(new XmlModelledParticipantCandidateWriter(getStreamWriter(), getObjectIndex()));
+    }
 }
