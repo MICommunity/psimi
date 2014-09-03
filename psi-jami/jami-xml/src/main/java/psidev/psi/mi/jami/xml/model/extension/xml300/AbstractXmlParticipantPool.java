@@ -73,6 +73,9 @@ public abstract class AbstractXmlParticipantPool<I extends Interaction, F extend
     }
 
     public CvTerm getType() {
+        if (this.type == null){
+            this.type = new XmlCvTerm(InteractorPool.MOLECULE_SET, new XmlXref(CvTermUtils.createPsiMiDatabase(),InteractorPool.MOLECULE_SET_MI, CvTermUtils.createIdentityQualifier()));
+        }
         return type;
     }
 

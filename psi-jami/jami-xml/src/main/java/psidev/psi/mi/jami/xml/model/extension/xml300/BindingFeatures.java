@@ -14,10 +14,7 @@ import psidev.psi.mi.jami.xml.model.extension.PsiXmlLocator;
 import psidev.psi.mi.jami.xml.model.extension.XmlModelledFeature;
 import psidev.psi.mi.jami.xml.model.reference.AbstractFeatureRef;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,6 +27,7 @@ import java.util.List;
  * @since <pre>23/05/14</pre>
  */
 @XmlAccessorType(XmlAccessType.NONE)
+@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
 public class BindingFeatures implements FileSourceContext, Locatable {
 
     private PsiXmlLocator sourceLocator;
@@ -75,7 +73,7 @@ public class BindingFeatures implements FileSourceContext, Locatable {
         return this.linkedFeatures;
     }
 
-    @XmlElement(name = "participantFeatureRef", type = Integer.class, required = true)
+    @XmlElement(name = "participantFeatureRef", type = Integer.class, required = true, namespace = "http://psi.hupo.org/mi/mif300")
     public List<Integer> getJAXBFeatureRefs() {
         if (this.jaxbFeatureRefs == null){
             this.jaxbFeatureRefs = new JAXBFeatureRefList();
