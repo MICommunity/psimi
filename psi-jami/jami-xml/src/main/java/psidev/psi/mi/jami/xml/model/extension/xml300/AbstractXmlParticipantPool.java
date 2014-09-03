@@ -1,7 +1,5 @@
 package psidev.psi.mi.jami.xml.model.extension.xml300;
 
-import com.sun.xml.bind.Locatable;
-import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceContext;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.listener.EntityInteractorChangeListener;
@@ -25,8 +23,7 @@ import java.util.Iterator;
  */
 @XmlTransient
 public abstract class AbstractXmlParticipantPool<I extends Interaction, F extends Feature, P extends ParticipantCandidate>
-        implements ExtendedPsiXmlParticipant<I,F>, ParticipantPool<I,F,P>, EntityInteractorChangeListener, FileSourceContext,
-        Locatable{
+        implements ExtendedPsiXmlParticipant<I,F>, ParticipantPool<I,F,P>, EntityInteractorChangeListener, FileSourceContext{
     private Collection<P> candidates;
     private CvTerm type;
 
@@ -64,7 +61,7 @@ public abstract class AbstractXmlParticipantPool<I extends Interaction, F extend
     @Override
     public InteractorPool getInteractor() {
         if (this.generatedInteractor == null){
-            this.generatedInteractor = new XmlInteractorPool(getShortName());
+            this.generatedInteractor = new XmlInteractorPool("generated interactor pool");
             ((XmlInteractorPool)this.generatedInteractor).setSourceLocator(getSourceLocator());
         }
         return this.generatedInteractor;
@@ -230,11 +227,6 @@ public abstract class AbstractXmlParticipantPool<I extends Interaction, F extend
 
     public Collection<P> getJAXBInteractorCandidates() {
         return candidates;
-    }
-
-    @Override
-    public Locator sourceLocation() {
-        return (Locator)getSourceLocator();
     }
 
     public FileSourceLocator getSourceLocator() {
@@ -431,5 +423,6 @@ public abstract class AbstractXmlParticipantPool<I extends Interaction, F extend
 
     public void setDelegate(AbstractXmlParticipant<I, F> delegate) {
         this.delegate = delegate;
+        XmlEntryContext.getInstance().registerParticipant(this.delegate.getId(), this);
     }
 }

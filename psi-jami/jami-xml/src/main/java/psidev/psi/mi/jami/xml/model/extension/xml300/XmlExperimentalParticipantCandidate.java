@@ -30,6 +30,7 @@ public class XmlExperimentalParticipantCandidate extends AbstractXmlEntity<Featu
     private ExperimentalParticipantPool poolParent;
 
     public XmlExperimentalParticipantCandidate() {
+        super();
     }
 
     public XmlExperimentalParticipantCandidate(Interactor interactor) {
@@ -41,20 +42,25 @@ public class XmlExperimentalParticipantCandidate extends AbstractXmlEntity<Featu
     }
 
     @Override
-    @XmlElement(name = "interactor")
+    @XmlElement(name = "interactor", namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBInteractor(XmlInteractor interactor) {
         super.setJAXBInteractor(interactor);
     }
 
     @Override
-    @XmlElement(name = "interactorRef")
+    @XmlElement(name = "interactorRef", namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBInteractorRef(Integer value) {
         super.setJAXBInteractorRef(value);
     }
 
-    @XmlAttribute(name = "id", required = true)
+    @XmlAttribute(name = "id", required = true, namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBId(int value) {
         super.setId(value);
+    }
+
+    @XmlElement(name = "featureList", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBFeatureWrapper(JAXBFeatureWrapper jaxbFeatureWrapper) {
+        super.setFeatureWrapper(jaxbFeatureWrapper);
     }
 
     @Override
@@ -87,14 +93,14 @@ public class XmlExperimentalParticipantCandidate extends AbstractXmlEntity<Featu
 
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="experimentalEntityFeatureWrapper")
+    @XmlType(name="experimentalEntityFeatureWrapper", namespace = "http://psi.hupo.org/mi/mif300")
     public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<FeatureEvidence> {
 
         public JAXBFeatureWrapper(){
             super();
         }
 
-        @XmlElement(type=XmlFeatureEvidence.class, name="feature", required = true)
+        @XmlElement(type=XmlFeatureEvidence.class, name="feature", required = true, namespace = "http://psi.hupo.org/mi/mif300")
         public List<FeatureEvidence> getJAXBFeatures() {
             return super.getJAXBFeatures();
         }

@@ -325,18 +325,16 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
         this.jaxbParticipantWrapper = jaxbParticipantWrapper;
         // initialise all participants because of back references
         if (this.jaxbParticipantWrapper != null && !this.jaxbParticipantWrapper.participants.isEmpty()){
-            List<T> participantsToRemove = new ArrayList<T>(this.jaxbParticipantWrapper.participants.size());
-            for (T participant : this.jaxbParticipantWrapper.participants){
+            List<T> participantsToIterate = new ArrayList<T>(this.jaxbParticipantWrapper.participants);
+            for (T participant : participantsToIterate){
                 processAddedParticipant(participant);
                 AbstractXmlParticipant xmlParticipant = (AbstractXmlParticipant)participant;
                 // we have a participant pool, remove the previous participant and add the pool
-                if (xmlParticipant.getJAXBInteractorCandidates() != null){
-                    participantsToRemove.add(participant);
-                   this.jaxbParticipantWrapper.participants.add((T)xmlParticipant.getJAXBInteractorCandidates());
+                if (xmlParticipant.getParticipantPool() != null){
+                    this.jaxbParticipantWrapper.participants.remove(participant);
+                    this.jaxbParticipantWrapper.participants.add((T)xmlParticipant.getParticipantPool());
                 }
             }
-
-            this.jaxbParticipantWrapper.participants.remove(participantsToRemove);
         }
         else{
             PsiXmlParserListener listener = XmlEntryContext.getInstance().getListener();
