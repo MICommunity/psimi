@@ -1,13 +1,10 @@
 package psidev.psi.mi.jami.xml.model.extension.xml300;
 
-import com.sun.xml.bind.annotation.XmlLocation;
-import org.xml.sax.Locator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.model.extension.AbstractXmlParticipant;
-import psidev.psi.mi.jami.xml.model.extension.XmlCvTerm;
 import psidev.psi.mi.jami.xml.model.extension.XmlParticipantEvidence;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.Collection;
 
 /**
@@ -17,14 +14,9 @@ import java.util.Collection;
  * @version $Id$
  * @since <pre>02/09/14</pre>
  */
-@XmlAccessorType(XmlAccessType.NONE)
-@XmlType(namespace = "http://psi.hupo.org/mi/mif300")
+@XmlTransient
 public class XmlExperimentalParticipantPool extends AbstractXmlParticipantPool<InteractionEvidence, FeatureEvidence, ExperimentalParticipantCandidate>
 implements ExperimentalParticipantPool{
-
-    @XmlLocation
-    @XmlTransient
-    private Locator locator;
 
     public XmlExperimentalParticipantPool() {
         super();
@@ -79,15 +71,4 @@ implements ExperimentalParticipantPool{
         return ((ParticipantEvidence)getDelegate()).getParameters();
     }
 
-    @Override
-    @XmlElement(type=XmlCvTerm.class, name="moleculeSetType", required = true)
-    public void setJAXBType(XmlCvTerm type) {
-        super.setJAXBType(type);
-    }
-
-    @Override
-    @XmlElement(name = "interactorCandidate", type = XmlExperimentalParticipantCandidate.class, required = true)
-    public Collection<ExperimentalParticipantCandidate> getJAXBInteractorCandidates() {
-        return super.getJAXBInteractorCandidates();
-    }
 }

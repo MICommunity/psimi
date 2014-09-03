@@ -5,11 +5,10 @@ import org.xml.sax.Locator;
 import psidev.psi.mi.jami.datasource.FileSourceLocator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
-import psidev.psi.mi.jami.xml.model.extension.xml300.AbstractXmlParticipantPool;
-import psidev.psi.mi.jami.xml.model.extension.xml300.XmlModelledParticipantPool;
-import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
+import psidev.psi.mi.jami.xml.model.extension.xml300.*;
 
 import javax.xml.bind.annotation.*;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -75,9 +74,8 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
         super.setJAXBInteractorRef(value);
     }
 
-    @Override
-    @XmlElement(name="interactorCandidateList", namespace = "http://psi.hupo.org/mi/mif300", type = XmlModelledParticipantPool.class)
-    public void setJAXBInteractorCandidates(AbstractXmlParticipantPool pool) {
+    @XmlElement(name="interactorCandidateList", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBInteractorCandidates(JAXBInteractorCandidatesWrapper pool) {
         super.setJAXBInteractorCandidates(pool);
     }
 
@@ -132,7 +130,7 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
 
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="modelledParticipantFeatureWrapper")
+    @XmlType(name="modelledParticipantFeatureWrapper", namespace = "http://psi.hupo.org/mi/mif300")
     public static class JAXBFeatureWrapper extends AbstractXmlParticipant.JAXBFeatureWrapper<ModelledFeature> {
 
         public JAXBFeatureWrapper(){
@@ -146,6 +144,23 @@ public class XmlModelledParticipant extends AbstractXmlParticipant<ModelledInter
         @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)
         public List<ModelledFeature> getJAXBFeatures() {
             return super.getJAXBFeatures();
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="modelledParticipantInteractorCandidateWrapper", namespace = "http://psi.hupo.org/mi/mif300")
+    public static class JAXBInteractorCandidatesWrapper extends
+            AbstractXmlParticipant.JAXBInteractorCandidateWrapper<ModelledInteraction, ModelledFeature, ModelledParticipantCandidate> {
+
+        @Override
+        protected void initialisePool() {
+            super.setPool(new XmlModelledParticipantPool());
+        }
+
+        @Override
+        @XmlElement(name="interactorCandidate", namespace = "http://psi.hupo.org/mi/mif300", type = XmlModelledParticipantCandidate.class)
+        public Collection<ModelledParticipantCandidate> getCandidates() {
+            return super.getCandidates();
         }
     }
 }

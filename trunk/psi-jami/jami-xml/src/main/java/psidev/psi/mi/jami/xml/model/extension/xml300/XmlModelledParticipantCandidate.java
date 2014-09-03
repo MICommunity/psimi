@@ -28,6 +28,7 @@ public class XmlModelledParticipantCandidate extends AbstractXmlEntity<ModelledF
     private ModelledParticipantPool poolParent;
 
     public XmlModelledParticipantCandidate() {
+        super();
     }
 
     public XmlModelledParticipantCandidate(Interactor interactor) {
@@ -39,26 +40,26 @@ public class XmlModelledParticipantCandidate extends AbstractXmlEntity<ModelledF
     }
 
     @Override
-    @XmlElement(name = "interactor")
+    @XmlElement(name = "interactor", namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBInteractor(XmlInteractor interactor) {
         super.setJAXBInteractor(interactor);
     }
 
     @Override
-    @XmlElement(name = "interactorRef")
+    @XmlElement(name = "interactorRef", namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBInteractorRef(Integer value) {
         super.setJAXBInteractorRef(value);
     }
 
 
-    @XmlAttribute(name = "id", required = true)
+    @XmlAttribute(name = "id", required = true, namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBId(int value) {
         super.setId(value);
         // register participant as complex participant
         XmlEntryContext.getInstance().registerComplexParticipant(value, this);
     }
 
-    @XmlElement(name = "featureList")
+    @XmlElement(name = "featureList", namespace = "http://psi.hupo.org/mi/mif300")
     public void setJAXBFeatureWrapper(JAXBFeatureWrapper jaxbFeatureWrapper) {
         super.setFeatureWrapper(jaxbFeatureWrapper);
     }
@@ -88,7 +89,7 @@ public class XmlModelledParticipantCandidate extends AbstractXmlEntity<ModelledF
 
     ////////////////////////////////////////////////////// classes
     @XmlAccessorType(XmlAccessType.NONE)
-    @XmlType(name="modelledEntityFeatureWrapper")
+    @XmlType(name="modelledEntityFeatureWrapper", namespace = "http://psi.hupo.org/mi/mif300")
     public static class JAXBFeatureWrapper extends AbstractXmlEntity.JAXBFeatureWrapper<ModelledFeature> {
 
         public JAXBFeatureWrapper(){
@@ -99,7 +100,7 @@ public class XmlModelledParticipantCandidate extends AbstractXmlEntity<ModelledF
             super(features);
         }
 
-        @XmlElement(type=XmlModelledFeature.class, name="feature", required = true)
+        @XmlElement(type=XmlModelledFeature.class, name="feature", required = true, namespace = "http://psi.hupo.org/mi/mif300")
         public List<ModelledFeature> getJAXBFeatures() {
             return super.getJAXBFeatures();
         }

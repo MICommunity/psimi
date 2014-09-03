@@ -39,7 +39,7 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
 
     private JAXBAttributeWrapper jaxbAttributeWrapper;
 
-    private AbstractXmlParticipantPool jaxbPool;
+    private JAXBInteractorCandidateWrapper jaxbCandidateWrapper;
 
     public AbstractXmlParticipant(){
         super();
@@ -68,24 +68,24 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
 
         if (this.interaction != null){
             // normal participant
-            if (this.jaxbPool == null){
+            if (this.jaxbCandidateWrapper == null){
                 this.interaction.removeParticipant(this);
             }
             // participant pool
             else{
-                this.interaction.removeParticipant(this.jaxbPool);
+                this.interaction.removeParticipant(this.jaxbCandidateWrapper.pool);
                 this.interaction = null;
             }
         }
 
         if (interaction != null){
             // normal participant
-            if (this.jaxbPool == null){
+            if (this.jaxbCandidateWrapper == null){
                 interaction.addParticipant(this);
             }
             // participant pool
             else{
-                interaction.addParticipant(this.jaxbPool);
+                interaction.addParticipant(this.jaxbCandidateWrapper.pool);
                 this.interaction = interaction;
             }
         }
@@ -97,8 +97,8 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
 
     public void setInteraction(I interaction) {
         this.interaction = interaction;
-        if (this.jaxbPool != null){
-           this.jaxbPool.setInteraction(this.interaction);
+        if (jaxbCandidateWrapper != null){
+           this.jaxbCandidateWrapper.pool.setInteraction(this.interaction);
         }
     }
 
@@ -271,8 +271,8 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         }
     }
 
-    public AbstractXmlParticipantPool getJAXBInteractorCandidates() {
-        return jaxbPool;
+    public AbstractXmlParticipantPool<I,F,? extends ParticipantCandidate> getParticipantPool() {
+        return this.jaxbCandidateWrapper != null ? this.jaxbCandidateWrapper.pool : null;
     }
 
     /**
@@ -283,9 +283,11 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
      *     {@link Integer }
      *
      */
-    public void setJAXBInteractorCandidates(AbstractXmlParticipantPool value) {
-        this.jaxbPool = value;
-        this.jaxbPool.setDelegate(this);
+    protected void setJAXBInteractorCandidates(JAXBInteractorCandidateWrapper<I,F,? extends ParticipantCandidate> value) {
+        this.jaxbCandidateWrapper = value;
+        if (this.jaxbCandidateWrapper != null){
+            this.jaxbCandidateWrapper.pool.setDelegate(this);
+        }
     }
 
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {
@@ -533,6 +535,67 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
         @Override
         public String toString() {
             return "Participant Attribute List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="interactorCandidateListWrapper", namespace = "http://psi.hupo.org/mi/mif300")
+    public static class JAXBInteractorCandidateWrapper<I extends Interaction,F extends Feature,P extends ParticipantCandidate>
+            implements Locatable, FileSourceContext{
+        private PsiXmlLocator sourceLocator;
+        @XmlLocation
+        @XmlTransient
+        private Locator locator;
+        private AbstractXmlParticipantPool<I,F,P> pool;
+
+        public JAXBInteractorCandidateWrapper(){
+            initialisePool();
+        }
+
+        @Override
+        public Locator sourceLocation() {
+            return (Locator)getSourceLocator();
+        }
+
+        public FileSourceLocator getSourceLocator() {
+            if (sourceLocator == null && locator != null){
+                sourceLocator = new PsiXmlLocator(locator.getLineNumber(), locator.getColumnNumber(), null);
+            }
+            return sourceLocator;
+        }
+
+        public void setSourceLocator(FileSourceLocator sourceLocator) {
+            if (sourceLocator == null){
+                this.sourceLocator = null;
+            }
+            else if (sourceLocator instanceof PsiXmlLocator){
+                this.sourceLocator = (PsiXmlLocator)sourceLocator;
+            }
+            else {
+                this.sourceLocator = new PsiXmlLocator(sourceLocator.getLineNumber(), sourceLocator.getCharNumber(), null);
+            }
+        }
+
+        protected void initialisePool(){
+            throw new UnsupportedOperationException("cannot instantiate default pool");
+        }
+
+        protected void setPool(AbstractXmlParticipantPool<I, F, P> pool) {
+            this.pool = pool;
+        }
+
+        @XmlElement(name="moleculeSetType", required = true, namespace = "http://psi.hupo.org/mi/mif300")
+        public void setJAXBType(XmlCvTerm type) {
+            this.pool.setType(type);
+        }
+
+        public Collection<P> getCandidates(){
+            return this.pool;
+        }
+
+        @Override
+        public String toString() {
+            return "Interactor candidate List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
         }
     }
 }

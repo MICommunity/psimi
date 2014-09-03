@@ -9,9 +9,7 @@ import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
-import psidev.psi.mi.jami.xml.model.extension.xml300.AbstractXmlParticipantPool;
-import psidev.psi.mi.jami.xml.model.extension.xml300.XmlExperimentalParticipantPool;
-import psidev.psi.mi.jami.xml.model.extension.xml300.XmlStoichiometryRange;
+import psidev.psi.mi.jami.xml.model.extension.xml300.*;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -340,9 +338,8 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         super.setJAXBStoichiometry(stoichiometry);
     }
 
-    @Override
-    @XmlElement(name="interactorCandidateList", namespace = "http://psi.hupo.org/mi/mif300", type = XmlExperimentalParticipantPool.class)
-    public void setJAXBInteractorCandidates(AbstractXmlParticipantPool pool) {
+    @XmlElement(name="interactorCandidateList", namespace = "http://psi.hupo.org/mi/mif300")
+    public void setJAXBInteractorCandidates(JAXBInteractorCandidatesWrapper pool) {
         super.setJAXBInteractorCandidates(pool);
     }
 
@@ -755,6 +752,23 @@ public class XmlParticipantEvidence extends AbstractXmlParticipant<InteractionEv
         @Override
         public String toString() {
             return "Participant Parameter List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        }
+    }
+
+    @XmlAccessorType(XmlAccessType.NONE)
+    @XmlType(name="participantEvidenceInteractorCandidateWrapper", namespace = "http://psi.hupo.org/mi/mif300")
+    public static class JAXBInteractorCandidatesWrapper extends
+            AbstractXmlParticipant.JAXBInteractorCandidateWrapper<InteractionEvidence, FeatureEvidence, ExperimentalParticipantCandidate> {
+
+        @Override
+        protected void initialisePool() {
+            super.setPool(new XmlExperimentalParticipantPool());
+        }
+
+        @Override
+        @XmlElement(name="interactorCandidate", namespace = "http://psi.hupo.org/mi/mif300", type = XmlExperimentalParticipantCandidate.class)
+        public Collection<ExperimentalParticipantCandidate> getCandidates() {
+            return super.getCandidates();
         }
     }
 }
