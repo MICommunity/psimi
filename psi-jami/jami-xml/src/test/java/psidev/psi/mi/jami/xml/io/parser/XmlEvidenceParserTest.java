@@ -245,6 +245,50 @@ public class XmlEvidenceParserTest {
     }
 
     @Test
+    public void test_read_valid_xml30_participantSet() throws PsiXmlParserException, JAXBException, XMLStreamException {
+        InputStream stream = FullXmlEvidenceParserTest.class.getResourceAsStream("/samples/xml30/22984071-participantSet.xml");
+
+        PsiXmlParser<InteractionEvidence> parser = new XmlEvidenceParser(stream);
+        int index = 0;
+        while(!parser.hasFinished()){
+            InteractionEvidence interaction = parser.parseNextInteraction();
+            Assert.assertNotNull(interaction);
+            Assert.assertNotNull(((FileSourceContext)interaction).getSourceLocator());
+            if (index == 0){
+                Iterator<ParticipantEvidence> pIterator = interaction.getParticipants().iterator();
+                ParticipantEvidence p1 = pIterator.next();
+                ParticipantEvidence p2 = pIterator.next();
+
+                Assert.assertTrue(p2 instanceof ParticipantPool);
+                Assert.assertTrue(p2.getFeatures().isEmpty());
+
+                Assert.assertNotNull(p1);
+
+                ParticipantPool pool = (ParticipantPool)p2;
+                Assert.assertEquals(2, pool.size());
+                Assert.assertEquals("MI:1307", pool.getType().getMIIdentifier());
+                Assert.assertEquals("defined set", pool.getType().getShortName());
+
+                for (Object o : pool){
+                    ParticipantCandidate candidate = (ParticipantCandidate)o;
+                    // we expect of of this interactors
+                    if (!candidate.getInteractor().getShortName().equalsIgnoreCase("2aab_human")
+                            && !candidate.getInteractor().getShortName().equalsIgnoreCase("2aaa_human") ){
+                        Assert.assertFalse(true);
+                    }
+
+                    Assert.assertEquals(2, candidate.getFeatures().size());
+                }
+            }
+            index++;
+        }
+
+        Assert.assertEquals(1, index);
+
+        parser.close();
+    }
+
+    @Test
     public void test_read_valid_xml25_expanded() throws PsiXmlParserException, JAXBException, XMLStreamException {
         InputStream stream = XmlEvidenceParserTest.class.getResourceAsStream("/samples/10049915-expanded.xml");
 
