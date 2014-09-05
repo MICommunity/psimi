@@ -136,13 +136,13 @@ public class XmlInteractorFactory extends DefaultInteractorFactory{
             Interactor subInteractor = createInteractorFromDatabase(ref.getDatabase(), ref.getId().toLowerCase());
             if (subInteractor != null){
                 subInteractor.getIdentifiers().add(new XmlXref(ref.getDatabase(), ref.getId(), ref.getVersion(), CvTermUtils.createIdentityQualifier()));
-                ((XmlInteractor)subInteractor).setSourceLocator(((XmlXref) ref).getSourceLocator());
+                ((FileSourceContext)subInteractor).setSourceLocator(((XmlXref) ref).getSourceLocator());
             }
             // create a default interactor
             else{
                 subInteractor = createInteractor(ref.getId().toLowerCase(), CvTermUtils.createUnknownInteractorType());
                 subInteractor.getIdentifiers().add(new XmlXref(ref.getDatabase(), ref.getId(), ref.getVersion(), CvTermUtils.createIdentityQualifier()));
-                ((XmlInteractor)subInteractor).setSourceLocator(((XmlXref)ref).getSourceLocator());
+                ((FileSourceContext)subInteractor).setSourceLocator(((XmlXref)ref).getSourceLocator());
             }
 
             // add sequence
