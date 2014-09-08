@@ -89,8 +89,8 @@ public class SimpleJsonInteractorWriter implements JsonElementWriter<Interactor>
             }
 
             // write accession
-            MIJsonUtils.writeSeparator(writer);
             if (object.getPreferredIdentifier() != null){
+                MIJsonUtils.writeSeparator(writer);
                 MIJsonUtils.writePropertyKey("identifier", writer);
                 getIdentifierWriter().write(object.getPreferredIdentifier());
             }
@@ -105,15 +105,7 @@ public class SimpleJsonInteractorWriter implements JsonElementWriter<Interactor>
                     Iterator<Interactor> interactorIterator = pool.iterator();
                     while (interactorIterator.hasNext()){
                         Interactor interactor = interactorIterator.next();
-                        String[] interactorIds2 = MIJsonUtils.extractInteractorId(interactor.getPreferredIdentifier(), interactor);
-                        String interactorKey2 = interactorIds2[0]+"_"+interactorIds2[1];
-                        // if the interactor has not yet been processed, we write the interactor
-                        if (!processedInteractors.containsKey(interactorKey2)){
-                            write(interactor);
-                        }
-                        else{
-                            MIJsonUtils.writeProperty("interactorRef",Integer.toString(this.processedInteractors.get(interactorKey)), writer);
-                        }
+                        writeInteractorComponent(interactor);
 
                         if (interactorIterator.hasNext()){
                             MIJsonUtils.writeSeparator(writer);
@@ -129,6 +121,42 @@ public class SimpleJsonInteractorWriter implements JsonElementWriter<Interactor>
             MIJsonUtils.writeProperty("label", JSONValue.escape(object.getShortName()), writer);
             MIJsonUtils.writeEndObject(writer);
         }
+    }
+
+    private void writeInteractorComponent(Interactor object) throws IOException {
+        MIJsonUtils.writeStartObject(writer);
+        // write accession
+        MIJsonUtils.writeProperty("label", JSONValue.escape(object.getShortName()), writer);
+
+        // write sequence if possible
+        if (object instanceof Polymer){
+            Polymer polymer = (Polymer) object;
+            if (polymer.getSequence() != null){
+                MIJsonUtils.writeSeparator(writer);
+                MIJsonUtils.writeProperty("sequence", JSONValue.escape(polymer.getSequence()), writer);
+            }
+        }
+        // write interactor type
+        MIJsonUtils.writeSeparator(writer);
+        MIJsonUtils.writePropertyKey("type", writer);
+        getCvWriter().write(object.getInteractorType());
+
+        // write organism
+        if (object.getOrganism() != null){
+            MIJsonUtils.writeSeparator(writer);
+            MIJsonUtils.writePropertyKey("organism", writer);
+            getOrganismWriter().write(object.getOrganism());
+        }
+
+        // write accession
+        if (object.getPreferredIdentifier() != null){
+            MIJsonUtils.writeSeparator(writer);
+            MIJsonUtils.writePropertyKey("identifier", writer);
+            getIdentifierWriter().write(object.getPreferredIdentifier());
+        }
+
+        // write end object
+        MIJsonUtils.writeEndObject(writer);
     }
 
     public JsonElementWriter<CvTerm> getCvWriter() {
