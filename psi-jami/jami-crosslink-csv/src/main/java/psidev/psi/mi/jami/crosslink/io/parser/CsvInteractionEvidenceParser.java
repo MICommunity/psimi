@@ -17,7 +17,7 @@ public class CsvInteractionEvidenceParser extends AbstractCsvInteractionEvidence
     protected InteractionEvidence instantiateInteractionEvidence(int linePosition, String bait) {
         CsvInteractionEvidence interaction = new CsvInteractionEvidence();
         interaction.setSourceLocator(new CsvSourceLocator(linePosition, 1, -1));
-        interaction.setBait(bait);
+        interaction.setNaryGroup(bait);
         return interaction;
     }
 }

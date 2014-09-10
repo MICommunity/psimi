@@ -71,11 +71,11 @@ public class CsvBinaryInteractionEvidence extends DefaultBinaryInteractionEviden
         this.sourceLocator = sourceLocator;
     }
 
-    public String getBait() {
+    public String getNaryGroup() {
         return bait;
     }
 
-    public void setBait(String bait) {
+    public void setNaryGroup(String bait) {
         this.bait = bait;
     }
 

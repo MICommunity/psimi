@@ -89,7 +89,7 @@ public abstract class AbstractCsvInteractionEvidenceParser<T extends Interaction
                             linkPos2 = value;
                             linkPos2Index = index;
                             break;
-                        case bait:
+                        case narygroup:
                             bait = value;
                             break;
                     }
