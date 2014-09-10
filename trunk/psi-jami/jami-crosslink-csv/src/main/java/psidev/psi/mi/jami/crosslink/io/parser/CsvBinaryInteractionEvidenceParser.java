@@ -17,7 +17,7 @@ public class CsvBinaryInteractionEvidenceParser extends AbstractCsvInteractionEv
     protected BinaryInteractionEvidence instantiateInteractionEvidence(int linePosition, String bait) {
         CsvBinaryInteractionEvidence interaction = new CsvBinaryInteractionEvidence();
         interaction.setSourceLocator(new CsvSourceLocator(linePosition, 1, -1));
-        interaction.setBait(bait);
+        interaction.setNaryGroup(bait);
         return interaction;
     }
 }

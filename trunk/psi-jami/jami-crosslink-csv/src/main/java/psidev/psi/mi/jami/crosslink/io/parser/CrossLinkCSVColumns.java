@@ -10,7 +10,7 @@ package psidev.psi.mi.jami.crosslink.io.parser;
 
 public enum CrossLinkCSVColumns {
 
-    protein1, protein2, peppos1, peppos2, linkpos1, linkpos2, bait;
+    protein1, protein2, peppos1, peppos2, linkpos1, linkpos2, narygroup;
 
     public static CrossLinkCSVColumns convertFromString(String val){
          if (val == null){
@@ -36,8 +36,8 @@ public enum CrossLinkCSVColumns {
             else if (fixedVal.equalsIgnoreCase(linkpos2.toString())){
                 return linkpos2;
             }
-            else if (fixedVal.equalsIgnoreCase(bait.toString())){
-                return bait;
+            else if (fixedVal.equalsIgnoreCase(narygroup.toString())){
+                return narygroup;
             }
             else {
                 return null;

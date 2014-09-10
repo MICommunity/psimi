@@ -14,13 +14,13 @@ public interface CrosslinkCsvInteraction extends InteractionEvidence{
 
     /**
      *
-     * @return the bait name used for this interactions
+     * @return the n-ary group name used for this interactions
      */
-    public String getBait();
+    public String getNaryGroup();
 
     /**
      *
-     * @param bait : bait name used for this interaction
+     * @param bait : n-ary group name used for this interaction
      */
-    public void setBait(String bait);
+    public void setNaryGroup(String bait);
 }

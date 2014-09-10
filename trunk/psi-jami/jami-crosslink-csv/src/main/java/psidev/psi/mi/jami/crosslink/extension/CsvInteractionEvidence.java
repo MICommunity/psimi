@@ -94,11 +94,11 @@ public class CsvInteractionEvidence extends DefaultInteractionEvidence implement
         return "Interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
     }
 
-    public String getBait() {
+    public String getNaryGroup() {
         return bait;
     }
 
-    public void setBait(String bait) {
+    public void setNaryGroup(String bait) {
         this.bait = bait;
     }
 }

@@ -242,14 +242,14 @@ public class CsvMixedEvidenceSource implements CsvSource<InteractionEvidence>{
         ParticipantEvidence p1 = binary.getParticipantA();
         ParticipantEvidence p2 = binary.getParticipantB();
         // no bait provided, we keep binary
-        if (csvBinary.getBait() == null){
+        if (csvBinary.getNaryGroup() == null){
             this.evidences.add(csvBinary);
         }
         // register as it may be a n-ary interaction
         else {
             // the interaction is already registered
-            if (this.processedInteractions.containsKey(csvBinary.getBait())){
-                ProcessedInteraction processedInteraction = this.processedInteractions.get(csvBinary.getBait());
+            if (this.processedInteractions.containsKey(csvBinary.getNaryGroup())){
+                ProcessedInteraction processedInteraction = this.processedInteractions.get(csvBinary.getNaryGroup());
                 mergeOrRegisterParticipant(p1, processedInteraction);
                 mergeOrRegisterParticipant(p2, processedInteraction);
             }
@@ -269,7 +269,7 @@ public class CsvMixedEvidenceSource implements CsvSource<InteractionEvidence>{
                 mergeOrRegisterParticipant(p2, processedInteraction);
 
                 this.evidences.add(nary);
-                this.processedInteractions.put(csvBinary.getBait(), processedInteraction);
+                this.processedInteractions.put(csvBinary.getNaryGroup(), processedInteraction);
             }
         }
     }
