@@ -26,7 +26,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>bridges-core</artifactId>
-            <version>${jami.version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!-- intact protein-mapping tool -->
@@ -34,6 +34,13 @@
             <groupId>uk.ac.ebi.intact.tools</groupId>
             <artifactId>protein-mapping</artifactId>
             <version>1.0.3</version>
+        </dependency>
+
+        <!-- Unisave -->
+        <dependency>
+            <groupId>uk.ac.ebi.intact.bridges</groupId>
+            <artifactId>intact-unisave</artifactId>
+            <version>2.1.10.1</version>
         </dependency>
 
         <!-- Uniprot service -->
