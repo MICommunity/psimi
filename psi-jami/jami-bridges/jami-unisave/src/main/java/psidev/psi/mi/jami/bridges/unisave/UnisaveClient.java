@@ -1,16 +1,23 @@
 package psidev.psi.mi.jami.bridges.unisave;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.SequenceVersionFetcher;
-import uk.ac.ebi.uniprot.unisave.*;
 
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeConstants;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.namespace.QName;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -23,21 +30,97 @@ import java.util.*;
 
 public class UnisaveClient implements SequenceVersionFetcher{
 
-    private UnisavePortType unisavePortType;
-    public static final String WSDL = "http://www.ebi.ac.uk/uniprot/unisave/unisave.wsdl";
-    public static final String UNISAVE_URI = "http://www.ebi.ac.uk/uniprot/unisave";
-    public static final String UNISAVE_LOCAL = "unisave";
+    private static final Log log = LogFactory.getLog(UnisaveClient.class);
 
-    public UnisaveClient() throws BridgeFailedException{
-        URL wsdlUrl = null;
+    private String unisaveUrlRestJson = "http://www.ebi.ac.uk/uniprot/unisave/rest";
+    private HttpClient httpClient = HttpClientBuilder.create().build();
+
+    public UnisaveClient() {
+
+    }
+
+    private Object getDataFromWebService(String query){
+        HttpGet request = new HttpGet(query);
+        request.addHeader("accept", "application/json");
         try {
-            wsdlUrl = new URL(WSDL);
-        } catch (MalformedURLException e) {
-            throw new BridgeFailedException("The WSDL url is not valid and cannot connect.");
-        }
+            HttpResponse response = httpClient.execute(request);
+            if (response.getStatusLine().getStatusCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+            }
+            return JSONValue.parse(new BufferedReader(new InputStreamReader((response.getEntity().getContent()))));
 
-        Unisave service = new Unisave(wsdlUrl, new QName(UNISAVE_URI, UNISAVE_LOCAL));
-        unisavePortType = service.getUnisave();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String buildQuery(Type type, String id, String version) throws BridgeFailedException {
+        StringBuilder builder = new StringBuilder().append(this.unisaveUrlRestJson);
+        switch (type){
+            case ENTRIES:
+                builder.append(Type.ENTRIES.valueOf()).append(id);
+                break;
+            case ENTRY_VERSION:
+                if(version != null){
+                    builder.append(Type.ENTRY_VERSION.valueOf()).append(id).append("/").append(version);
+                }
+                else {
+                    throw new BridgeFailedException("To use the " + Type.ENTRY_VERSION.valueOf() +
+                            " method in the Rest you have to provide a not null version");
+                }
+                break;
+            case ENTRIES_INFO:
+                builder.append(Type.ENTRIES_INFO.valueOf()).append(id);
+                break;
+            case ENTRY_INFO_VERSION:
+                if (version != null){
+                    builder.append(Type.ENTRY_INFO_VERSION.valueOf()).append(id).append("/").append(version);
+                }
+                else {
+                    throw new BridgeFailedException("To use the " + Type.ENTRY_INFO_VERSION.valueOf() +
+                            " method in the Rest you have to provide a not null version");
+                }
+                break;
+            default:
+                return null;
+        }
+        return builder.toString();
+    }
+
+    private String getSequence(String content) {
+        content = content.substring(content.lastIndexOf("SEQUENCE"));
+        content = content.substring(content.indexOf("\n")).trim();
+        content = content.replaceAll(" ", "");
+        content = content.replaceAll("\n", "");
+        return content.replaceAll("\t", "").replaceAll("//", "");
+    }
+
+
+    private String getFastHeader(String content) {
+        int init = content.indexOf("FT ");
+        int last = content.lastIndexOf("FT ");
+        if(init == -1) return null;
+        last = content.indexOf("\n", last); //real last
+        return content.substring(init, last);
+    }
+
+    private String getContentForSequenceVersion(String identifier, int sequence_version) throws BridgeFailedException {
+        JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES, identifier, null));
+        JSONObject jo = null;
+        for(int i = 0; i < array.size(); ++i){
+            jo = (JSONObject) array.get(i);
+            if (sequence_version == Integer.valueOf(String.valueOf(jo.get("sequence_version")))){
+                return (String)jo.get("content");
+            }
+        }
+        return null;
+    }
+
+    public String getSequenceFor(String identifier, boolean isSecondary, int sequence_version) throws BridgeFailedException{
+        String content = getContentForSequenceVersion(identifier, sequence_version);
+        if (content != null) return getSequence(content);
+        else return null;
     }
 
     /**
@@ -50,15 +133,19 @@ public class UnisaveClient implements SequenceVersionFetcher{
      *
      * @throws BridgeFailedException if the identifier cannot be found in UniSave.
      */
-    public List<EntryVersionInfo> getVersions( String identifier, boolean isSecondary ) throws BridgeFailedException {
-        final VersionInfo versionInfo;
-        try {
-            versionInfo = unisavePortType.getVersionInfo( identifier, isSecondary );
-        } catch ( Exception e ) {
-            throw new BridgeFailedException( "Cannot collect version info for " + identifier, e );
+    public List<Integer> getVersions( String identifier, boolean isSecondary ) throws BridgeFailedException {
+        JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES_INFO, identifier, null));
+        List<Integer> list = new ArrayList<Integer>();
+        JSONObject jo = null;
+        for(int i = 0; i < array.size(); ++i) {
+            jo = (JSONObject) array.get(i);
+            list.add(Integer.valueOf(String.valueOf(jo.get("entry_version"))));
         }
 
-        return versionInfo.getEntryVersionInfo();
+        if( list.isEmpty() ) {
+            throw new BridgeFailedException( "Failed to find any version for "+ (isSecondary?"secondary":"primary") +" identifier " + identifier );
+        }
+        return list;
     }
 
     public String getLastSequenceAtTheDate(String identifier, boolean isSecondary, Date date) throws BridgeFailedException {
@@ -67,51 +154,22 @@ public class UnisaveClient implements SequenceVersionFetcher{
             throw new IllegalArgumentException("The date cannot be null.");
         }
 
-        List<EntryVersionInfo> listOfVersions = getVersions(identifier, isSecondary);
-
-        EntryVersionInfo lastEntryVersionBeforeDate = null;
-
-        try {
-            GregorianCalendar c = new GregorianCalendar();
-            c.setTime(date);
-            XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-
-            for (EntryVersionInfo version : listOfVersions){
-                XMLGregorianCalendar calendarRelease = version.getReleaseDate();
-
-                int comp = calendarRelease.compare(date2);
-
-                if (DatatypeConstants.LESSER == comp || DatatypeConstants.EQUAL == comp){
-                    if (lastEntryVersionBeforeDate == null){
-                        lastEntryVersionBeforeDate = version;
-                    }
-                    else if(DatatypeConstants.GREATER == calendarRelease.compare(lastEntryVersionBeforeDate.getReleaseDate())){
-                        lastEntryVersionBeforeDate = version;
-                    }
+        JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES, identifier, null));
+        JSONObject jo = null;
+        DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        Date auxDate = null;
+        int version = -1;
+        for(int i = 0; i < array.size(); ++i) {
+            jo = (JSONObject) array.get(i);
+            try {
+                auxDate = formatter.parse((String) jo.get("firstReleaseDate"));
+                if(auxDate.before(date)){
+                    return getSequence(String.valueOf(jo.get("content")));
                 }
-            }
-
-        } catch (DatatypeConfigurationException e) {
-            throw new BridgeFailedException("The date " + date.toString() + " cannot be converted into XMLGregorianCalendar.", e);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            };
         }
-
-        if (lastEntryVersionBeforeDate == null){
-            return null;
-        }
-
-        return getFastaSequence(lastEntryVersionBeforeDate);
-    }
-
-    public String getSequenceFor(String identifier, boolean isSecondary, int sequenceVersion) throws BridgeFailedException {
-
-        List<EntryVersionInfo> listOfVersions = getVersions(identifier, isSecondary);
-
-        for (EntryVersionInfo versionInfo : listOfVersions){
-            if (versionInfo.getSequenceVersion() == sequenceVersion){
-                return getFastaSequence(versionInfo);
-            }
-        }
-
         return null;
     }
 
@@ -129,28 +187,22 @@ public class UnisaveClient implements SequenceVersionFetcher{
             throw new IllegalArgumentException("The date cannot be null.");
         }
 
-        List<EntryVersionInfo> listOfVersions = getVersions(identifier, isSecondary);
         Map<Integer, String> oldSequences = new HashMap<Integer, String>();
-
-        try {
-            GregorianCalendar c = new GregorianCalendar();
-            c.setTime(date);
-            XMLGregorianCalendar date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
-
-            for (EntryVersionInfo version : listOfVersions){
-                XMLGregorianCalendar calendarRelease = version.getReleaseDate();
-
-                if (DatatypeConstants.LESSER == calendarRelease.compare(date2) || DatatypeConstants.EQUAL == calendarRelease.compare(date2)){
-                    if (!oldSequences.keySet().contains(version.getSequenceVersion())){
-                        String fasta = getFastaSequence(version);
-                        oldSequences.put(version.getSequenceVersion(), fasta);
-                    }
+        JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES, identifier, null));
+        JSONObject jo = null;
+        DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+        Date auxDate = null;
+        for(int i = 0; i < array.size(); ++i){
+            jo = (JSONObject) array.get(i);
+            try {
+                auxDate = formatter.parse((String) jo.get("firstReleaseDate") );
+                if(auxDate.before(date)){
+                    oldSequences.put(Integer.valueOf(String.valueOf(jo.get("sequence_version"))),
+                            getSequence((String) jo.get("content")));
                 }
-
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-
-        } catch (DatatypeConfigurationException e) {
-            throw new BridgeFailedException("The date " + date.toString() + " cannot be converted into XMLGregorianCalendar.", e);
         }
 
         return oldSequences;
@@ -163,41 +215,12 @@ public class UnisaveClient implements SequenceVersionFetcher{
      * @return a fasta sequence.
      * @throws BridgeFailedException if the version given doesn't have an entryId that can be found in UniSave.
      */
-    public String getFastaSequence( EntryVersionInfo version ) throws BridgeFailedException {
-        final Version fastaVersion;
-        try {
-            fastaVersion = unisavePortType.getVersion( version.getEntryId(), true );
-        } catch ( Exception e ) {
-            throw new BridgeFailedException( "Failed upon trying to get FASTA sequence for entry id " + version.getEntryId(), e );
-        }
-        final String entry = fastaVersion.getEntry();
-        final String[] array = entry.split( "\n" );
-        if ( array.length < 2 ) {
-            return entry;
-        }
-
-        String header = array[0];
-        if ( header.startsWith( ">" ) ) {
-            header = header.substring( 1 );
-        } else {
-            return entry;
-        }
-
-        String sequence;
-        if ( array.length > 2 ) {
-            // optimized buffer size considering that all sub sequence are of equal length.
-            StringBuilder sb = new StringBuilder( ( array.length - 1 ) * array[1].length() );
-            for ( int i = 1; i < array.length; i++ ) {
-                String seq = array[i];
-                sb.append( seq );
-            }
-            sequence = sb.toString();
-        } else {
-            sequence = array[1];
-        }
-
-        return sequence;
+    public FastaSequence getFastaSequence( String identifier, int version ) throws BridgeFailedException {
+        String content = getContentForSequenceVersion(identifier, version);
+        if (content != null) return new FastaSequence( getFastHeader(content), getSequence(content) );
+        else return null;
     }
+
 
     /**
      * Returns the sequence version of a sequence for a certain uniprot ac.
@@ -209,25 +232,21 @@ public class UnisaveClient implements SequenceVersionFetcher{
      * @throws BridgeFailedException
      */
     public int getSequenceVersion(String identifier, boolean isSecondary, String sequence) throws BridgeFailedException{
+        JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES, identifier, null));
 
-        // 1. get all versions ordered from the most recent to the oldest
-
-        final List<EntryVersionInfo> versions = getVersions( identifier, isSecondary );
-
-        // 3. for each protein sequence version
-        int currentSequenceVersion = -1;
-
-        for ( EntryVersionInfo versionInfo : versions) {
-
-            String fasta = getFastaSequence(versionInfo);
-
-            if ( fasta != null && fasta.equalsIgnoreCase(sequence) ) {
-                currentSequenceVersion = versionInfo.getSequenceVersion();
-                break;
-            } // if
-        } // versions
-
-        return currentSequenceVersion;
+        if ( log.isDebugEnabled() ) {
+            log.debug( "Collecting version(s) for entry by " + ( isSecondary ? "secondary" : "primary" ) + " ac: " + identifier );
+            log.debug( "Found " + array.size() + " version(s)" );
+        }
+        JSONObject jo = null;
+        for(int i = 0; i < array.size(); ++i){
+            jo = (JSONObject) array.get(i);
+            String content = (String)jo.get("content");
+            if (sequence.equalsIgnoreCase(getSequence(content))){
+                return Integer.valueOf(String.valueOf(jo.get("sequence_version")));
+            }
+        }
+        return -1;
     }
 
     /**
@@ -244,52 +263,45 @@ public class UnisaveClient implements SequenceVersionFetcher{
      *
      * @throws BridgeFailedException if the identifier cannot be found in UniSave.
      */
-    public List<SequenceInfo> getAvailableSequenceUpdate( String identifier, boolean isSecondary, String sequence ) throws BridgeFailedException {
+    public List<SequenceVersion> getAvailableSequenceUpdate( String identifier, boolean isSecondary, String sequence ) throws BridgeFailedException {
 
-        LinkedList<SequenceInfo> sequenceUpdates = new LinkedList<SequenceInfo>();
+        LinkedList<SequenceVersion> sequenceUpdates = new LinkedList<SequenceVersion>();
 
         // 1. get all versions ordered from the most recent to the oldest
+        if ( log.isDebugEnabled() ) {
+            log.debug( "Collecting version(s) for entry by " + ( isSecondary ? "secondary" : "primary" ) + " ac: " + identifier );
+        }
 
-        final List<EntryVersionInfo> versions = getVersions( identifier, isSecondary );
-
-        // 3. for each protein sequence version
+        JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES, identifier, null));
+        JSONObject jo = null;
+        int parameterSequenceVersion = getSequenceVersion(identifier, isSecondary, sequence);
         int currentSequenceVersion = -1;
-
-        boolean done = false;
-        for ( Iterator<EntryVersionInfo> iterator = versions.iterator(); iterator.hasNext() && !done; ) {
-            EntryVersionInfo version = iterator.next();
-
-            if ( currentSequenceVersion == -1 || currentSequenceVersion != version.getSequenceVersion() ) {
-                currentSequenceVersion = version.getSequenceVersion();
-
-                final String fastaSequence = getFastaSequence( version );
-
-                // check that the sequence is different from the one previously added (if any), if so add it
-                boolean addSequence = false;
-                if ( !sequenceUpdates.isEmpty() ) {
-                    final String previousSequence = sequenceUpdates.iterator().next().getSequence();
-                    if ( !previousSequence.equals( fastaSequence) ) {
-                        addSequence = true;
-                    }
-                } else {
-                    // that's the first one
-                    addSequence = true;
+        for(int i = 0 ; i < array.size() ; ++i){
+            jo = (JSONObject) array.get(i);
+            if(parameterSequenceVersion < Integer.parseInt(String.valueOf(jo.get("sequence_version")))){
+                if(currentSequenceVersion != Integer.parseInt(String.valueOf(jo.get("sequence_version")))){
+                    //New version of the sequence
+                    currentSequenceVersion = Integer.parseInt(String.valueOf(jo.get("sequence_version")));
+                    FastaSequence fastaSequence = getFastaSequence(identifier, currentSequenceVersion);
+                    sequenceUpdates.add(new SequenceVersion(fastaSequence, currentSequenceVersion));
                 }
-
-                if ( addSequence ) {
-                    // add at beginning so the first element if the given sequence, the followings reflecting subsequence updates.
-                    sequenceUpdates.addFirst( new SequenceInfo( fastaSequence, currentSequenceVersion ) );
-                }
-
-                if ( fastaSequence.equals( sequence ) ) {
-                    // 3b. if is the same as the sequence provided, stop and return the list of update available from UniSave
-
-                    done = true;
-                }
-            } // if
-        } // versions
-
+            }
+        }
         return sequenceUpdates;
+    }
+
+    private enum Type {
+        ENTRIES ("/json/entries/"),
+        ENTRY_VERSION ("/json/entry/"),
+        ENTRIES_INFO ("/json/entryinfos/"),
+        ENTRY_INFO_VERSION ("/json/entryinfo/");
+
+        private final String value;
+
+        Type(String value){ this.value = value;}
+
+        private String valueOf(){return this.value;}
+
     }
 
     public String fetchSequenceFromVersion(String id, int version) throws BridgeFailedException{
@@ -306,7 +318,7 @@ public class UnisaveClient implements SequenceVersionFetcher{
 
         // the id was maybe not a primary id. Try with secondary = true
         if (version == -1){
-           version = getSequenceVersion(id, true, sequence);
+            version = getSequenceVersion(id, true, sequence);
         }
 
         return version;
