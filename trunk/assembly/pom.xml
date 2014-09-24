@@ -200,18 +200,39 @@
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-crosslink-csv</artifactId>
+            <version>${jami.version}</version>
+            <type>zip</type>
+            <classifier>distribution</classifier>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-examples</artifactId>
+            <version>${jami.version}</version>
+            <type>zip</type>
+            <classifier>distribution</classifier>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>crosslink-uploader-app</artifactId>
+            <version>${jami.version}</version>
+            <type>zip</type>
+            <classifier>distribution</classifier>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-mitab</artifactId>
             <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
-        <!--<dependency>
+        <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-xml</artifactId>
             <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
-        </dependency> -->
+        </dependency>
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>psimi-enricher</artifactId>
