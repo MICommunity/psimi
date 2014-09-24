@@ -63,28 +63,28 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-commons</artifactId>
-            <version>${jami.version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!-- JAMI json-->
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-interactionviewer-json</artifactId>
-            <version>${jami.version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!-- JAMI OLS-->
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-ols</artifactId>
-            <version>${jami.version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!-- JAMI OBO-->
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-obo</artifactId>
-            <version>${jami.version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!-- java servlet -->

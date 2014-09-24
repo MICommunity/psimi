@@ -64,14 +64,14 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-commons</artifactId>
-            <version>${jami.version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!-- JAMI json-->
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-crosslink-csv</artifactId>
-            <version>${jami.version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!-- java servlet -->
