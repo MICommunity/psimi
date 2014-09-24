@@ -24,14 +24,14 @@
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>bridges-core</artifactId>
-            <version>${jami.version}</version>
+            <version>${pom.version}</version>
         </dependency>
 
         <!-- Uniprot service -->
         <dependency>
             <groupId>uk.ac.ebi.uniprot.kraken</groupId>
             <artifactId>uniprotjapi</artifactId>
-            <version>LATEST</version>
+            <version>2014_08</version>
         </dependency>
 
     </dependencies>
