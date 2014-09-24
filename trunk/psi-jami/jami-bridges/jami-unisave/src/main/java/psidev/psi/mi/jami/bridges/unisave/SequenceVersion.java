@@ -16,23 +16,23 @@
 package psidev.psi.mi.jami.bridges.unisave;
 
 /**
- * Represent a sequence info: sequence + sequence version number.
+ * Represent a sequence version: fasta + sequence version number.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$
  * @since 2.0.3
  */
-public class SequenceInfo {
+public class SequenceVersion {
     
-    private String sequence;
+    private FastaSequence sequence;
     private int version;
 
-    public SequenceInfo(String sequence, int version) {
+    public SequenceVersion( FastaSequence sequence, int version ) {
         this.sequence = sequence;
         this.version = version;
     }
 
-    public String getSequence() {
+    public FastaSequence getSequence() {
         return sequence;
     }
 
