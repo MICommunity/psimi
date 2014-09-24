@@ -30,7 +30,7 @@
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
         <module>psimi-enricher</module>
-        <module>assembly</module>
+        <!--<module>assembly</module>-->
         <module>psi-jami</module>
   </modules>
 
@@ -39,9 +39,9 @@
         <psimi.version>${pom.version}</psimi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jami.version>1.0.0-SNAPSHOT</jami.version>
+        <!--<jami.version>1.0.0-SNAPSHOT</jami.version>
         <calimocho.version>2.5.2-SNAPSHOT</calimocho.version>
-        <validator.version>2.0.7-SNAPSHOT</validator.version>
+        <validator.version>2.0.7-SNAPSHOT</validator.version>-->
     </properties>
 
     <developers>
