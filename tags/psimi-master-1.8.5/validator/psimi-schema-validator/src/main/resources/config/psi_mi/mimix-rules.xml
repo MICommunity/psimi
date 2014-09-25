@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objectRuleList xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:noNamespaceSchemaLocation="http://www.psidev.info/files/validator/object-rule.xsd">
+
+    <name>MIMIx</name>
+
+    <importRuleList>
+        <import type="resource" rules="/config/psi_mi/object-rules.xml"/>
+    </importRuleList>
+
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ConfidenceScoreRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.PublicationRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ExperimentHostOrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.ParticipantIdentificationMethodRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.OrganismRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorIdentityRule"/>
+    <rule class="psidev.psi.mi.validator.extension.rules.mimix.InteractorOrganismRule"/>
+
+</objectRuleList>

@@ -1,0 +1,700 @@
+   <entrySet level="2" minorVersion="4" version="5"
+             xmlns="http://psi.hupo.org/mi/mif" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd">
+    <entry>
+        <source releaseDate="2007-06-22">
+            <names>
+                <shortLabel>European Bioinformatics Institute</shortLabel>
+            </names>
+            <bibref>
+                <xref>
+                    <primaryRef db="pubmed" dbAc="MI:0446" id="14681455" refType="primary-reference"
+                                refTypeAc="MI:0358"/>
+                </xref>
+            </bibref>
+            <xref>
+                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0469" refType="primary-reference" refTypeAc="MI:0358"/>
+            </xref>
+            <attributeList>
+                <attribute name="postalAddress">Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SD, United
+                    Kingdom
+                </attribute>
+                <attribute name="url">http://www.ebi.ac.uk</attribute>
+            </attributeList>
+        </source>
+        <availabilityList>
+            <availability id="99999">blablabla</availability>
+        </availabilityList>
+        <experimentList>
+            <experimentDescription id="2">
+                <names>
+                    <shortLabel>hayashi-1999-1</shortLabel>
+                    <fullName>Kinase-independent activity of Cdc2/cyclin A prevents the S phase in the Drosophila cell
+                        cycle.
+                    </fullName>
+                </names>
+                <bibref>
+                    <xref>
+                        <primaryRef db="pubmed" dbAc="MI:0446" id="10320477" refType="primary-reference"
+                                    refTypeAc="MI:0358"/>
+                    </xref>
+                </bibref>
+                <xref>
+                    <primaryRef db="intact" dbAc="MI:0469" id="EBI-1205182" secondary="hayashi-1999-1"/>
+                    <secondaryRef db="newt" dbAc="MI:0247" id="7227" refType="target-species" secondary="drome"/>
+                </xref>
+                <hostOrganismList>
+                    <hostOrganism ncbiTaxId="-1">
+                        <names>
+                            <shortLabel>in vitro</shortLabel>
+                        </names>
+                    </hostOrganism>
+                </hostOrganismList>
+                <interactionDetectionMethod>
+                    <names>
+                        <shortLabel>pull down</shortLabel>
+                        <fullName>pull down</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0096" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                      refTypeAc="MI:0358"/>
+                    </xref>
+                </interactionDetectionMethod>
+                <participantIdentificationMethod>
+                    <names>
+                        <shortLabel>predetermined</shortLabel>
+                        <fullName>predetermined participant</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0396" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="7940758" refType="go-definition-ref"
+                                      refTypeAc="MI:0242"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                      refTypeAc="MI:0358"/>
+                    </xref>
+                </participantIdentificationMethod>
+                <attributeList>
+                    <attribute name="author-list">Hayashi S., Yamaguchi M.</attribute>
+                    <attribute name="contact-email">shayashi@lab.nig.ac.jp</attribute>
+                    <attribute name="journal">Genes Cells (1356-9597)</attribute>
+                    <attribute name="publication-year">1999</attribute>
+                </attributeList>
+            </experimentDescription>
+        </experimentList>
+        <interactorList>
+            <interactor id="4">
+                <names>
+                    <shortLabel>e2f_drome</shortLabel>
+                    <fullName>Transcription factor E2f</fullName>
+                    <alias type="gene name" typeAc="MI:0301">E2f</alias>
+                    <alias type="gene name synonym" typeAc="MI:0302">E2F1</alias>
+                    <alias type="orf name" typeAc="MI:0306">CG6376</alias>
+                </names>
+                <xref>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="Q27368" refType="identity" refTypeAc="MI:0356"
+                                secondary="e2f_drome" version="SP_48"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005634" secondary="C:nucleus"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0003677" secondary="F:DNA binding"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0003702" secondary="F:RNA polymerase II transcript"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0008284" secondary="P:positive regulation of cell"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045850" secondary="P:positive regulation of nurse"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0000074" secondary="P:regulation of cell cycle"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR003316" secondary="E2F_TDP"/>
+                    <secondaryRef db="flybase" dbAc="MI:0478" id="FBgn0011766" secondary="E2f"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="O77035" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="e2f_drome" version="SP_48"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR011991" secondary="Wing_hlx_DNA_bd"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0016563" secondary="F:transcriptional activator ac"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0035189" secondary="C:Rb-E2F complex"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007307" secondary="P:chorion gene amplification"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0042023" secondary="P:DNA endoreduplication"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0000082" secondary="P:G1/S transition of mitotic c"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007444" secondary="P:imaginal disc development"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045476" secondary="P:nurse cell apoptosis"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045941" secondary="P:positive regulation of trans"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005515" secondary="F:protein binding"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0050875" secondary="P:cellular physiological proce"/>
+                    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-108384" secondary="e2f_drome"/>
+                </xref>
+                <interactorType>
+                    <names>
+                        <shortLabel>protein</shortLabel>
+                        <fullName>protein</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                      refTypeAc="MI:0358"/>
+                        <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </interactorType>
+                <organism ncbiTaxId="7227">
+                    <names>
+                        <shortLabel>drome</shortLabel>
+                        <fullName>Drosophila melanogaster</fullName>
+                    </names>
+                </organism>
+                <sequence>
+                    MSKFFVNVAPINNSNSSSSHTTTSSNTQRHQQHQQHYGGSGTTGHTMVARRLNYDLHGGTTSINNNNNIVIKNESVDLDYDHVLSSSDSNSNGGVAAHLRDHVYISLDKGHNTGAVATAAAAATAGHTQQQLQQQHHHQNQQQRKATGKSNDITNYYKVKRRPHAVSDEIHPKKQAKQSAHHQTVYQKHTASSAPQQLRHSHHQLRHDADAELDEDVVERVAKPASHHPFSLSTPQQQLAASVASSSSSGDRNRADTSLGILTKKFVDLLQESPDGVVDLNEASNRLHVQKRRIYDITNVLEGINILEKKSKNNIQWRCGQSMVSQERSRHIEADSLRLEQQENELNKAIDLMRENLAEISQEVENSGGMAYVTQNDLLNVDLFKDQIVIVIKAPPEAKLVLPNTKLPREIYVKAENSGEINVFLCHDTSPENSPIAPGAGYVGAPGAGCVRTATSTRLHPLTNQRLNDPLFNNIDAMSTKGLFQTPYRSARNLSKSIEEAAKQSQPEYNNICDIAMGQHHNLNQQQQQQQQQLLQQPEEDDVDVELNQLVPTLTNPVVRTHQFQQHQQPSIQELFSSLTESSPPTPTKRRREAAAAAIAAGSSTTATTTLNSHNNRNHSNHSNHSNHSSSNNSKSQPPTIGYGSSQRRSDVPMYNCAMEGATTTSATADTTAATSRSAAASSLQMQFAAVAESNNGSSSGGGGGGGGYGSIAGAGANADPHQPYSHDRNSLPPGVADCDANSNSSSVTLQGLDALFNDIGSDYFSNDIAFVSINPPDDNDYPYALNANEGIDRLFDFGSDAYGP
+                </sequence>
+            </interactor>
+            <interactor id="7">
+                <names>
+                    <shortLabel>ccna_drome</shortLabel>
+                    <fullName>G2/mitotic-specific cyclin A</fullName>
+                    <alias type="gene name" typeAc="MI:0301">CycA</alias>
+                    <alias type="orf name" typeAc="MI:0306">CG5940</alias>
+                </names>
+                <xref>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P14785" refType="identity" refTypeAc="MI:0356"
+                                secondary="ccna_drome" version="SP_48"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045169" secondary="C:fusome"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005634" secondary="C:nucleus"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0016538" secondary="F:cyclin-dependent protein kin"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045170" secondary="C:spectrosome"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007088" secondary="P:regulation of mitosis"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR004367" secondary="Cyclin_Cterm"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR006671" secondary="Cyclin_N"/>
+                    <secondaryRef db="flybase" dbAc="MI:0478" id="FBgn0000404" secondary="CycA"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q8IGR7" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="ccna_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9VTP6" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="ccna_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9VTP7" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="ccna_drome" version="SP_48"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0000070" secondary="P:mitotic sister chromatid seg"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007422" secondary="P:peripheral nervous system de"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0009794" secondary="P:regulation of mitotic cell c"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0050875" secondary="P:cellular physiological proce"/>
+                    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-240333" secondary="ccna_drome"/>
+                </xref>
+                <interactorType>
+                    <names>
+                        <shortLabel>protein</shortLabel>
+                        <fullName>protein</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                      refTypeAc="MI:0358"/>
+                        <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </interactorType>
+                <organism ncbiTaxId="7227">
+                    <names>
+                        <shortLabel>drome</shortLabel>
+                        <fullName>Drosophila melanogaster</fullName>
+                    </names>
+                </organism>
+                <sequence>
+                    MASFQIHQDMSNKENPGIKIPAGVKNTKQPLAVIGGKAEKNALAPRANFAVLNGNNNVPRPAGKVQVFRDVRNLNVDENVEYGAKKSNVVPVVEQFKTFSVYEDNNDTQVAPSGKSLASLVDKENHDVKFGAGQKELVDYDLDSTPMSVTDVQSPMSVDRSILGVIQSSDISVGTETGVSPTGRVKELPPRNDRQRFLEVVQYQMDILEYFRESEKKHRPKPLYMRRQKDISHNMRSILIDWLVEVSEEYKLDTETLYLSVFYLDRFLSQMAVVRSKLQLVGTAAMYIAAKYEEIYPPEVGEFVFLTDDSYTKAQVLRMEQVILKILSFDLCTPTAYVFINTYAVLCDMPEKLKYMTLYISELSLMEGETYLQYLPSLMSSASVALARHILGMEMWTPRLEEITTYKLEDLKTVVLHLCHTHKTAKELNTQAMREKYNRDTYKKVAMMESVEMSKDDFDQLCEAYNCKQKEDEHQQPDINTKSNVNLFYKF
+                </sequence>
+            </interactor>
+            <interactor id="11">
+                <names>
+                    <shortLabel>cdc2_drome</shortLabel>
+                    <fullName>Cell division control protein 2 homolog</fullName>
+                    <alias type="gene name" typeAc="MI:0301">cdc2</alias>
+                    <alias type="orf name" typeAc="MI:0306">CG5363</alias>
+                </names>
+                <xref>
+                    <primaryRef db="uniprotkb" dbAc="MI:0486" id="P23572" refType="identity" refTypeAc="MI:0356"
+                                secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0004693" secondary="F:cyclin-dependent protein kin"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0000086" secondary="P:G2/M transition of mitotic c"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR000719" secondary="Prot_kinase"/>
+                    <secondaryRef db="interpro" dbAc="MI:0449" id="IPR008271" secondary="Ser_thr_pkin_AS"/>
+                    <secondaryRef db="flybase" dbAc="MI:0478" id="FBgn0004106" secondary="cdc2"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9TX68" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9TX69" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9TX70" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9TX71" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9TX72" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9TX73" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9TX74" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="uniprotkb" dbAc="MI:0486" id="Q9VKX5" refType="secondary-ac" refTypeAc="MI:0360"
+                                  secondary="cdc2_drome" version="SP_48"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0005515" secondary="F:protein binding"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007049" secondary="P:cell cycle"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0006468" secondary="P:protein amino acid phosphory"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007141" secondary="P:male meiosis I"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0008315" secondary="P:meiotic G2/MI transition"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0045034" secondary="P:neuroblast cell division"/>
+                    <secondaryRef db="go" dbAc="MI:0448" id="GO:0007283" secondary="P:spermatogenesis"/>
+                    <secondaryRef db="intact" dbAc="MI:0469" id="EBI-108689" secondary="cdc2_drome"/>
+                </xref>
+                <interactorType>
+                    <names>
+                        <shortLabel>protein</shortLabel>
+                        <fullName>protein</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0326" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                      refTypeAc="MI:0358"/>
+                        <secondaryRef db="so" dbAc="MI:0601" id="SO:0000358" refType="identity" refTypeAc="MI:0356"/>
+                    </xref>
+                </interactorType>
+                <organism ncbiTaxId="7227">
+                    <names>
+                        <shortLabel>drome</shortLabel>
+                        <fullName>Drosophila melanogaster</fullName>
+                    </names>
+                </organism>
+                <sequence>
+                    MEDFEKIEKIGEGTYGVVYKGRNRLTGQIVAMKKIRLESDDEGVPSTAIREISLLKELKHENIVCLEDVLMEENRIYLIFEFLSMDLKKYMDSLPVDKHMESELVRSYLYQITSAILFCHRRRVLHRDLKPQNLLIDKSGLIKVADFGLGRSFGIPVRIYTHEIVTLWYRAPEVLLGSPRYSCPVDIWSIGCIFAEMATRKPLFQGDSEIDQLFRMFRILKTPTEDIWPGVTSLPDYKNTFPCWSTNQLTNQLKNLDANGIDLIQKMLIYDPVHRISAKDILEHPYFNGFQSGLVRN
+                </sequence>
+            </interactor>
+        </interactorList>
+        <interactionList>
+            <interaction id="1">
+                <names>
+                    <shortLabel>cdc2-e2f-1</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="intact" dbAc="MI:0469" id="EBI-1209081" secondary="cdc2-e2f-1"/>
+                </xref>
+                <experimentList>
+                    <experimentRef>2</experimentRef>
+                </experimentList>
+                <participantList>
+                    <participant id="3">
+                        <interactorRef>4</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity"
+                                            refTypeAc="MI:0356"/>
+                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                              refTypeAc="MI:0358"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>bait</shortLabel>
+                                    <fullName>bait</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity"
+                                                refTypeAc="MI:0356"/>
+                                    <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                                  refTypeAc="MI:0358"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                        <featureList>
+                            <feature id="5">
+                                <names>
+                                    <shortLabel>region</shortLabel>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>his tag</shortLabel>
+                                        <fullName>his tag</fullName>
+                                        <alias>Histidine-tag</alias>
+                                        <alias>Hexa-His-tag</alias>
+                                        <alias>6-His-tag</alias>
+                                        <alias>6-His-tagged</alias>
+                                        <alias>Hexa-His-tagged</alias>
+                                        <alias>Histidine-tagged</alias>
+                                        <alias>Histidine-tag</alias>
+                                        <alias>6-His-tag</alias>
+                                        <alias>Hexa-His-tag</alias>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0521" refType="identity"
+                                                    refTypeAc="MI:0356"/>
+                                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                      refType="primary-reference" refTypeAc="MI:0358"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>undetermined</shortLabel>
+                                                <fullName>undetermined sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0339" refType="identity"
+                                                            refTypeAc="MI:0356"/>
+                                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                              refType="primary-reference" refTypeAc="MI:0358"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="0"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>undetermined</shortLabel>
+                                                <fullName>undetermined sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0339" refType="identity"
+                                                            refTypeAc="MI:0356"/>
+                                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                              refType="primary-reference" refTypeAc="MI:0358"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="0"/>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="7227">
+                                <names>
+                                    <shortLabel>drome</shortLabel>
+                                    <fullName>Drosophila melanogaster</fullName>
+                                </names>
+                            </hostOrganism>
+                        </hostOrganismList>
+                    </participant>
+                    <participant id="6">
+                        <interactorRef>7</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity"
+                                            refTypeAc="MI:0356"/>
+                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                              refTypeAc="MI:0358"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>prey</shortLabel>
+                                    <fullName>prey</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity"
+                                                refTypeAc="MI:0356"/>
+                                    <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                                  refTypeAc="MI:0358"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                        <featureList>
+                            <feature id="8">
+                                <names>
+                                    <shortLabel>region</shortLabel>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>35s radiolabel</shortLabel>
+                                        <fullName>35s radiolabel</fullName>
+                                        <alias>s35 radiolabelled</alias>
+                                        <alias>35S</alias>
+                                        <alias>S35</alias>
+                                        <alias>35S</alias>
+                                        <alias>S35</alias>
+                                        <alias>s35 radiolabelled</alias>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0371" refType="identity"
+                                                    refTypeAc="MI:0356"/>
+                                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                      refType="primary-reference" refTypeAc="MI:0358"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>undetermined</shortLabel>
+                                                <fullName>undetermined sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0339" refType="identity"
+                                                            refTypeAc="MI:0356"/>
+                                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                              refType="primary-reference" refTypeAc="MI:0358"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="0"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>undetermined</shortLabel>
+                                                <fullName>undetermined sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0339" refType="identity"
+                                                            refTypeAc="MI:0356"/>
+                                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                              refType="primary-reference" refTypeAc="MI:0358"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="0"/>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="7227">
+                                <names>
+                                    <shortLabel>drome</shortLabel>
+                                    <fullName>Drosophila melanogaster</fullName>
+                                </names>
+                            </hostOrganism>
+                        </hostOrganismList>
+                    </participant>
+                </participantList>
+                <interactionType>
+                    <names>
+                        <shortLabel>direct interaction</shortLabel>
+                        <fullName>direct interaction</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                      refTypeAc="MI:0358"/>
+                    </xref>
+                </interactionType>
+                <attributeList>
+                    <attribute name="figure legend">7A</attribute>
+                    <attribute name="caution">The Histidine tagged E2f was expressed in E coli in the presence of DP
+                        which could be the interacting molecule or an ancillary protein molecule.
+                    </attribute>
+                    <attribute name="kd">0.0</attribute>
+                </attributeList>
+            </interaction>
+            <interaction id="9">
+                <names>
+                    <shortLabel>cdc2-e2f</shortLabel>
+                </names>
+                <xref>
+                    <primaryRef db="intact" dbAc="MI:0469" id="EBI-871830" secondary="cdc2-e2f"/>
+                </xref>
+                <experimentList>
+                    <experimentRef>2</experimentRef>
+                </experimentList>
+                <participantList>
+                    <participant id="10">
+                        <interactorRef>11</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity"
+                                            refTypeAc="MI:0356"/>
+                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                              refTypeAc="MI:0358"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>prey</shortLabel>
+                                    <fullName>prey</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0498" refType="identity"
+                                                refTypeAc="MI:0356"/>
+                                    <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                                  refTypeAc="MI:0358"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                        <featureList>
+                            <feature id="12">
+                                <names>
+                                    <shortLabel>region</shortLabel>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>35s radiolabel</shortLabel>
+                                        <fullName>35s radiolabel</fullName>
+                                        <alias>s35 radiolabelled</alias>
+                                        <alias>35S</alias>
+                                        <alias>S35</alias>
+                                        <alias>35S</alias>
+                                        <alias>S35</alias>
+                                        <alias>s35 radiolabelled</alias>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0371" refType="identity"
+                                                    refTypeAc="MI:0356"/>
+                                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                      refType="primary-reference" refTypeAc="MI:0358"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>undetermined</shortLabel>
+                                                <fullName>undetermined sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0339" refType="identity"
+                                                            refTypeAc="MI:0356"/>
+                                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                              refType="primary-reference" refTypeAc="MI:0358"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="0"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>undetermined</shortLabel>
+                                                <fullName>undetermined sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0339" refType="identity"
+                                                            refTypeAc="MI:0356"/>
+                                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                              refType="primary-reference" refTypeAc="MI:0358"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="0"/>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="7227">
+                                <names>
+                                    <shortLabel>drome</shortLabel>
+                                    <fullName>Drosophila melanogaster</fullName>
+                                </names>
+                            </hostOrganism>
+                        </hostOrganismList>
+                    </participant>
+                    <participant id="13">
+                        <interactorRef>4</interactorRef>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0499" refType="identity"
+                                            refTypeAc="MI:0356"/>
+                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                              refTypeAc="MI:0358"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>bait</shortLabel>
+                                    <fullName>bait</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0496" refType="identity"
+                                                refTypeAc="MI:0356"/>
+                                    <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                                  refTypeAc="MI:0358"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                        <featureList>
+                            <feature id="14">
+                                <names>
+                                    <shortLabel>region</shortLabel>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>his tag</shortLabel>
+                                        <fullName>his tag</fullName>
+                                        <alias>Histidine-tag</alias>
+                                        <alias>Hexa-His-tag</alias>
+                                        <alias>6-His-tag</alias>
+                                        <alias>6-His-tagged</alias>
+                                        <alias>Hexa-His-tagged</alias>
+                                        <alias>Histidine-tagged</alias>
+                                        <alias>Histidine-tag</alias>
+                                        <alias>6-His-tag</alias>
+                                        <alias>Hexa-His-tag</alias>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0521" refType="identity"
+                                                    refTypeAc="MI:0356"/>
+                                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                      refType="primary-reference" refTypeAc="MI:0358"/>
+                                    </xref>
+                                </featureType>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>undetermined</shortLabel>
+                                                <fullName>undetermined sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0339" refType="identity"
+                                                            refTypeAc="MI:0356"/>
+                                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                              refType="primary-reference" refTypeAc="MI:0358"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="0"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>undetermined</shortLabel>
+                                                <fullName>undetermined sequence position</fullName>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0339" refType="identity"
+                                                            refTypeAc="MI:0356"/>
+                                                <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292"
+                                                              refType="primary-reference" refTypeAc="MI:0358"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="0"/>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="7227">
+                                <names>
+                                    <shortLabel>drome</shortLabel>
+                                    <fullName>Drosophila melanogaster</fullName>
+                                </names>
+                            </hostOrganism>
+                        </hostOrganismList>
+                    </participant>
+                </participantList>
+                <interactionType>
+                    <names>
+                        <shortLabel>direct interaction</shortLabel>
+                        <fullName>direct interaction</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef db="psi-mi" dbAc="MI:0488" id="MI:0407" refType="identity" refTypeAc="MI:0356"/>
+                        <secondaryRef db="pubmed" dbAc="MI:0446" id="14755292" refType="primary-reference"
+                                      refTypeAc="MI:0358"/>
+                    </xref>
+                </interactionType>
+                <attributeList>
+                    <attribute name="figure legend">7A</attribute>
+                    <attribute name="caution">The Histidine tagged E2f was expressed in E coli in the presence of DP
+                        which could be the interacting molecule or an ancillary protein molecule.
+                    </attribute>
+                    <attribute name="kd">0.0</attribute>
+                </attributeList>
+            </interaction>
+        </interactionList>
+        <attributeList>
+            <attribute name="comment">a nice comment</attribute>
+            <attribute name="comment">an other nice comment</attribute>
+        </attributeList>
+    </entry>
+</entrySet>

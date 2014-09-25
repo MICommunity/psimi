@@ -1,0 +1,958 @@
+<entrySet version="5" minorVersion="4" level="2"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif  http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd"
+          xmlns="http://psi.hupo.org/mi/mif"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <entry>
+        <source releaseDate="2010-03-26Z">
+            <names>
+                <shortLabel>Molecular Connections Pvt Ltd</shortLabel>
+            </names>
+            <attributeList>
+                <attribute name="postal address">2/2, Kariappa Road, Basavanagudi, Bangalore -560 004</attribute>
+                <attribute nameAc="MI:0614" name="url">www.molecularconnections.com</attribute>
+            </attributeList>
+        </source>
+        <interactionList>
+            <interaction id="1">
+                <names>
+                    <shortLabel>2_s_amino6boron-arg1</shortLabel>
+                    <fullName>affinity of human arginase I and 2(S)-amino-6-boronohexanoic acid measured using
+                        isothermal titration calorimetry
+                    </fullName>
+                </names>
+                <experimentList>
+                    <experimentDescription id="2">
+                        <names>
+                            <shortLabel>costanzo_l-2005-1</shortLabel>
+                            <fullName>Crystal structure of human arginase I at 1.29-A resolution and exploration of
+                                inhibition in the immune response
+                            </fullName>
+                        </names>
+                        <bibref>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0358" refType="primary-reference" id="16141327" dbAc="MI:0446"
+                                            db="pubmed"/>
+                            </xref>
+                        </bibref>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="-1">
+                                <names>
+                                    <shortLabel>in vitro</shortLabel>
+                                    <fullName>In vitro</fullName>
+                                </names>
+                            </hostOrganism>
+                        </hostOrganismList>
+                        <interactionDetectionMethod>
+                            <names>
+                                <shortLabel>itc</shortLabel>
+                                <fullName>isothermal titration calorimetry</fullName>
+                                <alias type="go synonym" typeAc="MI:0303">ITC</alias>
+                                <alias type="go synonym" typeAc="MI:0303">ITC</alias>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0065" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="11785756"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </interactionDetectionMethod>
+                        <participantIdentificationMethod>
+                            <names>
+                                <shortLabel>predetermined</shortLabel>
+                                <fullName>predetermined participant</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0396" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </participantIdentificationMethod>
+                        <attributeList>
+                            <attribute nameAc="MI:0636" name="author-list">Luigi Di Costanzo, Guadalupe Sabio, Alfonso
+                                Mora, Paulo C. Rodriguez, Augusto C. Ochoa, Francisco Centeno, David W. Christianson
+                            </attribute>
+                            <attribute nameAc="MI:0885" name="journal">Proc Natl Acad Sci U S A</attribute>
+                            <attribute nameAc="MI:0886" name="publication year">2005</attribute>
+                            <attribute nameAc="MI:0634" name="contact-email">chris@xtal.chem.upenn.edu</attribute>
+                        </attributeList>
+                    </experimentDescription>
+                </experimentList>
+                <participantList>
+                    <participant id="3">
+                        <names>
+                            <shortLabel>argi1_human</shortLabel>
+                        </names>
+                        <interactor id="4">
+                            <names>
+                                <shortLabel>argi1_human</shortLabel>
+                                <fullName>Arginase-1</fullName>
+                                <alias type="gene name synonym" typeAc="MI:0302">Type I arginase</alias>
+                                <alias type="gene name synonym" typeAc="MI:0302">Liver-type arginase</alias>
+                                <alias type="gene name synonym" typeAc="MI:0302">ARG1</alias>
+                                <alias type="gene name" typeAc="MI:0301">ARG1</alias>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="P05089" dbAc="MI:0486"
+                                            db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q5JWT5" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="A6NEA0" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0356" refType="identity" id="383" dbAc="MI:0477"
+                                              db="entrezgene/locuslink"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q5JWT6" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q9BS50" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q8TE72" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                            </xref>
+                            <interactorType>
+                                <names>
+                                    <shortLabel>protein</shortLabel>
+                                    <fullName>protein</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0356" refType="identity" id="SO:0000358" dbAc="MI:0601"
+                                                  db="so"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </interactorType>
+                            <organism ncbiTaxId="9606">
+                                <names>
+                                    <shortLabel>human</shortLabel>
+                                    <fullName>Homo sapiens</fullName>
+                                </names>
+                            </organism>
+                            <sequence>
+                                MSAKSRTIGIIGAPFSKGQPRGGVEEGPTVLRKAGLLEKLKEQECDVKDYGDLPFADIPNDSPFQIVKNPRSVGKASEQLAGKVAEVKKNGRISLVLGGDHSLAIGSISGHARVHPDLGVIWVDAHTDINTPLTTTSGNLHGQPVSFLLKELKGKIPDVPGFSWVTPCISAKDIVYIGLRDVDPGEHYILKTLGIKYFSMTEVDRLGIGKVMEETLSYLLGRKKRPIHLSFDVDGLDPSFTPATGTPVVGGLTYREGLYITEEIYKTGLLSGLDIMEVNPSLGKTPEEVTRTVNTAVAITLACFGLAREGNHKPIDYLNPPK
+                            </sequence>
+                        </interactor>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0499" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>neutral component</shortLabel>
+                                    <fullName>neutral component</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0497" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                        <featureList>
+                            <feature id="100">
+                                <names>
+                                    <shortLabel>
+                                        region
+                                    </shortLabel>
+                                </names>
+                                <featureType>
+                                    <names>
+                                        <shortLabel>
+                                            tag
+                                        </shortLabel>
+                                    </names>
+                                    <xref>
+                                        <primaryRef db="psi-mi" dbAc="MI:0356" id="MI:0507" refType="identity" refTypeAc="MI:0356"/>
+                                    </xref>
+                                </featureType>
+                                <experimentRefList>
+                                    <experimentRef>2</experimentRef>
+                                </experimentRefList>
+                                <featureRangeList>
+                                    <featureRange>
+                                        <startStatus>
+                                            <names>
+                                                <shortLabel>c-terminal</shortLabel>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0356" id="MI:0334" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </startStatus>
+                                        <begin position="0"/>
+                                        <endStatus>
+                                            <names>
+                                                <shortLabel>c-terminal</shortLabel>
+                                            </names>
+                                            <xref>
+                                                <primaryRef db="psi-mi" dbAc="MI:0356" id="MI:0334" refType="identity" refTypeAc="MI:0356"/>
+                                            </xref>
+                                        </endStatus>
+                                        <end position="0"/>
+                                    </featureRange>
+                                </featureRangeList>
+                            </feature>
+                        </featureList>
+                    </participant>
+                    <participant id="5">
+                        <names>
+                            <shortLabel>2(s)amino6boronohexanoic acid</shortLabel>
+                        </names>
+                        <interactor id="6">
+                            <names>
+                                <shortLabel>2(s)amino6boronohexanoic acid</shortLabel>
+                                <fullName>[(5S)-5-amino-6-hydroxy-6-oxohexyl]-trihydroxyboranuide</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="CID: 444965" dbAc="MI:0730"
+                                            db="pubchem"/>
+                            </xref>
+                            <interactorType>
+                                <names>
+                                    <shortLabel>small molecule</shortLabel>
+                                    <fullName>small molecule</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0328" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </interactorType>
+                        </interactor>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0499" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>neutral component</shortLabel>
+                                    <fullName>neutral component</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0497" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                    </participant>
+                </participantList>
+                <interactionType>
+                    <names>
+                        <shortLabel>direct interaction</shortLabel>
+                        <fullName>direct interaction</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0407" dbAc="MI:0488" db="psi-mi"/>
+                        <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292" dbAc="MI:0446"
+                                      db="pubmed"/>
+                    </xref>
+                </interactionType>
+                <modelled>false</modelled>
+                <intraMolecular>false</intraMolecular>
+                <negative>false</negative>
+                <parameterList>
+                    <parameter factor="5.0" exponent="-9" base="10" unitAc="MI:0648" unit="molar" termAc="MI:0646"
+                               term="Kd">
+                        <experimentRef>2</experimentRef>
+                    </parameter>
+                </parameterList>
+                <attributeList>
+                    <attribute nameAc="MI:0612" name="comment">arginase expressed in E.coli</attribute>
+                    <attribute nameAc="MI:0612" name="comment">molar binding stoichiometry of 2.20</attribute>
+                    <attribute nameAc="MI:0599" name="figure legend">Fig 6</attribute>
+                    <attribute nameAc="MI:0948" name="kinetic conditions">pH 8.5</attribute>
+                </attributeList>
+            </interaction>
+            <interaction id="7">
+                <names>
+                    <shortLabel>_s__2boronoethy-arg1</shortLabel>
+                    <fullName>affinity of human arginase I and S-(2-boronoethyl)-l-cysteine measured using isothermal
+                        titration
+                    </fullName>
+                </names>
+                <experimentList>
+                    <experimentDescription id="8">
+                        <names>
+                            <shortLabel>costanzo_l-2005-1</shortLabel>
+                            <fullName>Crystal structure of human arginase I at 1.29-A resolution and exploration of
+                                inhibition in the immune response
+                            </fullName>
+                        </names>
+                        <bibref>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0358" refType="primary-reference" id="16141327" dbAc="MI:0446"
+                                            db="pubmed"/>
+                            </xref>
+                        </bibref>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="-1">
+                                <names>
+                                    <shortLabel>in vitro</shortLabel>
+                                    <fullName>In vitro</fullName>
+                                </names>
+                            </hostOrganism>
+                        </hostOrganismList>
+                        <interactionDetectionMethod>
+                            <names>
+                                <shortLabel>itc</shortLabel>
+                                <fullName>isothermal titration calorimetry</fullName>
+                                <alias type="go synonym" typeAc="MI:0303">ITC</alias>
+                                <alias type="go synonym" typeAc="MI:0303">ITC</alias>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0065" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="11785756"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </interactionDetectionMethod>
+                        <participantIdentificationMethod>
+                            <names>
+                                <shortLabel>predetermined</shortLabel>
+                                <fullName>predetermined participant</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0396" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </participantIdentificationMethod>
+                        <attributeList>
+                            <attribute nameAc="MI:0636" name="author-list">Luigi Di Costanzo, Guadalupe Sabio, Alfonso
+                                Mora, Paulo C. Rodriguez, Augusto C. Ochoa, Francisco Centeno, David W. Christianson
+                            </attribute>
+                            <attribute nameAc="MI:0885" name="journal">Proc Natl Acad Sci U S A</attribute>
+                            <attribute nameAc="MI:0886" name="publication year">2005</attribute>
+                            <attribute nameAc="MI:0634" name="contact-email">chris@xtal.chem.upenn.edu</attribute>
+                        </attributeList>
+                    </experimentDescription>
+                </experimentList>
+                <participantList>
+                    <participant id="9">
+                        <names>
+                            <shortLabel>argi1_human</shortLabel>
+                        </names>
+                        <interactor id="10">
+                            <names>
+                                <shortLabel>argi1_human</shortLabel>
+                                <fullName>Arginase-1</fullName>
+                                <alias type="gene name synonym" typeAc="MI:0302">Type I arginase</alias>
+                                <alias type="gene name synonym" typeAc="MI:0302">Liver-type arginase</alias>
+                                <alias type="gene name synonym" typeAc="MI:0302">ARG1</alias>
+                                <alias type="gene name" typeAc="MI:0301">ARG1</alias>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="P05089" dbAc="MI:0486"
+                                            db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q5JWT5" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="A6NEA0" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0356" refType="identity" id="383" dbAc="MI:0477"
+                                              db="entrezgene/locuslink"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q5JWT6" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q9BS50" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q8TE72" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                            </xref>
+                            <interactorType>
+                                <names>
+                                    <shortLabel>protein</shortLabel>
+                                    <fullName>protein</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0356" refType="identity" id="SO:0000358" dbAc="MI:0601"
+                                                  db="so"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </interactorType>
+                            <organism ncbiTaxId="9606">
+                                <names>
+                                    <shortLabel>human</shortLabel>
+                                    <fullName>Homo sapiens</fullName>
+                                </names>
+                            </organism>
+                            <sequence>
+                                MSAKSRTIGIIGAPFSKGQPRGGVEEGPTVLRKAGLLEKLKEQECDVKDYGDLPFADIPNDSPFQIVKNPRSVGKASEQLAGKVAEVKKNGRISLVLGGDHSLAIGSISGHARVHPDLGVIWVDAHTDINTPLTTTSGNLHGQPVSFLLKELKGKIPDVPGFSWVTPCISAKDIVYIGLRDVDPGEHYILKTLGIKYFSMTEVDRLGIGKVMEETLSYLLGRKKRPIHLSFDVDGLDPSFTPATGTPVVGGLTYREGLYITEEIYKTGLLSGLDIMEVNPSLGKTPEEVTRTVNTAVAITLACFGLAREGNHKPIDYLNPPK
+                            </sequence>
+                        </interactor>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0499" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>neutral component</shortLabel>
+                                    <fullName>neutral component</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0497" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                    </participant>
+                    <participant id="11">
+                        <names>
+                            <shortLabel>(s)(2boronoethyl)lcysteine, hci)</shortLabel>
+                        </names>
+                        <interactor id="12">
+                            <names>
+                                <shortLabel>(s)(2boronoethyl)lcysteine, hci)</shortLabel>
+                                <fullName>[(2S)-3-(2-boronoethylsulfanyl)-1-hydroxy-1-oxopropan-2-yl]azanium
+                                    chloride
+                                </fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="CID: 16760311" dbAc="MI:0730"
+                                            db="pubchem"/>
+                            </xref>
+                            <interactorType>
+                                <names>
+                                    <shortLabel>small molecule</shortLabel>
+                                    <fullName>small molecule</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0328" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </interactorType>
+                        </interactor>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0499" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>neutral component</shortLabel>
+                                    <fullName>neutral component</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0497" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                    </participant>
+                </participantList>
+                <interactionType>
+                    <names>
+                        <shortLabel>direct interaction</shortLabel>
+                        <fullName>direct interaction</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0407" dbAc="MI:0488" db="psi-mi"/>
+                        <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292" dbAc="MI:0446"
+                                      db="pubmed"/>
+                    </xref>
+                </interactionType>
+                <modelled>false</modelled>
+                <intraMolecular>false</intraMolecular>
+                <negative>false</negative>
+                <parameterList>
+                    <parameter factor="270.0" exponent="-9" base="10" unitAc="MI:0648" unit="molar" termAc="MI:0835"
+                               term="kd">
+                        <experimentRef>8</experimentRef>
+                    </parameter>
+                </parameterList>
+                <attributeList>
+                    <attribute nameAc="MI:0612" name="comment">arginase expressed in E.coli</attribute>
+                    <attribute nameAc="MI:0612" name="comment">molar binding stoichiometry of 2.08</attribute>
+                    <attribute nameAc="MI:0599" name="figure legend">Fig 7</attribute>
+                    <attribute nameAc="MI:0948" name="kinetic conditions">pH 8.5</attribute>
+                </attributeList>
+            </interaction>
+            <interaction id="13">
+                <names>
+                    <shortLabel>2_s_amino6boron-arg1</shortLabel>
+                    <fullName>human arginase I-ABH complex was crystallized and crystals of the ABH complex yielded
+                        diffraction data to 1.29A
+                    </fullName>
+                </names>
+                <experimentList>
+                    <experimentDescription id="14">
+                        <names>
+                            <shortLabel>costanzo_l-2005-2</shortLabel>
+                            <fullName>Crystal structure of human arginase I at 1.29-A resolution and exploration of
+                                inhibition in the immune response
+                            </fullName>
+                        </names>
+                        <bibref>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0358" refType="primary-reference" id="16141327" dbAc="MI:0446"
+                                            db="pubmed"/>
+                            </xref>
+                        </bibref>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="-1">
+                                <names>
+                                    <shortLabel>in vitro</shortLabel>
+                                    <fullName>In vitro</fullName>
+                                </names>
+                            </hostOrganism>
+                        </hostOrganismList>
+                        <interactionDetectionMethod>
+                            <names>
+                                <shortLabel>x-ray diffraction</shortLabel>
+                                <fullName>x-ray crystallography</fullName>
+                                <alias type="go synonym" typeAc="MI:0303">X-ray</alias>
+                                <alias type="go synonym" typeAc="MI:0303">X-ray</alias>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0114" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </interactionDetectionMethod>
+                        <participantIdentificationMethod>
+                            <names>
+                                <shortLabel>predetermined</shortLabel>
+                                <fullName>predetermined participant</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0396" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </participantIdentificationMethod>
+                        <attributeList>
+                            <attribute nameAc="MI:0636" name="author-list">Luigi Di Costanzo, Guadalupe Sabio, Alfonso
+                                Mora, Paulo C. Rodriguez, Augusto C. Ochoa, Francisco Centeno, David W. Christianson
+                            </attribute>
+                            <attribute nameAc="MI:0885" name="journal">Proc Natl Acad Sci U S A</attribute>
+                            <attribute nameAc="MI:0886" name="publication year">2005</attribute>
+                            <attribute nameAc="MI:0634" name="contact-email">chris@xtal.chem.upenn.edu</attribute>
+                        </attributeList>
+                    </experimentDescription>
+                </experimentList>
+                <participantList>
+                    <participant id="15">
+                        <names>
+                            <shortLabel>argi1_human</shortLabel>
+                        </names>
+                        <interactor id="16">
+                            <names>
+                                <shortLabel>argi1_human</shortLabel>
+                                <fullName>Arginase-1</fullName>
+                                <alias type="gene name synonym" typeAc="MI:0302">Type I arginase</alias>
+                                <alias type="gene name synonym" typeAc="MI:0302">Liver-type arginase</alias>
+                                <alias type="gene name synonym" typeAc="MI:0302">ARG1</alias>
+                                <alias type="gene name" typeAc="MI:0301">ARG1</alias>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="P05089" dbAc="MI:0486"
+                                            db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q5JWT5" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="A6NEA0" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0356" refType="identity" id="383" dbAc="MI:0477"
+                                              db="entrezgene/locuslink"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q5JWT6" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q9BS50" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q8TE72" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                            </xref>
+                            <interactorType>
+                                <names>
+                                    <shortLabel>protein</shortLabel>
+                                    <fullName>protein</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0356" refType="identity" id="SO:0000358" dbAc="MI:0601"
+                                                  db="so"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </interactorType>
+                            <organism ncbiTaxId="9606">
+                                <names>
+                                    <shortLabel>human</shortLabel>
+                                    <fullName>Homo sapiens</fullName>
+                                </names>
+                            </organism>
+                            <sequence>
+                                MSAKSRTIGIIGAPFSKGQPRGGVEEGPTVLRKAGLLEKLKEQECDVKDYGDLPFADIPNDSPFQIVKNPRSVGKASEQLAGKVAEVKKNGRISLVLGGDHSLAIGSISGHARVHPDLGVIWVDAHTDINTPLTTTSGNLHGQPVSFLLKELKGKIPDVPGFSWVTPCISAKDIVYIGLRDVDPGEHYILKTLGIKYFSMTEVDRLGIGKVMEETLSYLLGRKKRPIHLSFDVDGLDPSFTPATGTPVVGGLTYREGLYITEEIYKTGLLSGLDIMEVNPSLGKTPEEVTRTVNTAVAITLACFGLAREGNHKPIDYLNPPK
+                            </sequence>
+                        </interactor>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0499" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>neutral component</shortLabel>
+                                    <fullName>neutral component</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0497" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                    </participant>
+                    <participant id="17">
+                        <names>
+                            <shortLabel>2(s)amino6boronohexanoic acid</shortLabel>
+                        </names>
+                        <interactor id="18">
+                            <names>
+                                <shortLabel>2(s)amino6boronohexanoic acid</shortLabel>
+                                <fullName>[(5S)-5-amino-6-hydroxy-6-oxohexyl]-trihydroxyboranuide</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="CID: 444965" dbAc="MI:0730"
+                                            db="pubchem"/>
+                            </xref>
+                            <interactorType>
+                                <names>
+                                    <shortLabel>small molecule</shortLabel>
+                                    <fullName>small molecule</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0328" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </interactorType>
+                        </interactor>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0499" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>neutral component</shortLabel>
+                                    <fullName>neutral component</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0497" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                    </participant>
+                </participantList>
+                <interactionType>
+                    <names>
+                        <shortLabel>direct interaction</shortLabel>
+                        <fullName>direct interaction</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0407" dbAc="MI:0488" db="psi-mi"/>
+                        <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292" dbAc="MI:0446"
+                                      db="pubmed"/>
+                    </xref>
+                </interactionType>
+                <modelled>false</modelled>
+                <intraMolecular>false</intraMolecular>
+                <negative>false</negative>
+                <attributeList>
+                    <attribute nameAc="MI:0612" name="comment">arginase expressed in E.coli</attribute>
+                    <attribute nameAc="MI:0632" name="3d-resolution">1.29A</attribute>
+                </attributeList>
+            </interaction>
+            <interaction id="19">
+                <names>
+                    <shortLabel>_s__2boronoethy-arg1</shortLabel>
+                    <fullName>human arginase I–BEC complex was crystallized and crystals of the BEC complex yielded
+                        diffraction data to 1.94A
+                    </fullName>
+                </names>
+                <experimentList>
+                    <experimentDescription id="20">
+                        <names>
+                            <shortLabel>costanzo_l-2005-2</shortLabel>
+                            <fullName>Crystal structure of human arginase I at 1.29-A resolution and exploration of
+                                inhibition in the immune response
+                            </fullName>
+                        </names>
+                        <bibref>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0358" refType="primary-reference" id="16141327" dbAc="MI:0446"
+                                            db="pubmed"/>
+                            </xref>
+                        </bibref>
+                        <hostOrganismList>
+                            <hostOrganism ncbiTaxId="-1">
+                                <names>
+                                    <shortLabel>in vitro</shortLabel>
+                                    <fullName>In vitro</fullName>
+                                </names>
+                            </hostOrganism>
+                        </hostOrganismList>
+                        <interactionDetectionMethod>
+                            <names>
+                                <shortLabel>x-ray diffraction</shortLabel>
+                                <fullName>x-ray crystallography</fullName>
+                                <alias type="go synonym" typeAc="MI:0303">X-ray</alias>
+                                <alias type="go synonym" typeAc="MI:0303">X-ray</alias>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0114" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </interactionDetectionMethod>
+                        <participantIdentificationMethod>
+                            <names>
+                                <shortLabel>predetermined</shortLabel>
+                                <fullName>predetermined participant</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0396" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </participantIdentificationMethod>
+                        <attributeList>
+                            <attribute nameAc="MI:0636" name="author-list">Luigi Di Costanzo, Guadalupe Sabio, Alfonso
+                                Mora, Paulo C. Rodriguez, Augusto C. Ochoa, Francisco Centeno, David W. Christianson
+                            </attribute>
+                            <attribute nameAc="MI:0885" name="journal">Proc Natl Acad Sci U S A</attribute>
+                            <attribute nameAc="MI:0886" name="publication year">2005</attribute>
+                            <attribute nameAc="MI:0634" name="contact-email">chris@xtal.chem.upenn.edu</attribute>
+                        </attributeList>
+                    </experimentDescription>
+                </experimentList>
+                <participantList>
+                    <participant id="21">
+                        <names>
+                            <shortLabel>argi1_human</shortLabel>
+                        </names>
+                        <interactor id="22">
+                            <names>
+                                <shortLabel>argi1_human</shortLabel>
+                                <fullName>Arginase-1</fullName>
+                                <alias type="gene name synonym" typeAc="MI:0302">Type I arginase</alias>
+                                <alias type="gene name synonym" typeAc="MI:0302">Liver-type arginase</alias>
+                                <alias type="gene name synonym" typeAc="MI:0302">ARG1</alias>
+                                <alias type="gene name" typeAc="MI:0301">ARG1</alias>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="P05089" dbAc="MI:0486"
+                                            db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q5JWT5" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="A6NEA0" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0356" refType="identity" id="383" dbAc="MI:0477"
+                                              db="entrezgene/locuslink"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q5JWT6" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q9BS50" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                                <secondaryRef refTypeAc="MI:0360" refType="secondary-ac" id="Q8TE72" dbAc="MI:0486"
+                                              db="uniprotkb"/>
+                            </xref>
+                            <interactorType>
+                                <names>
+                                    <shortLabel>protein</shortLabel>
+                                    <fullName>protein</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0326" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0356" refType="identity" id="SO:0000358" dbAc="MI:0601"
+                                                  db="so"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </interactorType>
+                            <organism ncbiTaxId="9606">
+                                <names>
+                                    <shortLabel>human</shortLabel>
+                                    <fullName>Homo sapiens</fullName>
+                                </names>
+                            </organism>
+                            <sequence>
+                                MSAKSRTIGIIGAPFSKGQPRGGVEEGPTVLRKAGLLEKLKEQECDVKDYGDLPFADIPNDSPFQIVKNPRSVGKASEQLAGKVAEVKKNGRISLVLGGDHSLAIGSISGHARVHPDLGVIWVDAHTDINTPLTTTSGNLHGQPVSFLLKELKGKIPDVPGFSWVTPCISAKDIVYIGLRDVDPGEHYILKTLGIKYFSMTEVDRLGIGKVMEETLSYLLGRKKRPIHLSFDVDGLDPSFTPATGTPVVGGLTYREGLYITEEIYKTGLLSGLDIMEVNPSLGKTPEEVTRTVNTAVAITLACFGLAREGNHKPIDYLNPPK
+                            </sequence>
+                        </interactor>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0499" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>neutral component</shortLabel>
+                                    <fullName>neutral component</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0497" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                    </participant>
+                    <participant id="23">
+                        <names>
+                            <shortLabel>(s)(2boronoethyl)lcysteine, hci)</shortLabel>
+                        </names>
+                        <interactor id="24">
+                            <names>
+                                <shortLabel>(s)(2boronoethyl)lcysteine, hci)</shortLabel>
+                                <fullName>[(2S)-3-(2-boronoethylsulfanyl)-1-hydroxy-1-oxopropan-2-yl]azanium
+                                    chloride
+                                </fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="CID: 16760311" dbAc="MI:0730"
+                                            db="pubchem"/>
+                            </xref>
+                            <interactorType>
+                                <names>
+                                    <shortLabel>small molecule</shortLabel>
+                                    <fullName>small molecule</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0328" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </interactorType>
+                        </interactor>
+                        <biologicalRole>
+                            <names>
+                                <shortLabel>unspecified role</shortLabel>
+                                <fullName>unspecified role</fullName>
+                            </names>
+                            <xref>
+                                <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0499" dbAc="MI:0488"
+                                            db="psi-mi"/>
+                                <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                              dbAc="MI:0446" db="pubmed"/>
+                            </xref>
+                        </biologicalRole>
+                        <experimentalRoleList>
+                            <experimentalRole>
+                                <names>
+                                    <shortLabel>neutral component</shortLabel>
+                                    <fullName>neutral component</fullName>
+                                </names>
+                                <xref>
+                                    <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0497" dbAc="MI:0488"
+                                                db="psi-mi"/>
+                                    <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292"
+                                                  dbAc="MI:0446" db="pubmed"/>
+                                </xref>
+                            </experimentalRole>
+                        </experimentalRoleList>
+                    </participant>
+                </participantList>
+                <interactionType>
+                    <names>
+                        <shortLabel>direct interaction</shortLabel>
+                        <fullName>direct interaction</fullName>
+                    </names>
+                    <xref>
+                        <primaryRef refTypeAc="MI:0356" refType="identity" id="MI:0407" dbAc="MI:0488" db="psi-mi"/>
+                        <secondaryRef refTypeAc="MI:0358" refType="primary-reference" id="14755292" dbAc="MI:0446"
+                                      db="pubmed"/>
+                    </xref>
+                </interactionType>
+                <modelled>false</modelled>
+                <intraMolecular>false</intraMolecular>
+                <negative>false</negative>
+                <attributeList>
+                    <attribute nameAc="MI:0612" name="comment">arginase expressed in E.coli</attribute>
+                    <attribute nameAc="MI:0632" name="3d-resolution">1.94A</attribute>
+                </attributeList>
+            </interaction>
+        </interactionList>
+    </entry>
+</entrySet>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="description" content="JAMI-Crosslink-uploader"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="en-GB"/>
+<meta http-equiv="Window-target" content="_top"/>
+<meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1.0, maximum-scale = 1.0, user-scalable = no" />
+
+<title>
+    JAMI-Crosslink uploader/exporter
+</title>
+</head>
+<body>
+
+<h2>JAMI-CrossLink uploader</h2>
+
+<p>You can upload Cross-link CSV file</p>
+<br/>
+<br/>
+<form id="form1_1" action="exporter" method="post" enctype="multipart/form-data" name="file_form">
+    Upload your CSV File*: <input id="inputFile" type="file" name="file"/>
+    <br/>
+    <br/>
+    Host organism name: <input id="inputOrganismName" type="text" name="organismName"/>
+    <br/>
+    <br/>
+    Host organism TaxId*: <input id="inputOrganismTaxId" type="text" name="organismTaxId"/>
+    <br/>
+    <br/>
+    Pubmed identifier*: <input id="inputPublicationIdentifier" type="text" name="publicationId"/>
+    <br/>
+    <br/>
+    Institution name*: <input id="institutionNameInput" type="text" name="institutionName"/>
+    <br/>
+    <br/>
+    Institution MI identifier (<a href="http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&amp;termId=MI%3A0444&amp;termName=database%20citation">See choices in MI ontology</a>): <input id="institutionIdInput" type="text" name="institutionMI"/>
+    <br/>
+    <br/>
+    Choose the output <br/>
+    <input type="radio" name="output" value="xml25_mix"/>PSI-MI XML 2.5 (Mix binary/n-ary by default)<br/>
+    <input type="radio" name="output" value="xml25_single"/>PSI-MI XML 2.5 (Single n-ary interaction)<br/>
+    <input type="radio" name="output" value="xml25_binary"/>PSI-MI XML 2.5 (Only independent binary interactions)<br/>
+    <input type="radio" name="output" value="tab25"/>MITAB 2.5<br/>
+    <input type="radio" name="output" value="tab26"/>MITAB 2.6<br/>
+    <input type="radio" name="output" value="tab27"/>MITAB 2.7<br/>
+    <br/>
+    <br/>
+    <input id="submitFile" type="submit" value="Submit" />
+</form>
+
+</body>
+</html>

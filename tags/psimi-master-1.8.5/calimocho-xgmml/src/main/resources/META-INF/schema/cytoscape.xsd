@@ -1,0 +1,21 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            targetNamespace="http://www.cytoscape.org"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            xmlns="http://www.cytoscape.org"
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            jxb:version="2.0"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            version="xgmml 1.0">
+
+    <xsd:attributeGroup name="cytoscape-atts">
+        <xsd:attribute name="targetArrow" type="xsd:string" form="qualified"/>
+        <xsd:attribute name="sourceArrowColor" type="xsd:string" form="qualified"/>
+        <xsd:attribute name="sourceArrow" type="xsd:string" form="qualified"/>
+        <xsd:attribute name="targetArrowColor" type="xsd:string" form="qualified"/>
+        <xsd:attribute name="nodeTransparency" type="xsd:double" form="qualified"/>
+        <xsd:attribute name="nodeLabelFont" type="xsd:string" form="qualified"/>
+        <xsd:attribute name="nodeLabel" type="xsd:string" form="qualified"/>
+        <xsd:attribute name="borderLineType" type="xsd:string" form="qualified"/>
+    </xsd:attributeGroup>
+</xsd:schema>

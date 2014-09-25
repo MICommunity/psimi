@@ -1,0 +1,62 @@
+ -----
+ Tutorial - how to use this library ?
+ -----
+ Samuel Kerrien
+ -----
+ 30 January 2007
+ -----
+
+Loading a data file into a Collection:
+
+  This will load the given file entirely into a Collection. If the file is large and the amount of memory available
+  is limited, you may want to take a look at the next section that explains how to iterate over a file.
+
++----------+
+        File file = new File( "path/to/my/file" );
+        boolean hasFileHeader = true;
+        PsimiTabReader mitabReader = new PsimiTabReader( hasFileHeader );
+        Collection<BinaryInteraction> interactions = mitabReader.read( file );
+
+        for ( BinaryInteraction interaction : interactions ) {
+            // process interaction here
+        }
++----------+
+
+Iterating on the content of a data file
+
+  This is more memory efficient as only a few interactions are loaded at any given time
+
++----------+
+        File file = new File( "path/to/my/file" );
+        boolean hasFileHeader = true;
+        PsimiTabReader mitabReader = new PsimiTabReader( hasFileHeader );
+        Iterator<BinaryInteraction> iterator = mitabReader.iterate( file );
+
+        int count = 0;
+        while ( iterator.hasNext() ) {
+            BinaryInteraction interaction = iterator.next();
+            // process interaction here
+        }
++----------+
+
+How to alter the behaviour of the parser in response to an unparseable MITAB25 line ?
+
+Multiple behaviours are currently available, amongst which:
+  * IgnoreAndPrintUnparseableLine
+  * IgnoreQuietlyUnparseableLine
+  * WriteToFileUnparseableLine
+  * FailFastUnparseableLine
+
++----------+
+        File file = new File( "path/to/my/file" );
+        boolean hasFileHeader = true;
+        PsimiTabReader mitabReader = new PsimiTabReader( hasFileHeader );
+        mitabReader.setUnparseableLineBehaviour( new IgnoreAndPrintUnparseableLine( System.out ) );
+        Iterator<BinaryInteraction> iterator = mitabReader.iterate( file );
+
+        int count = 0;
+        while ( iterator.hasNext() ) {
+            BinaryInteraction interaction = iterator.next();
+            // process interaction here
+        }
++----------+

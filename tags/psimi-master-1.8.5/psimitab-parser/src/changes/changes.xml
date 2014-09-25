@@ -1,0 +1,90 @@
+<document>
+    <properties>
+        <title>PSI MITAB25 parser</title>
+        <author email="skerrien@ebi.ac.uk">Samuel Kerrien</author>
+    </properties>
+    <body>
+
+        <!-- Usage documentation: http://maven.apache.org/plugins/maven-changes-plugin/usage.html -->
+
+        <release version="1.0-beta4" date="2007-02-23" description="New features and bug fixes">
+            <action dev="skerrien" type="add">
+                When the parser breaks, display an exception that specifies, which line, the content of the line and the
+                column that broke the format definition.
+            </action>
+            <action dev="skerrien" type="add">
+                Added filtering facilities: BinaryInteractionFilter.
+                Added Conjonctive and Disjonctive filter set.
+            </action>
+            <action dev="skerrien" type="add">
+                Unparseable Line Behaviour can be set to the PsimiTabReader in order to alter the default behaviour
+                (Fail Fast).
+                Currently implemented behaviour:
+                - IgnoreAndPrintUnparseableLine
+                - IgnoreQuietlyUnparseableLine
+                - WriteToFileUnparseableLine
+                - FailFastUnparseableLine
+            </action>
+            <action dev="skerrien" type="fix">
+                PsimiTabIterator: calling repeatedly to hasNext() consummed BinaryInteractions.
+            </action>
+            <action dev="skerrien" type="fix">
+                PsimiTabIterator: calling to next() repeatedly kept returning the same BinaryInteraction
+                (hasNext() had to be called between each call).
+            </action>
+        </release>
+
+
+        <release version="1.0-beta3" date="2007-02-05" description="New features and bug fixes">
+            <action dev="skerrien" type="add">
+                Facility for converting a MITAB25 data file into Microsoft Excel file (using jakarta POI).
+            </action>
+            <action dev="skerrien" type="add">
+                New data model allowing to represent a single line of MITAB25 as a Row, which itself is a List of
+                Column. There are also tools to read/iterate on data coming from a file.
+            </action>
+            <action dev="skerrien" type="add">API provides way to set the source databases.</action>
+            <action dev="skerrien" type="add">Read PSIMITAB file with option of skipping header.</action>
+            <action dev="skerrien" type="add">
+                PSIMITAB header can be enabled/disabled when reading/writing data.
+            </action>
+            <action dev="skerrien" type="add">Columns 1/2 are now populated with Xref having a qualifier 'identity' and
+                if not found, the first one
+                ordered alphabetically on primariId.
+            </action>
+            <action dev="skerrien" type="add">Columns 3/4 are now populated with gene name only.</action>
+            <action dev="skerrien" type="add">Columns 5/6 with the other aliases available.</action>
+            <action dev="skerrien" type="add">Column 14 contains the Interaction identifier(s).</action>
+            <action dev="skerrien" type="add">
+                Possibility of reading PSIMITAB file with iterator, to avoid memory
+                exception when processing large files
+            </action>
+            <action dev="skerrien" type="add">
+                When generating the database source of the Alias (column 5/6), the database that was used as source for
+                identity is used. If more than one is available none is assigned and the keywork 'unknown' is used.
+                It is possible to override the database source in the API in order to set an arbitrary database source.
+            </action>
+            <action dev="skerrien" type="add">
+                Interactor now has a single Organism instead of a List and an Organism contains a list of cross
+                reference allowing to defines its identity in multiple source database.
+            </action>
+            <action dev="skerrien" type="fix">
+                Clustering of interator pair doesn't work perfectly (eg. A-B and B-A)
+            </action>
+            <action dev="skerrien" type="fix">Output source database/id in column 13</action>
+            <action dev="skerrien" type="fix">Fix PsimitabReader tests</action>
+            <action dev="skerrien" type="fix">
+                Clustering by interactor pair omitted the mergind of interaction Acs (column 14).
+            </action>
+        </release>
+
+
+        <release version="1.0-beta2" date="2006-12-01" description="New features and bug fixes">
+            <action dev="skerrien" type="add">Convert PSI-MI XML 2.5 to PSIMITAB.</action>
+            <action dev="skerrien" type="add">Write of PSIMITAB to file.</action>
+            <action dev="skerrien" type="add">Reading PSIMITAB is not supported yet.</action>
+            <action dev="skerrien" type="add">formatting allowing to enable/disable specific columns</action>
+        </release>
+
+    </body>
+</document>
