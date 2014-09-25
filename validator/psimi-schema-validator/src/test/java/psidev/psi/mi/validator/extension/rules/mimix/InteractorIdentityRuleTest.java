@@ -16,6 +16,7 @@
 package psidev.psi.mi.validator.extension.rules.mimix;
 
 import junit.framework.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import psidev.psi.mi.jami.model.Protein;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
@@ -66,6 +67,7 @@ public class InteractorIdentityRuleTest extends AbstractRuleTest {
     }
 
     @Test
+    @Ignore
     public void check_smallmolecule_fail() throws Exception {
         final Protein interactor = buildProtein( "P12345" );
         updateInteractorType( interactor, RuleUtils.SMALL_MOLECULE_MI_REF );
