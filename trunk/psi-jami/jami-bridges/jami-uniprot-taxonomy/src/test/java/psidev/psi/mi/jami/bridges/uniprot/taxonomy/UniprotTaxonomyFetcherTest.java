@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.bridges.uniprot.taxonomy;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,7 @@ public class UniprotTaxonomyFetcherTest {
     }
 
     @Test
+    @Ignore
     public void test_fetching_known_organism_A() throws BridgeFailedException {
         Organism organism = taxonomyFetcher.fetchByTaxID(9615);
         assertEquals(9615 , organism.getTaxId());
@@ -36,6 +38,7 @@ public class UniprotTaxonomyFetcherTest {
     }
 
     @Test
+    @Ignore
     public void test_fetching_known_organism_B() throws BridgeFailedException {
         Organism organism = taxonomyFetcher.fetchByTaxID(9258);
         assertEquals(9258 , organism.getTaxId());
@@ -44,6 +47,7 @@ public class UniprotTaxonomyFetcherTest {
     }
 
     @Test
+    @Ignore
     public void test_fetching_known_organism_c() throws BridgeFailedException {
         Organism organism = taxonomyFetcher.fetchByTaxID(436495);
         assertEquals(436495 , organism.getTaxId());
