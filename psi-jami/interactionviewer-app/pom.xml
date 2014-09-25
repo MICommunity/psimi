@@ -4,12 +4,12 @@
   <parent>
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>psi-jami</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
 
   <groupId>psidev.psi.mi.jami</groupId>
   <artifactId>interactionviewer-app</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
     <name>PSI :: JAMI - molecular interaction viewer json application</name>
     <description>JAMI-molecular interaction viewer application</description>
     <packaging>war</packaging>
