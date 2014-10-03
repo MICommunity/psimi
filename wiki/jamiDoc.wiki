@@ -28,9 +28,19 @@ In the JAMI data model, we distinguish several types of interactions:
 
 === Participants ===
 
+An interaction is composed of one to many participants. Each participant is wrapping an interactor which is always a biological entity and as such, does not contain any experimental details and is independent of the interaction context. 
+
+In the opposite, the participant does not live outside the interaction context. It has several properties such as features which are dependent on the interaction context.
+
+A participant can be experimental or modelled. 
+
+A participant pool is a specific case/extension of participant. It is composed of several participant candidates, each of them can refer to an interactor and features. This enable the complex case of interactor set where we don't know which interactor in the pool interact but one of them does. As each interactor may have different sequences, a participant candidate can also have features.
+
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMIParticipant.png"/>
 
 === Features ===
+
+Features are always attached to a participant which is always attached to an interaction. They are very dependent on the context of the interaction.
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMIFeature.png"/>
 
