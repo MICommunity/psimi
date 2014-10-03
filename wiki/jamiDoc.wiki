@@ -20,3 +20,7 @@ In the JAMI data model, we distinguish several types of interactions:
   * *Complexes*: A more specific modelled interaction which can be considered as a biological entity and then can interact with other molecules
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_interactions.png"/>
+
+== Binary Interactions ==
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_binary.png"/>
