@@ -95,6 +95,10 @@ Biological Complexes are an extension of Modelled Interactions and do not have a
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMIInteractor.png"/>
 
+== Organism ==
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMIOrganism.png"/>
+
 == Simple data objects ==
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMISimpleTypes.png"/>
