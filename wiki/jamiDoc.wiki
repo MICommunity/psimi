@@ -8,7 +8,7 @@ The JAMI model interfaces are abstracted from both formats to hide the complexit
 
 It avoids endless conversions to different formats and avoid code/unit test duplicate as the code becomes more modular.
 
-
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jamiIntroduction.png"/>
 
 = Details =
 
