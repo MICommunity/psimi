@@ -97,4 +97,4 @@ Biological Complexes are an extension of Modelled Interactions and do not have a
 
 == Controlled vocabulary terms ==
 
-<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMICvTerm.png"/>
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/MICvTerm.png"/>
