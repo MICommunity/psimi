@@ -63,4 +63,6 @@ The participant features are biological features such as binding sites, etc. The
 
 == Biological Complexes ==
 
+Biological Complexes are an extension of Modelled Interactions and do not have any experimental details. As they are biological entities, they can interact with other molecules and can be re-used a participants of another interaction.
+
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_complex.png"/>
