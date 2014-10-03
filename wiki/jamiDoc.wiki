@@ -107,6 +107,6 @@ Biological Complexes are an extension of Modelled Interactions and do not have a
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/MICvTerm.png"/>
 
-== JAMI modules ==
+= JAMI modules =
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_existing_modeules.png"/>
