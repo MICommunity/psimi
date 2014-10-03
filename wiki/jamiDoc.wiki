@@ -55,9 +55,9 @@ The participant features can be experimental but also binding sites. Experimenta
 
 === Publication and experiment ===
 
-A publication can have one to many experiments.
+A publication can have one to many experiments. It also has a source/institution which is the organisation which curated the interactions described in this publication.
 
-Each experiment have one interaction detection method and may have some confidence(s). 
+Each experiment have one interaction detection method and may have some confidence(s). Experimental can also descrive variable parameters in case of dynamic interactions.
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMIPublication.png"/>
 
