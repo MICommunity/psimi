@@ -36,3 +36,7 @@ In the JAMI data model, default complex expansion methods are provided to break 
   * *Bipartite Expansion*
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_binary.png"/>
+
+== Interaction Evidences ==
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_interaction_evidence.png"/>
