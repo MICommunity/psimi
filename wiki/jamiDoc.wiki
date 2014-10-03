@@ -23,4 +23,5 @@ In the JAMI data model, we distinguish several types of interactions:
 
 == Binary Interactions ==
 
+
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_binary.png"/>
