@@ -1,4 +1,5 @@
 #summary JAMI: Java framework for Molecular Interaction
+#labels Featured
 
 <wiki:toc max_depth="3" />
 
