@@ -71,6 +71,8 @@ Each experiment have one interaction detection method and may have some confiden
 
 === Dynamic interactions and variable parameters ===
 
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_dynamic_interactions.png"/>
+
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMIVariableParameter.png"/>
 
 == Modelled Interactions ==
