@@ -1,5 +1,7 @@
 #summary JAMI: Java framework for Molecular Interaction
 
+<wiki:toc max_depth="3" />
+
 = Introduction =
 
 The aim of JAMI is to provide a single java library and framework which unifies the standard formats such as PSI-MI XML and PSI-MITAB.
