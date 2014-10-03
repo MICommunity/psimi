@@ -53,6 +53,14 @@ The participant features can be experimental but also binding sites. Experimenta
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_interaction_evidence.png"/>
 
+=== Publication and experiment ===
+
+A publication can have one to many experiments.
+
+Each experiment have one interaction detection method and may have some confidence(s). 
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMIPublication.png"/>
+
 == Modelled Interactions ==
 
 Modelled interactions are abstracted from any experimental details. 
