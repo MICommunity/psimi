@@ -14,4 +14,9 @@ It avoids endless conversions to different formats and avoid code/unit test dupl
 
 == Interactions ==
 
+In the JAMI data model, we distinguish several types of interactions: 
+*  Interaction Evidences: experimental description of an interaction in a specific experiment
+*  Modelled interactions: abstract interactions which can be supported by experimental evidences (interaction evidences). Modelled interactions are abstracted from any experimental details apart from a list of interaction evidences
+*  Complexes: A more specific modelled interaction which can be considered as a biological entity and then can interact with other molecules
+
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_interactions.png"/>
