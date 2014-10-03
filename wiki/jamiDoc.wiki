@@ -13,3 +13,5 @@ It avoids endless conversions to different formats and avoid code/unit test dupl
 = Details =
 
 == Interactions ==
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_interactions.png"/>
