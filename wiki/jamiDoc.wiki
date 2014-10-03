@@ -39,4 +39,9 @@ In the JAMI data model, default complex expansion methods are provided to break 
 
 == Interaction Evidences ==
 
+Interaction evidences are experimental interactions with the full details of the experiment.
+An interaction evidence is always attached to one experiment. 
+The participants are participant evidences with experimental description such as participant identification method, experimental role, experimental preparation, parameters, confidences etc.
+The participant features can be experimental but also binding sites. Experimental features can have feature detection method and parameters.
+
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_interaction_evidence.png"/>
