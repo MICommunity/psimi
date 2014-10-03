@@ -60,3 +60,7 @@ The participants are modelled participants and do not contain any experimental d
 The participant features are biological features such as binding sites, etc. They do not contain any experimental details.
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_modelled_interaction.png"/>
+
+== Biological Complexes ==
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_complex.png"/>
