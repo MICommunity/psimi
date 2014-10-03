@@ -12,7 +12,7 @@ It avoids endless conversions to different formats and avoid code/unit test dupl
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jamiIntroduction.png"/>
 
-= Details =
+= JAMI data model =
 
 == Interactions ==
 
@@ -106,3 +106,7 @@ Biological Complexes are an extension of Modelled Interactions and do not have a
 == Controlled vocabulary terms ==
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/MICvTerm.png"/>
+
+== JAMI modules ==
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_existing_modeules.png"/>
