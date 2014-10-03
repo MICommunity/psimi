@@ -27,5 +27,12 @@ Binary interactions are an extension of Interaction and can only be composed of 
   * *Binary Interaction Evidences*: experimental description of an interaction in a specific experiment
   * *Modelled Binary interactions*: abstract interactions which can be supported by experimental evidences (interaction evidences). Modelled interactions are abstracted 
 
+When visualising interactions in a graph or network, it is often necessary to break n-ary interactions into n-1 binary interactions.
+
+In the JAMI data model, default complex expansion methods are provided to break n-ary interactions into several binary pairs (this could be extended if new methods are wanted):
+
+  * *Spoke Expansion*
+  * *Matrix Expansion*
+  * *Bipartite Expansion*
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_binary.png"/>
