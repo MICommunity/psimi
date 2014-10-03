@@ -12,7 +12,6 @@ It avoids endless conversions to different formats and avoid code/unit test dupl
 
 = Details =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+== Interactions ==
+
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_interactions.png"/>
