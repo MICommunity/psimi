@@ -2,7 +2,12 @@
 
 = Introduction =
 
-Add your content here.
+The aim of JAMI is to provide a single java library and framework which unifies the standard formats such as PSI-MI XML and PSI-MITAB.
+
+The JAMI model interfaces are abstracted from both formats to hide the complexity/requirements of each format. The development of softwares and tools on top of this framewrok simplifies the integration and support of the two standard formats.
+
+It avoids endless conversions to different formats and avoid code/unit test duplicate as the code becomes more modular.
+
 
 
 = Details =
