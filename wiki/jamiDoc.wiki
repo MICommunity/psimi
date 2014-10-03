@@ -23,6 +23,8 @@ In the JAMI data model, we distinguish several types of interactions:
 
 <img width="800" src="http://psimi.googlecode.com/svn/wiki/images/jami_interactions.png"/>
 
+<img width="800" src="http://psimi.googlecode.com/svn/wiki/images/JAMIInteraction.png"/>
+
 == Binary Interactions ==
 
 Binary interactions are an extension of Interaction and can only be composed of two participants. As for the Interaction, you can have several types of Binary Interactions:
