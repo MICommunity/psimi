@@ -18,11 +18,11 @@ import java.util.Map;
 public class SimpleJsonModelledFeatureWriter extends SimpleJsonFeatureWriter<ModelledFeature>{
 
     public SimpleJsonModelledFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                           Map<String, Integer> processedInteractors){
+                                           Map<String, String> processedInteractors){
         super(writer, processedFeatures, processedInteractors);
     }
 
-    public SimpleJsonModelledFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, Integer> processedInteractors,
+    public SimpleJsonModelledFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, String> processedInteractors,
                                            IncrementalIdGenerator idGenerator) {
         super(writer, processedFeatures, processedInteractors, idGenerator);
     }

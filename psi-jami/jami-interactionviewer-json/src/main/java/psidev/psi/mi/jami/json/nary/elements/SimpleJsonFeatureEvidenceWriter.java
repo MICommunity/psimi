@@ -25,11 +25,11 @@ public class SimpleJsonFeatureEvidenceWriter extends SimpleJsonFeatureWriter<Fea
     private JsonElementWriter<Parameter> parameterWriter;
 
     public SimpleJsonFeatureEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                           Map<String, Integer> processedInteractors){
+                                           Map<String, String> processedInteractors){
         super(writer, processedFeatures, processedInteractors);
     }
 
-    public SimpleJsonFeatureEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, Integer> processedInteractors,
+    public SimpleJsonFeatureEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, String> processedInteractors,
                                            IncrementalIdGenerator idGenerator) {
         super(writer, processedFeatures, processedInteractors, idGenerator);
     }

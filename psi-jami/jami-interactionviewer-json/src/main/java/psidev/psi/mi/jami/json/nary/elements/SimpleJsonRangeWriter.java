@@ -23,9 +23,9 @@ import java.util.Map;
 public class SimpleJsonRangeWriter implements JsonRangeWriter{
 
     private Writer writer;
-    private Map<String, Integer> processedInteractors;
+    private Map<String, String> processedInteractors;
 
-    public SimpleJsonRangeWriter(Writer writer, Map<String, Integer> processedInteractors){
+    public SimpleJsonRangeWriter(Writer writer, Map<String, String> processedInteractors){
         if (writer == null){
             throw new IllegalArgumentException("The json range writer needs a non null Writer");
         }
@@ -67,7 +67,7 @@ public class SimpleJsonRangeWriter implements JsonRangeWriter{
             if (this.processedInteractors.containsKey(key)){
 
                 MIJsonUtils.writeSeparator(writer);
-                MIJsonUtils.writeProperty("interactorRef", Integer.toString(this.processedInteractors.get(key)), writer);
+                MIJsonUtils.writeProperty("interactorRef", this.processedInteractors.get(key), writer);
             }
         }
         // end object

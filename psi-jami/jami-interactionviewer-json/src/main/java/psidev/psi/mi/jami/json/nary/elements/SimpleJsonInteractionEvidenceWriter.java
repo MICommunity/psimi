@@ -26,12 +26,12 @@ public class SimpleJsonInteractionEvidenceWriter extends SimpleJsonInteractionWr
     private JsonElementWriter<Parameter> parameterWriter;
 
     public SimpleJsonInteractionEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, Integer> processedInteractors){
+                                               Map<String, String> processedInteractors){
         super(writer, processedFeatures, processedInteractors);
     }
 
     public SimpleJsonInteractionEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, Integer> processedInteractors, IncrementalIdGenerator idGenerator){
+                                               Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator){
         super(writer, processedFeatures, processedInteractors, idGenerator);
     }
 

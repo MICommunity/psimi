@@ -41,11 +41,11 @@ public class LightMIJsonWriter extends AbstractMIJsonWriter<Interaction> {
         super(writer, fetcher);
     }
 
-    public LightMIJsonWriter(Map<String, Integer> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+    public LightMIJsonWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
         super(processedInteractors, processedFeatures, idGenerator);
     }
 
-    public LightMIJsonWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, Integer> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+    public LightMIJsonWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
         super(writer, fetcher, processedInteractors, processedFeatures, idGenerator);
     }
 
