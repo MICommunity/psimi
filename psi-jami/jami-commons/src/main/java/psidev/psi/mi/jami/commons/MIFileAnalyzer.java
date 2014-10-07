@@ -45,7 +45,10 @@ public class MIFileAnalyzer {
                 }
 
                 // skip empty lines or break lines or xml encode line
-                while (line != null && (line.trim().length() == 0 || line.trim().equals(System.getProperty("line.separator")) || line.trim().contains("<?xml"))){
+                while (line != null && (line.trim().length() == 0
+                        || line.trim().equals(System.getProperty("line.separator"))
+                        || line.trim().contains("<?xml")
+                        || (line.trim().startsWith("<!--") && line.trim().endsWith("-->")))){
                     line = reader.readLine();
                 }
 
@@ -75,7 +78,8 @@ public class MIFileAnalyzer {
                 }
 
                 // skip empty lines or break lines
-                while (line != null && (line.trim().length() == 0 || line.trim().equals(System.getProperty("line.separator")))){
+                while (line != null && (line.trim().length() == 0
+                        || line.trim().equals(System.getProperty("line.separator")))){
                     line = reader.readLine();
                 }
 
@@ -108,7 +112,9 @@ public class MIFileAnalyzer {
                 }
 
                 // skip empty lines or break lines or xml encode line
-                while (line != null && (line.trim().length() == 0 || line.trim().equals(System.getProperty("line.separator")))){
+                while (line != null && (line.trim().length() == 0
+                        || line.trim().equals(System.getProperty("line.separator"))
+                        || (line.trim().startsWith("<!--") && line.trim().endsWith("-->")))){
                     line = reader.readLine();
                 }
 
