@@ -41,11 +41,11 @@ public class MIJsonModelledWriter extends AbstractMIJsonWriter<ModelledInteracti
         super(writer, fetcher);
     }
 
-    public MIJsonModelledWriter(Map<String, Integer> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+    public MIJsonModelledWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
         super(processedInteractors, processedFeatures, idGenerator);
     }
 
-    public MIJsonModelledWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, Integer> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+    public MIJsonModelledWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
         super(writer, fetcher, processedInteractors, processedFeatures, idGenerator);
     }
 

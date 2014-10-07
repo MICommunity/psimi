@@ -27,12 +27,12 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
     private JsonElementWriter<Xref> identifierWriter;
     private JsonElementWriter participantWriter;
     private Map<Feature, Integer> processedFeatures;
-    private Map<String, Integer> processedInteractors;
+    private Map<String, String> processedInteractors;
     private IncrementalIdGenerator idGenerator;
     private OntologyTermFetcher fetcher;
 
     public SimpleJsonInteractionWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, Integer> processedInteractors){
+                                       Map<String, String> processedInteractors){
         if (writer == null){
             throw new IllegalArgumentException("The json interactions writer needs a non null Writer");
         }
@@ -48,7 +48,7 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
     }
 
     public SimpleJsonInteractionWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, Integer> processedInteractors, IncrementalIdGenerator idGenerator){
+                                       Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator){
         if (writer == null){
             throw new IllegalArgumentException("The json interactions writer needs a non null Writer");
         }
@@ -71,12 +71,11 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
 
         // if the interaction has not yet been processed, we write the interactor
         if (!processedInteractors.containsKey(keyValues[0]+"_"+keyValues[1])){
-            id = getIdGenerator().nextId();
             // when the interactor is not the first one, we write an element separator
             if (!processedInteractors.isEmpty()){
                 MIJsonUtils.writeSeparator(writer);
             }
-            this.processedInteractors.put(keyValues[0]+"_"+keyValues[1], id);
+            this.processedInteractors.put(keyValues[0]+"_"+keyValues[1], keyValues[0]+"_"+keyValues[1]);
 
             MIJsonUtils.writeStartObject(writer);
             MIJsonUtils.writeProperty("object","interaction", writer);
@@ -227,7 +226,7 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
         return writer;
     }
 
-    protected Map<String, Integer> getProcessedInteractors() {
+    protected Map<String, String> getProcessedInteractors() {
         return processedInteractors;
     }
 

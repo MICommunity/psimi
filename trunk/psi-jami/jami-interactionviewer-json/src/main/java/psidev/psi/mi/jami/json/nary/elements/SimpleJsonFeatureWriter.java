@@ -25,11 +25,11 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
     private JsonElementWriter<Xref> identifierWriter;
     private JsonRangeWriter rangeWriter;
     private Map<Feature, Integer> processedFeatures;
-    private Map<String, Integer> processedInteractors;
+    private Map<String, String> processedInteractors;
     private IncrementalIdGenerator idGenerator;
 
     public SimpleJsonFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-            Map<String, Integer> processedInteractors){
+            Map<String, String> processedInteractors){
         if (writer == null){
             throw new IllegalArgumentException("The json feature writer needs a non null Writer");
         }
@@ -45,7 +45,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
     }
 
     public SimpleJsonFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                   Map<String, Integer> processedInteractors, IncrementalIdGenerator idGenerator){
+                                   Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator){
         if (writer == null){
             throw new IllegalArgumentException("The json feature writer needs a non null Writer");
         }

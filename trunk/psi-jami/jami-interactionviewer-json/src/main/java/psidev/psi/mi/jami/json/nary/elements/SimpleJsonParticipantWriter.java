@@ -32,7 +32,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     private JsonElementWriter<CvTerm> cvWriter;
     private JsonElementWriter featureWriter;
     private Map<Feature, Integer> processedFeatures;
-    private Map<String, Integer> processedInteractors;
+    private Map<String, String> processedInteractors;
     private Collection<Feature> experimentalFeatures;
     private Collection<Feature> bindingSites;
     private Collection<Feature> mutations;
@@ -44,7 +44,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     private static final Logger logger = Logger.getLogger("SimpleJsonParticipantWriter");
 
     public SimpleJsonParticipantWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, Integer> processedInteractors){
+                                       Map<String, String> processedInteractors){
         if (writer == null){
             throw new IllegalArgumentException("The json participant writer needs a non null Writer");
         }
@@ -65,7 +65,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     }
 
     public SimpleJsonParticipantWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, Integer> processedInteractors, IncrementalIdGenerator idGenerator,
+                                       Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator,
                                        OntologyTermFetcher fetcher){
         if (writer == null){
             throw new IllegalArgumentException("The json participant writer needs a non null Writer");
@@ -112,7 +112,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
         }
 
         MIJsonUtils.writeProperty("interactorRef",
-                Integer.toString(this.processedInteractors.get(keyValues[0] + "_" + keyValues[1])), this.writer);
+                this.processedInteractors.get(keyValues[0] + "_" + keyValues[1]), this.writer);
 
         // write stoichiometry
         getStoichiometryWriter().write(object.getStoichiometry());
@@ -340,7 +340,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
         return processedFeatures;
     }
 
-    protected Map<String, Integer> getProcessedInteractors() {
+    protected Map<String, String> getProcessedInteractors() {
         return processedInteractors;
     }
 }

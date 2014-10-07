@@ -30,7 +30,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
 
     private boolean isInitialised = false;
     private Writer writer;
-    private Map<String, Integer> processedInteractors;
+    private Map<String, String> processedInteractors;
     private Map<Feature, Integer> processedFeatures;
     private static final Logger logger = Logger.getLogger("AbstractMIJsonWriter");
 
@@ -40,7 +40,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     private JsonElementWriter<I> interactionWriter;
 
     public AbstractMIJsonWriter(){
-        processedInteractors = new HashMap<String, Integer>();
+        processedInteractors = new HashMap<String, String>();
         processedFeatures = new HashMap<Feature, Integer>();
         idGenerator = new IncrementalIdGenerator();
     }
@@ -48,7 +48,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     public AbstractMIJsonWriter(File file, OntologyTermFetcher fetcher) throws IOException {
 
         initialiseFile(file);
-        processedInteractors = new HashMap<String, Integer>();
+        processedInteractors = new HashMap<String, String>();
         processedFeatures = new HashMap<Feature, Integer>();
         idGenerator = new IncrementalIdGenerator();
         if (fetcher == null){
@@ -60,7 +60,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     public AbstractMIJsonWriter(OutputStream output, OntologyTermFetcher fetcher) {
 
         initialiseOutputStream(output);
-        processedInteractors = new HashMap<String, Integer>();
+        processedInteractors = new HashMap<String, String>();
         processedFeatures = new HashMap<Feature, Integer>();
         idGenerator = new IncrementalIdGenerator();
         if (fetcher == null){
@@ -72,7 +72,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     public AbstractMIJsonWriter(Writer writer, OntologyTermFetcher fetcher) {
 
         initialiseWriter(writer);
-        processedInteractors = new HashMap<String, Integer>();
+        processedInteractors = new HashMap<String, String>();
         processedFeatures = new HashMap<Feature, Integer>();
         idGenerator = new IncrementalIdGenerator();
         if (fetcher == null){
@@ -82,7 +82,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     }
 
     protected AbstractMIJsonWriter(Writer writer, OntologyTermFetcher fetcher,
-                                   Map<String, Integer> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+                                   Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
 
         initialiseWriter(writer);
         this.processedInteractors = processedInteractors;
@@ -94,7 +94,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         this.fetcher = fetcher;
     }
 
-    protected AbstractMIJsonWriter(Map<String, Integer> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+    protected AbstractMIJsonWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
 
         this.processedInteractors = processedInteractors;
         this.processedFeatures = processedFeatures;
@@ -355,7 +355,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         this.interactionWriter = interactionWriter;
     }
 
-    protected Map<String, Integer> getProcessedInteractors() {
+    protected Map<String, String> getProcessedInteractors() {
         return processedInteractors;
     }
 

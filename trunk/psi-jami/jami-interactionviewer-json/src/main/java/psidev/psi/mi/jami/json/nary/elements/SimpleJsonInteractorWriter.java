@@ -23,11 +23,11 @@ public class SimpleJsonInteractorWriter implements JsonElementWriter<Interactor>
     private Writer writer;
     private JsonElementWriter<CvTerm> cvWriter;
     private JsonElementWriter<Xref> identifierWriter;
-    private Map<String, Integer> processedInteractors;
+    private Map<String, String> processedInteractors;
     private IncrementalIdGenerator idGenerator;
     private JsonElementWriter<Organism> organismWriter;
 
-    public SimpleJsonInteractorWriter(Writer writer,  Map<String, Integer>processedInteractors) {
+    public SimpleJsonInteractorWriter(Writer writer,  Map<String, String>processedInteractors) {
         if (writer == null) {
             throw new IllegalArgumentException("The json interactor writer needs a non null Writer");
         }
@@ -38,7 +38,7 @@ public class SimpleJsonInteractorWriter implements JsonElementWriter<Interactor>
         this.processedInteractors = processedInteractors;
     }
 
-    public SimpleJsonInteractorWriter(Writer writer,  Map<String, Integer>processedInteractors, IncrementalIdGenerator idGenerator) {
+    public SimpleJsonInteractorWriter(Writer writer,  Map<String, String>processedInteractors, IncrementalIdGenerator idGenerator) {
         if (writer == null) {
             throw new IllegalArgumentException("The json interactor writer needs a non null Writer");
         }
@@ -55,18 +55,17 @@ public class SimpleJsonInteractorWriter implements JsonElementWriter<Interactor>
         String interactorKey = interactorIds[0]+"_"+interactorIds[1];
         // if the interactor has not yet been processed, we write the interactor
         if (!processedInteractors.containsKey(interactorKey)){
-            int id = getIdGenerator().nextId();
 
             // when the interactor is not the first one, we write an element separator
             if (!processedInteractors.isEmpty()){
                 MIJsonUtils.writeSeparator(writer);
             }
-            processedInteractors.put(interactorKey, id);
+            processedInteractors.put(interactorKey, interactorKey);
             MIJsonUtils.writeStartObject(writer);
             MIJsonUtils.writeProperty("object", "interactor", writer);
             // write accession
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeProperty("id", Integer.toString(id), writer);
+            MIJsonUtils.writeProperty("id", interactorKey, writer);
 
             // write sequence if possible
             if (object instanceof Polymer){
