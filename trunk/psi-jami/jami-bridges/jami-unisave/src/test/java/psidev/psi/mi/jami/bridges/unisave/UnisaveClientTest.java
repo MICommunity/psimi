@@ -32,7 +32,7 @@ public class UnisaveClientTest {
     @Test
     public void getVersions_2() throws Exception {
         UnisaveClient service = new UnisaveClient();
-        final List<Integer> versions = service.getVersions( "Q98753", false );
+        final List<Integer> versions = service.getVersions( "Q98753" );
         Assert.assertNotNull( versions );
     }
 
@@ -55,7 +55,7 @@ public class UnisaveClientTest {
     public void getLastSequenceReleased() throws Exception {
         UnisaveClient service = new UnisaveClient();
 
-        String sequence = service.getLastSequenceAtTheDate("Q98753", false, new Date(System.currentTimeMillis()));
+        String sequence = service.getLastSequenceAtTheDate("Q98753", new Date(System.currentTimeMillis()));
 
         Assert.assertNotNull( sequence );
         Assert.assertEquals("VPFLSKAVRCGPVIPFVIHHFNFRRVTTTKRRRNKYVLVPGYGWVLQDDYLVNSVKMTGE" +
@@ -78,7 +78,7 @@ public class UnisaveClientTest {
         UnisaveClient service = new UnisaveClient();
 
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        String sequence = service.getLastSequenceAtTheDate("P51875", false, format.parse("2007/09/17"));
+        String sequence = service.getLastSequenceAtTheDate("P51875", format.parse("2007/09/17"));
 
         Assert.assertNotNull( sequence );
         Assert.assertEquals("MGCTMSQEERAALERSRMIEKNLKEDGMQAAKDIKLLLLGAGESGKSTIVKQMKIIHESGFTAEDYKQYKPVVYSNTVQSLVAILRAMSNLGVSFGSADREVDA" +
@@ -96,7 +96,7 @@ public class UnisaveClientTest {
         UnisaveClient service = new UnisaveClient();
 
         try {
-            int sequenceVersion = service.getSequenceVersion(uniprotAc, false, sequence);
+            int sequenceVersion = service.getSequenceVersion(uniprotAc, sequence);
 
             Assert.assertEquals(2, sequenceVersion);
         } catch (BridgeFailedException e) {
@@ -111,7 +111,7 @@ public class UnisaveClientTest {
         UnisaveClient service = new UnisaveClient();
 
         try {
-            String sequenceFromUnisave = service.getSequenceFor(uniprotAc, false, 2);
+            String sequenceFromUnisave = service.getSequenceFor(uniprotAc, 2);
 
             Assert.assertEquals(sequence, sequenceFromUnisave);
         } catch (BridgeFailedException e) {
@@ -126,7 +126,7 @@ public class UnisaveClientTest {
         UnisaveClient service = new UnisaveClient();
 
         try {
-            int sequenceVersion = service.getSequenceVersion(uniprotAc, false, sequence);
+            int sequenceVersion = service.getSequenceVersion(uniprotAc, sequence);
 
             Assert.assertEquals(-1, sequenceVersion);
         } catch (BridgeFailedException e) {
@@ -139,7 +139,7 @@ public class UnisaveClientTest {
         UnisaveClient service = new UnisaveClient();
 
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        String sequence = service.getLastSequenceAtTheDate("P51875", false, format.parse("2006/09/01"));
+        String sequence = service.getLastSequenceAtTheDate("P51875", format.parse("2006/09/01"));
 
         Assert.assertNotNull( sequence );
         Assert.assertEquals("GCTMSQEERAALERSRMIEKNLKEDGMQAAKDIKLLLLGAGESGKSTIVKQMKIIHESGF" +
@@ -157,7 +157,7 @@ public class UnisaveClientTest {
         UnisaveClient service = new UnisaveClient();
 
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        Map<Integer, String> sequences = service.getAllSequencesBeforeDate("P51875", false, format.parse("2006/09/01"));
+        Map<Integer, String> sequences = service.getAllSequencesBeforeDate("P51875", format.parse("2006/09/01"));
 
         Assert.assertEquals(2, sequences.size());
 
@@ -169,7 +169,7 @@ public class UnisaveClientTest {
         // example of a sequence that doesn't have any update through its history
 
         UnisaveClient service = new UnisaveClient();
-        final List<SequenceVersion> updates = service.getAvailableSequenceUpdate( "P12345", false, "SSWWAHVEMGPPDPILGVTEAYKRDTNSKK" );
+        final List<SequenceVersion> updates = service.getAvailableSequenceUpdate( "P12345", "SSWWAHVEMGPPDPILGVTEAYKRDTNSKK" );
         Assert.assertNotNull( updates );
         Assert.assertEquals( 1, updates.size() );
         final SequenceVersion sv = updates.iterator().next();
@@ -177,71 +177,72 @@ public class UnisaveClientTest {
         Assert.assertNotNull( sv.getSequence() );
         Assert.assertEquals( "MALLHSARVLSGVASAFHPGLAAAASARASSWWAHVEMGPPDPILGVTEAYKRDTNSKKMNLGVGAYRDDNGKPYVLPSVRKAEAQIAAKGLDKEYLPIGGLAEFCRASAELALGENSEVVKSGRFVTVQTISGTGALRIGASFLQRFFKFSRDVFLPKPSWGNHTPIFRDAGMQLQSYRYYDPKTCGFDFTGALEDISKIPEQSVLLLHACAHNPTGVDPRPEQWKEIATVVKKRNLFAFFDMAYQGFASGDGDKDAWAVRHFIEQGINVCLCQSYAKNMGLYGERVGAFTVICKDADEAKRVESQLKILIRPMYSNPPIHGARIASTILTSPDLRKQWLQEVKGMADRIIGMRTQLVSNLKKEGSTHSWQHITDQIGMFCFTGLKPEQVERLTKEFSIYMTKDGRISVAGVTSGNVGYLAHAIHQVTK", sv.getSequence().getSequence() );
         Assert.assertEquals( "FT   TRANSIT       1     29       Mitochondrion.\n" +
+                "FT                                {ECO:0000269|PubMed:4030726}.\n" +
                 "FT   CHAIN        30    430       Aspartate aminotransferase,\n" +
                 "FT                                mitochondrial.\n" +
                 "FT                                /FTId=PRO_0000123886.\n" +
-                "FT   BINDING      65     65       Substrate; via amide nitrogen (By\n" +
-                "FT                                similarity).\n" +
-                "FT   BINDING     162    162       Substrate (By similarity).\n" +
-                "FT   BINDING     215    215       Substrate (By similarity).\n" +
-                "FT   BINDING     407    407       Substrate (By similarity).\n" +
-                "FT   MOD_RES      59     59       N6-acetyllysine (By similarity).\n" +
-                "FT   MOD_RES      73     73       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES      73     73       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES      82     82       N6-acetyllysine (By similarity).\n" +
-                "FT   MOD_RES      90     90       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES      90     90       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES      96     96       Nitrated tyrosine (By similarity).\n" +
-                "FT   MOD_RES     122    122       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     122    122       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     159    159       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     159    159       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     185    185       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     185    185       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     227    227       N6-succinyllysine (By similarity).\n" +
-                "FT   MOD_RES     234    234       N6-acetyllysine (By similarity).\n" +
-                "FT   MOD_RES     279    279       N6-(pyridoxal phosphate)lysine; alternate\n" +
-                "FT                                (By similarity).\n" +
-                "FT   MOD_RES     279    279       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     296    296       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     296    296       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     302    302       N6-acetyllysine (By similarity).\n" +
-                "FT   MOD_RES     309    309       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     309    309       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     338    338       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     338    338       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     345    345       N6-acetyllysine (By similarity).\n" +
-                "FT   MOD_RES     363    363       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     363    363       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     364    364       N6-acetyllysine (By similarity).\n" +
-                "FT   MOD_RES     387    387       N6-acetyllysine (By similarity).\n" +
-                "FT   MOD_RES     396    396       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     396    396       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     404    404       N6-acetyllysine; alternate (By\n" +
-                "FT                                similarity).\n" +
-                "FT   MOD_RES     404    404       N6-succinyllysine; alternate (By\n" +
-                "FT                                similarity).", sv.getSequence().getHeader() );
+                "FT   BINDING      65     65       Substrate; via amide nitrogen.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   BINDING     162    162       Substrate. {ECO:0000250}.\n" +
+                "FT   BINDING     215    215       Substrate. {ECO:0000250}.\n" +
+                "FT   BINDING     407    407       Substrate. {ECO:0000250}.\n" +
+                "FT   MOD_RES      59     59       N6-acetyllysine. {ECO:0000250}.\n" +
+                "FT   MOD_RES      73     73       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES      73     73       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES      82     82       N6-acetyllysine. {ECO:0000250}.\n" +
+                "FT   MOD_RES      90     90       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES      90     90       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES      96     96       Nitrated tyrosine. {ECO:0000250}.\n" +
+                "FT   MOD_RES     122    122       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     122    122       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     159    159       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     159    159       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     185    185       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     185    185       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     227    227       N6-succinyllysine. {ECO:0000250}.\n" +
+                "FT   MOD_RES     234    234       N6-acetyllysine. {ECO:0000250}.\n" +
+                "FT   MOD_RES     279    279       N6-(pyridoxal phosphate)lysine;\n" +
+                "FT                                alternate. {ECO:0000250}.\n" +
+                "FT   MOD_RES     279    279       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     296    296       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     296    296       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     302    302       N6-acetyllysine. {ECO:0000250}.\n" +
+                "FT   MOD_RES     309    309       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     309    309       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     338    338       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     338    338       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     345    345       N6-acetyllysine. {ECO:0000250}.\n" +
+                "FT   MOD_RES     363    363       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     363    363       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     364    364       N6-acetyllysine. {ECO:0000250}.\n" +
+                "FT   MOD_RES     387    387       N6-acetyllysine. {ECO:0000250}.\n" +
+                "FT   MOD_RES     396    396       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     396    396       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     404    404       N6-acetyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.\n" +
+                "FT   MOD_RES     404    404       N6-succinyllysine; alternate.\n" +
+                "FT                                {ECO:0000250}.", sv.getSequence().getHeader() );
         Assert.assertEquals( 2, sv.getVersion() );
     }
 
@@ -251,7 +252,7 @@ public class UnisaveClientTest {
         // example of a sequence that has multiple updates (1 and 2) through its history, we are searching with version 1
 
         UnisaveClient service = new UnisaveClient();
-        final List<SequenceVersion> updates = service.getAvailableSequenceUpdate( "Q98753", false, "XXX" );
+        final List<SequenceVersion> updates = service.getAvailableSequenceUpdate( "Q98753", "XXX" );
         Assert.assertNotNull( updates );
         Assert.assertEquals( 2, updates.size() );
         SequenceVersion sv;
@@ -261,7 +262,7 @@ public class UnisaveClientTest {
         Assert.assertNotNull( sv );
         Assert.assertNotNull( sv.getSequence() );
         Assert.assertEquals( "VPFLSKAVRCGPVIPFVIHHFNFRRVTTTKRRRNKYVLVPGYGWVLQDDYLVNSVKMTGENDLPPNQLPHDDDLLFTYAKILLYDYISYFPKFRHNNPDLLDHKTELELFPLKADSAARNKANFYARTLWNDTITDKSAFKPGTYNDTVAGLLLWQQCALMWSLPKSVINRTISGVCDALTNRTSLTLLKRISDWLKQLGLACSPIHRLFIELPTLLGRGAIPGDADKDIKHRLAFDPSITVDVPKEQLHLLIYRLLSRNLNITKVNSFEHHLEERLLWSKSGSHYYPDDKINELLPPQPTRKEFLDVVTTEYIKECKPQVFIRQSRKLEHGKERFIYNCDTVSYVYFDFILKLFETGWQDSEAILSPGDYTSERLHAKISSYKYKAMLDYTDFNSQHTIQSMRLIFETMKELLPPEATFALDWCIASFDNMQTSDGLKWMATLPSGHRATTFINTVLNWCYTQMVGLKFDSFMCAGDDVILMSQQPISLAPILTSHFKFNPSKQSTGTRGEFLRKHYSEAGVFAYPCRAIASLVSGNWLSQSLRENTPILVPIQNGIDRLRSRAGLLGVPWKLGLSELIEREAIPKEVGMALLNSHAAGPGLITRDYSSFTVTPKPPKLSSTLEYTATRYGLQDLSKHVPWKQLTTVESDKLSRQIKKISYRHCSQAKITYNCTYEVFKPRGLPTVLSGSSQPSLSMLWWQAMLKQAIQDDSTKKIDARMFAANACTSSVSGDAFLRANASMAGVLITSLITSSS", sv.getSequence().getSequence() );
-        Assert.assertEquals( "FT   NON_TER       1      1", sv.getSequence().getHeader() );
+        Assert.assertEquals( "FT   NON_TER       1      1       {ECO:0000313|EMBL:AAC55469.2}.", sv.getSequence().getHeader() );
         Assert.assertEquals( 2, sv.getVersion() );
 
         sv = updateIterator.next();
@@ -279,7 +280,7 @@ public class UnisaveClientTest {
         // example of a sequence that doesn't have any update through its history
 
         UnisaveClient service = new UnisaveClient();
-        final List<SequenceVersion> updates = service.getAvailableSequenceUpdate( "P12345", false, "SSWWAHVEMGPPDPILGVTEAYKRDTNSKK" );
+        final List<SequenceVersion> updates = service.getAvailableSequenceUpdate( "P12345", "SSWWAHVEMGPPDPILGVTEAYKRDTNSKK" );
         Assert.assertNotNull( updates );
         Assert.assertEquals( 1, updates.size() );
     }

@@ -16,11 +16,8 @@
 package psidev.psi.mi.jami.bridges.unisave;
 
 /**
- * TODO comment that class header
+ * Fasta sequence
  *
- * @author Samuel Kerrien (skerrien@ebi.ac.uk)
- * @version $Id: FastaSequence.java 11637 2008-06-21 20:14:13Z skerrien $
- * @since TODO specify the maven artifact version
  */
 public class FastaSequence {
     private String header;

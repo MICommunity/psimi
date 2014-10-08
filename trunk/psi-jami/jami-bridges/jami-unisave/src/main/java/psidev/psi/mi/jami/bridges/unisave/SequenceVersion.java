@@ -18,9 +18,6 @@ package psidev.psi.mi.jami.bridges.unisave;
 /**
  * Represent a sequence version: fasta + sequence version number.
  *
- * @author Samuel Kerrien (skerrien@ebi.ac.uk)
- * @version $Id$
- * @since 2.0.3
  */
 public class SequenceVersion {
     
