@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.simple.JSONArray;
@@ -33,26 +34,40 @@ public class UnisaveClient implements SequenceVersionFetcher{
     private static final Log log = LogFactory.getLog(UnisaveClient.class);
 
     private String unisaveUrlRestJson = "http://www.ebi.ac.uk/uniprot/unisave/rest";
-    private HttpClient httpClient = HttpClientBuilder.create().build();
+    private HttpClient httpClient;
+    private int connectionTimeOut = 20;
+    private int socketTimeout = 20;
 
     public UnisaveClient() {
 
     }
 
-    private Object getDataFromWebService(String query){
+    private Object getDataFromWebService(String query) throws BridgeFailedException{
         HttpGet request = new HttpGet(query);
         request.addHeader("accept", "application/json");
+        BufferedReader reader=null;
+        Object obj=null;
         try {
-            HttpResponse response = httpClient.execute(request);
+            HttpResponse response = getHttpClient().execute(request);
             if (response.getStatusLine().getStatusCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + response.getStatusLine().getStatusCode());
+                throw new BridgeFailedException("Failed to query unisave : HTTP error code : " + response.getStatusLine().getStatusCode());
             }
-            return JSONValue.parse(new BufferedReader(new InputStreamReader((response.getEntity().getContent()))));
+            reader = new BufferedReader(new InputStreamReader((response.getEntity().getContent())));
+            obj = JSONValue.parse(reader);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new BridgeFailedException("Failed to query unisave", e);
         }
-        return null;
+        finally {
+            if (reader != null){
+                try {
+                    reader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return obj;
     }
 
     private String buildQuery(Type type, String id, String version) throws BridgeFailedException {
@@ -117,7 +132,7 @@ public class UnisaveClient implements SequenceVersionFetcher{
         return null;
     }
 
-    public String getSequenceFor(String identifier, boolean isSecondary, int sequence_version) throws BridgeFailedException{
+    public String getSequenceFor(String identifier, int sequence_version) throws BridgeFailedException{
         String content = getContentForSequenceVersion(identifier, sequence_version);
         if (content != null) return getSequence(content);
         else return null;
@@ -127,13 +142,12 @@ public class UnisaveClient implements SequenceVersionFetcher{
      * Searches for all entry version given its identifier.
      *
      * @param identifier  the identifier of the entry we are interested in.
-     * @param isSecondary
      *
      * @return list of all versions of the given entry from the most recent to the oldest.
      *
      * @throws BridgeFailedException if the identifier cannot be found in UniSave.
      */
-    public List<Integer> getVersions( String identifier, boolean isSecondary ) throws BridgeFailedException {
+    public List<Integer> getVersions( String identifier ) throws BridgeFailedException {
         JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES_INFO, identifier, null));
         List<Integer> list = new ArrayList<Integer>();
         JSONObject jo = null;
@@ -143,12 +157,12 @@ public class UnisaveClient implements SequenceVersionFetcher{
         }
 
         if( list.isEmpty() ) {
-            throw new BridgeFailedException( "Failed to find any version for "+ (isSecondary?"secondary":"primary") +" identifier " + identifier );
+            throw new BridgeFailedException( "Failed to find any version for identifier " + identifier );
         }
         return list;
     }
 
-    public String getLastSequenceAtTheDate(String identifier, boolean isSecondary, Date date) throws BridgeFailedException {
+    public String getLastSequenceAtTheDate(String identifier, Date date) throws BridgeFailedException {
 
         if (date == null){
             throw new IllegalArgumentException("The date cannot be null.");
@@ -158,7 +172,6 @@ public class UnisaveClient implements SequenceVersionFetcher{
         JSONObject jo = null;
         DateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
         Date auxDate = null;
-        int version = -1;
         for(int i = 0; i < array.size(); ++i) {
             jo = (JSONObject) array.get(i);
             try {
@@ -168,7 +181,7 @@ public class UnisaveClient implements SequenceVersionFetcher{
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
-            };
+            }
         }
         return null;
     }
@@ -176,12 +189,11 @@ public class UnisaveClient implements SequenceVersionFetcher{
     /**
      * Get the map of sequences (and their sequence version in uniprot) existing in unisave before this date
      * @param identifier
-     * @param isSecondary
      * @param date
      * @return
      * @throws BridgeFailedException
      */
-    public Map<Integer, String> getAllSequencesBeforeDate(String identifier, boolean isSecondary, Date date) throws BridgeFailedException {
+    public Map<Integer, String> getAllSequencesBeforeDate(String identifier, Date date) throws BridgeFailedException {
 
         if (date == null){
             throw new IllegalArgumentException("The date cannot be null.");
@@ -226,16 +238,15 @@ public class UnisaveClient implements SequenceVersionFetcher{
      * Returns the sequence version of a sequence for a certain uniprot ac.
      * Returns -1 if the sequence cannot be found for this uniprot ac
      * @param identifier
-     * @param isSecondary
      * @param sequence
      * @return
      * @throws BridgeFailedException
      */
-    public int getSequenceVersion(String identifier, boolean isSecondary, String sequence) throws BridgeFailedException{
+    public int getSequenceVersion(String identifier, String sequence) throws BridgeFailedException{
         JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES, identifier, null));
 
         if ( log.isDebugEnabled() ) {
-            log.debug( "Collecting version(s) for entry by " + ( isSecondary ? "secondary" : "primary" ) + " ac: " + identifier );
+            log.debug( "Collecting version(s) for entry by ac: " + identifier );
             log.debug( "Found " + array.size() + " version(s)" );
         }
         JSONObject jo = null;
@@ -253,7 +264,6 @@ public class UnisaveClient implements SequenceVersionFetcher{
      * Collects all available sequence update fro mUniSave.
      *
      * @param identifier  identifier of the uniprot entry
-     * @param isSecondary is the identifier secondary ?
      * @param sequence    sequence for which we want the subsequent updates
      * @return a non null ordered list. If the given sequence is found in the entry history, this sequence at least is
      *         returned. If there were say, 2 updates since that protein sequence, the list would contain 3 versions.
@@ -263,18 +273,18 @@ public class UnisaveClient implements SequenceVersionFetcher{
      *
      * @throws BridgeFailedException if the identifier cannot be found in UniSave.
      */
-    public List<SequenceVersion> getAvailableSequenceUpdate( String identifier, boolean isSecondary, String sequence ) throws BridgeFailedException {
+    public List<SequenceVersion> getAvailableSequenceUpdate( String identifier, String sequence ) throws BridgeFailedException {
 
         LinkedList<SequenceVersion> sequenceUpdates = new LinkedList<SequenceVersion>();
 
         // 1. get all versions ordered from the most recent to the oldest
         if ( log.isDebugEnabled() ) {
-            log.debug( "Collecting version(s) for entry by " + ( isSecondary ? "secondary" : "primary" ) + " ac: " + identifier );
+            log.debug( "Collecting version(s) for entry by  ac: " + identifier );
         }
 
         JSONArray array = (JSONArray) getDataFromWebService(buildQuery(Type.ENTRIES, identifier, null));
         JSONObject jo = null;
-        int parameterSequenceVersion = getSequenceVersion(identifier, isSecondary, sequence);
+        int parameterSequenceVersion = getSequenceVersion(identifier, sequence);
         int currentSequenceVersion = -1;
         for(int i = 0 ; i < array.size() ; ++i){
             jo = (JSONObject) array.get(i);
@@ -305,22 +315,39 @@ public class UnisaveClient implements SequenceVersionFetcher{
     }
 
     public String fetchSequenceFromVersion(String id, int version) throws BridgeFailedException{
-        String sequence = getSequenceFor(id, false, version);
-        // the id was maybe not a primary id. Try with secondary = true
-        if (sequence == null){
-            sequence = getSequenceFor(id, true, version);
-        }
-        return sequence;
+        return getSequenceFor(id, version);
     }
 
     public int fetchVersionFromSequence(String id, String sequence) throws BridgeFailedException{
-        int version = getSequenceVersion(id, false, sequence);
+        return getSequenceVersion(id, sequence);
+    }
 
-        // the id was maybe not a primary id. Try with secondary = true
-        if (version == -1){
-            version = getSequenceVersion(id, true, sequence);
+    public int getSocketTimeout() {
+        return socketTimeout;
+    }
+
+    public void setSocketTimeout(int socketTimeout) {
+        this.socketTimeout = socketTimeout;
+    }
+
+    public int getConnectionTimeOut() {
+        return connectionTimeOut;
+    }
+
+    public void setConnectionTimeOut(int connectionTimeOut) {
+        this.connectionTimeOut = connectionTimeOut;
+    }
+
+    private HttpClient getHttpClient(){
+        if (this.httpClient == null){
+            RequestConfig.Builder requestBuilder = RequestConfig.custom()
+                    .setConnectTimeout(this.connectionTimeOut * 1000)
+                    .setConnectionRequestTimeout(this.socketTimeout * 1000);
+
+            this.httpClient = HttpClientBuilder.create().setDefaultRequestConfig(requestBuilder.build())
+                    .disableAutomaticRetries()
+                    .build();
         }
-
-        return version;
+        return this.httpClient;
     }
 }
