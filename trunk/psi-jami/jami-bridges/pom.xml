@@ -67,5 +67,6 @@
         <module>jami-europubmedcentral</module>
         <module>uniprot-mapping</module>
     <module>jami-unisave</module>
+    <module>jami-picr</module>
   </modules>
 </project>
