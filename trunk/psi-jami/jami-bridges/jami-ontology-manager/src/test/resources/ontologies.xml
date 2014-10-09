@@ -1,0 +1,22 @@
+<cvSourceList>
+    <cvSource source="file"
+              uri="classpath:psi-mi.obo"
+              format="OBO"
+              name="PSI-MI"
+              identifier="MI"
+              version="1.154"/>
+
+    <cvSource source="ols"
+              uri="classpath:psi-mod.obo"
+              format="OBO"
+              name="PSI-MOD"
+              identifier="MOD"
+              version="1.260"/>
+
+    <cvSource source="ols"
+              uri=""
+              format="OBO"
+              name="Evidence Ontology"
+              identifier="ECO"
+              version="1.260"/>
+</cvSourceList>
