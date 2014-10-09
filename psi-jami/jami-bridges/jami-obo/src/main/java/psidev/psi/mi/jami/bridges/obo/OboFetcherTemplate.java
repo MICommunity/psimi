@@ -5,8 +5,11 @@ import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.impl.DefaultCvTerm;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
+import uk.ac.ebi.ols.model.interfaces.Ontology;
+import uk.ac.ebi.ols.model.interfaces.Term;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -22,6 +25,7 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
     private Map<String, T> id2Term;
     private Map<String, T> name2Term;
     private CvTerm ontologyDatabase;
+    Collection<Term> rootTerms=Collections.EMPTY_LIST;
 
     public OboFetcherTemplate(CvTerm database, AbstractOboLoader<T> oboLoader, String filePath){
         if (oboLoader == null){
@@ -33,6 +37,13 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
         this.ontologyDatabase = database != null ? database : new DefaultCvTerm("unknown");
         initialiseLocalMaps();
         oboLoader.parseOboFile(new File(filePath), id2Term, name2Term);
+        Ontology ontology = null;
+        try {
+            ontology = oboLoader.getOntology();
+            this.rootTerms = ontology != null ? ontology.getRootTerms():Collections.EMPTY_LIST;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public OboFetcherTemplate(String databaseName, AbstractOboLoader<T> oboLoader, String filePath){
@@ -132,5 +143,9 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
     protected void initialiseLocalMaps(){
         this.id2Term = new HashMap<String, T>();
         this.name2Term = new HashMap<String, T>();
+    }
+
+    public Collection<Term> getRootTerms() {
+        return rootTerms;
     }
 }
