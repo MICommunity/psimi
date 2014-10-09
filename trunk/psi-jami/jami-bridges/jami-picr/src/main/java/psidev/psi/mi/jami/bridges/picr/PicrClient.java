@@ -6,13 +6,12 @@ import psidev.psi.mi.jami.bridges.picr.io.PicrRESTParser;
 import psidev.psi.mi.jami.bridges.picr.jaxb.GetUPIForAccessionResponse;
 import psidev.psi.mi.jami.bridges.picr.jaxb.GetUPIForAccessionReturn;
 import psidev.psi.mi.jami.bridges.picr.jaxb.IdenticalCrossReferences;
-import uk.ac.ebi.kraken.interfaces.uniparc.UniParcEntry;
-import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
-import uk.ac.ebi.kraken.uuw.services.remoting.*;
+
 import javax.xml.namespace.QName;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -61,8 +60,8 @@ public class PicrClient {
      * @return the swissprotIds if found, empty list otherwise
      * @throws BridgeFailedException : an exception if the given accession is null
      */
-    public ArrayList<String> getSwissprotIdsForAccession(String accession, String taxonId) throws BridgeFailedException{
-        ArrayList<String> swissprotIdList = getIdsForAccession(accession, taxonId, PicrSearchDatabase.SWISSPROT_VARSPLIC, PicrSearchDatabase.SWISSPROT);
+    public Collection<String> getSwissprotIdsForAccession(String accession, String taxonId) throws BridgeFailedException{
+        Collection<String> swissprotIdList = getIdsForAccession(accession, taxonId, PicrSearchDatabase.SWISSPROT_VARSPLIC, PicrSearchDatabase.SWISSPROT);
 
         return swissprotIdList;
     }
@@ -74,8 +73,8 @@ public class PicrClient {
      * @return the tremblId if found, empty list otherwise
      * @throws BridgeFailedException : an exception if the given accession is null
      */
-    public ArrayList<String> getTremblIdsForAccession(String accession, String taxonId) throws BridgeFailedException{
-        ArrayList<String> tremblIdList = getIdsForAccession(accession, taxonId, PicrSearchDatabase.TREMBL_VARSPLIC, PicrSearchDatabase.TREMBL);
+    public Collection<String> getTremblIdsForAccession(String accession, String taxonId) throws BridgeFailedException{
+        Collection<String> tremblIdList = getIdsForAccession(accession, taxonId, PicrSearchDatabase.TREMBL_VARSPLIC, PicrSearchDatabase.TREMBL);
 
         return tremblIdList;
     }
@@ -87,8 +86,8 @@ public class PicrClient {
      * @return the list of uniparc Id or empty list if the accession doesn't match any Uniparc sequence
      * @throws BridgeFailedException : an exception if the given accession is null
      */
-    public List<UPEntry> getUniparcEntries(String accession, String taxonId) throws BridgeFailedException{
-        List<UPEntry> upEntries = getUPEntriesForAccession(accession, taxonId, PicrSearchDatabase.SWISSPROT_VARSPLIC, PicrSearchDatabase.SWISSPROT, PicrSearchDatabase.TREMBL_VARSPLIC, PicrSearchDatabase.TREMBL);
+    public Collection<UPEntry> getUniparcEntries(String accession, String taxonId) throws BridgeFailedException{
+        Collection<UPEntry> upEntries = getUPEntriesForAccession(accession, taxonId, PicrSearchDatabase.SWISSPROT_VARSPLIC, PicrSearchDatabase.SWISSPROT, PicrSearchDatabase.TREMBL_VARSPLIC, PicrSearchDatabase.TREMBL);
 
         return upEntries;
     }
@@ -101,9 +100,9 @@ public class PicrClient {
      * @return the cross reference IDs if found, empty list otherwise
      * @throws BridgeFailedException : an exception if the given accession is null
      */
-    private ArrayList<String> getIdsForAccession(String accession, String taxonId, PicrSearchDatabase ... databases) throws BridgeFailedException{
+    private Collection<String> getIdsForAccession(String accession, String taxonId, PicrSearchDatabase ... databases) throws BridgeFailedException{
         List<UPEntry> upEntries = getUPEntriesForAccession(accession, taxonId, databases);
-        ArrayList<String> idList = new ArrayList<String>();
+        Collection<String> idList = new ArrayList<String>();
         for (UPEntry entry : upEntries){
             List<CrossReference> listOfReferences = entry.getIdenticalCrossReferences();
             if (!listOfReferences.isEmpty()) {
@@ -256,46 +255,6 @@ public class PicrClient {
         }
 
         return entry;
-    }
-
-    /**
-     * Get the UniprotEntry with its accession number
-     * @param accession : the Uniprot identifier of the protein we want to retrieve
-     * @return A list of UniprotEntry instances for this identifier
-     */
-    public List<UniProtEntry> getUniprotEntryForAccession(String accession) {
-
-        Query query = UniProtQueryBuilder.buildExactMatchIdentifierQuery(accession);
-        UniProtQueryService uniProtQueryService = UniProtJAPI.factory.getUniProtQueryService();
-
-        List<UniProtEntry> uniProtEntries = new ArrayList<UniProtEntry>();
-
-        EntryIterator<UniProtEntry> protEntryIterator = uniProtQueryService.getEntryIterator(query);
-
-        for (UniProtEntry uniProtEntry : protEntryIterator) {
-            uniProtEntries.add(uniProtEntry);
-        }
-        return uniProtEntries;
-    }
-
-    /**
-     *  Get the UniparcEntry with an accession number
-     * @param accession : the identifier of the protein we want to retrieve
-     * @return a list of UniparcEntry instances for this accession
-     */
-    public List<UniParcEntry> getUniparcEntryForAccession(String accession) {
-
-        Query query = UniParcQueryBuilder.buildFullTextSearch( accession );
-        UniParcQueryService uniParcQueryService = UniProtJAPI.factory.getUniParcQueryService();
-
-        List<UniParcEntry> uniParcEntries = new ArrayList<UniParcEntry>();
-
-        EntryIterator<UniParcEntry> protEntryIterator = uniParcQueryService.getEntryIterator(query);
-
-        for (UniParcEntry uniParcEntry : protEntryIterator) {
-            uniParcEntries.add(uniParcEntry);
-        }
-        return uniParcEntries;
     }
 
     /**
