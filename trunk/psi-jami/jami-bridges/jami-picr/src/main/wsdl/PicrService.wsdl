@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:impl="http://www.ebi.ac.uk/picr/AccessionMappingService"
+                  xmlns:tns1="http://model.picr.ebi.ac.uk" xmlns:apachesoap="http://xml.apache.org/xml-soap"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsdlsoap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="http://www.ebi.ac.uk/picr/AccessionMappingService">
+    <wsdl:types>
+
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+                targetNamespace="http://www.ebi.ac.uk/picr/AccessionMappingService">
+            <import namespace="http://model.picr.ebi.ac.uk"></import>
+
+            <element name="getUPIForSequence">
+                <complexType>
+                    <sequence>
+                        <element name="sequence" type="xsd:string"></element>
+                        <element maxOccurs="unbounded" name="searchDatabases" type="xsd:string"></element>
+                        <element name="taxonId" type="xsd:string"></element>
+                        <element name="onlyActive" type="xsd:boolean"></element>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="getUPIForSequenceResponse">
+                <complexType>
+                    <sequence>
+                        <element name="getUPIForSequenceReturn" type="tns1:UPEntry"></element>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element name="getUPIForAccession">
+                <complexType>
+                    <sequence>
+                        <element name="accession" type="xsd:string"></element>
+                        <element name="ac_version" type="xsd:string"></element>
+                        <element maxOccurs="unbounded" name="searchDatabases" type="xsd:string"></element>
+                        <element name="taxonId" type="xsd:string"></element>
+                        <element name="onlyActive" type="xsd:boolean"></element>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="getUPIForAccessionResponse">
+                <complexType>
+                    <sequence>
+                        <element maxOccurs="unbounded" name="getUPIForAccessionReturn" type="tns1:UPEntry"></element>
+                    </sequence>
+                </complexType>
+            </element>
+
+            <element name="getMappedDatabaseNames">
+                <complexType>
+                    <sequence>
+                    </sequence>
+                </complexType>
+            </element>
+            <element name="getMappedDatabaseNamesResponse">
+                <complexType>
+                    <sequence>
+                        <element maxOccurs="unbounded" name="mappedDatabases" type="xsd:string"></element>
+                    </sequence>
+                </complexType>
+            </element>
+
+        </schema>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+                targetNamespace="http://model.picr.ebi.ac.uk">
+
+            <complexType name="CrossReference">
+                <sequence>
+                    <element name="accession" nillable="true" type="xsd:string"></element>
+                    <element name="accessionVersion" nillable="true" type="xsd:string"></element>
+                    <element name="databaseDescription" nillable="true" type="xsd:string"></element>
+                    <element name="databaseName" nillable="true" type="xsd:string"></element>
+                    <element name="dateAdded" nillable="true" type="xsd:dateTime"></element>
+                    <element name="dateDeleted" nillable="true" type="xsd:dateTime"></element>
+                    <element name="deleted" type="xsd:boolean"></element>
+                    <element name="gi" nillable="true" type="xsd:string"></element>
+                    <element name="taxonId" nillable="true" type="xsd:string"></element>
+                </sequence>
+            </complexType>
+
+            <complexType name="UPEntry">
+                <sequence>
+                    <element name="CRC64" nillable="true" type="xsd:string"></element>
+                    <element name="UPI" nillable="true" type="xsd:string"></element>
+                    <element name="identicalCrossReferences" nillable="true" maxOccurs="unbounded" minOccurs="0"
+                             type="tns1:CrossReference"></element>
+                    <element name="logicalCrossReferences" nillable="true" maxOccurs="unbounded" minOccurs="0"
+                             type="tns1:CrossReference"></element>
+                    <element name="sequence" nillable="true" type="xsd:string"></element>
+                    <element name="timestamp" nillable="true" type="xsd:dateTime"></element>
+                </sequence>
+            </complexType>
+
+        </schema>
+    </wsdl:types>
+
+    <wsdl:message name="getUPIForAccessionRequest">
+        <wsdl:part name="parameters" element="impl:getUPIForAccession"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getUPIForAccessionResponse">
+        <wsdl:part name="parameters" element="impl:getUPIForAccessionResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getUPIForSequenceRequest">
+        <wsdl:part name="parameters" element="impl:getUPIForSequence"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getUPIForSequenceResponse">
+        <wsdl:part name="parameters" element="impl:getUPIForSequenceResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getMappedDatabaseNamesRequest">
+        <wsdl:part name="parameters" element="impl:getMappedDatabaseNames"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getMappedDatabaseNamesResponse">
+        <wsdl:part name="parameters" element="impl:getMappedDatabaseNamesResponse"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:portType name="AccessionMapperInterface">
+        <wsdl:operation name="getUPIForSequence">
+            <wsdl:input name="getUPIForSequenceRequest" message="impl:getUPIForSequenceRequest"></wsdl:input>
+            <wsdl:output name="getUPIForSequenceResponse" message="impl:getUPIForSequenceResponse"></wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getUPIForAccession">
+            <wsdl:input name="getUPIForAccessionRequest" message="impl:getUPIForAccessionRequest"></wsdl:input>
+            <wsdl:output name="getUPIForAccessionResponse" message="impl:getUPIForAccessionResponse"></wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getMappedDatabaseNames">
+            <wsdl:input name="getMappedDatabaseNamesRequest" message="impl:getMappedDatabaseNamesRequest"></wsdl:input>
+            <wsdl:output name="getMappedDatabaseNamesResponse"
+                         message="impl:getMappedDatabaseNamesResponse"></wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+    <wsdl:binding name="AccessionMapperBinding" type="impl:AccessionMapperInterface">
+
+        <wsdlsoap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"></wsdlsoap:binding>
+
+        <wsdl:operation name="getUPIForSequence">
+            <wsdlsoap:operation soapAction="getUPIForSequence"></wsdlsoap:operation>
+            <wsdl:input name="getUPIForSequenceRequest">
+                <wsdlsoap:body use="literal"></wsdlsoap:body>
+            </wsdl:input>
+            <wsdl:output name="getUPIForSequenceResponse">
+                <wsdlsoap:body use="literal"></wsdlsoap:body>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getUPIForAccession">
+            <wsdlsoap:operation soapAction="getUPIForAccession"></wsdlsoap:operation>
+            <wsdl:input name="getUPIForAccessionRequest">
+                <wsdlsoap:body use="literal"></wsdlsoap:body>
+            </wsdl:input>
+            <wsdl:output name="getUPIForAccessionResponse">
+                <wsdlsoap:body use="literal"></wsdlsoap:body>
+            </wsdl:output>
+        </wsdl:operation>
+
+        <wsdl:operation name="getMappedDatabaseNames">
+            <wsdlsoap:operation soapAction="getMappedDatabaseNames"></wsdlsoap:operation>
+            <wsdl:input name="getMappedDatabaseNamesRequest">
+                <wsdlsoap:body use="literal"></wsdlsoap:body>
+            </wsdl:input>
+            <wsdl:output name="getMappedDatabaseNamesResponse">
+                <wsdlsoap:body use="literal"></wsdlsoap:body>
+            </wsdl:output>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+    <wsdl:service name="AccessionMapperService">
+        <wsdl:port name="AccessionMapperPort" binding="impl:AccessionMapperBinding">
+            <wsdlsoap:address location="http://www.ebi.ac.uk:80/Tools/picr/service"></wsdlsoap:address>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
