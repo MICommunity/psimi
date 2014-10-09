@@ -1,0 +1,378 @@
+format-version: 1.2
+date: 11:07:2011 12:41
+saved-by: orchard
+auto-generated-by: OBO-Edit 2.0-rc1
+subsetdef: Drugable "Drugable Genome Project"
+subsetdef: PSI-MI slim "Subset of PSI-MI"
+subsetdef: PSI-MOD slim "subset of protein modifications"
+synonymtypedef: DeltaMass-label "Label from MS DeltaMass" EXACT
+synonymtypedef: PSI-MI-alternate "Alternate label curated by PSI-MI" EXACT
+synonymtypedef: PSI-MI-short "Unique short label curated by PSI-MI" EXACT
+synonymtypedef: PSI-MOD-alternate "Alternate label curated by PSI-MOD" EXACT
+synonymtypedef: PSI-MOD-short "Unique short label curated by PSI-MOD" EXACT
+synonymtypedef: PSI-MS-label "Agreed label from MS community" RELATED
+synonymtypedef: RESID-alternate "Alternate name from RESID" EXACT
+synonymtypedef: RESID-misnomer "Misnomer label from RESID" RELATED
+synonymtypedef: RESID-name "Name from RESID" EXACT
+synonymtypedef: RESID-systematic "Systematic name from RESID" EXACT
+synonymtypedef: UniMod-alternate "Alternate name from UniMod" RELATED
+synonymtypedef: UniMod-description "Description (full_name) from UniMod" RELATED
+synonymtypedef: UniMod-interim "Interim label from UniMod" RELATED
+synonymtypedef: UniMod-label "Label (title) from UniMod" RELATED
+synonymtypedef: UniProt-feature "Protein feature description from UniProtKB" EXACT
+default-namespace: file:D:/luisa/mergeMIsubsets/MI_MOD_MAP_final.obo
+remark: Notes:
+remark: Each of the top level terms in this file is the root term of an independent controlled vocabulary
+remark: mapping an element of the PSI Molecular Interaction XML schema.
+remark: The correct use of these vocabularies in the PSI Molecular Interaction XML schema is
+remark: formalized in a mapping file available at http://www.psidev.info/files/validator/xml/MI-CVMapping.xml.
+remark: The PSI MI schema defines short labels for controlled vocabulary terms
+remark: short labels are reported as PSI-MI-short synonyms that are created when a term is more than 20 characteres long.
+remark: The last accession number used in this file is stored in a separate file,
+remark: psi-mi.lastac. It MUST be updated when this file is updated.
+remark: The maintenance of this file is ensured by Sandra Orchard orchard@ebi.ac.uk and Luisa Montecchi Palazzi luisa@ebi.ac.uk
+remark: coverage: This file collect controlled vocabularies describing different aspects of molecular interactions.
+remark: publisher: This file is published by the PSI MI working group see http://psidev.info/MI
+remark: CVversion: 2.5.5
+
+[Term]
+id: MI:0000
+name: molecular interaction
+namespace: PSI-MI
+def: "Controlled vocabularies originally created for protein protein interactions, extended to other molecules interactions." [PMID:14755292]
+subset: Drugable
+subset: PSI-MI slim
+synonym: "mi" EXACT PSI-MI-short []
+
+[Term]
+id: MI:0001
+name: interaction detection method
+namespace: PSI-MI
+def: "Method to determine the interaction." [PMID:14755292]
+subset: Drugable
+subset: PSI-MI slim
+synonym: "interaction detect" EXACT PSI-MI-short []
+relationship: part_of MI:0000 ! molecular interaction
+
+[Term]
+id: MI:0045
+name: experimental interaction detection
+namespace: PSI-MI
+def: "Methods based on laboratory experiments to determine an interaction." [PMID:14755292]
+subset: PSI-MI slim
+synonym: "experimental interac" EXACT PSI-MI-short []
+is_a: MI:0001 ! interaction detection method
+
+[Term]
+id: MI:0401
+name: biochemical
+namespace: PSI-MI
+def: "The application of chemical principles and methods to biological experiments to demonstrate an interaction." [PMID:14755292]
+subset: PSI-MI slim
+is_a: MI:0045 ! experimental interaction detection
+
+[Term]
+id: MI:0400
+name: affinity technology
+namespace: PSI-MI
+def: "Techniques which depend upon the strength of the interaction between two entities." [PMID:14755292]
+subset: PSI-MI slim
+synonym: "affinity techniques" EXACT PSI-MI-short []
+is_a: MI:0401 ! biochemical
+
+[Term]
+id: MI:0034
+name: display technology
+namespace: PSI-MI
+def: "All the methods that permit the physical linking of a protein/peptide to its coding sequence. As a consequence affinity purification of the displayed peptide results in the genetic enrichment of its coding sequence. By these technologies genes encoding a peptide with desired binding properties can be selected over an excess of up to 1012 unrelated molecules." [PMID:14755292]
+subset: PSI-MI slim
+is_a: MI:0400 ! affinity technology
+
+[Term]
+id: MI:0084
+name: phage display
+namespace: PSI-MI
+def: "Peptide sequences or entire proteins can be displayed on phage capsids by fusion to coat proteins to generate a library of fusion phages each displaying a different peptide. Such a library can then be exploited to identify specific phages that display peptides that bind to any given bait molecule for instance an antibody. The selection is performed by a series of cycles of affinity purification known as panning. The bait protein, immobilized on a solid support (plastic, agarose, sepharose, magnetic beads and others) is soaked in the phage mixture and that phage that remains attached to the bait is amplified and carried through a further affinity purification step. Each cycle results in an approximately 1,000-fold enrichment of specific phage and after a few selection rounds (2-4), DNA sequencing of the tight-binding phage reveals only a small number of sequences. Phage display panning experiments can be carried out either on libraries of peptides of random amino acid sequence or on libraries of displaying natural peptides obtained by inserting cDNA fragments into the phage vector (cDNA libraries). Libraries have been assembled on several different phages (Fd, Lambda or T7)." [PMID:10975452, PMID:7708014]
+subset: PSI-MI slim
+is_a: MI:0034 ! display technology
+
+id: MI:0090
+name: protein complementation assay
+namespace: PSI-MI
+def: "In the protein-fragment complementation assay, the proteins of interest (\"Bait\" and \"Prey\") are covalently linked at the genetic level to incomplete fragments of a third protein (known as the \"reporter\") and are expressed in vivo, Interaction between the \"bait\" and the \"prey\" proteins brings the fragments of the \"reporter\" protein in close enough proximity to allow them to reform and become the functional reporter protein. Typically enzymes which confer resistance to antibiotics, such as Dihydrofolate reductase or Beta-lactamase, or proteins that give colorimetric or fluorescent signals are used. The Bait protein is generally the protein under study and the methods are readily adaptable to highthroughput mode." [PMID:11495741]
+subset: PSI-MI slim
+synonym: "complementation" EXACT PSI-MI-short []
+synonym: "PCA" EXACT PSI-MI-alternate []
+is_a: MI:0045 ! experimental interaction detection
+
+[Term]
+id: MI:0232
+name: transcriptional complementation assay
+namespace: PSI-MI
+def: "Protein complementation assay performed by dissecting a transcription factor activity (DNA binding domain and transcription activation domain) its restoration through the two hybrid proteins interaction that lead to a reporter gene expression." [PMID:14755292]
+subset: PSI-MI slim
+synonym: "transcription compl" EXACT PSI-MI-short []
+is_a: MI:0090 ! protein complementation assay
+
+[Term]
+id: MI:0018
+name: two hybrid
+namespace: PSI-MI
+def: "The classical two-hybrid system is a method that uses transcriptional activity as a measure of protein-protein interaction. It relies on the modular nature of many site-specific transcriptional activators (GAL 4) , which consist of a DNA-binding domain and a transcriptional activation domain. The DNA-binding domain serves to target the activator to the specific genes that will be expressed, and the activation domain contacts other proteins of the transcriptional machinery to enable transcription to occur. The two-hybrid system is based on the observation that the two domains of the activator need to be non-covalently brought together by the interaction of any two proteins. The application of this system requires the expression of two hybrid. Generally this assay is performed in yeast cell, but it can also be carried out in other organism. The bait protein is fused to the DNA binding molecule, the prey to the transcriptional activator." [PMID:10967325, PMID:12634794, PMID:1946372]
+subset: PSI-MI slim
+synonym: "2 hybrid" EXACT PSI-MI-short []
+synonym: "2-hybrid" EXACT PSI-MI-alternate []
+synonym: "2H" EXACT PSI-MI-alternate []
+synonym: "2h" EXACT PSI-MI-alternate []
+synonym: "classical two hybrid" EXACT PSI-MI-alternate []
+synonym: "Gal4 transcription regeneration" EXACT PSI-MI-alternate []
+synonym: "two-hybrid" EXACT PSI-MI-alternate []
+synonym: "Y2H" EXACT []
+synonym: "yeast two hybrid" EXACT PSI-MI-alternate []
+is_a: MI:0232 ! transcriptional complementation assay
+
+[Term]
+id: MI:0108
+name: t7 phage display
+namespace: PSI-MI
+def: "T7 is a double stranded DNA bacteriophage with a thin-walled icosahedral capsid, ~550 Angstrom in diameter, which is decorated by 415 copies of the capsid protein, the product of gene 10. gp10 can tolerate insertions at the carboxyterminus without loosing its ability to be inserted into functional phage capsids. Both low density and high density display (albeit only with short peptides) can be achieved." [PMID:14755292]
+comment: Reference not index in medline: Rosenberg, A, Griffin, K, Studier, WS, McCormick, M, Berg, J, Novy, R, Mierendorf, R inNovations, 1996, 6, 1.
+subset: PSI-MI slim
+synonym: "t7 phage" EXACT PSI-MI-short []
+is_a: MI:0084 ! phage display
+
+[Term]
+id: MI:0444
+name: database citation
+namespace: PSI-MI
+def: "Database citation list names of databases commonly used to cross reference interaction data." [PMID:14755292]
+subset: Drugable
+subset: PSI-MI slim
+relationship: part_of MI:0000 ! molecular interaction
+
+[Term]
+id: MI:0445
+name: literature database
+namespace: PSI-MI
+def: "Databases acting as a source of literature information." [PMID:14755292]
+subset: Drugable
+subset: PSI-MI slim
+synonym: "experiment xref" EXACT PSI-MI-short []
+is_a: MI:0444 ! database citation
+
+[Term]
+id: MI:0446
+name: pubmed
+namespace: PSI-MI
+def: "PubMed is designed to provide access to citations from biomedical literature.\nhttp://www.ncbi.nlm.nih.gov/entrez/query.fcgi" [PMID:14755292]
+subset: Drugable
+subset: PSI-MI slim
+xref: id-validation-regexp:\"[0-9\]+\"
+xref: search-url: "http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?cmd=Retrieve&db=PubMed&list_uids=${ac}&dopt=Abstract"
+is_a: MI:0445 ! literature database
+
+[Term]
+id: MI:0013
+name: biophysical
+namespace: PSI-MI
+def: "The application of physical principles and methods to biological experiments." [PMID:14755292]
+subset: PSI-MI slim
+is_a: MI:0045 ! experimental interaction detection
+
+[Term]
+id: MI:0051
+name: fluorescence technology
+namespace: PSI-MI
+def: "Techniques based upon the measurement of the emission of one or more photons by a molecule activated by the absorption of a quantum of electro-magnetic radiation. Typically the emission, which is characterised by a wavelength that is longer than the one of excitatory radiation, occurs within 10-8 seconds." [PMID:14755292]
+subset: PSI-MI slim
+synonym: "fluorescence" EXACT PSI-MI-short []
+is_a: MI:0013 ! biophysical
+
+[Term]
+id: MI:0012
+name: bioluminescence resonance energy transfer
+namespace: PSI-MI
+def: "In this variation of the FRET assay the donor fluorophore is replaced by a luciferase (typically Renilla luciferase). In the presence of its substrate, the luciferase catalyses a bioluminescent reaction that excites the acceptor fluorophore through a resonance energy transfer mechanism. As with FRET the energy transfer occurs only if the protein fused to the luciferase and the one fused to the acceptor fluorophore are in close proximity (10-100 Angstrom)." [PMID:9874787, PMID for application instance:10725388]
+subset: PSI-MI slim
+synonym: "BRET" EXACT PSI-MI-alternate []
+synonym: "bret" EXACT PSI-MI-short []
+synonym: "LRET" EXACT PSI-MI-alternate []
+is_a: MI:0051 ! fluorescence technology
+
+[Term]
+id: MI:0190
+name: interaction type
+namespace: PSI-MI
+def: "Connection between molecule." [PMID:14755292]
+subset: PSI-MI slim
+relationship: part_of MI:0000 ! molecular interaction
+
+[Term]
+id: MI:0914
+name: association
+namespace: PSI-MI
+def: "Molecules that are experimentally shown to be associated potentially by sharing just one interactor. Often associated molecules are co-purified by a pull-down or coimmunoprecipitation and share the same bait molecule." [PMID:14755292]
+subset: PSI-MI slim
+is_a: MI:0190 ! interaction type
+
+[Term]
+id: MI:0915
+name: physical association
+namespace: PSI-MI
+def: "Molecules that are experimentally shown to belong to the same functional or structural complex." [PMID:14755292]
+subset: PSI-MI slim
+is_a: MI:0914 ! association
+
+[Term]
+id: MI:0407
+name: direct interaction
+namespace: PSI-MI
+def: "Interaction that is proven to involve only its interactors." [PMID:14755292]
+subset: PSI-MI slim
+is_a: MI:0915 ! physical association
+
+[Term]
+id: MI:0414
+name: enzymatic reaction
+namespace: PSI-MI
+def: "terms aiming to represent biochemical reactions referring to their resulting product modifications." [PMID:14755292]
+subset: PSI-MI slim
+synonym: "Biochemical reaction" EXACT PSI-MI-alternate []
+is_a: MI:0407 ! direct interaction
+
+[Term]
+id: MI:0192
+name: acetylation reaction
+namespace: PSI-MI
+def: "Reaction, that can affect K,C,A,D,E,Q,G,I,K,M,P,S,T,Y,V residues." [GO:0006473, PMID:14755292, RESID:AA0041, RESID:AA0042, RESID:AA0043, RESID:AA0044, RESID:AA0045, RESID:AA0046, RESID:AA0047, RESID:AA0048, RESID:AA0049, RESID:AA0050, RESID:AA0051, RESID:AA0052, RESID:AA0053, RESID:AA0054, RESID:AA0055, RESID:AA0056]
+subset: PSI-MI slim
+synonym: "acetylation" EXACT PSI-MI-short []
+is_a: MI:0414 ! enzymatic reaction
+
+[Term]
+id: MI:0189
+name: ubiquitinated lysine
+namespace: PSI-MI
+def: "Residue modification due to a cross-link between a lysine and a glycine from the ubiquitine protein.\nOBSOLETE remap to MOD:00134." [PMID:11125103, RESID:AA0125]
+synonym: "[K:ub]" EXACT PSI-MI-alternate []
+synonym: "KUB" EXACT PSI-MI-alternate []
+synonym: "N6-glycyl-L-lysine" EXACT PSI-MI-alternate []
+synonym: "N6-glycyllysine" EXACT PSI-MI-alternate []
+is_obsolete: true
+
+[Term]
+id: MI:0313
+name: interactor type
+namespace: PSI-MI
+def: "Molecular species involved in the interaction." [PMID:14755292]
+subset: Drugable
+subset: PSI-MI slim
+synonym: "participant type" EXACT PSI-MI-alternate []
+relationship: part_of MI:0000 ! molecular interaction
+
+[Term]
+id: MI:0383
+name: biopolymer
+namespace: PSI-MI
+def: "Molecule consisting of a specific sequence of amino acidic or nucleotidic monomers strung together through chemical bonds." [PMID:14577292]
+subset: PSI-MI slim
+is_a: MI:0313 ! interactor type
+
+[Term]
+id: MI:0318
+name: nucleic acid
+namespace: PSI-MI
+def: "Linear polymers of nucleotides, linked by 3',5' phosphodiester linkages." [PMID:14755292, SO:0000348]
+subset: PSI-MI slim
+is_a: MI:0383 ! biopolymer
+
+[Term]
+id: MI:0309
+name: genomic tagging
+namespace: PSI-MI
+def: "A cassette coding for a protein tag is inserted by homologous recombination onto the genomic copy of an open reading frame. The advantage of this delivery method is that the resulting engineered protein is expressed under its natural promoter control.\nOBSOLETE redundant term. Map to feature type : tag (MI:0507)." [PMID:14755292]
+subset: PSI-MI slim
+synonym: "genetic tag insertion" EXACT PSI-MI-alternate []
+is_obsolete: true
+
+[Term]
+id: MI:0409
+name: dna footprinting
+namespace: PSI-MI
+def: "Experimental method used to identify the region of a nucleic acid involved in an interaction with a protein. One sample of a radiolabeled nucleic acid of known sequence is submitted to partial digestion. A second sample is incubated with its interacting partner and then is submitted to the same partial digestion. The two samples are then analyzed in parallel by electrophoresis on a denaturing acrylamide gel. After autoradiography the identification of the bands that correspond to fragments missing from the lane loaded with the second sample reveals the region of the nucleic acid that is protected from nuclease digestion upon binding.\nOBSOLETE because redundant with MI:0417 'footprinting' combined with interactor type MI:0319 'DNA' replace by:MI:0417" [PMID:14755292]
+subset: PSI-MI slim
+is_obsolete: true
+
+[Term]
+id: MI:0021
+name: colocalization by fluorescent probes cloning
+namespace: PSI-MI
+def: "Two proteins can be localised to cell compartments, in the same experiment, if they are expressed as chimeric proteins fused to distinct proteins fluorescing at different wavelengths (Green Fluorescent Protein and Red Fluorescent Protein for example). Using a confocal microscope the two proteins can be visualized in living cells and it can be determined whether they have the same subcellular location. Fluorescence microscopy of cells expressing a GFP fusion protein can also demonstrate dynamic processes such as its translocation from one subcellular compartment to another.\nOBSOLETE: use imaging technique (MI:0428) and specific probe as feature of each interacting protein." [PMID:14755292]
+subset: PSI-MI slim
+synonym: "coloc fluoresc probe" EXACT PSI-MI-short []
+is_obsolete: true
+
+[Term]
+id: MI:0650
+name: millimolar
+namespace: PSI-MI
+def: "10E-3 moles per liter of solution.\nOBSOLETE: term redundant with the schema exponent attribute of the parameter." [PMID:14755292]
+subset: PSI-MI slim
+synonym: "mM" EXACT PSI-MI-alternate []
+is_obsolete: true
+
+[Term]
+id: MI:0116
+name: feature type
+namespace: PSI-MI
+def: "Property of a subsequence that may interfere with the binding of a molecule." [PMID:14755292]
+subset: PSI-MI slim
+relationship: part_of MI:0000 ! molecular interaction
+
+[Term]
+id: MI:0252
+name: biological feature
+namespace: PSI-MI
+def: "Property of a subsequence that may be involved with or interfere with the binding of a molecule and are supported by experimental evidences." [PMID:14755292]
+subset: PSI-MI slim
+is_a: MI:0116 ! feature type
+
+[Term]
+id: MOD:00000
+name: protein modification
+namespace: PSI-MOD
+def: "Covalent modification of, or a change resulting in an alteration of the measured molecular mass of, a peptide or protein amino acid residue." [PubMed:18688235]
+subset: PSI-MOD slim
+synonym: "ModRes" EXACT PSI-MOD-short []
+is_a: MI:0252 ! biological feature
+
+[Typedef]
+id: contains
+name: contains
+namespace: PSI-MOD
+def: "'Entity A' contains 'Entity B' implies that 'Entity B' is a part of the structure of 'Entity A'." [PubMed:18688235]
+comment: The inverse relationship to "part of".
+is_transitive: true
+
+[Typedef]
+id: derives_from
+name: derives from
+namespace: PSI-MOD
+def: "'Entity A' derives_from 'Entity B' implies that 'Entity A' is chemically derived from 'Entity B'." [PubMed:18688235]
+is_transitive: true
+
+[Typedef]
+id: has_functional_parent
+name: has functional parent
+namespace: PSI-MOD
+def: "'Entity A' has_functional_parent 'Entity B' implies that 'Entity B' has at least one chacteristic group from which 'Entity A' can be derived by functional modification." [PubMed:18688235]
+comment: This relationship indicates that the formula and mass of the child are not inherited from the mass of the parent.
+is_transitive: true
+
+[Typedef]
+id: part_of
+name: part of
+namespace: PSI-MI
+def: "'Entity A' part_of 'Entity B' implies that 'Entity A' is a part of the structure of 'Entity B'." [PubMed:18688235]
+is_transitive: true
+
