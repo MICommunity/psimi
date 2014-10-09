@@ -5,12 +5,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import uk.ac.ebi.kraken.interfaces.uniparc.UniParcEntry;
-import uk.ac.ebi.kraken.interfaces.uniprot.DatabaseCrossReference;
-import uk.ac.ebi.kraken.interfaces.uniprot.UniProtEntry;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * PicrClient Tester
@@ -36,7 +33,7 @@ public class PicrClientTest {
 
     @Test
     public void getSWISSPROTAccession() {
-        ArrayList<String> upis = null;
+        Collection<String> upis = null;
         try {
             upis = client.getSwissprotIdsForAccession("NP_417804", null);
             for (String upi : upis){
@@ -50,7 +47,7 @@ public class PicrClientTest {
 
     @Test
     public void getTREMBLAccession() {
-        ArrayList<String> upis = null;
+        Collection<String> upis = null;
         try {
             upis = client.getTremblIdsForAccession("NP_417804", null);
             for (String upi : upis){
@@ -88,30 +85,6 @@ public class PicrClientTest {
         } catch (BridgeFailedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-    }
-
-    @Test
-    public void getUniprotEntryFromAccession(){
-        List<UniProtEntry> uniprotEntries = client.getUniprotEntryForAccession("P45532");
-
-        for (UniProtEntry upi : uniprotEntries){
-            System.out.println(upi.getUniProtId().getValue());
-
-            for (DatabaseCrossReference ref : upi.getDatabaseCrossReferences(uk.ac.ebi.kraken.interfaces.uniprot.DatabaseType.ENSEMBL)){
-                System.out.println(ref.toString());
-            }
-        }
-        Assert.assertEquals(1, uniprotEntries.size());
-    }
-
-    @Test
-    public void getUniparcEntryFromAccession(){
-        List<UniParcEntry> uniprotEntries = client.getUniparcEntryForAccession("P45532");
-
-        for (UniParcEntry upi : uniprotEntries){
-            System.out.println(upi.getUniParcId().getValue());
-        }
-        Assert.assertEquals(1, uniprotEntries.size());
     }
 
     @Test
