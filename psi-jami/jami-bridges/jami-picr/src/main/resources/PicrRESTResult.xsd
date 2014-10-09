@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://www.ebi.ac.uk/picr/AccessionMappingService" xmlns:ns2="http://model.picr.ebi.ac.uk" xmlns:a="http://www.ebi.ac.uk/picr/AccessionMappingService">
+  <xs:import namespace="http://model.picr.ebi.ac.uk" schemaLocation="ns2.xsd"/>
+  <xs:element name="getUPIForAccessionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="a:getUPIForAccessionReturn"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="getUPIForAccessionReturn">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ns2:CRC64"/>
+        <xs:element ref="ns2:UPI"/>
+        <xs:element ref="ns2:identicalCrossReferences"/>
+        <xs:element ref="ns2:sequence"/>
+        <xs:element ref="ns2:timestamp"/>
+      </xs:sequence>
+      <xs:attribute name="containsActiveSPTRCrossReference" use="required" type="xs:boolean"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
