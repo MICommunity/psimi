@@ -22,4 +22,5 @@ public interface MIOntologyAccess extends OntologyAccessTemplate<MIOntologyTermI
     public Collection<MIOntologyTermI> getRootTerms();
     public Pattern getDatabaseRegexp();
     public OntologyTermFetcher getOntologyTermFetcher();
+    public String getDatabaseName();
 }
