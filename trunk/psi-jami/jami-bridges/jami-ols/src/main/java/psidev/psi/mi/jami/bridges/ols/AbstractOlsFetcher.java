@@ -4,7 +4,6 @@ import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.CvTermFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultXref;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.ols.soap.Query;
 import uk.ac.ebi.ols.soap.QueryServiceLocator;
@@ -36,14 +35,14 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         initialiseDbMap();
     }
 
-    private void initialiseDbMap(){
+    protected void initialiseDbMap(){
         dbMap.put("psi-mi", "MI");
         dbMap.put("psi-mod", "MOD");
         dbMap.put("psi-par", "PAR");
         dbMap.put("go", "GO");
     }
 
-    private Xref createXref(String identifier, String  miOntologyName){
+    protected Xref createXref(String identifier, String  miOntologyName){
         if (CvTerm.PSI_MI.equalsIgnoreCase(miOntologyName)){
             return XrefUtils.createPsiMiIdentity(identifier);
         } else if(CvTerm.PSI_MOD.equalsIgnoreCase(miOntologyName)) {
@@ -104,7 +103,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
             return null;
 
         // 3) if a result, call instantiateCvTerm with provided fullName and create identity xref
-        return instantiateCvTerm(fullName , new DefaultXref(ontologyCvTerm , termIdentifier), olsOntologyName);
+        return instantiateCvTerm(fullName , XrefUtils.createIdentityXref(ontologyCvTerm.getShortName(), ontologyCvTerm.getMIIdentifier() , termIdentifier), olsOntologyName);
     }
 
     public T fetchByName(String searchName, String miOntologyName) throws BridgeFailedException {
