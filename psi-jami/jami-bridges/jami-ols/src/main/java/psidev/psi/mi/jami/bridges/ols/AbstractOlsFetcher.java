@@ -8,6 +8,7 @@ import psidev.psi.mi.jami.utils.XrefUtils;
 import uk.ac.ebi.ols.soap.Query;
 import uk.ac.ebi.ols.soap.QueryServiceLocator;
 
+import javax.xml.namespace.QName;
 import javax.xml.rpc.ServiceException;
 import java.rmi.RemoteException;
 import java.util.*;
@@ -24,10 +25,13 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
 
     protected Query queryService;
     protected Map<String,String> dbMap = new HashMap<String, String>();
+    private static final String wsdlURL = "http://www.ebi.ac.uk/ontology-lookup/OntologyQuery.wsdl";
+    private static final String ontologyQueryURL = "http://www.ebi.ac.uk/ontology-lookup/OntologyQuery";
+    private static final String ontologyQueryName = "QueryService";
 
     public AbstractOlsFetcher() throws BridgeFailedException {
         try{
-            queryService = new QueryServiceLocator().getOntologyQuery();
+            queryService = new QueryServiceLocator(wsdlURL, new QName(ontologyQueryURL, ontologyQueryName)).getOntologyQuery();
         }catch (ServiceException e) {
             queryService = null;
             throw new BridgeFailedException("Cannot create OLS fetcher.", e);
