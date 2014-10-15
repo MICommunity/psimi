@@ -2,15 +2,11 @@ package psidev.psi.mi.jami.bridges.ontologymanager.impl.local;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.bridges.obo.OboOntologyTermFetcher;
-import psidev.psi.mi.jami.bridges.ontologymanager.MIOntologyAccess;
-import psidev.psi.mi.jami.bridges.ontologymanager.MIOntologyTermI;
-import psidev.psi.mi.jami.bridges.ontologymanager.impl.OntologyTermWrapper;
+import psidev.psi.mi.jami.bridges.ontologymanager.impl.AbstractMIOntologyAccess;
 import psidev.psi.mi.jami.commons.MIFileUtils;
-import psidev.psi.mi.jami.model.OntologyTerm;
-import psidev.psi.tools.ontology_manager.impl.local.*;
+import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,10 +18,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -36,68 +28,34 @@ import java.util.regex.Pattern;
  * @since <pre>08/11/11</pre>
  */
 
-public class MILocalOntology implements MIOntologyAccess {
+public class MILocalOntology extends AbstractMIOntologyAccess {
     public static final Log log = LogFactory.getLog(MILocalOntology.class);
-
-    private OboOntologyTermFetcher termFetcher;
-
-    private String databaseName;
-    private String databaseIdentifier;
-    private Pattern databaseRegexp;
-    private String parentIdentifier;
-
-    private Collection<MIOntologyTermI> roots=null;
 
     private String md5Signature;
 
     private int contentSize = -1;
 
     private URL fileUrl;
-    private String ontologyID;
 
     public MILocalOntology() throws OntologyLoaderException {
         super();
-        this.databaseName = null;
-        this.databaseIdentifier=null;
-        this.databaseRegexp=null;
-        this.parentIdentifier=null;
     }
 
-    public MILocalOntology(OboOntologyTermFetcher termBuilder) throws OntologyLoaderException {
-        super();
-        if (termBuilder == null){
-            throw new IllegalArgumentException("The OntologyTermWrapper fetcher must be non null");
-        }
-        this.termFetcher = termBuilder;
-        this.databaseName = null;
-        this.databaseIdentifier=null;
-        this.databaseRegexp=null;
-        this.parentIdentifier=null;
+    public MILocalOntology(OntologyTermFetcher termBuilder) throws OntologyLoaderException {
+        super(termBuilder);
     }
 
 
     public MILocalOntology(String dbName, String dbIdentifier, Pattern dbRegexp, String parent) throws OntologyLoaderException {
-        super();
-        this.databaseName = dbName;
-        this.databaseIdentifier=dbIdentifier;
-        this.databaseRegexp=dbRegexp;
-        this.parentIdentifier=parent;
+        super(dbName, dbIdentifier, dbRegexp, parent);
     }
 
-    public MILocalOntology(OboOntologyTermFetcher termBuilder, String dbName, String dbIdentifier, Pattern dbRegexp, String parent) throws OntologyLoaderException {
-        super();
-        if (termBuilder == null){
-            throw new IllegalArgumentException("The OntologyTermWrapper fetcher must be non null");
-        }
-        this.termFetcher = termBuilder;
-        this.databaseName = dbName;
-        this.databaseIdentifier=dbIdentifier;
-        this.databaseRegexp=dbRegexp;
-        this.parentIdentifier=parent;
+    public MILocalOntology(OntologyTermFetcher termBuilder, String dbName, String dbIdentifier, Pattern dbRegexp, String parent) throws OntologyLoaderException {
+        super(termBuilder, dbName, dbIdentifier, dbRegexp, parent);
     }
 
     public void loadOntology( String ontologyID, String name, String version, String format, URI uri ) throws OntologyLoaderException {
-        this.ontologyID = ontologyID;
+        setOntologyID(ontologyID);
 
         // first check the format
         if ( "OBO".equals( format ) ) {
@@ -118,7 +76,7 @@ public class MILocalOntology implements MIOntologyAccess {
                     if ( !file.exists() ) {
                         throw new IllegalArgumentException("Could not find the file for URI: " + uri + " - Perhaps the syntax of the URI is wrong!");
                     }
-                    this.termFetcher = new OboOntologyTermFetcher(this.databaseName, file.getAbsolutePath());
+                    setOntologyTermFetcher(new OboOntologyTermFetcher(getDatabaseName(), file.getAbsolutePath()));
                 } else {
                     URL url;
                     try {
@@ -138,7 +96,7 @@ public class MILocalOntology implements MIOntologyAccess {
 
                     try {
                         File tempFile = MIFileUtils.storeAsTemporaryFile(url.openStream(), "jami_ontology_"+System.currentTimeMillis(), ".obo");
-                        this.termFetcher = new OboOntologyTermFetcher(this.databaseName, tempFile.getAbsolutePath());
+                        setOntologyTermFetcher(new OboOntologyTermFetcher(getDatabaseName(), tempFile.getAbsolutePath()));
                         tempFile.delete();
 
                     } catch (IOException e) {
@@ -154,130 +112,6 @@ public class MILocalOntology implements MIOntologyAccess {
             log.info( "Successfully created LocalOntology from values: ontology="
                     + ontologyID + " name=" + name + " version=" + version + " format=" + format + " location=" + uri );
         }
-    }
-
-    public void setOntologyDirectory(File directory) {
-         // nothing to do
-    }
-
-    public Set<MIOntologyTermI> getValidTerms(String accession, boolean allowChildren, boolean useTerm) {
-        Set<MIOntologyTermI> collectedTerms = new HashSet<MIOntologyTermI>();
-
-        final MIOntologyTermI term = getTermForAccession( accession );
-        if ( term != null ) {
-            if ( useTerm ) {
-                collectedTerms.add( term );
-            }
-
-            if ( allowChildren ) {
-                collectedTerms.addAll( getAllChildren( term ) );
-            }
-        }
-
-        return collectedTerms;
-    }
-
-    public String getOntologyID() {
-        return this.ontologyID;
-    }
-
-    public String getDatabaseIdentifier() {
-        return this.databaseIdentifier;
-    }
-
-    public String getParentFromOtherOntology() {
-        return this.parentIdentifier;
-    }
-
-    /**
-     * Get the Root terms of the ontology. The way to get it is as follow: pick a term at random, and go to his highest
-     * parent.
-     *
-     * @return a collection of Root term.
-     */
-    public Collection<MIOntologyTermI> getRootTerms() {
-
-        if ( roots != null ) {
-            return roots;
-        }
-
-        // it wasn't precalculated, then do it here...
-        roots = new HashSet<MIOntologyTermI>();
-
-        try {
-            for ( Iterator<OntologyTerm> iterator = termFetcher.fetchRootTerms(this.databaseName).iterator(); iterator.hasNext(); ) {
-                OntologyTerm ontologyTerm = iterator.next();
-
-                roots.add( new OntologyTermWrapper(ontologyTerm));
-            }
-        } catch (BridgeFailedException e) {
-            if ( log.isWarnEnabled() ) {
-                log.warn( "Error while loading root term from OBO file/URL for ontology: " + ontologyID, e );
-            }
-        }
-
-        return roots;
-    }
-
-    public Pattern getDatabaseRegexp() {
-        return this.databaseRegexp;
-    }
-
-    public OntologyTermFetcher getOntologyTermFetcher() {
-        return this.termFetcher;
-    }
-
-    public MIOntologyTermI getTermForAccession( String accession ) {
-        OntologyTerm cv = null;
-        try {
-            cv = termFetcher.fetchByIdentifier( accession, this.databaseName );
-            return cv != null ? new OntologyTermWrapper(cv):null;
-        } catch (BridgeFailedException e) {
-            if ( log.isWarnEnabled() ) {
-                log.warn( "Error while loading term "+accession+" from OBO file/ur for ontology: " + ontologyID, e );
-            }
-        }
-        return null;
-    }
-
-    public boolean isObsolete( MIOntologyTermI term ) {
-        return term.getObsoleteMessage() != null;
-    }
-
-    public Set<MIOntologyTermI> getDirectParents(MIOntologyTermI term) {
-        Collection<OntologyTerm> parents = term.getDelegate().getParents();
-        Set<MIOntologyTermI> directParents = new HashSet<MIOntologyTermI>(parents.size());
-        for (OntologyTerm parent : parents){
-            directParents.add(new OntologyTermWrapper(parent));
-        }
-        return directParents;
-    }
-
-    public Set<MIOntologyTermI> getDirectChildren(MIOntologyTermI term) {
-        Collection<OntologyTerm> children = term.getDelegate().getChildren();
-        Set<MIOntologyTermI> directChildren = new HashSet<MIOntologyTermI>(children.size());
-        for (OntologyTerm child : children){
-            directChildren.add(new OntologyTermWrapper(child));
-        }
-        return directChildren;
-    }
-
-    public Set<MIOntologyTermI> getAllParents(MIOntologyTermI term) {
-        Set<MIOntologyTermI> allParents = getDirectParents(term);
-        Set<MIOntologyTermI> allParentsClone = new HashSet<MIOntologyTermI>(allParents);
-        for (MIOntologyTermI termParent : allParentsClone){
-            allParents.addAll(getDirectParents(termParent));
-        }
-        return allParents;
-    }
-
-    public Set<MIOntologyTermI> getAllChildren(MIOntologyTermI term) {
-        Set<MIOntologyTermI> allChildren = getDirectChildren(term);
-        Set<MIOntologyTermI> allChildrenClone = new HashSet<MIOntologyTermI>(allChildren);
-        for (MIOntologyTermI termChild : allChildrenClone){
-            allChildren.addAll(getDirectChildren(termChild));
-        }
-        return allChildren;
     }
 
     public boolean isOntologyUpToDate() throws OntologyLoaderException {
