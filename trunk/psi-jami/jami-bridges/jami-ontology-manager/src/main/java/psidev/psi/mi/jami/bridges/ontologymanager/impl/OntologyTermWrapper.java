@@ -227,4 +227,17 @@ public class OntologyTermWrapper implements MIOntologyTermI {
             }
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof OntologyTermWrapper){
+            return getDelegate().equals(((OntologyTermWrapper)obj).getDelegate());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return getDelegate().hashCode();
+    }
 }
