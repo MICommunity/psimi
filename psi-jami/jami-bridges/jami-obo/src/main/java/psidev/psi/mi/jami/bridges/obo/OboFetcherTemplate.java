@@ -141,4 +141,8 @@ public class OboFetcherTemplate<T extends CvTerm> implements CvTermFetcher<T> {
     protected Map<String, T> getName2Term() {
         return name2Term;
     }
+
+    protected CvTerm getOntologyDatabase() {
+        return ontologyDatabase;
+    }
 }
