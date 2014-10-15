@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
@@ -21,12 +22,12 @@ public interface OntologyTermFetcher extends CvTermFetcher<OntologyTerm>{
      * @param databaseName : ontology database name
      * @return a set of root terms for the ontology matching this database name
      */
-    public Set<OntologyTerm> fetchRootTerms(String databaseName);
+    public Set<OntologyTerm> fetchRootTerms(String databaseName) throws BridgeFailedException;
 
     /**
      *
      * @param database : database term for the ontology
      * @return a set of root terms for the ontology matching this database term
      */
-    public Set<OntologyTerm> fetchRootTerms(CvTerm database);
+    public Set<OntologyTerm> fetchRootTerms(CvTerm database) throws BridgeFailedException;
 }
