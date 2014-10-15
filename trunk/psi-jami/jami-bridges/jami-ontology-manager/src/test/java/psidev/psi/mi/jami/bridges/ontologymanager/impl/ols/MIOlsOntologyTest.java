@@ -17,12 +17,12 @@ import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
 public class MIOlsOntologyTest {
 
     @Test
-    public void test_ignore_synonyms() throws OntologyLoaderException {
+    public void test_synonyms() throws OntologyLoaderException {
 
         MIOlsOntology olsOntology = new MIOlsOntology("psi-mi", "MI:0488", OntologyTermWrapper.MI_REGEXP, null);
 
         MIOntologyTermI term = olsOntology.getTermForAccession("MI:0018");
 
-        Assert.assertTrue(term.getNameSynonyms().isEmpty());
+        Assert.assertFalse(term.getNameSynonyms().isEmpty());
     }
 }
