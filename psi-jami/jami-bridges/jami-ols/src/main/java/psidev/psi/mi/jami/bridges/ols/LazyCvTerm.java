@@ -221,7 +221,7 @@ public class LazyCvTerm extends DefaultCvTerm {
      * @return
      */
     private Annotation processDefinition(String definition) {
-        if ( definition.contains( OlsUtils.LINE_BREAK ) ) {
+        if ( definition != null && definition.contains( OlsUtils.LINE_BREAK ) ) {
             String[] defArray = definition.split( OlsUtils.LINE_BREAK );
 
             String otherInfoString = null;
