@@ -80,4 +80,12 @@ public class MockOntologyTermFetcher
             throws BridgeFailedException {
         return getMockTermCollection(searchNames);
     }
+
+    public Collection<OntologyTerm> fetchRootTerms(String databaseName) {
+        return Collections.EMPTY_LIST;
+    }
+
+    public Collection<OntologyTerm> fetchRootTerms(CvTerm database) {
+        return Collections.EMPTY_LIST;
+    }
 }

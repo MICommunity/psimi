@@ -1,6 +1,9 @@
 package psidev.psi.mi.jami.bridges.fetcher;
 
+import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
+
+import java.util.Collection;
 
 /**
  * Finds ontology terms in the Ontology Lookup Service
@@ -12,4 +15,7 @@ import psidev.psi.mi.jami.model.OntologyTerm;
  * @since 03/07/13
  */
 public interface OntologyTermFetcher extends CvTermFetcher<OntologyTerm>{
+
+    public Collection<OntologyTerm> fetchRootTerms(String databaseName);
+    public Collection<OntologyTerm> fetchRootTerms(CvTerm database);
 }
