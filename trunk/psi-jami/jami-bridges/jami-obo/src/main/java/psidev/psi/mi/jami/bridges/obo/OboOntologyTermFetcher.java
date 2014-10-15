@@ -25,12 +25,12 @@ public class OboOntologyTermFetcher extends OboFetcherTemplate<OntologyTerm> imp
         super(databaseName, new OntologyOboLoader(databaseName), filePath);
     }
 
-    public Collection<OntologyTerm> fetchRootTerms(String database) {
+    public Set<OntologyTerm> fetchRootTerms(String database) {
 
         if (database != null && !getOntologyDatabase().getShortName().equalsIgnoreCase(database)){
-            return Collections.EMPTY_LIST;
+            return Collections.EMPTY_SET;
         }
-        Collection<OntologyTerm> terms = new ArrayList<OntologyTerm>();
+        Set<OntologyTerm> terms = new HashSet<OntologyTerm>();
 
         for ( Iterator<OntologyTerm> iterator = getId2Term().values().iterator(); iterator.hasNext(); ) {
             OntologyTerm ontologyTerm = iterator.next();
@@ -41,19 +41,19 @@ public class OboOntologyTermFetcher extends OboFetcherTemplate<OntologyTerm> imp
         }
 
         if ( terms.isEmpty() ) {
-            return Collections.EMPTY_LIST;
+            return Collections.EMPTY_SET;
         }
 
         return terms;
     }
 
-    public Collection<OntologyTerm> fetchRootTerms(CvTerm database) {
+    public Set<OntologyTerm> fetchRootTerms(CvTerm database) {
 
         if (database != null && !DefaultCvTermComparator.areEquals(getOntologyDatabase(), database)){
-            return Collections.EMPTY_LIST;
+            return Collections.EMPTY_SET;
         }
 
-        Collection<OntologyTerm> terms = new ArrayList<OntologyTerm>();
+        Set<OntologyTerm> terms = new HashSet<OntologyTerm>();
 
         for ( Iterator<OntologyTerm> iterator = getId2Term().values().iterator(); iterator.hasNext(); ) {
             OntologyTerm ontologyTerm = iterator.next();
@@ -64,7 +64,7 @@ public class OboOntologyTermFetcher extends OboFetcherTemplate<OntologyTerm> imp
         }
 
         if ( terms.isEmpty() ) {
-            return Collections.EMPTY_LIST;
+            return Collections.EMPTY_SET;
         }
 
         return terms;
