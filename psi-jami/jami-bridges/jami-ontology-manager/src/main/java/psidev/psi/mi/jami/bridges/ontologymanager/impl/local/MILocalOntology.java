@@ -1,5 +1,7 @@
 package psidev.psi.mi.jami.bridges.ontologymanager.impl.local;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.bridges.obo.OboOntologyTermFetcher;
@@ -8,16 +10,18 @@ import psidev.psi.mi.jami.bridges.ontologymanager.MIOntologyTermI;
 import psidev.psi.mi.jami.bridges.ontologymanager.impl.OntologyTermWrapper;
 import psidev.psi.mi.jami.commons.MIFileUtils;
 import psidev.psi.mi.jami.model.OntologyTerm;
-import psidev.psi.tools.ontology_manager.impl.local.AbstractLocalOntology;
-import psidev.psi.tools.ontology_manager.impl.local.AbstractOboLoader;
-import psidev.psi.tools.ontology_manager.impl.local.OntologyLoaderException;
-import psidev.psi.tools.ontology_manager.impl.local.OntologyTemplate;
+import psidev.psi.tools.ontology_manager.impl.local.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -32,8 +36,8 @@ import java.util.regex.Pattern;
  * @since <pre>08/11/11</pre>
  */
 
-public class MILocalOntology extends AbstractLocalOntology<MIOntologyTermI, OntologyTemplate<MIOntologyTermI>, AbstractOboLoader<MIOntologyTermI, OntologyTemplate<MIOntologyTermI>>>
-        implements MIOntologyAccess {
+public class MILocalOntology implements MIOntologyAccess {
+    public static final Log log = LogFactory.getLog(MILocalOntology.class);
 
     private OboOntologyTermFetcher termFetcher;
 
@@ -43,6 +47,13 @@ public class MILocalOntology extends AbstractLocalOntology<MIOntologyTermI, Onto
     private String parentIdentifier;
 
     private Collection<MIOntologyTermI> roots=null;
+
+    private String md5Signature;
+
+    private int contentSize = -1;
+
+    private URL fileUrl;
+    private String ontologyID;
 
     public MILocalOntology() throws OntologyLoaderException {
         super();
@@ -83,10 +94,6 @@ public class MILocalOntology extends AbstractLocalOntology<MIOntologyTermI, Onto
         this.databaseIdentifier=dbIdentifier;
         this.databaseRegexp=dbRegexp;
         this.parentIdentifier=parent;
-    }
-    @Override
-    protected AbstractOboLoader<MIOntologyTermI, OntologyTemplate<MIOntologyTermI>> createNewOBOLoader(File ontologyDirectory) throws OntologyLoaderException {
-        return null;
     }
 
     public void loadOntology( String ontologyID, String name, String version, String format, URI uri ) throws OntologyLoaderException {
@@ -149,6 +156,27 @@ public class MILocalOntology extends AbstractLocalOntology<MIOntologyTermI, Onto
         }
     }
 
+    public void setOntologyDirectory(File directory) {
+         // nothing to do
+    }
+
+    public Set<MIOntologyTermI> getValidTerms(String accession, boolean allowChildren, boolean useTerm) {
+        Set<MIOntologyTermI> collectedTerms = new HashSet<MIOntologyTermI>();
+
+        final MIOntologyTermI term = getTermForAccession( accession );
+        if ( term != null ) {
+            if ( useTerm ) {
+                collectedTerms.add( term );
+            }
+
+            if ( allowChildren ) {
+                collectedTerms.addAll( getAllChildren( term ) );
+            }
+        }
+
+        return collectedTerms;
+    }
+
     public String getOntologyID() {
         return this.ontologyID;
     }
@@ -176,10 +204,16 @@ public class MILocalOntology extends AbstractLocalOntology<MIOntologyTermI, Onto
         // it wasn't precalculated, then do it here...
         roots = new HashSet<MIOntologyTermI>();
 
-        for ( Iterator<OntologyTerm> iterator = termFetcher.getRoots().iterator(); iterator.hasNext(); ) {
-            OntologyTerm ontologyTerm = iterator.next();
+        try {
+            for ( Iterator<OntologyTerm> iterator = termFetcher.fetchRootTerms(this.databaseName).iterator(); iterator.hasNext(); ) {
+                OntologyTerm ontologyTerm = iterator.next();
 
-            roots.add( new OntologyTermWrapper(ontologyTerm));
+                roots.add( new OntologyTermWrapper(ontologyTerm));
+            }
+        } catch (BridgeFailedException e) {
+            if ( log.isWarnEnabled() ) {
+                log.warn( "Error while loading root term from OBO file/URL for ontology: " + ontologyID, e );
+            }
         }
 
         return roots;
@@ -199,7 +233,9 @@ public class MILocalOntology extends AbstractLocalOntology<MIOntologyTermI, Onto
             cv = termFetcher.fetchByIdentifier( accession, this.databaseName );
             return cv != null ? new OntologyTermWrapper(cv):null;
         } catch (BridgeFailedException e) {
-            e.printStackTrace();
+            if ( log.isWarnEnabled() ) {
+                log.warn( "Error while loading term "+accession+" from OBO file/ur for ontology: " + ontologyID, e );
+            }
         }
         return null;
     }
@@ -208,19 +244,160 @@ public class MILocalOntology extends AbstractLocalOntology<MIOntologyTermI, Onto
         return term.getObsoleteMessage() != null;
     }
 
-    public Set<MIOntologyTermI> getDirectParents( MIOntologyTermI term ) {
-        return term.getDelegate().getParents();
+    public Set<MIOntologyTermI> getDirectParents(MIOntologyTermI term) {
+        Collection<OntologyTerm> parents = term.getDelegate().getParents();
+        Set<MIOntologyTermI> directParents = new HashSet<MIOntologyTermI>(parents.size());
+        for (OntologyTerm parent : parents){
+            directParents.add(new OntologyTermWrapper(parent));
+        }
+        return directParents;
     }
 
-    public Set<MIOntologyTermI> getDirectChildren( MIOntologyTermI term ) {
-        return ontology.getDirectChildren( term );
+    public Set<MIOntologyTermI> getDirectChildren(MIOntologyTermI term) {
+        Collection<OntologyTerm> children = term.getDelegate().getChildren();
+        Set<MIOntologyTermI> directChildren = new HashSet<MIOntologyTermI>(children.size());
+        for (OntologyTerm child : children){
+            directChildren.add(new OntologyTermWrapper(child));
+        }
+        return directChildren;
     }
 
-    public Set<MIOntologyTermI> getAllParents( MIOntologyTermI term ) {
-        return ontology.getAllParents( term );
+    public Set<MIOntologyTermI> getAllParents(MIOntologyTermI term) {
+        Set<MIOntologyTermI> allParents = getDirectParents(term);
+        Set<MIOntologyTermI> allParentsClone = new HashSet<MIOntologyTermI>(allParents);
+        for (MIOntologyTermI termParent : allParentsClone){
+            allParents.addAll(getDirectParents(termParent));
+        }
+        return allParents;
     }
 
-    public Set<MIOntologyTermI> getAllChildren( MIOntologyTermI term ) {
-        return ontology.getAllChildren( term );
+    public Set<MIOntologyTermI> getAllChildren(MIOntologyTermI term) {
+        Set<MIOntologyTermI> allChildren = getDirectChildren(term);
+        Set<MIOntologyTermI> allChildrenClone = new HashSet<MIOntologyTermI>(allChildren);
+        for (MIOntologyTermI termChild : allChildrenClone){
+            allChildren.addAll(getDirectChildren(termChild));
+        }
+        return allChildren;
+    }
+
+    public boolean isOntologyUpToDate() throws OntologyLoaderException {
+        if (this.fileUrl != null){
+            if (md5Signature != null){
+                boolean isMd5UpToDate = checkUpToDateMd5Signature();
+                boolean isContentSizeUpToDate = checkUpToDateContentSize();
+
+                if (isMd5UpToDate && isContentSizeUpToDate){
+                    return true;
+                }
+                else if (!isContentSizeUpToDate && isMd5UpToDate && this.contentSize == -1){
+                    return true;
+                }
+                else if (isContentSizeUpToDate && !isMd5UpToDate && this.md5Signature == null){
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isUseTermSynonyms() {
+        return true;
+    }
+
+    public void setUseTermSynonyms(boolean useTermSynonyms) {
+        throw new UnsupportedOperationException("The MI OBO fetcher always load term synonyms");
+    }
+
+    /**
+     * Computes the md5 signature of the URL
+     * @param url
+     * @return
+     * @throws OntologyLoaderException
+     */
+    private String computeMD5SignatureFor(URL url) throws OntologyLoaderException {
+        InputStream is = null;
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+
+            is = url.openStream();
+            byte[] buffer = new byte[8192];
+            int read = 0;
+
+            while( (read = is.read(buffer)) > 0) {
+                digest.update(buffer, 0, read);
+
+            }
+
+            byte[] md5sum = digest.digest();
+            BigInteger bigInt = new BigInteger(1, md5sum);
+            String output = bigInt.toString(16);
+
+            return output;
+
+        }
+        catch(IOException e) {
+            throw new OntologyLoaderException("Unable to process file for MD5", e);
+        }
+        catch (NoSuchAlgorithmException e) {
+            throw new OntologyLoaderException("Unable to compute file MD5 signature for the file " + url.getFile(), e);
+        } finally {
+            try {
+                if (is != null){
+                    is.close();
+                }
+            }
+            catch(IOException e) {
+                throw new OntologyLoaderException("Unable to close input stream for MD5 calculation", e);
+            }
+        }
+
+    }
+
+    /**
+     * Get the size of a file at a given url
+     * @param url
+     * @return
+     * @throws OntologyLoaderException
+     */
+    private int getSizeOfFile(URL url) throws OntologyLoaderException {
+        URLConnection con = null;
+
+        try {
+            con = url.openConnection();
+            int size = con.getContentLength();
+
+            return size;
+        } catch (IOException e) {
+            throw new OntologyLoaderException("Unable to open the url", e);
+        }
+    }
+
+    /**
+     *
+     * @return true if the MD5 signature of the file containing the ontologies is still the same
+     * @throws OntologyLoaderException
+     */
+    private boolean checkUpToDateMd5Signature() throws OntologyLoaderException {
+        if (md5Signature != null){
+            String newMd5Signature = computeMD5SignatureFor(this.fileUrl);
+
+            return md5Signature.equals(newMd5Signature);
+        }
+        return false;
+    }
+
+    /**
+     *
+     * @return true if the content size of the file containing the ontologies is still the same
+     * @throws OntologyLoaderException
+     */
+    private boolean checkUpToDateContentSize() throws OntologyLoaderException {
+        if (this.contentSize != -1){
+            int newContentSize = getSizeOfFile(this.fileUrl);
+            return newContentSize == this.contentSize;
+        }
+
+        return false;
     }
 }
