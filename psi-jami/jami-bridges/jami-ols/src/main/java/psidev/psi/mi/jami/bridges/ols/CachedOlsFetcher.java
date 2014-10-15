@@ -196,4 +196,8 @@ public class CachedOlsFetcher<T extends CvTerm> extends AbstractCachedFetcher im
         }
         return (Collection<T>)data;
     }
+
+    protected CvTermFetcher<T> getDelegateFetcher() {
+        return delegateFetcher;
+    }
 }
