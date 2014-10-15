@@ -81,11 +81,11 @@ public class MockOntologyTermFetcher
         return getMockTermCollection(searchNames);
     }
 
-    public Set<OntologyTerm> fetchRootTerms(String databaseName) {
+    public Set<OntologyTerm> fetchRootTerms(String databaseName) throws BridgeFailedException {
         return Collections.EMPTY_SET;
     }
 
-    public Set<OntologyTerm> fetchRootTerms(CvTerm database) {
+    public Set<OntologyTerm> fetchRootTerms(CvTerm database) throws BridgeFailedException {
         return Collections.EMPTY_SET;
     }
 }

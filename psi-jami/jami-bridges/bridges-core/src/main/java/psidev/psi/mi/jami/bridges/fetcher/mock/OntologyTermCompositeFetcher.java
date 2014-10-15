@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.bridges.fetcher.mock;
 
+import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 
 public class OntologyTermCompositeFetcher extends CvTermCompositeFetcherTemplate<OntologyTerm, OntologyTermFetcher> implements OntologyTermFetcher{
-    public Set<OntologyTerm> fetchRootTerms(String databaseName) {
+    public Set<OntologyTerm> fetchRootTerms(String databaseName) throws BridgeFailedException {
         if (databaseName == null || !getDelegateFetchers().containsKey(databaseName)){
             Set<OntologyTerm> firstTermRetrieved = Collections.EMPTY_SET;
             Iterator<OntologyTermFetcher> fetcherIterator = getDelegateFetchers().values().iterator();
@@ -36,7 +37,7 @@ public class OntologyTermCompositeFetcher extends CvTermCompositeFetcherTemplate
         }
     }
 
-    public Set<OntologyTerm> fetchRootTerms(CvTerm database) {
+    public Set<OntologyTerm> fetchRootTerms(CvTerm database) throws BridgeFailedException {
         if (database == null || !getDelegateFetchers().containsKey(database.getShortName())){
             Set<OntologyTerm> firstTermRetrieved = Collections.EMPTY_SET;
             Iterator<OntologyTermFetcher> fetcherIterator = getDelegateFetchers().values().iterator();
