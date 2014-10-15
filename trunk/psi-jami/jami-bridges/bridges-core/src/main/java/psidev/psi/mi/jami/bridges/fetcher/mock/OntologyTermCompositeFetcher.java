@@ -4,9 +4,9 @@ import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.OntologyTerm;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Ontology fetcher that delegates to different ontologyTermFetchers
@@ -17,9 +17,9 @@ import java.util.Iterator;
  */
 
 public class OntologyTermCompositeFetcher extends CvTermCompositeFetcherTemplate<OntologyTerm, OntologyTermFetcher> implements OntologyTermFetcher{
-    public Collection<OntologyTerm> fetchRootTerms(String databaseName) {
+    public Set<OntologyTerm> fetchRootTerms(String databaseName) {
         if (databaseName == null || !getDelegateFetchers().containsKey(databaseName)){
-            Collection<OntologyTerm> firstTermRetrieved = Collections.EMPTY_LIST;
+            Set<OntologyTerm> firstTermRetrieved = Collections.EMPTY_SET;
             Iterator<OntologyTermFetcher> fetcherIterator = getDelegateFetchers().values().iterator();
             while(firstTermRetrieved.isEmpty() && fetcherIterator.hasNext()){
                 firstTermRetrieved = fetcherIterator.next().fetchRootTerms(databaseName);
@@ -29,16 +29,16 @@ public class OntologyTermCompositeFetcher extends CvTermCompositeFetcherTemplate
         }
         OntologyTermFetcher fetcher = getDelegateFetchers().get(databaseName);
         if (fetcher == null){
-            return Collections.EMPTY_LIST;
+            return Collections.EMPTY_SET;
         }
         else {
             return fetcher.fetchRootTerms(databaseName);
         }
     }
 
-    public Collection<OntologyTerm> fetchRootTerms(CvTerm database) {
+    public Set<OntologyTerm> fetchRootTerms(CvTerm database) {
         if (database == null || !getDelegateFetchers().containsKey(database.getShortName())){
-            Collection<OntologyTerm> firstTermRetrieved = Collections.EMPTY_LIST;
+            Set<OntologyTerm> firstTermRetrieved = Collections.EMPTY_SET;
             Iterator<OntologyTermFetcher> fetcherIterator = getDelegateFetchers().values().iterator();
             while(firstTermRetrieved.isEmpty() && fetcherIterator.hasNext()){
                 firstTermRetrieved = fetcherIterator.next().fetchRootTerms(database);
@@ -48,7 +48,7 @@ public class OntologyTermCompositeFetcher extends CvTermCompositeFetcherTemplate
         }
         OntologyTermFetcher fetcher = getDelegateFetchers().get(database.getShortName());
         if (fetcher == null){
-            return Collections.EMPTY_LIST;
+            return Collections.EMPTY_SET;
         }
         else {
             return fetcher.fetchRootTerms(database);
