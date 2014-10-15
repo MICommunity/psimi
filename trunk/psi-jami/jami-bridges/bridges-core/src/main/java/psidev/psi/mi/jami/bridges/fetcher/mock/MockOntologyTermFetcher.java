@@ -81,11 +81,11 @@ public class MockOntologyTermFetcher
         return getMockTermCollection(searchNames);
     }
 
-    public Collection<OntologyTerm> fetchRootTerms(String databaseName) {
-        return Collections.EMPTY_LIST;
+    public Set<OntologyTerm> fetchRootTerms(String databaseName) {
+        return Collections.EMPTY_SET;
     }
 
-    public Collection<OntologyTerm> fetchRootTerms(CvTerm database) {
-        return Collections.EMPTY_LIST;
+    public Set<OntologyTerm> fetchRootTerms(CvTerm database) {
+        return Collections.EMPTY_SET;
     }
 }
