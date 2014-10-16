@@ -44,6 +44,7 @@ public abstract class AbstractOlsFetcher<T extends CvTerm> implements CvTermFetc
         dbMap.put("psi-mod", "MOD");
         dbMap.put("psi-par", "PAR");
         dbMap.put("go", "GO");
+        dbMap.put("evidence ontology", "ECO");
     }
 
     protected Xref createXref(String identifier, String  miOntologyName){
