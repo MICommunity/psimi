@@ -124,14 +124,14 @@
          otherwise they will be ignored. If you don't plan on using hdfs,
          you can safely remove this section. -->      
     <!-- The root directory that collection data should be written to. -->     
-    <str name="solr.hdfs.home">${solr.hdfs.home:}</str>
-    <!-- The hadoop configuration files to use for the hdfs client. -->    
-    <str name="solr.hdfs.confdir">${solr.hdfs.confdir:}</str>
-    <!-- Enable/Disable the hdfs cache. -->    
-    <str name="solr.hdfs.blockcache.enabled">${solr.hdfs.blockcache.enabled:true}</str>
-    <!-- Enable/Disable using one global cache for all SolrCores. 
-         The settings used will be from the first HdfsDirectoryFactory created. -->    
-    <str name="solr.hdfs.blockcache.global">${solr.hdfs.blockcache.global:true}</str>
+    <!--<str name="solr.hdfs.home">${solr.hdfs.home:}</str>-->
+    <!-- The hadoop configuration files to use for the hdfs client. -->
+      <!--<str name="solr.hdfs.confdir">${solr.hdfs.confdir:}</str> -->
+      <!-- Enable/Disable the hdfs cache. -->
+      <!--<str name="solr.hdfs.blockcache.enabled">${solr.hdfs.blockcache.enabled:true}</str>  -->
+      <!-- Enable/Disable using one global cache for all SolrCores.
+           The settings used will be from the first HdfsDirectoryFactory created. -->
+    <!--<str name="solr.hdfs.blockcache.global">${solr.hdfs.blockcache.global:true}</str>   -->
     
   </directoryFactory> 
 
@@ -181,18 +181,18 @@
      <filter class="solr.LimitTokenCountFilterFactory" maxTokenCount="10000"/>
     -->
     <!-- Maximum time to wait for a write lock (ms) for an IndexWriter. Default: 1000 -->
-    <!-- <writeLockTimeout>1000</writeLockTimeout>  -->
+    <writeLockTimeout>1000</writeLockTimeout>
 
     <!-- The maximum number of simultaneous threads that may be
          indexing documents at once in IndexWriter; if more than this
          many threads arrive they will wait for others to finish.
          Default in Solr/Lucene is 8. -->
-    <!-- <maxIndexingThreads>8</maxIndexingThreads>  -->
+    <maxIndexingThreads>8</maxIndexingThreads>
 
     <!-- Expert: Enabling compound file will use less files for the index, 
          using fewer file descriptors on the expense of performance decrease. 
          Default in Lucene is "true". Default in Solr is "false" (since 3.6) -->
-    <!-- <useCompoundFile>false</useCompoundFile> -->
+    <useCompoundFile>false</useCompoundFile>
 
     <!-- ramBufferSizeMB sets the amount of RAM that may be used by Lucene
          indexing for buffering added documents and deletions before they are
@@ -202,7 +202,7 @@
          If both ramBufferSizeMB and maxBufferedDocs is set, then
          Lucene will flush based on whichever limit is hit first.
          The default is 100 MB.  -->
-    <!-- <ramBufferSizeMB>100</ramBufferSizeMB> -->
+    <ramBufferSizeMB>100</ramBufferSizeMB>
     <!-- <maxBufferedDocs>1000</maxBufferedDocs> -->
 
     <!-- Expert: Merge Policy 
@@ -211,12 +211,10 @@
          The default since Lucene 2.3 was the LogByteSizeMergePolicy,
          Even older versions of Lucene used LogDocMergePolicy.
       -->
-    <!--
-        <mergePolicy class="org.apache.lucene.index.TieredMergePolicy">
+    <!-- <mergePolicy class="org.apache.lucene.index.TieredMergePolicy">
           <int name="maxMergeAtOnce">10</int>
           <int name="segmentsPerTier">10</int>
-        </mergePolicy>
-      -->
+        </mergePolicy> -->
        
     <!-- Merge Factor
          The merge factor controls how many segments will get merged at a time.
@@ -226,9 +224,7 @@
          will be allowed before they are merged into one.
          Default is 10 for both merge policies.
       -->
-    <!-- 
     <mergeFactor>10</mergeFactor>
-      -->
 
     <!-- Expert: Merge Scheduler
          The Merge Scheduler in Lucene controls how merges are
@@ -270,9 +266,7 @@
 
          This is not needed if lock type is 'single'
      -->
-    <!--
     <unlockOnStartup>false</unlockOnStartup>
-      -->
     
     <!-- Expert: Controls how often Lucene loads terms into memory
          Default is 128 and is likely good for most everyone.
@@ -299,13 +293,11 @@
          The latest commit point should always be preserved regardless
          of the criteria.
     -->
-    <!-- 
     <deletionPolicy class="solr.SolrDeletionPolicy">
-    -->
       <!-- The number of commit points to be kept -->
-      <!-- <str name="maxCommitsToKeep">1</str> -->
+      <str name="maxCommitsToKeep">1</str>
       <!-- The number of optimized commit points to be kept -->
-      <!-- <str name="maxOptimizedCommitsToKeep">0</str> -->
+      <str name="maxOptimizedCommitsToKeep">0</str>
       <!--
           Delete all commit points once they have reached the given age.
           Supports DateMathParser syntax e.g.
@@ -314,9 +306,7 @@
          <str name="maxCommitAge">30MINUTES</str>
          <str name="maxCommitAge">1DAY</str>
       -->
-    <!-- 
     </deletionPolicy>
-    -->
 
     <!-- Lucene Infostream
        
@@ -327,7 +317,7 @@
          IndexWriter to write its info stream to solr's log. By default,
          this is enabled here, and controlled through log4j.properties.
       -->
-     <infoStream>true</infoStream>
+     <infoStream>false</infoStream>
     
     <!--
         Use true to enable this safety check, which can help
@@ -390,10 +380,10 @@
          If the updateLog is enabled, then it's highly recommended to
          have some sort of hard autoCommit to limit the log size.
       -->
-     <autoCommit> 
+     <!--<autoCommit>
        <maxTime>${solr.autoCommit.maxTime:15000}</maxTime> 
        <openSearcher>false</openSearcher> 
-     </autoCommit>
+     </autoCommit>-->
 
     <!-- softAutoCommit is like autoCommit except it causes a
          'soft' commit which only ensures that changes are visible
@@ -401,9 +391,9 @@
          faster and more near-realtime friendly than a hard commit.
       -->
 
-     <autoSoftCommit> 
+     <!--<autoSoftCommit>
        <maxTime>${solr.autoSoftCommit.maxTime:-1}</maxTime> 
-     </autoSoftCommit>
+     </autoSoftCommit>-->
 
     <!-- Update Related Event Listeners
          
@@ -528,9 +518,9 @@
                and old cache.  
       -->
     <filterCache class="solr.FastLRUCache"
-                 size="512"
-                 initialSize="512"
-                 autowarmCount="0"/>
+                 size="16384"
+                 initialSize="4096"
+                 autowarmCount="4096"/>
 
     <!-- Query Result Cache
          
@@ -538,9 +528,9 @@
          (DocList) based on a query, a sort, and the range of documents requested.  
       -->
     <queryResultCache class="solr.LRUCache"
-                     size="512"
-                     initialSize="512"
-                     autowarmCount="0"/>
+                      size="16384"
+                      initialSize="4096"
+                      autowarmCount="1024"/>
    
     <!-- Document Cache
 
@@ -549,8 +539,8 @@
          this cache will not be autowarmed.  
       -->
     <documentCache class="solr.LRUCache"
-                   size="512"
-                   initialSize="512"
+                   size="16384"
+                   initialSize="16384"
                    autowarmCount="0"/>
     
     <!-- custom cache currently used by block join --> 
@@ -567,12 +557,10 @@
          by document id.  The fieldValueCache is created by default
          even if not configured here.
       -->
-    <!--
-       <fieldValueCache class="solr.FastLRUCache"
+    <fieldValueCache class="solr.FastLRUCache"
                         size="512"
                         autowarmCount="128"
                         showItems="32" />
-      -->
 
     <!-- Custom Cache
 
@@ -630,7 +618,7 @@
         then documents 0 through 49 will be collected and cached.  Any further
         requests in that range can be satisfied via the cache.  
      -->
-   <queryResultWindowSize>20</queryResultWindowSize>
+   <queryResultWindowSize>50</queryResultWindowSize>
 
    <!-- Maximum number of documents to cache for any entry in the
         queryResultCache. 
