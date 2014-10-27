@@ -6,10 +6,7 @@ import psidev.psi.mi.jami.model.Annotation;
 import psidev.psi.mi.jami.model.OntologyTerm;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,7 +85,11 @@ public class OntologyTermWrapper implements MIOntologyTermI {
     }
 
     public Collection<String> getNameSynonyms() {
-        return null;
+        List<String> synonyms = new ArrayList<String>(this.delegate.getSynonyms().size());
+        for (Alias alias : this.delegate.getSynonyms()){
+            synonyms.add(alias.getName());
+        }
+        return synonyms;
     }
 
     public void setNameSynonyms(Collection<String> nameSynonyms) {
