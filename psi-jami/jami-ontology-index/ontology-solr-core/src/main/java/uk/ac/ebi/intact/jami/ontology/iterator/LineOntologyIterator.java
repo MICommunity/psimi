@@ -99,4 +99,12 @@ public abstract class LineOntologyIterator implements OntologyIterator{
 
         return false;
     }
+
+    protected OntologyTerm getCurrentTerm() {
+        return currentTerm;
+    }
+
+    protected void setCurrentTerm(OntologyTerm currentTerm) {
+        this.currentTerm = currentTerm;
+    }
 }
