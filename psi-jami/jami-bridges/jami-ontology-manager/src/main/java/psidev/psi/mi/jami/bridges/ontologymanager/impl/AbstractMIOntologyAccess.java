@@ -212,7 +212,7 @@ public abstract class AbstractMIOntologyAccess implements MIOntologyAccess {
         Set<MIOntologyTermI> allParents = getDirectParents(term);
         Set<MIOntologyTermI> allParentsClone = new HashSet<MIOntologyTermI>(allParents);
         for (MIOntologyTermI termParent : allParentsClone){
-            allParents.addAll(getDirectParents(termParent));
+            allParents.addAll(getAllParents(termParent));
         }
         return allParents;
     }
@@ -221,7 +221,7 @@ public abstract class AbstractMIOntologyAccess implements MIOntologyAccess {
         Set<MIOntologyTermI> allChildren = getDirectChildren(term);
         Set<MIOntologyTermI> allChildrenClone = new HashSet<MIOntologyTermI>(allChildren);
         for (MIOntologyTermI termChild : allChildrenClone){
-            allChildren.addAll(getDirectChildren(termChild));
+            allChildren.addAll(getAllChildren(termChild));
         }
         return allChildren;
     }
