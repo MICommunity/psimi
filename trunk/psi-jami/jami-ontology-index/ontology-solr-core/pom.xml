@@ -25,7 +25,16 @@
           <artifactId>bridges-core</artifactId>
           <version>${pom.version}</version>
       </dependency>
-
+      <dependency>
+          <groupId>psidev.psi.mi.jami.bridges</groupId>
+          <artifactId>jami-obo</artifactId>
+          <version>${pom.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>psidev.psi.mi.jami</groupId>
+          <artifactId>jami-commons</artifactId>
+          <version>${pom.version}</version>
+      </dependency>
 
       <!-- commons -->
       <dependency>
