@@ -18,9 +18,9 @@ import java.util.Comparator;
 
 public class FeatureComparator implements Comparator<Feature> {
 
-    protected ModelledFeatureComparator biologicalFeatureComparator;
-    protected FeatureEvidenceComparator experimentalFeatureComparator;
-    protected Comparator<Feature> featureBaseComparator;
+    private ModelledFeatureComparator biologicalFeatureComparator;
+    private FeatureEvidenceComparator experimentalFeatureComparator;
+    private Comparator<Feature> featureBaseComparator;
 
     public FeatureComparator(Comparator<Feature> featureBaseComparator, Comparator<CvTerm> cvTermComparator){
         if (featureBaseComparator == null){

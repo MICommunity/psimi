@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.feature;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
 
 import java.util.Collection;
@@ -22,8 +23,8 @@ import java.util.Comparator;
 
 public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
 
-    protected Comparator<Feature> featureComparator;
-    protected CvTermsCollectionComparator cvTermCollectionComparators;
+    private Comparator<Feature> featureComparator;
+    private CollectionComparator<CvTerm> cvTermCollectionComparators;
 
     /**
      * Creates a new FeatureEvidenceComparator.
@@ -34,14 +35,28 @@ public class FeatureEvidenceComparator implements Comparator<FeatureEvidence>{
             throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
         }
         this.featureComparator = featureComparator;
+        if (cvTermComparator == null){
+            throw new IllegalArgumentException("The Cv comparator is required to compare general feature properties. It cannot be null");
+        }
         this.cvTermCollectionComparators = new CvTermsCollectionComparator(cvTermComparator);
+    }
+
+    public FeatureEvidenceComparator(Comparator<Feature> featureComparator, CollectionComparator<CvTerm> cvTermComparator){
+        if (featureComparator == null){
+            throw new IllegalArgumentException("The Feature comparator is required to compare general feature properties. It cannot be null");
+        }
+        this.featureComparator = featureComparator;
+        if (cvTermComparator == null){
+            throw new IllegalArgumentException("The Cv comparator is required to compare general feature properties. It cannot be null");
+        }
+        this.cvTermCollectionComparators = cvTermComparator;
     }
 
     public Comparator<Feature> getFeatureComparator() {
         return featureComparator;
     }
 
-    public CvTermsCollectionComparator getCvTermCollectionComparators() {
+    public CollectionComparator<CvTerm> getCvTermCollectionComparators() {
         return cvTermCollectionComparators;
     }
 

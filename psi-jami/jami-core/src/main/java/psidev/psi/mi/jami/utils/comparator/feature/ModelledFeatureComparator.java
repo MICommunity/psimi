@@ -18,7 +18,7 @@ import java.util.Comparator;
 
 public class ModelledFeatureComparator implements Comparator<ModelledFeature> {
 
-    protected Comparator<Feature> featureComparator;
+    private Comparator<Feature> featureComparator;
 
     /**
      * Creates a new ModelledFeatureComparator.
