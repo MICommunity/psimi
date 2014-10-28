@@ -50,12 +50,12 @@ public class UnambiguousCuratedExperimentComparator extends ExperimentComparator
 
     @Override
     public UnambiguousCuratedPublicationComparator getPublicationComparator() {
-        return (UnambiguousCuratedPublicationComparator) this.publicationComparator;
+        return (UnambiguousCuratedPublicationComparator) super.getPublicationComparator();
     }
 
     @Override
     public UnambiguousOrganismComparator getOrganismComparator() {
-        return (UnambiguousOrganismComparator) this.organismComparator;
+        return (UnambiguousOrganismComparator) super.getOrganismComparator();
     }
 
     @Override
