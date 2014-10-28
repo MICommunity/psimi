@@ -36,7 +36,7 @@ public class UnambiguousFeatureEvidenceComparator extends FeatureEvidenceCompara
 
     @Override
     public UnambiguousFeatureBaseComparator getFeatureComparator() {
-        return (UnambiguousFeatureBaseComparator) this.featureComparator;
+        return (UnambiguousFeatureBaseComparator) super.getFeatureComparator();
     }
 
     public ParameterCollectionComparator getParameterCollectionComparator() {

@@ -26,7 +26,7 @@ public class UnambiguousModelledFeaturecomparator extends ModelledFeatureCompara
 
     @Override
     public UnambiguousFeatureBaseComparator getFeatureComparator() {
-        return (UnambiguousFeatureBaseComparator) this.featureComparator;
+        return (UnambiguousFeatureBaseComparator) super.getFeatureComparator();
     }
 
     @Override

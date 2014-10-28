@@ -28,7 +28,7 @@ public class UnambiguousFeatureComparator extends FeatureComparator {
 
     @Override
     public UnambiguousFeatureBaseComparator getFeatureBaseComparator() {
-        return (UnambiguousFeatureBaseComparator) this.featureBaseComparator;
+        return (UnambiguousFeatureBaseComparator) super.getFeatureBaseComparator();
     }
 
     @Override
