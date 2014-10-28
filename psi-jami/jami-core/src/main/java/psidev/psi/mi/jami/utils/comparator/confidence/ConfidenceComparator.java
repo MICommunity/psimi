@@ -19,7 +19,7 @@ import java.util.Comparator;
 
 public class ConfidenceComparator implements Comparator<Confidence>{
 
-    protected Comparator<CvTerm> cvTermComparator;
+    private Comparator<CvTerm> cvTermComparator;
 
     /**
      * Creates a new ConfidenceComparator.
