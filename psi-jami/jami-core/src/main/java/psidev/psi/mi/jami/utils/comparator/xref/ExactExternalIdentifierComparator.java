@@ -62,7 +62,7 @@ public class ExactExternalIdentifierComparator extends UnambiguousExternalIdenti
             String version1 = externalIdentifier1.getVersion();
             String version2 = externalIdentifier2.getVersion();
 
-            if (version1 == version2){
+            if (version1 == null && version2 == null){
                 return EQUAL;
             }
             else if (version1 == null){
