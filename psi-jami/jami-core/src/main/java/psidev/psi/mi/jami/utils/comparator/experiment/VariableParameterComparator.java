@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.experiment;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.VariableParameter;
 import psidev.psi.mi.jami.model.VariableParameterValue;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -21,7 +22,7 @@ import java.util.Comparator;
 public class VariableParameterComparator implements Comparator<VariableParameter> {
 
     private Comparator<CvTerm> cvTermComparator;
-    private VariableParameterValueCollectionComparator variableParameterValueCollectionComparator;
+    private CollectionComparator<VariableParameterValue> variableParameterValueCollectionComparator;
 
     public VariableParameterComparator(Comparator<CvTerm> cvTermComparator){
         if (cvTermComparator == null){
@@ -31,12 +32,22 @@ public class VariableParameterComparator implements Comparator<VariableParameter
         this.variableParameterValueCollectionComparator = new VariableParameterValueCollectionComparator();
     }
 
+    public VariableParameterComparator(Comparator<CvTerm> cvTermComparator, CollectionComparator<VariableParameterValue> variablecomparator){
+        if (cvTermComparator == null){
+            throw new IllegalArgumentException("The cvTermComparator should not be null and is needed to compare units.");
+        }
+        this.cvTermComparator = cvTermComparator;
+        if (variablecomparator == null){
+            throw new IllegalArgumentException("The variable value parameter comparator should not be null and is needed to compare variable parameter values.");
+        }
+        this.variableParameterValueCollectionComparator = variablecomparator;
+    }
 
     public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 
-    public VariableParameterValueCollectionComparator getVariableParameterValueCollectionComparator() {
+    public CollectionComparator<VariableParameterValue> getVariableParameterValueCollectionComparator() {
         return variableParameterValueCollectionComparator;
     }
 

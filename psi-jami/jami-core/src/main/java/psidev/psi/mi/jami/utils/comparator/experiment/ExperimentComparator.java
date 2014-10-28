@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.experiment;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.organism.OrganismComparator;
 
 import java.util.Collection;
@@ -22,10 +23,10 @@ import java.util.Comparator;
 
 public class ExperimentComparator implements Comparator<Experiment>{
 
-    protected Comparator<Publication> publicationComparator;
-    protected OrganismComparator organismComparator;
-    protected Comparator<CvTerm> cvTermComparator;
-    protected VariableParameterCollectionComparator variableParameterCollectionComparator;
+    private Comparator<Publication> publicationComparator;
+    private OrganismComparator organismComparator;
+    private Comparator<CvTerm> cvTermComparator;
+    private CollectionComparator<VariableParameter> variableParameterCollectionComparator;
 
     /**
      * Creates a new ExperimentComparator. It needs a Comparator<Publication> to compare publications, a OrganismComparator to compare host organisms
@@ -44,6 +45,22 @@ public class ExperimentComparator implements Comparator<Experiment>{
         this.organismComparator = organismComparator;
         this.cvTermComparator = this.organismComparator.getCvTermComparator();
         this.variableParameterCollectionComparator = new VariableParameterCollectionComparator(new VariableParameterComparator(this.cvTermComparator));
+    }
+
+    public ExperimentComparator(Comparator<Publication> publicationComparator, OrganismComparator organismComparator, CollectionComparator<VariableParameter> variableParameter){
+        if (publicationComparator == null){
+            throw new IllegalArgumentException("The publication comparator is required to compare the publications where the experiments have been published. It cannot be null");
+        }
+        this.publicationComparator = publicationComparator;
+        if (organismComparator == null){
+            throw new IllegalArgumentException("The organism comparator is required to compare the host organisms where the experiments took place. It cannot be null");
+        }
+        this.organismComparator = organismComparator;
+        this.cvTermComparator = this.organismComparator.getCvTermComparator();
+        if (variableParameter == null){
+            throw new IllegalArgumentException("The variable parameter comparator is required. It cannot be null");
+        }
+        this.variableParameterCollectionComparator = variableParameter;
     }
 
     /**
@@ -118,7 +135,7 @@ public class ExperimentComparator implements Comparator<Experiment>{
         return organismComparator;
     }
 
-    public VariableParameterCollectionComparator getVariableParameterCollectionComparator() {
+    public CollectionComparator<VariableParameter> getVariableParameterCollectionComparator() {
         return variableParameterCollectionComparator;
     }
 }
