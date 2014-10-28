@@ -284,4 +284,8 @@ public class InteractorComparator implements Comparator<Interactor> {
             }
         }
     }
+
+    protected void setInteractorCandidatesComparator(Comparator<InteractorPool> interactorCandidatesComparator) {
+        this.interactorCandidatesComparator = interactorCandidatesComparator;
+    }
 }
