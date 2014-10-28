@@ -24,8 +24,8 @@ import java.util.Comparator;
 
 public class ComplexComparator implements Comparator<Complex> {
 
-    protected Comparator<Interactor> interactorBaseComparator;
-    protected ModelledParticipantCollectionComparator componentCollectionComparator;
+    private Comparator<Interactor> interactorBaseComparator;
+    private ModelledParticipantCollectionComparator componentCollectionComparator;
     private Comparator<CvTerm> cvTermComparator;
 
     /**
@@ -38,6 +38,29 @@ public class ComplexComparator implements Comparator<Complex> {
             throw new IllegalArgumentException("The ModelledParticipant comparator is required to compare participants composing the complexes. It cannot be null");
         }
         this.componentCollectionComparator = new ModelledParticipantCollectionComparator(componentComparator);
+
+        if (interactorBaseComparator == null){
+            throw new IllegalArgumentException("The comparator<Interactor> is required to compare participants composing the complexes. It cannot be null");
+        }
+        this.interactorBaseComparator = interactorBaseComparator;
+
+        if (cvTermComparator == null){
+            throw new IllegalArgumentException("The CvTermComparator comparator is required to compare the interaction type of a complex. It cannot be null");
+        }
+        this.cvTermComparator = cvTermComparator;
+    }
+
+    /**
+     * Creates a bew ComplexComparator. It needs a AbstractInteractorBaseComparator to compares interactor properties
+     *
+     */
+    public ComplexComparator(Comparator<Interactor> interactorBaseComparator, ModelledParticipantCollectionComparator componentComparator,
+                             Comparator<CvTerm> cvTermComparator){
+
+        if (componentComparator == null){
+            throw new IllegalArgumentException("The ModelledParticipant comparator is required to compare participants composing the complexes. It cannot be null");
+        }
+        this.componentCollectionComparator = componentComparator;
 
         if (interactorBaseComparator == null){
             throw new IllegalArgumentException("The comparator<Interactor> is required to compare participants composing the complexes. It cannot be null");

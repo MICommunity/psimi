@@ -48,12 +48,12 @@ public class UnambiguousInteractorComparator extends InteractorComparator{
 
     @Override
     public UnambiguousInteractorBaseComparator getInteractorBaseComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorBaseComparator;
+        return (UnambiguousInteractorBaseComparator) super.getInteractorBaseComparator();
     }
 
     @Override
     public UnambiguousComplexComparator getComplexComparator() {
-        return (UnambiguousComplexComparator) this.complexComparator;
+        return (UnambiguousComplexComparator) super.getComplexComparator();
     }
 
     @Override

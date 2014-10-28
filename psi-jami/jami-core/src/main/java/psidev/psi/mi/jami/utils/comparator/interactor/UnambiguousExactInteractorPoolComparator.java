@@ -34,7 +34,7 @@ public class UnambiguousExactInteractorPoolComparator extends InteractorPoolComp
 
     @Override
     public UnambiguousExactInteractorBaseComparator getInteractorBaseComparator() {
-        return (UnambiguousExactInteractorBaseComparator) this.interactorBaseComparator;
+        return (UnambiguousExactInteractorBaseComparator) super.getInteractorBaseComparator();
     }
 
     /**

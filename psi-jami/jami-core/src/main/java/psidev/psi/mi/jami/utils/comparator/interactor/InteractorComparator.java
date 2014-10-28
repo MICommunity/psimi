@@ -25,14 +25,14 @@ import java.util.Comparator;
 
 public class InteractorComparator implements Comparator<Interactor> {
 
-    protected Comparator<BioactiveEntity> bioactiveEntityComparator;
-    protected Comparator<Gene> geneComparator;
-    protected Comparator<Protein> proteinComparator;
-    protected Comparator<NucleicAcid> nucleicAcidComparator;
-    protected Comparator<Interactor> interactorBaseComparator;
-    protected Comparator<Complex> complexComparator;
-    protected Comparator<InteractorPool> interactorCandidatesComparator;
-    protected Comparator<Polymer> polymerComparator;
+    private Comparator<BioactiveEntity> bioactiveEntityComparator;
+    private Comparator<Gene> geneComparator;
+    private Comparator<Protein> proteinComparator;
+    private Comparator<NucleicAcid> nucleicAcidComparator;
+    private Comparator<Interactor> interactorBaseComparator;
+    private Comparator<Complex> complexComparator;
+    private Comparator<InteractorPool> interactorCandidatesComparator;
+    private Comparator<Polymer> polymerComparator;
 
     /**
      * Creates a new InteractorComparator.

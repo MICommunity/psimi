@@ -51,7 +51,7 @@ public class UnambiguousExactComplexComparator extends ComplexComparator {
 
     @Override
     public UnambiguousExactInteractorBaseComparator getInteractorBaseComparator() {
-        return (UnambiguousExactInteractorBaseComparator) this.interactorBaseComparator;
+        return (UnambiguousExactInteractorBaseComparator) super.getInteractorBaseComparator();
     }
 
 
