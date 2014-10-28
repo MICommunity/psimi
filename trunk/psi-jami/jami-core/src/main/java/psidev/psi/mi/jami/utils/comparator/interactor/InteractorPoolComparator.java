@@ -18,8 +18,8 @@ import java.util.*;
 
 public class InteractorPoolComparator implements Comparator<InteractorPool> {
 
-    protected CollectionComparator<Interactor> interactorCollectionComparator;
-    protected Comparator<Interactor> interactorBaseComparator;
+    private CollectionComparator<Interactor> interactorCollectionComparator;
+    private Comparator<Interactor> interactorBaseComparator;
 
     /**
      * Creates a new InteractorPoolComparator
@@ -31,6 +31,18 @@ public class InteractorPoolComparator implements Comparator<InteractorPool> {
         }
         this.interactorBaseComparator = interactorComparator.getInteractorBaseComparator();
         this.interactorCollectionComparator = new CollectionComparator<Interactor>(interactorComparator);
+    }
+
+    /**
+     * Creates a new InteractorPoolComparator
+     * @param interactorComparator : the interactor comparator required to compare interactors
+     */
+    public InteractorPoolComparator(InteractorComparator interactorComparator, CollectionComparator<Interactor> interactorCollectionComparator){
+        if (interactorComparator == null){
+            throw new IllegalArgumentException("The Interactor comparator is required to compare interactors. It cannot be null");
+        }
+        this.interactorBaseComparator = interactorComparator.getInteractorBaseComparator();
+        this.interactorCollectionComparator = interactorCollectionComparator != null ? interactorCollectionComparator : new CollectionComparator<Interactor>(interactorComparator);
     }
 
     public CollectionComparator<Interactor> getInteractorCollectionComparator() {

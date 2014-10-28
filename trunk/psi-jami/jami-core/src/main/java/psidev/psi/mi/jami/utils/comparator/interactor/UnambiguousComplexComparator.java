@@ -49,7 +49,7 @@ public class UnambiguousComplexComparator extends ComplexComparator{
 
     @Override
     public UnambiguousInteractorBaseComparator getInteractorBaseComparator() {
-        return (UnambiguousInteractorBaseComparator) this.interactorBaseComparator;
+        return (UnambiguousInteractorBaseComparator) super.getInteractorBaseComparator();
     }
 
     @Override
