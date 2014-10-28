@@ -3,6 +3,7 @@ package psidev.psi.mi.jami.utils.comparator.cooperativity;
 import psidev.psi.mi.jami.model.CooperativityEvidence;
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.cv.CvTermsCollectionComparator;
 
 import java.util.Collection;
@@ -20,7 +21,7 @@ import java.util.Comparator;
 
 public class CooperativityEvidenceComparator implements Comparator<CooperativityEvidence> {
 
-    private CvTermsCollectionComparator cvTermsCollectionComparator;
+    private CollectionComparator<CvTerm> cvTermsCollectionComparator;
     private Comparator<Publication> publicationComparator;
 
     public CooperativityEvidenceComparator(Comparator<CvTerm> cvTermComparator, Comparator<Publication> publicationComparator){
@@ -35,7 +36,19 @@ public class CooperativityEvidenceComparator implements Comparator<Cooperativity
         this.publicationComparator = publicationComparator;
     }
 
-    public CvTermsCollectionComparator getCvTermsCollectionComparator() {
+    public CooperativityEvidenceComparator(CollectionComparator<CvTerm> cvTermComparator, Comparator<Publication> publicationComparator){
+
+        if (cvTermComparator == null){
+            throw new IllegalArgumentException("The cvTermComparator cannot be null as we need one to compare evidenceMethods of a cooperativityEvidence");
+        }
+        this.cvTermsCollectionComparator = cvTermComparator;
+        if (publicationComparator == null){
+            throw new IllegalArgumentException("The publicationComparator cannot be null as we need one to compare publications of a cooperativityEvidence");
+        }
+        this.publicationComparator = publicationComparator;
+    }
+
+    public CollectionComparator<CvTerm> getCvTermsCollectionComparator() {
         return cvTermsCollectionComparator;
     }
 

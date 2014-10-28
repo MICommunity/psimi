@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.cooperativity;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.ModelledInteractionCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.interaction.ModelledInteractionComparator;
 
@@ -23,8 +24,8 @@ import java.util.Comparator;
 public class CooperativeEffectBaseComparator implements Comparator<CooperativeEffect>{
 
     private Comparator<CvTerm> cvTermComparator;
-    private CooperativityEvidenceCollectionComparator cooperativityEvidenceCollectionComparator;
-    private ModelledInteractionCollectionComparator modelledInteractionCollectionComparator;
+    private CollectionComparator<CooperativityEvidence> cooperativityEvidenceCollectionComparator;
+    private CollectionComparator<ModelledInteraction> modelledInteractionCollectionComparator;
 
     public CooperativeEffectBaseComparator(Comparator<CvTerm> cvTermComparator, CooperativityEvidenceComparator cooperativityEvidenceComparator, ModelledInteractionComparator modelledInteractionComparator){
         if (cvTermComparator == null){
@@ -43,15 +44,34 @@ public class CooperativeEffectBaseComparator implements Comparator<CooperativeEf
         this.modelledInteractionCollectionComparator = new ModelledInteractionCollectionComparator(modelledInteractionComparator);
     }
 
+    public CooperativeEffectBaseComparator(Comparator<CvTerm> cvTermComparator,
+                                           CollectionComparator<CooperativityEvidence> cooperativityEvidenceComparator,
+                                           CollectionComparator<ModelledInteraction> modelledInteractionComparator){
+        if (cvTermComparator == null){
+            throw new IllegalArgumentException("The cvTermComparator cannot be null and is required for comparing outcome and response.");
+        }
+        this.cvTermComparator = cvTermComparator;
+
+        if (cooperativityEvidenceComparator == null){
+            throw new IllegalArgumentException("The cooperativityEvidenceComparator cannot be null and is required for comparing cooperativity evidences.");
+        }
+        this.cooperativityEvidenceCollectionComparator = cooperativityEvidenceComparator;
+
+        if (modelledInteractionComparator == null){
+            throw new IllegalArgumentException("The modelledInteractionComparator cannot be null and is required for comparing affected interactions.");
+        }
+        this.modelledInteractionCollectionComparator = modelledInteractionComparator;
+    }
+
     public Comparator<CvTerm> getCvTermComparator() {
         return cvTermComparator;
     }
 
-    public CooperativityEvidenceCollectionComparator getCooperativityEvidenceCollectionComparator() {
+    public CollectionComparator<CooperativityEvidence> getCooperativityEvidenceCollectionComparator() {
         return cooperativityEvidenceCollectionComparator;
     }
 
-    public ModelledInteractionCollectionComparator getModelledInteractionCollectionComparator() {
+    public CollectionComparator<ModelledInteraction> getModelledInteractionCollectionComparator() {
         return modelledInteractionCollectionComparator;
     }
 
