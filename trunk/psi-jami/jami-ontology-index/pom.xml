@@ -36,4 +36,8 @@
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
         </repository>
     </repositories>
+  <modules>
+    <module>ontology-solr-home</module>
+    <module>ontology-solr-core</module>
+  </modules>
 </project>
