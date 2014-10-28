@@ -35,7 +35,7 @@ public class UnambiguousExactCuratedInteractionEvidenceComparator extends Intera
 
     @Override
     public UnambiguousCuratedExperimentComparator getExperimentComparator() {
-        return (UnambiguousCuratedExperimentComparator) this.experimentComparator;
+        return (UnambiguousCuratedExperimentComparator) super.getExperimentComparator();
     }
 
     @Override

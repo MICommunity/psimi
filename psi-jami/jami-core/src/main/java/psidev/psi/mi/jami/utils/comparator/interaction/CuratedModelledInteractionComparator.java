@@ -22,7 +22,7 @@ import java.util.Comparator;
 
 public class CuratedModelledInteractionComparator extends ModelledInteractionComparator {
 
-    protected Comparator<CvTerm> sourceComparator;
+    private Comparator<CvTerm> sourceComparator;
 
     /**
      * @param participantComparator : required to compare participants

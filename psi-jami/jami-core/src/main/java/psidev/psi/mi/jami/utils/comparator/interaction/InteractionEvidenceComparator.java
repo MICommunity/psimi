@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.experiment.ExperimentComparator;
 import psidev.psi.mi.jami.utils.comparator.experiment.VariableParameterValueSetCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.ParameterCollectionComparator;
@@ -26,11 +27,11 @@ import java.util.Comparator;
 
 public class InteractionEvidenceComparator implements Comparator<InteractionEvidence> {
 
-    protected Comparator<Interaction> interactionComparator;
-    protected ExperimentComparator experimentComparator;
-    protected ParameterCollectionComparator parameterCollectionComparator;
-    protected ParticipantCollectionComparator participantCollectionComparator;
-    protected VariableParameterValueSetCollectionComparator variableParameterValueSetCollectionComparator;
+    private Comparator<Interaction> interactionComparator;
+    private ExperimentComparator experimentComparator;
+    private CollectionComparator<Parameter> parameterCollectionComparator;
+    private CollectionComparator<ParticipantEvidence> participantCollectionComparator;
+    private CollectionComparator<VariableParameterValueSet> variableParameterValueSetCollectionComparator;
 
     /**
      * Creates a new InteractionEvidenceComparator.
@@ -61,7 +62,35 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
         this.variableParameterValueSetCollectionComparator = new VariableParameterValueSetCollectionComparator();
     }
 
-    public ParameterCollectionComparator getParameterCollectionComparator() {
+    public InteractionEvidenceComparator(CollectionComparator<ParticipantEvidence> participantComparator, Comparator<Interaction> interactionComparator,
+                                         ExperimentComparator experimentComparator,
+                                         CollectionComparator<Parameter> parameterComparator,
+                                         CollectionComparator<VariableParameterValueSet> variableParameterValuesSetComparator){
+        if (interactionComparator == null){
+            throw new IllegalArgumentException("The Interaction comparator is required to compare basic interaction properties. It cannot be null");
+        }
+        this.interactionComparator = interactionComparator;
+
+        if (experimentComparator == null){
+            throw new IllegalArgumentException("The Experiment comparator is required to compare experiment where the interaction has been determined. It cannot be null");
+        }
+        this.experimentComparator = experimentComparator;
+
+        if (parameterComparator == null){
+            throw new IllegalArgumentException("The Parameter comparator is required to compare parameters of the interaction. It cannot be null");
+        }
+        this.parameterCollectionComparator = parameterComparator;
+        if (participantComparator == null){
+            throw new IllegalArgumentException("The participant comparator is required to compare participants of an interaction. It cannot be null");
+        }
+        this.participantCollectionComparator = participantComparator;
+        if (variableParameterValuesSetComparator == null){
+            throw new IllegalArgumentException("The variable values set comparator is required to compare variable parameters values of an interaction. It cannot be null");
+        }
+        this.variableParameterValueSetCollectionComparator = variableParameterValuesSetComparator;
+    }
+
+    public CollectionComparator<Parameter> getParameterCollectionComparator() {
         return parameterCollectionComparator;
     }
 
@@ -73,11 +102,11 @@ public class InteractionEvidenceComparator implements Comparator<InteractionEvid
         return experimentComparator;
     }
 
-    public ParticipantCollectionComparator getParticipantCollectionComparator() {
+    public CollectionComparator<ParticipantEvidence> getParticipantCollectionComparator() {
         return participantCollectionComparator;
     }
 
-    public VariableParameterValueSetCollectionComparator getVariableParameterValueSetCollectionComparator() {
+    public CollectionComparator<VariableParameterValueSet> getVariableParameterValueSetCollectionComparator() {
         return variableParameterValueSetCollectionComparator;
     }
 

@@ -30,10 +30,10 @@ public class UnambiguousExactCuratedModelledInteractionComparator extends Curate
 
     @Override
     public UnambiguousCuratedInteractionBaseComparator getInteractionBaseComparator() {
-        return (UnambiguousCuratedInteractionBaseComparator) this.interactionBaseComparator;
+        return (UnambiguousCuratedInteractionBaseComparator) super.getInteractionBaseComparator();
     }
     public UnambiguousCvTermComparator getSourceComparator() {
-        return (UnambiguousCvTermComparator) sourceComparator;
+        return (UnambiguousCvTermComparator) super.getSourceComparator();
     }
 
 

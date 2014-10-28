@@ -35,7 +35,7 @@ public class UnambiguousExactInteractionEvidenceComparator extends InteractionEv
 
     @Override
     public UnambiguousExperimentComparator getExperimentComparator() {
-        return (UnambiguousExperimentComparator) this.experimentComparator;
+        return (UnambiguousExperimentComparator) super.getExperimentComparator();
     }
 
     @Override

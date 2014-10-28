@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.interaction;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.interactor.InteractorComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.ParticipantCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.participant.ParticipantInteractorComparator;
@@ -23,7 +24,7 @@ import java.util.Comparator;
 
 public class InteractionInteractorComparator implements Comparator<Interaction> {
 
-    protected ParticipantCollectionComparator participantCollectionComparator;
+    private CollectionComparator<Participant> participantCollectionComparator;
 
     /**
      * Creates a new InteractionInteractorComparator
@@ -36,7 +37,14 @@ public class InteractionInteractorComparator implements Comparator<Interaction> 
         this.participantCollectionComparator = new ParticipantCollectionComparator(new ParticipantInteractorComparator<Participant>(interactorComparator));
     }
 
-    public ParticipantCollectionComparator getParticipantCollectionComparator() {
+    public InteractionInteractorComparator(CollectionComparator<Participant> interactorComparator){
+        if (interactorComparator == null){
+            throw new IllegalArgumentException("The Interactor comparator is required to compare interactors of an interaction. It cannot be null");
+        }
+        this.participantCollectionComparator = interactorComparator;
+    }
+
+    public CollectionComparator<Participant> getParticipantCollectionComparator() {
         return participantCollectionComparator;
     }
 

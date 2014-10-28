@@ -27,12 +27,12 @@ public class UnambiguousExactCuratedInteractionComparator extends InteractionCom
 
     @Override
     public UnambiguousCuratedInteractionBaseComparator getInteractionBaseComparator() {
-        return (UnambiguousCuratedInteractionBaseComparator) this.interactionBaseComparator;
+        return (UnambiguousCuratedInteractionBaseComparator) super.getInteractionBaseComparator();
     }
 
     @Override
     public UnambiguousExactCuratedInteractionEvidenceComparator getExperimentalInteractionComparator() {
-        return (UnambiguousExactCuratedInteractionEvidenceComparator) this.experimentalInteractionComparator;
+        return (UnambiguousExactCuratedInteractionEvidenceComparator) super.getExperimentalInteractionComparator();
     }
 
     @Override
