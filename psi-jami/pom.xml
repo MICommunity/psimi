@@ -33,6 +33,7 @@
     <module>jami-crosslink-csv</module>
     <module>crosslink-uploader-app</module>
     <module>jami-ontology-index</module>
+    <module>jami-imex-updater</module>
   </modules>
 
     <dependencies>
