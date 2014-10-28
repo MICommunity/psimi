@@ -21,7 +21,7 @@ import java.util.Comparator;
 
 public class ChecksumComparator implements Comparator<Checksum>{
 
-    protected Comparator<CvTerm> methodComparator;
+    private Comparator<CvTerm> methodComparator;
 
     /**
      * Creates a new ChecksumComparator.

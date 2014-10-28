@@ -32,7 +32,7 @@ public class UnambiguousAnnotationComparator extends AnnotationComparator {
 
     @Override
     public UnambiguousCvTermComparator getTopicComparator() {
-        return (UnambiguousCvTermComparator) topicComparator;
+        return (UnambiguousCvTermComparator) super.getTopicComparator();
     }
 
     /**

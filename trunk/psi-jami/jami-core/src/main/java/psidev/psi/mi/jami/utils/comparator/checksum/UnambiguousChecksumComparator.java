@@ -26,7 +26,7 @@ public class UnambiguousChecksumComparator extends ChecksumComparator {
 
     @Override
     public UnambiguousCvTermComparator getMethodComparator() {
-        return (UnambiguousCvTermComparator) methodComparator;
+        return (UnambiguousCvTermComparator) super.getMethodComparator();
     }
 
     /**

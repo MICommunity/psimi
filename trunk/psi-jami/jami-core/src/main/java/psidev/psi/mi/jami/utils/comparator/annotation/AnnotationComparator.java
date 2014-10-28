@@ -20,7 +20,7 @@ import java.util.Comparator;
 
 public class AnnotationComparator implements Comparator<Annotation> {
 
-    protected Comparator<CvTerm> topicComparator;
+    private Comparator<CvTerm> topicComparator;
 
     /**
      * Creates a new AnnotationComparator.

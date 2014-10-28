@@ -21,7 +21,7 @@ import java.util.Comparator;
 
 public class AliasComparator implements Comparator<Alias>{
 
-    protected Comparator<CvTerm> typeComparator;
+    private Comparator<CvTerm> typeComparator;
 
     /**
      * Creates a new AliasComparator.

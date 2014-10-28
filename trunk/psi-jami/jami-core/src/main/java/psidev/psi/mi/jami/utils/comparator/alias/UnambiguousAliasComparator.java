@@ -30,7 +30,7 @@ public class UnambiguousAliasComparator extends AliasComparator {
 
     @Override
     public UnambiguousCvTermComparator getTypeComparator() {
-        return (UnambiguousCvTermComparator) this.typeComparator;
+        return (UnambiguousCvTermComparator) super.getTypeComparator();
     }
 
     @Override
