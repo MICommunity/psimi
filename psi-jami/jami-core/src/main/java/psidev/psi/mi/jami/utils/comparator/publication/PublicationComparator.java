@@ -35,7 +35,7 @@ public class PublicationComparator implements Comparator<Publication>{
     }
 
     public PublicationComparator(CollectionComparator<Xref> identifiersComparator) {
-        if (identifierComparator == null){
+        if (identifiersComparator == null){
             throw new IllegalArgumentException("The identifiers comparator cannot be null in a publication comparator");
         }
         this.identifierCollectionComparator = identifiersComparator;
