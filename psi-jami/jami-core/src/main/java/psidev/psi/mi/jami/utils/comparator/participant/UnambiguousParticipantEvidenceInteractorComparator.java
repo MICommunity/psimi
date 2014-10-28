@@ -29,7 +29,7 @@ public class UnambiguousParticipantEvidenceInteractorComparator extends
 
     @Override
     public UnambiguousInteractorComparator getInteractorComparator() {
-        return (UnambiguousInteractorComparator) this.interactorComparator;
+        return (UnambiguousInteractorComparator) super.getInteractorComparator();
     }
 
     @Override

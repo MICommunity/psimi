@@ -32,7 +32,7 @@ public class UnambiguousModelledParticipantComparator extends ModelledParticipan
 
     @Override
     public UnambiguousModelledParticipantPoolComparator getParticipantPoolComparator() {
-        return (UnambiguousModelledParticipantPoolComparator) this.poolComparator;
+        return (UnambiguousModelledParticipantPoolComparator) super.getParticipantPoolComparator();
     }
 
     @Override

@@ -22,11 +22,11 @@ import java.util.Set;
 
 public class ModelledParticipantComparator implements CustomizableModelledParticipantComparator<ModelledParticipant> {
 
-    protected ModelledParticipantPoolComparator poolComparator;
+    private ModelledParticipantPoolComparator poolComparator;
 
-    protected boolean checkComplexesAsInteractors = true;
+    private boolean checkComplexesAsInteractors = true;
 
-    protected Map<Complex, Set<Interactor>> processedComplexes;
+    private Map<Complex, Set<Interactor>> processedComplexes;
 
     /**
      * Creates a new ComponentComparator

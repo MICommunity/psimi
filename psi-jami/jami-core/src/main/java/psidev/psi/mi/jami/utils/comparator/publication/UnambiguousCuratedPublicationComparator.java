@@ -25,12 +25,12 @@ public class UnambiguousCuratedPublicationComparator extends CuratedPublicationC
 
     @Override
     public UnambiguousPublicationComparator getPublicationComparator() {
-        return (UnambiguousPublicationComparator) publicationComparator;
+        return (UnambiguousPublicationComparator) super.getPublicationComparator();
     }
 
     @Override
     public UnambiguousCvTermComparator getSourceComparator() {
-        return (UnambiguousCvTermComparator) sourceComparator;
+        return (UnambiguousCvTermComparator) super.getSourceComparator();
     }
 
     @Override

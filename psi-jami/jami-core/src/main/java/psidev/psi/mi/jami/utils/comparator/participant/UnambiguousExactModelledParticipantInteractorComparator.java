@@ -32,7 +32,7 @@ public class UnambiguousExactModelledParticipantInteractorComparator extends
 
     @Override
     public UnambiguousExactInteractorComparator getInteractorComparator() {
-        return (UnambiguousExactInteractorComparator) this.interactorComparator;
+        return (UnambiguousExactInteractorComparator) super.getInteractorComparator();
     }
 
     @Override

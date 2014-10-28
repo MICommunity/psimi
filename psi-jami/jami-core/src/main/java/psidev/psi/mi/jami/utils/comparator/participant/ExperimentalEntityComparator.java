@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.ExperimentalEntity;
 import psidev.psi.mi.jami.model.FeatureEvidence;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.FeatureEvidenceComparator;
 
@@ -19,8 +20,8 @@ import java.util.Comparator;
 
 public class ExperimentalEntityComparator implements Comparator<ExperimentalEntity> {
 
-    protected EntityBaseComparator participantBaseComparator;
-    protected FeatureCollectionComparator featureCollectionComparator;
+    private EntityBaseComparator participantBaseComparator;
+    private CollectionComparator<FeatureEvidence> featureCollectionComparator;
 
     /**
      * Creates a new ParticipantEvidenceComparator
@@ -39,11 +40,28 @@ public class ExperimentalEntityComparator implements Comparator<ExperimentalEnti
         this.featureCollectionComparator = new FeatureCollectionComparator(featureComparator);
     }
 
+    /**
+     * Creates a new ParticipantEvidenceComparator
+     * @param participantBaseComparator : the participant comparator required to compare basic properties of a participant
+     *@param featuresComparator : the comparator for features
+     */
+    public ExperimentalEntityComparator(EntityBaseComparator participantBaseComparator,
+                                        CollectionComparator<FeatureEvidence> featuresComparator){
+        if (participantBaseComparator == null){
+            throw new IllegalArgumentException("The entity base comparator is required to compare basic participant properties. It cannot be null");
+        }
+        this.participantBaseComparator = participantBaseComparator;
+        if (featuresComparator == null){
+            throw new IllegalArgumentException("The features comparator is required to compare features. It cannot be null");
+        }
+        this.featureCollectionComparator = featuresComparator;
+    }
+
     public EntityBaseComparator getParticipantBaseComparator() {
         return participantBaseComparator;
     }
 
-    public FeatureCollectionComparator getFeatureCollectionComparator() {
+    public CollectionComparator<FeatureEvidence> getFeatureCollectionComparator() {
         return featureCollectionComparator;
     }
 

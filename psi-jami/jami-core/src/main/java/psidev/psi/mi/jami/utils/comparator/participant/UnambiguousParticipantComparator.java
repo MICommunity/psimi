@@ -29,12 +29,12 @@ public class UnambiguousParticipantComparator extends ParticipantComparator {
 
     @Override
     public UnambiguousParticipantBaseComparator getParticipantBaseComparator() {
-        return (UnambiguousParticipantBaseComparator) this.participantBaseComparator;
+        return (UnambiguousParticipantBaseComparator) super.getParticipantBaseComparator();
     }
 
     @Override
     public UnambiguousParticipantEvidenceComparator getExperimentalParticipantComparator() {
-        return (UnambiguousParticipantEvidenceComparator) this.experimentalParticipantComparator;
+        return (UnambiguousParticipantEvidenceComparator)super.getExperimentalParticipantComparator();
     }
 
     @Override

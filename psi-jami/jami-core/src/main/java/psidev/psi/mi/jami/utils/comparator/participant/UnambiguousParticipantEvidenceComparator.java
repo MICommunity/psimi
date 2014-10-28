@@ -30,7 +30,7 @@ public class UnambiguousParticipantEvidenceComparator extends ParticipantEvidenc
 
     @Override
     public UnambiguousExperimentalParticipantPoolComparator getParticipantPoolComparator() {
-        return (UnambiguousExperimentalParticipantPoolComparator) this.poolComparator;
+        return (UnambiguousExperimentalParticipantPoolComparator) super.getParticipantPoolComparator();
     }
 
     @Override

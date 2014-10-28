@@ -19,8 +19,8 @@ import java.util.Comparator;
 
 public class ParticipantBaseComparator implements Comparator<Participant> {
 
-    protected Comparator<CvTerm> cvTermComparator;
-    protected EntityBaseComparator entityComparator;
+    private Comparator<CvTerm> cvTermComparator;
+    private EntityBaseComparator entityComparator;
 
     /**
      * Creates a new ParticipantBaseComparator

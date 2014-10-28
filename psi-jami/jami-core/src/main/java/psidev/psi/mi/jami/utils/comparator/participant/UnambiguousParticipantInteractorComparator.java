@@ -27,7 +27,7 @@ public class UnambiguousParticipantInteractorComparator extends ParticipantInter
 
     @Override
     public UnambiguousInteractorComparator getInteractorComparator() {
-        return (UnambiguousInteractorComparator) this.interactorComparator;
+        return (UnambiguousInteractorComparator) super.getInteractorComparator();
     }
 
     @Override

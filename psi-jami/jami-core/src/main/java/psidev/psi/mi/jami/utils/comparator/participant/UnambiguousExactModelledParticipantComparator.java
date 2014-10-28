@@ -33,7 +33,7 @@ public class UnambiguousExactModelledParticipantComparator extends ModelledParti
 
     @Override
     public UnambiguousExactModelledParticipantPoolComparator getParticipantPoolComparator() {
-        return (UnambiguousExactModelledParticipantPoolComparator) this.poolComparator;
+        return (UnambiguousExactModelledParticipantPoolComparator) super.getParticipantPoolComparator();
     }
 
     @Override

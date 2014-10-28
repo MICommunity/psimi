@@ -32,12 +32,12 @@ public class UnambiguousParticipantBaseComparator extends ParticipantBaseCompara
 
     @Override
     public UnambiguousEntityBaseComparator getEntityBaseComparator() {
-        return (UnambiguousEntityBaseComparator) this.entityComparator;
+        return (UnambiguousEntityBaseComparator) super.getEntityBaseComparator();
     }
 
     @Override
     public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) this.cvTermComparator;
+        return (UnambiguousCvTermComparator) super.getCvTermComparator();
     }
 
     @Override

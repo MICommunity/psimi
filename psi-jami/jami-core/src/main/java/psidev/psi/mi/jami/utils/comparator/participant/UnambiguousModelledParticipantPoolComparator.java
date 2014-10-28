@@ -36,7 +36,7 @@ public class UnambiguousModelledParticipantPoolComparator extends ModelledPartic
 
     @Override
     public UnambiguousParticipantBaseComparator getParticipantBaseComparator() {
-        return (UnambiguousParticipantBaseComparator) this.participantBaseComparator;
+        return (UnambiguousParticipantBaseComparator) super.getParticipantBaseComparator();
     }
 
     @Override
