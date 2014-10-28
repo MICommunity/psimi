@@ -23,6 +23,6 @@ public class AnnotationsCollectionComparator extends CollectionComparator<Annota
 
     @Override
     public AnnotationComparator getObjectComparator() {
-        return (AnnotationComparator) objectComparator;
+        return (AnnotationComparator) super.getObjectComparator();
     }
 }

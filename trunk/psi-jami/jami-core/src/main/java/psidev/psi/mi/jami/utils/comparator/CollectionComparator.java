@@ -15,7 +15,7 @@ import java.util.*;
 
 public class CollectionComparator<T> implements Comparator<Collection<? extends T>> {
 
-    protected Comparator<T> objectComparator;
+    private Comparator<T> objectComparator;
 
     /**
      * Creates a new CollectionComparator. It requires a Comparator for the obejcts in the Collection

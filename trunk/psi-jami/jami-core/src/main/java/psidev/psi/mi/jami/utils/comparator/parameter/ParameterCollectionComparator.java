@@ -23,6 +23,6 @@ public class ParameterCollectionComparator extends CollectionComparator<Paramete
 
     @Override
     public ParameterComparator getObjectComparator() {
-        return (ParameterComparator) objectComparator;
+        return (ParameterComparator) super.getObjectComparator();
     }
 }

@@ -23,6 +23,6 @@ public class ModelledInteractionCollectionComparator extends CollectionComparato
 
     @Override
     public ModelledInteractionComparator getObjectComparator() {
-        return (ModelledInteractionComparator) objectComparator;
+        return (ModelledInteractionComparator) super.getObjectComparator();
     }
 }

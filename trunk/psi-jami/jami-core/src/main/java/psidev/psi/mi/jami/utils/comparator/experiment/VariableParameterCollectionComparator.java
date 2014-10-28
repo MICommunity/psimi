@@ -24,6 +24,6 @@ public class VariableParameterCollectionComparator extends CollectionComparator<
 
     @Override
     public VariableParameterComparator getObjectComparator() {
-        return (VariableParameterComparator) objectComparator;
+        return (VariableParameterComparator) super.getObjectComparator();
     }
 }

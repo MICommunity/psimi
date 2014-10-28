@@ -19,7 +19,7 @@ import java.util.Comparator;
 
 public class RangeComparator implements Comparator<Range> {
     
-    protected PositionComparator positionComparator;
+    private PositionComparator positionComparator;
 
     /**
      * Creates a new RangeComparator

@@ -25,6 +25,6 @@ public class XrefsCollectionComparator extends CollectionComparator<Xref> {
 
     @Override
     public Comparator<Xref> getObjectComparator() {
-        return (Comparator<Xref>) objectComparator;
+        return (Comparator<Xref>) super.getObjectComparator();
     }
 }

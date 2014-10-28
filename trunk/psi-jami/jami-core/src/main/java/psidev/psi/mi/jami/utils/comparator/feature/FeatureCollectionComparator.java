@@ -25,6 +25,6 @@ public class FeatureCollectionComparator<T extends Feature> extends CollectionCo
 
     @Override
     public Comparator<T> getObjectComparator() {
-        return (Comparator<T>) objectComparator;
+        return (Comparator<T>) super.getObjectComparator();
     }
 }

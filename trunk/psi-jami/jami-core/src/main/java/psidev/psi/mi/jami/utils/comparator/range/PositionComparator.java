@@ -21,7 +21,7 @@ import java.util.Comparator;
 
 public class PositionComparator implements Comparator<Position>{
 
-    protected Comparator<CvTerm> statusComparator;
+    private Comparator<CvTerm> statusComparator;
 
     /**
      * Creates a new positionComparator
