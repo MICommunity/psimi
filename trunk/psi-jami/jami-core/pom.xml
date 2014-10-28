@@ -17,6 +17,13 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     </properties>
+
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-core</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-core</developerConnection>
+        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-core</url>
+    </scm>
+
     <build>
         <plugins>
             <plugin>
