@@ -30,7 +30,7 @@ public class UnambiguousRangeAndResultingSequenceComparator extends RangeAndResu
 
     @Override
     public UnambiguousPositionComparator getPositionComparator() {
-        return (UnambiguousPositionComparator) this.positionComparator;
+        return (UnambiguousPositionComparator) super.getPositionComparator();
     }
 
     @Override

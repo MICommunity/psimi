@@ -32,7 +32,7 @@ public class UnambiguousPositionComparator extends PositionComparator {
 
     @Override
     public UnambiguousCvTermComparator getStatusComparator() {
-        return (UnambiguousCvTermComparator) this.statusComparator;
+        return (UnambiguousCvTermComparator) super.getStatusComparator();
     }
 
     @Override

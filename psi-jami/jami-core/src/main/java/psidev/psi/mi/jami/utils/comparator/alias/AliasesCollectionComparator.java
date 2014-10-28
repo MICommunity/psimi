@@ -23,6 +23,6 @@ public class AliasesCollectionComparator extends CollectionComparator<Alias> {
 
     @Override
     public AliasComparator getObjectComparator() {
-        return (AliasComparator) objectComparator;
+        return (AliasComparator) super.getObjectComparator();
     }
 }

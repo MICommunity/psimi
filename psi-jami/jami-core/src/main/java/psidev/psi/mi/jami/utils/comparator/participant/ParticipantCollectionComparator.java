@@ -26,6 +26,6 @@ public class ParticipantCollectionComparator<T extends Entity>  extends Collecti
 
     @Override
     public Comparator<T> getObjectComparator() {
-        return objectComparator;
+        return super.getObjectComparator();
     }
 }

@@ -23,6 +23,6 @@ public class RangeCollectionComparator extends CollectionComparator<Range>{
 
     @Override
     public RangeComparator getObjectComparator() {
-        return (RangeComparator) objectComparator;
+        return (RangeComparator) super.getObjectComparator();
     }
 }

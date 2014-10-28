@@ -27,7 +27,7 @@ public class UnambiguousRangeComparator extends RangeComparator {
 
     @Override
     public UnambiguousPositionComparator getPositionComparator() {
-        return (UnambiguousPositionComparator) this.positionComparator;
+        return (UnambiguousPositionComparator) super.getPositionComparator();
     }
 
     @Override
