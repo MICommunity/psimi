@@ -74,6 +74,42 @@ public class InteractorComparator implements Comparator<Interactor> {
         this.interactorCandidatesComparator = new InteractorPoolComparator(this);
     }
 
+    public InteractorComparator(Comparator<Interactor> interactorBaseComparator, Comparator<Complex> complexComparator, Comparator<Polymer> polymerComparator,
+                                Comparator<BioactiveEntity> bioactiveEntityComparator, Comparator<Gene> geneComparator,
+                                Comparator<NucleicAcid> nucleicAcidComparator, Comparator<Protein> proteinComparator,
+    Comparator<InteractorPool> poolComparator){
+        if (interactorBaseComparator == null){
+            throw new IllegalArgumentException("The interactorBaseComparator is required to create more specific interactor comparators and compares basic interactor properties. It cannot be null");
+        }
+        this.interactorBaseComparator = interactorBaseComparator;
+        if (bioactiveEntityComparator == null){
+            throw new IllegalArgumentException("The BioactiveEntityComparator is required to compare bioactive entities. It cannot be null");
+        }
+        this.bioactiveEntityComparator = bioactiveEntityComparator;
+        if (geneComparator == null){
+            throw new IllegalArgumentException("The GeneComparator is required to compare genes. It cannot be null");
+        }
+        this.geneComparator = geneComparator;
+        if (proteinComparator == null){
+            throw new IllegalArgumentException("The ProteinComparator is required to compare proteins. It cannot be null");
+        }
+        this.proteinComparator = proteinComparator;
+        if (nucleicAcidComparator == null){
+            throw new IllegalArgumentException("The NucleicAcidComparator is required to compare nucleicAcids. It cannot be null");
+        }
+        this.nucleicAcidComparator = nucleicAcidComparator;
+        if (polymerComparator == null){
+            throw new IllegalArgumentException("The PolymerComparator is required to compare polymers. It cannot be null");
+        }
+        this.polymerComparator = polymerComparator;
+
+        if (complexComparator == null){
+            throw new IllegalArgumentException("The ComplexComparator is required to compare complexes. It cannot be null");
+        }
+        this.complexComparator = complexComparator;
+        this.interactorCandidatesComparator = poolComparator != null ? poolComparator : new InteractorPoolComparator(this);
+    }
+
     public Comparator<BioactiveEntity> getBioactiveEntityComparator() {
         return bioactiveEntityComparator;
     }
