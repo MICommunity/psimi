@@ -25,12 +25,12 @@ public class UnambiguousCuratedInteractionComparator extends InteractionComparat
 
     @Override
     public UnambiguousCuratedInteractionBaseComparator getInteractionBaseComparator() {
-        return (UnambiguousCuratedInteractionBaseComparator) this.interactionBaseComparator;
+        return (UnambiguousCuratedInteractionBaseComparator) super.getInteractionBaseComparator();
     }
 
     @Override
     public UnambiguousCuratedInteractionEvidenceComparator getExperimentalInteractionComparator() {
-        return (UnambiguousCuratedInteractionEvidenceComparator) this.experimentalInteractionComparator;
+        return (UnambiguousCuratedInteractionEvidenceComparator) super.getExperimentalInteractionComparator();
     }
 
     @Override

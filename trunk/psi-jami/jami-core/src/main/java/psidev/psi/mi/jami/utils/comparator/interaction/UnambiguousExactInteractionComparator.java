@@ -27,12 +27,12 @@ public class UnambiguousExactInteractionComparator extends InteractionComparator
 
     @Override
     public UnambiguousInteractionBaseComparator getInteractionBaseComparator() {
-        return (UnambiguousInteractionBaseComparator) this.interactionBaseComparator;
+        return (UnambiguousInteractionBaseComparator) super.getInteractionBaseComparator();
     }
 
     @Override
     public UnambiguousExactInteractionEvidenceComparator getExperimentalInteractionComparator() {
-        return (UnambiguousExactInteractionEvidenceComparator) this.experimentalInteractionComparator;
+        return (UnambiguousExactInteractionEvidenceComparator) super.getExperimentalInteractionComparator();
     }
 
     @Override

@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class CuratedInteractionBaseComparator implements Comparator<Interaction>{
 
-    protected Comparator<Interaction> interactionBaseComparator;
+    private Comparator<Interaction> interactionBaseComparator;
 
     /**
      * @param interactionBaseComparator : required to compare basic properties of an interaction

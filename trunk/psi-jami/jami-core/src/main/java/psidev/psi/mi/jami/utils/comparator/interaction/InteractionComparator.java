@@ -18,9 +18,9 @@ import java.util.Comparator;
 
 public class InteractionComparator implements Comparator<Interaction> {
 
-    protected Comparator<Interaction> interactionBaseComparator;
-    protected InteractionEvidenceComparator experimentalInteractionComparator;
-    protected ModelledInteractionComparator modelledInteractionComparator;
+    private Comparator<Interaction> interactionBaseComparator;
+    private InteractionEvidenceComparator experimentalInteractionComparator;
+    private ModelledInteractionComparator modelledInteractionComparator;
 
     public InteractionComparator(Comparator<Interaction> interactionBaseComparator, ModelledInteractionComparator modelledInteractionComparator, InteractionEvidenceComparator experimentalInteractionComparator){
         if (interactionBaseComparator == null){

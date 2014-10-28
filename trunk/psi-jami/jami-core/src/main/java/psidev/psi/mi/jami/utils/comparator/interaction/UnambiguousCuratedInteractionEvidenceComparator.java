@@ -34,7 +34,7 @@ public class UnambiguousCuratedInteractionEvidenceComparator extends Interaction
 
     @Override
     public UnambiguousCuratedExperimentComparator getExperimentComparator() {
-        return (UnambiguousCuratedExperimentComparator) this.experimentComparator;
+        return (UnambiguousCuratedExperimentComparator) super.getExperimentComparator();
     }
 
     @Override
