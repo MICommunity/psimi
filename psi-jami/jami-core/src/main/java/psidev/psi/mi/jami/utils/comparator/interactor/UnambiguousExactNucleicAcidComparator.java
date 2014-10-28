@@ -12,7 +12,7 @@ import psidev.psi.mi.jami.model.NucleicAcid;
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactNucleicAcidComparator extends UnambiguousNucleicAcidComparator {
+public class UnambiguousExactNucleicAcidComparator extends NucleicAcidComparator {
 
     private static UnambiguousExactNucleicAcidComparator unambiguousExactNucleicAcidComparator;
 
@@ -36,7 +36,7 @@ public class UnambiguousExactNucleicAcidComparator extends UnambiguousNucleicAci
 
     @Override
     public UnambiguousExactPolymerComparator getInteractorComparator() {
-        return (UnambiguousExactPolymerComparator) this.interactorComparator;
+        return (UnambiguousExactPolymerComparator) super.getInteractorComparator();
     }
 
     /**
