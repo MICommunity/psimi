@@ -15,7 +15,7 @@ import psidev.psi.mi.jami.model.Protein;
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactProteinComparator extends UnambiguousProteinComparator {
+public class UnambiguousExactProteinComparator extends ProteinComparator {
 
     private static UnambiguousExactProteinComparator unambiguousExactProteinComparator;
 
@@ -42,7 +42,7 @@ public class UnambiguousExactProteinComparator extends UnambiguousProteinCompara
 
     @Override
     public UnambiguousExactPolymerComparator getInteractorComparator() {
-        return (UnambiguousExactPolymerComparator) this.interactorComparator;
+        return (UnambiguousExactPolymerComparator) super.getInteractorComparator();
     }
 
     /**

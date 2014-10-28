@@ -14,7 +14,7 @@ import psidev.psi.mi.jami.model.Gene;
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactGeneComparator extends UnambiguousGeneComparator {
+public class UnambiguousExactGeneComparator extends GeneComparator {
 
     private static UnambiguousExactGeneComparator unambiguousExactGeneComparator;
 
@@ -36,7 +36,7 @@ public class UnambiguousExactGeneComparator extends UnambiguousGeneComparator {
     }
 
     public UnambiguousExactInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousExactInteractorBaseComparator) this.interactorBaseComparator;
+        return (UnambiguousExactInteractorBaseComparator) super.getInteractorComparator();
     }
 
     /**

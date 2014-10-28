@@ -16,7 +16,7 @@ import psidev.psi.mi.jami.model.BioactiveEntity;
  * @since <pre>17/01/13</pre>
  */
 
-public class UnambiguousExactBioactiveEntityComparator extends UnambiguousBioactiveEntityComparator {
+public class UnambiguousExactBioactiveEntityComparator extends BioactiveEntityComparator {
     private static UnambiguousExactBioactiveEntityComparator unambiguousExactBioactiveEntityComparator;
 
     /**
@@ -40,7 +40,7 @@ public class UnambiguousExactBioactiveEntityComparator extends UnambiguousBioact
 
     @Override
     public UnambiguousExactInteractorBaseComparator getInteractorComparator() {
-        return (UnambiguousExactInteractorBaseComparator) this.interactorBaseComparator;
+        return (UnambiguousExactInteractorBaseComparator) super.getInteractorComparator();
     }
 
     /**
