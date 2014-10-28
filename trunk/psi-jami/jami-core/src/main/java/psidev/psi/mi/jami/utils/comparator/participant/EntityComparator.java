@@ -19,10 +19,10 @@ import java.util.Comparator;
 
 public class EntityComparator implements Comparator<Entity> {
 
-    protected EntityBaseComparator entityBaseComparator;
-    protected ExperimentalEntityComparator experimentalEntityComparator;
-    protected ModelledEntityComparator biologicalEntityComparator;
-    protected ParticipantComparator participantComparator;
+    private EntityBaseComparator entityBaseComparator;
+    private ExperimentalEntityComparator experimentalEntityComparator;
+    private ModelledEntityComparator biologicalEntityComparator;
+    private ParticipantComparator participantComparator;
 
     public EntityComparator(EntityBaseComparator participantBaseComparator,
                             ExperimentalEntityComparator experimentalParticipantComparator,

@@ -20,7 +20,7 @@ import java.util.Comparator;
 
 public class ParticipantEvidenceComparator implements Comparator<ParticipantEvidence> {
 
-    protected ExperimentalParticipantPoolComparator poolComparator;
+    private ExperimentalParticipantPoolComparator poolComparator;
 
     /**
      * Creates a new ParticipantEvidenceComparator

@@ -1,6 +1,8 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.ParticipantPool;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 
 import java.util.Comparator;
 
@@ -16,8 +18,8 @@ import java.util.Comparator;
 
 public class ParticipantPoolComparator implements Comparator<ParticipantPool> {
 
-    protected ParticipantBaseComparator participantBaseComparator;
-    protected ParticipantCollectionComparator entityCollectionComparator;
+    private ParticipantBaseComparator participantBaseComparator;
+    private CollectionComparator<Entity> entityCollectionComparator;
 
     /**
      * Creates a new ParticipantPoolComparator
@@ -28,11 +30,23 @@ public class ParticipantPoolComparator implements Comparator<ParticipantPool> {
             throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
         }
         this.participantBaseComparator = participantBaseComparator;
-        this.entityCollectionComparator = new ParticipantCollectionComparator(this.participantBaseComparator.getEntityBaseComparator());
+        this.entityCollectionComparator = new ParticipantCollectionComparator(participantBaseComparator.getEntityBaseComparator());
+    }
+
+    public ParticipantPoolComparator(ParticipantBaseComparator participantBaseComparator, CollectionComparator<Entity> entityCollectionComparator){
+        if (participantBaseComparator == null){
+            throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
+        }
+        this.participantBaseComparator = participantBaseComparator;
+        this.entityCollectionComparator = entityCollectionComparator;
     }
 
     public ParticipantBaseComparator getParticipantBaseComparator() {
         return participantBaseComparator;
+    }
+
+    public CollectionComparator<Entity> getParticipantCollectionComparator() {
+        return entityCollectionComparator;
     }
 
     /**

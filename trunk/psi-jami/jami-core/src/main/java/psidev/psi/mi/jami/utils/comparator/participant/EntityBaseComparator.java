@@ -20,10 +20,10 @@ import java.util.Comparator;
 
 public class EntityBaseComparator implements Comparator<Entity> {
 
-    protected StoichiometryComparator stoichiometryComparator;
-    protected InteractorComparator interactorComparator;
+    private StoichiometryComparator stoichiometryComparator;
+    private InteractorComparator interactorComparator;
 
-    protected boolean ignoreInteractors = false;
+    private boolean ignoreInteractors = false;
 
     /**
      * Creates a new EntityBaseComparator

@@ -33,7 +33,7 @@ public class UnambiguousExactModelledEntityComparator extends ModelledEntityComp
 
     @Override
     public UnambiguousExactEntityBaseComparator getEntityBaseComparator() {
-        return (UnambiguousExactEntityBaseComparator) this.participantBaseComparator;
+        return (UnambiguousExactEntityBaseComparator) super.getEntityBaseComparator();
     }
 
     @Override

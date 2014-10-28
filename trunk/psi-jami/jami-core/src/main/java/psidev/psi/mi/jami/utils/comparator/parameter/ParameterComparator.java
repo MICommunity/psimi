@@ -21,8 +21,8 @@ import java.util.Comparator;
 
 public abstract class ParameterComparator implements Comparator<Parameter> {
 
-    protected Comparator<CvTerm> cvTermComparator;
-    protected ParameterValueComparator valueComparator;
+    private Comparator<CvTerm> cvTermComparator;
+    private ParameterValueComparator valueComparator;
 
     /**
      * Creates a new ParameterComparator

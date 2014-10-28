@@ -19,8 +19,8 @@ import java.util.Date;
 
 public class CuratedPublicationComparator implements Comparator<Publication> {
 
-    protected Comparator<Publication> publicationComparator;
-    protected Comparator<CvTerm> sourceComparator;
+    private Comparator<Publication> publicationComparator;
+    private Comparator<CvTerm> sourceComparator;
 
     /**
      * Creates a new CuratedPublicationComparator.

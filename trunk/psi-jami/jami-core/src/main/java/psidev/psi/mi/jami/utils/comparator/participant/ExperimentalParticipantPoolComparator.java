@@ -29,13 +29,13 @@ import java.util.Comparator;
 
 public class ExperimentalParticipantPoolComparator implements Comparator<ExperimentalParticipantPool> {
 
-    protected ParticipantBaseComparator participantBaseComparator;
-    protected CvTermsCollectionComparator cvTermCollectionComparator;
-    protected OrganismComparator organismComparator;
-    protected ParameterCollectionComparator parameterCollectionComparator;
-    protected FeatureCollectionComparator featureCollectionComparator;
-    protected CollectionComparator<ExperimentalEntity> experimentalEntityCollectionComparator;
-    protected ExperimentalEntityComparator experimentalEntityComparator;
+    private ParticipantBaseComparator participantBaseComparator;
+    private CollectionComparator<CvTerm> cvTermCollectionComparator;
+    private OrganismComparator organismComparator;
+    private CollectionComparator<Parameter> parameterCollectionComparator;
+    private CollectionComparator<FeatureEvidence> featureCollectionComparator;
+    private CollectionComparator<ExperimentalEntity> experimentalEntityCollectionComparator;
+    private Comparator<ExperimentalEntity> experimentalEntityComparator;
 
     /**
      * Creates a new ExperimentalParticipantPoolComparator
@@ -73,7 +73,45 @@ public class ExperimentalParticipantPoolComparator implements Comparator<Experim
         this.experimentalEntityCollectionComparator = new CollectionComparator<ExperimentalEntity>(this.experimentalEntityComparator);
     }
 
-    public ParameterCollectionComparator getParameterCollectionComparator() {
+    /**
+     * Creates a new ExperimentalParticipantPoolComparator
+     * @param participantBaseComparator : the participant comparator required to compare basic properties of a participant
+     * @param organismComparator : the organism comparator required to compare expressed in organisms
+     * @param parameterComparator: ParameterComparator required for comparing participant features
+     * @param entityComparator: comparator for participant candidates
+     * @param cvTermComparator: comparator for collection of cvs
+     */
+    public ExperimentalParticipantPoolComparator(ParticipantBaseComparator participantBaseComparator,
+                                                 OrganismComparator organismComparator,
+                                                 CollectionComparator<Parameter> parameterComparator,
+                                                 CollectionComparator<FeatureEvidence> featureComparator,
+                                                 CollectionComparator<ExperimentalEntity> entityComparator,
+                                                 CollectionComparator<CvTerm> cvTermComparator){
+        if (participantBaseComparator == null){
+            throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
+        }
+        this.participantBaseComparator = participantBaseComparator;
+        this.cvTermCollectionComparator = cvTermComparator != null ? cvTermComparator : new CvTermsCollectionComparator(this.participantBaseComparator.getCvTermComparator());
+        if (organismComparator == null){
+            throw new IllegalArgumentException("The Organism comparator is required to compare expressed in organisms. It cannot be null");
+        }
+        this.organismComparator = organismComparator;
+        if (parameterComparator == null){
+            throw new IllegalArgumentException("The parameter comparator is required to compare participant parameters. It cannot be null");
+        }
+        this.parameterCollectionComparator = parameterComparator;
+        if (featureComparator == null){
+            throw new IllegalArgumentException("The feature comparator is required to compare features. It cannot be null");
+        }
+        this.featureCollectionComparator = featureComparator;
+        if (entityComparator == null){
+            throw new IllegalArgumentException("The experimental entity comparator is required to compare participant candidates. It cannot be null");
+        }
+        this.experimentalEntityCollectionComparator = entityComparator;
+        this.experimentalEntityComparator = this.experimentalEntityCollectionComparator.getObjectComparator();
+    }
+
+    public CollectionComparator<Parameter> getParameterCollectionComparator() {
         return parameterCollectionComparator;
     }
 
@@ -81,7 +119,7 @@ public class ExperimentalParticipantPoolComparator implements Comparator<Experim
         return participantBaseComparator;
     }
 
-    public CvTermsCollectionComparator getCvTermCollectionComparator() {
+    public CollectionComparator<CvTerm> getCvTermCollectionComparator() {
         return cvTermCollectionComparator;
     }
 
@@ -89,11 +127,11 @@ public class ExperimentalParticipantPoolComparator implements Comparator<Experim
         return organismComparator;
     }
 
-    public FeatureCollectionComparator getFeatureCollectionComparator() {
+    public CollectionComparator<FeatureEvidence> getFeatureCollectionComparator() {
         return featureCollectionComparator;
     }
 
-    public ExperimentalEntityComparator getExperimentalEntityComparator() {
+    public Comparator<ExperimentalEntity> getExperimentalEntityComparator() {
         return experimentalEntityComparator;
     }
 

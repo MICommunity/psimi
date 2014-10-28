@@ -23,10 +23,10 @@ import java.util.*;
 
 public class ModelledParticipantPoolComparator implements Comparator<ModelledParticipantPool> {
 
-    protected ParticipantBaseComparator participantBaseComparator;
-    protected FeatureCollectionComparator featureCollectionComparator;
-    protected ModelledEntityComparator modelledEntityComparator;
-    protected CollectionComparator<ModelledEntity> modelledEntityCollectionComparator;
+    private ParticipantBaseComparator participantBaseComparator;
+    private CollectionComparator<ModelledFeature> featureCollectionComparator;
+    private Comparator<ModelledEntity> modelledEntityComparator;
+    private CollectionComparator<ModelledEntity> modelledEntityCollectionComparator;
 
     /**
      * Creates a new ComponentComparator
@@ -49,7 +49,29 @@ public class ModelledParticipantPoolComparator implements Comparator<ModelledPar
         this.modelledEntityCollectionComparator = new CollectionComparator<ModelledEntity>(this.modelledEntityComparator);
     }
 
-    public ModelledEntityComparator getModelledEntityComparator() {
+    /**
+     * Creates a new ComponentComparator
+     */
+    public ModelledParticipantPoolComparator(ParticipantBaseComparator participantBaseComparator,
+                                             CollectionComparator<ModelledFeature> featureComparator,
+                                             CollectionComparator<ModelledEntity> entityComparator){
+        if (participantBaseComparator == null){
+            throw new IllegalArgumentException("The participant comparator is required to compare basic participant properties. It cannot be null");
+        }
+        this.participantBaseComparator = participantBaseComparator;
+        if (featureComparator == null){
+            throw new IllegalArgumentException("The modelled feature comparator is required to compare modelled features. It cannot be null");
+        }
+        this.featureCollectionComparator = featureComparator;
+        if (entityComparator == null){
+            throw new IllegalArgumentException("The modelled entity comparator is required to compare participant candidates of a pool. It cannot be null");
+        }
+        this.modelledEntityCollectionComparator = entityComparator;
+        this.modelledEntityComparator = entityComparator.getObjectComparator();
+
+    }
+
+    public Comparator<ModelledEntity> getModelledEntityComparator() {
         return modelledEntityComparator;
     }
 
@@ -57,7 +79,7 @@ public class ModelledParticipantPoolComparator implements Comparator<ModelledPar
         return participantBaseComparator;
     }
 
-    public FeatureCollectionComparator getFeatureCollectionComparator() {
+    public CollectionComparator<ModelledFeature> getFeatureCollectionComparator() {
         return featureCollectionComparator;
     }
 

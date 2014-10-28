@@ -33,7 +33,7 @@ public class UnambiguousEntityBaseComparator extends EntityBaseComparator {
 
     @Override
     public UnambiguousInteractorComparator getInteractorComparator() {
-        return (UnambiguousInteractorComparator) this.interactorComparator;
+        return (UnambiguousInteractorComparator) super.getInteractorComparator();
     }
 
     @Override

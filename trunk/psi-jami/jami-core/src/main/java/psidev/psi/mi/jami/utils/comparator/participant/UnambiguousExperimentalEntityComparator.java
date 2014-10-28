@@ -28,7 +28,7 @@ public class UnambiguousExperimentalEntityComparator extends ExperimentalEntityC
 
     @Override
     public UnambiguousEntityBaseComparator getParticipantBaseComparator() {
-        return (UnambiguousEntityBaseComparator) this.participantBaseComparator;
+        return (UnambiguousEntityBaseComparator) super.getParticipantBaseComparator();
     }
 
     @Override

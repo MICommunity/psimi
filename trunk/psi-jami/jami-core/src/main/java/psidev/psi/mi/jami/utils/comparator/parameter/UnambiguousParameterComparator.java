@@ -37,7 +37,7 @@ public class UnambiguousParameterComparator extends ParameterComparator {
 
     @Override
     public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) cvTermComparator;
+        return (UnambiguousCvTermComparator) super.getCvTermComparator();
     }
 
     /**

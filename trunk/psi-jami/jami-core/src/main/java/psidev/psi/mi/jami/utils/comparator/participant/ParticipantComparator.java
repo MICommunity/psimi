@@ -19,10 +19,10 @@ import java.util.Comparator;
 
 public class ParticipantComparator implements Comparator<Participant> {
 
-    protected ParticipantBaseComparator participantBaseComparator;
-    protected ParticipantEvidenceComparator experimentalParticipantComparator;
-    protected ModelledParticipantComparator biologicalParticipantComparator;
-    protected ParticipantPoolComparator poolComparator;
+    private ParticipantBaseComparator participantBaseComparator;
+    private ParticipantEvidenceComparator experimentalParticipantComparator;
+    private ModelledParticipantComparator biologicalParticipantComparator;
+    private ParticipantPoolComparator poolComparator;
 
     public ParticipantComparator(ParticipantBaseComparator participantBaseComparator,
                                  ParticipantEvidenceComparator experimentalParticipantComparator,

@@ -30,22 +30,22 @@ public class UnambiguousEntityComparator extends EntityComparator {
 
     @Override
     public UnambiguousEntityBaseComparator getEntityBaseComparator() {
-        return (UnambiguousEntityBaseComparator) this.entityBaseComparator;
+        return (UnambiguousEntityBaseComparator) super.getEntityBaseComparator();
     }
 
     @Override
     public UnambiguousExperimentalEntityComparator getExperimentalEntityComparator() {
-        return (UnambiguousExperimentalEntityComparator) this.experimentalEntityComparator;
+        return (UnambiguousExperimentalEntityComparator) super.getExperimentalEntityComparator();
     }
 
     @Override
     public UnambiguousModelledEntityComparator getBiologicalEntityComparator() {
-        return (UnambiguousModelledEntityComparator) super.biologicalEntityComparator;
+        return (UnambiguousModelledEntityComparator) super.getBiologicalEntityComparator();
     }
 
     @Override
     public UnambiguousParticipantComparator getParticipantComparator() {
-        return (UnambiguousParticipantComparator) super.participantComparator;
+        return (UnambiguousParticipantComparator) super.getParticipantComparator();
     }
 
     @Override

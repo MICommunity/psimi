@@ -37,12 +37,12 @@ public class UnambiguousExactExperimentalParticipantPoolComparator extends Exper
 
     @Override
     public UnambiguousExactParticipantBaseComparator getParticipantBaseComparator() {
-        return (UnambiguousExactParticipantBaseComparator) this.participantBaseComparator;
+        return (UnambiguousExactParticipantBaseComparator) super.getParticipantBaseComparator();
     }
 
     @Override
     public UnambiguousOrganismComparator getOrganismComparator() {
-        return (UnambiguousOrganismComparator) this.organismComparator;
+        return (UnambiguousOrganismComparator) super.getOrganismComparator();
     }
 
     @Override

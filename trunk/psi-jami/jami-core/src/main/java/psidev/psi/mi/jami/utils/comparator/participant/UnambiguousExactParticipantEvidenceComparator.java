@@ -30,7 +30,7 @@ public class UnambiguousExactParticipantEvidenceComparator extends ParticipantEv
 
     @Override
     public UnambiguousExactExperimentalParticipantPoolComparator getParticipantPoolComparator() {
-        return (UnambiguousExactExperimentalParticipantPoolComparator) this.poolComparator;
+        return (UnambiguousExactExperimentalParticipantPoolComparator) super.getParticipantPoolComparator();
     }
 
     @Override

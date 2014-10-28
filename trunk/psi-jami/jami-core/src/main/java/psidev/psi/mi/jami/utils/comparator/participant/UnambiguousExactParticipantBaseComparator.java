@@ -33,12 +33,12 @@ public class UnambiguousExactParticipantBaseComparator extends ParticipantBaseCo
 
     @Override
     public UnambiguousExactEntityBaseComparator getEntityBaseComparator() {
-        return (UnambiguousExactEntityBaseComparator) this.entityComparator;
+        return (UnambiguousExactEntityBaseComparator) super.getEntityBaseComparator();
     }
 
     @Override
     public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) this.cvTermComparator;
+        return (UnambiguousCvTermComparator) super.getCvTermComparator();
     }
 
     @Override

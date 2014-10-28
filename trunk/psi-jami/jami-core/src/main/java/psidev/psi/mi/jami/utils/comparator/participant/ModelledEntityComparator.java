@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.utils.comparator.participant;
 
 import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.utils.comparator.CollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.FeatureCollectionComparator;
 import psidev.psi.mi.jami.utils.comparator.feature.ModelledFeatureComparator;
 
@@ -22,12 +23,12 @@ import java.util.Set;
 
 public class ModelledEntityComparator implements CustomizableModelledParticipantComparator<ModelledEntity> {
 
-    protected EntityBaseComparator participantBaseComparator;
-    protected FeatureCollectionComparator featureCollectionComparator;
+    private EntityBaseComparator participantBaseComparator;
+    private CollectionComparator<ModelledFeature> featureCollectionComparator;
 
-    protected boolean checkComplexesAsInteractors = true;
+    private boolean checkComplexesAsInteractors = true;
 
-    protected Map<Complex, Set<Interactor>> processedComplexes;
+    private Map<Complex, Set<Interactor>> processedComplexes;
 
     /**
      * Creates a new ComponentComparator
@@ -44,11 +45,26 @@ public class ModelledEntityComparator implements CustomizableModelledParticipant
         this.processedComplexes = new IdentityHashMap<Complex, Set<Interactor>>();
     }
 
+    /**
+     * Creates a new ComponentComparator
+     */
+    public ModelledEntityComparator(EntityBaseComparator participantBaseComparator, CollectionComparator<ModelledFeature>  featureComparator){
+        if (participantBaseComparator == null){
+            throw new IllegalArgumentException("The participant comparator is required to compare basic entity properties. It cannot be null");
+        }
+        this.participantBaseComparator = participantBaseComparator;
+        if (featureComparator == null){
+            throw new IllegalArgumentException("The modelled feature comparator is required to compare modelled features. It cannot be null");
+        }
+        this.featureCollectionComparator = featureComparator;
+        this.processedComplexes = new IdentityHashMap<Complex, Set<Interactor>>();
+    }
+
     public EntityBaseComparator getEntityBaseComparator() {
         return participantBaseComparator;
     }
 
-    public FeatureCollectionComparator getFeatureCollectionComparator() {
+    public CollectionComparator<ModelledFeature> getFeatureCollectionComparator() {
         return featureCollectionComparator;
     }
 

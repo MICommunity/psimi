@@ -25,7 +25,7 @@ public class UnambiguousParticipantPoolComparator extends ParticipantPoolCompara
 
     @Override
     public UnambiguousParticipantBaseComparator getParticipantBaseComparator() {
-        return (UnambiguousParticipantBaseComparator) this.participantBaseComparator;
+        return (UnambiguousParticipantBaseComparator) super.getParticipantBaseComparator();
     }
 
     @Override

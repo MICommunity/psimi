@@ -19,7 +19,7 @@ import java.util.Comparator;
 
 public class ParticipantInteractorComparator<T extends Entity> implements Comparator<T> {
 
-    protected InteractorComparator interactorComparator;
+    private InteractorComparator interactorComparator;
 
     /**
      * Creates a new ParticipantInteractorComparator.
