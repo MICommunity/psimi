@@ -18,7 +18,7 @@ import java.util.Comparator;
 
 public class OrganismComparator extends OrganismTaxIdComparator {
 
-    protected Comparator<CvTerm> cvTermComparator;
+    private Comparator<CvTerm> cvTermComparator;
 
     /**
      * Creates a new OrganismComparator. It needs a cvtermComparator for comparing the cell types, tissues and compartments

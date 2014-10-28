@@ -30,7 +30,7 @@ public class UnambiguousOrganismComparator extends OrganismComparator {
 
     @Override
     public UnambiguousCvTermComparator getCvTermComparator() {
-        return (UnambiguousCvTermComparator) this.cvTermComparator;
+        return (UnambiguousCvTermComparator) super.getCvTermComparator();
     }
 
     @Override
