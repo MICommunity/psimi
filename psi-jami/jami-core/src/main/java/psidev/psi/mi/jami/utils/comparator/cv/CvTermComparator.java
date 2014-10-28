@@ -117,23 +117,21 @@ public class CvTermComparator implements Comparator<CvTerm> {
             else if (par2 != null){
                 return AFTER;
             }
-            else if (!cvTerm1.getIdentifiers().isEmpty() && !cvTerm2.getIdentifiers().isEmpty()){
-                // the identifiers must be the same
-                return getIdentifierCollectionComparator().compare(cvTerm1.getIdentifiers(), cvTerm2.getIdentifiers());
-            }
-            else if (!cvTerm1.getIdentifiers().isEmpty()){
-                return BEFORE;
-            }
-            else if (!cvTerm2.getIdentifiers().isEmpty()){
-                return AFTER;
-            }
-            else {
-                // check names which cannot be null because we could not compare the identifiers
-                String label1 = cvTerm1.getShortName();
-                String label2 = cvTerm2.getShortName();
 
-                return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
+
+            if (!cvTerm1.getIdentifiers().isEmpty() || !cvTerm2.getIdentifiers().isEmpty()){
+                // the identifiers must be the same
+                int comp = getIdentifierCollectionComparator().compare(cvTerm1.getIdentifiers(), cvTerm2.getIdentifiers());
+                if (comp != 0){
+                    return comp;
+                }
             }
+
+            // check names which cannot be null because we could not compare the identifiers
+            String label1 = cvTerm1.getShortName();
+            String label2 = cvTerm2.getShortName();
+
+            return label1.toLowerCase().trim().compareTo(label2.toLowerCase().trim());
         }
     }
 }
