@@ -7,7 +7,7 @@
         <artifactId>jami-bridges</artifactId>
         <version>1.0.1-SNAPSHOT</version>
     </parent>
-    <groupId>uk.ac.ebi.intact.jami.bridges</groupId>
+    <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>jami-imexcentral</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <name>PSI :: JAMI - IMEx central</name>
