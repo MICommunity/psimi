@@ -167,7 +167,7 @@ public class DefaultImexCentralClient implements ImexCentralClient {
         return null;
     }
 
-    public psidev.psi.mi.jami.model.Publication updatePublicationIdentifier(String oldIdentifier, String newIdentifier, String source) throws BridgeFailedException {
+    public psidev.psi.mi.jami.model.Publication updatePublicationIdentifier(String oldIdentifier, String oldSource, String newIdentifier, String source) throws BridgeFailedException {
 
         psidev.psi.mi.jami.model.Publication existingPub = fetchByIdentifier(newIdentifier, source);
 
@@ -181,7 +181,7 @@ public class DefaultImexCentralClient implements ImexCentralClient {
         }
 
         try {
-            Publication pub = port.updatePublicationIdentifier( buildIdentifier(oldIdentifier, source ), buildIdentifier(newIdentifier, source) );
+            Publication pub = port.updatePublicationIdentifier( buildIdentifier(oldIdentifier, oldSource ), buildIdentifier(newIdentifier, source) );
             if (pub != null){
                 return new ImexPublication(pub);
             }

@@ -212,7 +212,7 @@ public class MockImexCentralClient implements ImexCentralClient {
         return p;
     }
 
-    public psidev.psi.mi.jami.model.Publication updatePublicationIdentifier(String oldIdentifier, String newIdentifier, String source) throws BridgeFailedException {
+    public psidev.psi.mi.jami.model.Publication updatePublicationIdentifier(String oldIdentifier, String oldSource, String newIdentifier, String source) throws BridgeFailedException {
         psidev.psi.mi.jami.model.Publication existingPub = fetchByIdentifier(newIdentifier, source);
 
         // if the new identifier is already in IMEx central, we don't update anything
@@ -224,7 +224,7 @@ public class MockImexCentralClient implements ImexCentralClient {
             throw new BridgeFailedException( "Impossible to update the identifier of " + oldIdentifier, fault );
         }
         
-        final psidev.psi.mi.jami.model.Publication p = fetchByIdentifier(oldIdentifier, source);
+        final psidev.psi.mi.jami.model.Publication p = fetchByIdentifier(oldIdentifier, oldSource);
         if( p != null ) {
             Xref newId = XrefUtils.createIdentityXref(source, newIdentifier);
 
