@@ -27,28 +27,9 @@ public class DefaultImexCentralClient implements ImexCentralClient {
 
     private static final Log log = LogFactory.getLog( DefaultImexCentralClient.class );
 
-    public static final String IC_TEST = "https://imexcentral.org/icentraltest/ws-v20";
-    public static final String IC_BETA = "https://imexcentral.org/icentralbeta/ws-v20";
-    public static final String IC_PROD = "https://imexcentral.org/icentral/ws-v20";
-
     private IcentralService service;
     private IcentralPort port;
     private String endPoint;
-
-    private static Pattern pubmed_regexp = Pattern.compile("\\d+");
-
-    public final static int USER_NOT_AUTHORIZED = 2;
-    public final static int OPERATION_NOT_VALID = 3;
-    public final static int IDENTIFIER_MISSING = 4;
-    public final static int IDENTIFIER_UNKNOWN = 5;
-    public final static int NO_RECORD = 6;
-    public final static int NO_RECORD_CREATED = 7;
-    public final static int STATUS_UNKNOWN = 8;
-    public final static int NO_IMEX_ID = 9;
-    public final static int UNKNOWN_USER = 10;
-    public final static int UNKNOWN_GROUP = 11;
-    public final static int OPERATION_NOT_SUPPORTED = 98;
-    public final static int INTERNAL_SERVER_ERROR = 99;
 
     public DefaultImexCentralClient( String username, String password, String endPoint ) throws BridgeFailedException {
 
