@@ -1,8 +1,11 @@
 package uk.ac.ebi.intact.jami.imex.listener;
 
 import psidev.psi.mi.jami.enricher.listener.PublicationEnricherListener;
+import psidev.psi.mi.jami.model.CurationDepth;
 import psidev.psi.mi.jami.model.Publication;
+import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
+import uk.ac.ebi.intact.jami.bridges.imex.PublicationStatus;
 
 import java.util.Collection;
 
@@ -16,4 +19,12 @@ public interface PublicationImexEnricherListener
 
 
     public void onImexIdConflicts(Publication originalPublication, Collection<Xref> conflictingXrefs);
+
+    public void onCurationDepthUpdated(Publication publication, CurationDepth oldDepth);
+
+    public void onImexAdminGroupUpdated(Publication publication, Source oldSource);
+
+    public void onImexStatusUpdated(Publication publication, PublicationStatus oldStatus);
+
+    public void onImexPublicationIdentifierSynchronized(Publication publication);
 }
