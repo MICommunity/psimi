@@ -104,7 +104,7 @@ public class ImexPublication extends DefaultPublication{
                 super.getIdentifiers().add(XrefUtils.createDoiIdentity(identifier.getAc()));
             }
             else if (identifier.getNs().equals("jint")){
-                super.getIdentifiers().add(XrefUtils.createPubmedIdentity(identifier.getAc()));
+                super.getIdentifiers().add(XrefUtils.createIdentityXref("jint", identifier.getAc()));
             }
         }
 
