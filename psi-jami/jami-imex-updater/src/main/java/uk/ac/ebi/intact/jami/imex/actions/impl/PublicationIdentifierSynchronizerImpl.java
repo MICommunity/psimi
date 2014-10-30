@@ -28,6 +28,13 @@ public class PublicationIdentifierSynchronizerImpl implements PublicationIdentif
 
     private ImexCentralClient imexCentral;
 
+    public PublicationIdentifierSynchronizerImpl(ImexCentralClient client){
+        if (client == null){
+            throw new IllegalArgumentException("The IMEx central client cannot be null");
+        }
+        this.imexCentral = client;
+    }
+
     public boolean isPublicationIdentifierInSyncWithImexCentral(String pubId, String source, ImexPublication imexPublication) throws BridgeFailedException {
 
         Collection<Xref> imexIdentifiers = imexPublication.getIdentifiers();
@@ -189,9 +196,5 @@ public class PublicationIdentifierSynchronizerImpl implements PublicationIdentif
 
     public ImexCentralClient getImexCentralClient() {
         return imexCentral;
-    }
-
-    public void setImexCentralClient(ImexCentralClient imexCentral) {
-        this.imexCentral = imexCentral;
     }
 }

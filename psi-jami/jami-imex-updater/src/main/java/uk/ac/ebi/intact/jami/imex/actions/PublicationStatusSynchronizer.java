@@ -33,8 +33,6 @@ public interface PublicationStatusSynchronizer {
 
     public ImexCentralClient getImexCentralClient();
 
-    public void setImexCentralClient(ImexCentralClient imexClient);
-
     /**
      * Synchronize publication status with IMEx central and update the IMEx central record if necessary.
      * @param publication

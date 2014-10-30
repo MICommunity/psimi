@@ -56,6 +56,4 @@ public interface ImexAssigner {
 
 
     public ImexCentralClient getImexCentralClient();
-
-    public void setImexCentralClient(ImexCentralClient imexClient);
 }

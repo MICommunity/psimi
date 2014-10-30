@@ -21,10 +21,17 @@
 
   <dependencies>
 
+      <!-- jami dependencies-->
       <dependency>
           <groupId>psidev.psi.mi.jami.bridges</groupId>
           <artifactId>jami-imexcentral</artifactId>
-          <version>1.0.1-SNAPSHOT</version>
+          <version>${pom.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>psidev.psi.mi.jami</groupId>
+          <artifactId>jami-enricher</artifactId>
+          <version>${pom.version}</version>
       </dependency>
 
     <dependency>
