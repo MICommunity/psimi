@@ -30,6 +30,13 @@ public class ImexAssignerImpl implements ImexAssigner {
     private int currentIndex=1;
     private Pattern interaction_imex_regexp = Pattern.compile("(IM-[1-9][0-9]*)-([1-9][0-9]*)");
 
+    public ImexAssignerImpl(ImexCentralClient client){
+        if (client == null){
+             throw new IllegalArgumentException("The IMEx central client cannot be null");
+        }
+        this.imexCentral = client;
+    }
+
     public void assignImexIdentifier(Publication publication, Publication imexPublication) throws BridgeFailedException {
 
         String pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
@@ -175,10 +182,6 @@ public class ImexAssignerImpl implements ImexAssigner {
 
     public ImexCentralClient getImexCentralClient() {
         return imexCentral;
-    }
-
-    public void setImexCentralClient(ImexCentralClient imexCentral) {
-        this.imexCentral = imexCentral;
     }
 
     /**

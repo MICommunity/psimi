@@ -22,6 +22,13 @@ public class ImexCentralPublicationRegisterImpl implements ImexCentralPublicatio
     private static final Log log = LogFactory.getLog(ImexCentralPublicationRegisterImpl.class);
     private ImexCentralClient imexCentral;
 
+    public ImexCentralPublicationRegisterImpl(ImexCentralClient client){
+        if (client == null){
+            throw new IllegalArgumentException("The IMEx central client cannot be null");
+        }
+        this.imexCentral = client;
+    }
+
     /**
      *
      * @param publicationId : valid pubmed id or doi number or IMEx id or unassigned identifier (internal identifier)
@@ -72,9 +79,5 @@ public class ImexCentralPublicationRegisterImpl implements ImexCentralPublicatio
 
     public ImexCentralClient getImexCentralClient() {
         return imexCentral;
-    }
-
-    public void setImexCentralClient(ImexCentralClient imexCentral) {
-        this.imexCentral = imexCentral;
     }
 }

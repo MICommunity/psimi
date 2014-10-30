@@ -26,6 +26,4 @@ public interface PublicationAdminGroupSynchronizer {
     public void synchronizePublicationAdminGroup(Publication publication, ImexPublication imexPublication) throws BridgeFailedException;
 
     public ImexCentralClient getImexCentralClient();
-
-    public void setImexCentralClient(ImexCentralClient imexClient);
 }

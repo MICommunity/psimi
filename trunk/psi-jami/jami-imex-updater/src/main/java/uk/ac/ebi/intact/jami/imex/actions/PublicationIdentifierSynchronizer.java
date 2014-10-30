@@ -38,6 +38,4 @@ public interface PublicationIdentifierSynchronizer {
     public void synchronizePublicationIdentifier(Publication publication, Publication imexPublication) throws EnricherException, BridgeFailedException;
 
     public ImexCentralClient getImexCentralClient();
-
-    public void setImexCentralClient(ImexCentralClient imexClient);
 }

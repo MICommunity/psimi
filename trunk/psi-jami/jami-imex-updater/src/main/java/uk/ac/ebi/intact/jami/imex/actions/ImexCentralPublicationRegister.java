@@ -34,6 +34,4 @@ public interface ImexCentralPublicationRegister {
     public Publication registerPublicationInImexCentral(Publication publication) throws BridgeFailedException;
 
     public ImexCentralClient getImexCentralClient();
-
-    public void setImexCentralClient(ImexCentralClient imexClient);
 }

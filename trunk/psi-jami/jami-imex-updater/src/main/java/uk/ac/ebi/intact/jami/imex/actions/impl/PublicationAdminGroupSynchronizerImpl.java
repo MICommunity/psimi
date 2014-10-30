@@ -27,6 +27,13 @@ public class PublicationAdminGroupSynchronizerImpl implements PublicationAdminGr
     private static final Log log = LogFactory.getLog(PublicationAdminGroupSynchronizerImpl.class);
     private ImexCentralClient imexCentral;
 
+    public PublicationAdminGroupSynchronizerImpl(ImexCentralClient client){
+        if (client == null){
+            throw new IllegalArgumentException("The IMEx central client cannot be null");
+        }
+        this.imexCentral = client;
+    }
+
     public void synchronizePublicationAdminGroup(Publication publication, ImexPublication imexPublication) throws BridgeFailedException {
 
         List<Source> sources = imexPublication.getSources();
@@ -67,7 +74,4 @@ public class PublicationAdminGroupSynchronizerImpl implements PublicationAdminGr
         return imexCentral;
     }
 
-    public void setImexCentralClient(ImexCentralClient imexCentral) {
-        this.imexCentral = imexCentral;
-    }
 }

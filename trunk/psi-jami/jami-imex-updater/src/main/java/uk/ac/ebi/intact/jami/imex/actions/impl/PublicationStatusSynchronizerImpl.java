@@ -23,6 +23,13 @@ public class PublicationStatusSynchronizerImpl implements PublicationStatusSynch
     private static final Log log = LogFactory.getLog(PublicationStatusSynchronizerImpl.class);
     private ImexCentralClient imexCentral;
 
+    public PublicationStatusSynchronizerImpl(ImexCentralClient client){
+        if (client == null){
+            throw new IllegalArgumentException("The IMEx central client cannot be null");
+        }
+        this.imexCentral = client;
+    }
+
     public void synchronizePublicationStatusWithImexCentral(Publication publication, ImexPublication imexPublication) throws BridgeFailedException {
         PublicationStatus imexStatus = imexPublication.getStatus();
 
@@ -71,10 +78,6 @@ public class PublicationStatusSynchronizerImpl implements PublicationStatusSynch
 
     public ImexCentralClient getImexCentralClient() {
         return imexCentral;
-    }
-
-    public void setImexCentralClient(ImexCentralClient imexCentral) {
-        this.imexCentral = imexCentral;
     }
 
 }
