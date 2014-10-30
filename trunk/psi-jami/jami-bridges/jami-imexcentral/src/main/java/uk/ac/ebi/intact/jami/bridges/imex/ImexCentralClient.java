@@ -91,11 +91,12 @@ public interface ImexCentralClient extends PublicationFetcher {
     /**
      * Update publication pubmed identifier, DOI number or internal identifier of an existing record in IMEx central. The new publication identifier should not be already registered in IMEx central
      * @param oldIdentifier : can be pubmed, imex, doi or internal identifier
+     * @param source: the source of old identifier
      * @param newIdentifier : can be pubmed, doi or internal identifier
      * @param source: the source pubmed, doi or imex
      * @throws psidev.psi.mi.jami.bridges.exception.BridgeFailedException if no record found in IMEX central, identifier not recognized or new identifier is associated with another publication in IMEx central
      */
-    public Publication updatePublicationIdentifier(String oldIdentifier, String newIdentifier, String source) throws BridgeFailedException;
+    public Publication updatePublicationIdentifier(String oldIdentifier, String oldSource, String newIdentifier, String source) throws BridgeFailedException;
 
     /**
      * Create a new publication record in IMEx central (not implemented yet in production but can be used in test with the MockImexCentralClient)
