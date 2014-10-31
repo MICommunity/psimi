@@ -202,7 +202,15 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
         String imex = collectAndCleanUpImexPrimaryReferenceFrom(publicationToEnrich);
 
         if(imex != null){
-            return fetchImexPublication(publicationToEnrich.getImexId(), Xref.IMEX);
+            return fetchImexPublication(imex, Xref.IMEX);
+        }
+        else{
+            if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
+                ((PublicationImexEnricherListener)getPublicationEnricherListener()).onMissingImexId(publicationToEnrich);
+            }
+            else{
+                getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "The publication does not have a single IMEx identifier and cannot be updated", null);
+            }
         }
 
         return null;
