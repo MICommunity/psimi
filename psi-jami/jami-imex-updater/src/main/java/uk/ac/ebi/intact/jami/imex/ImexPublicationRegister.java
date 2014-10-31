@@ -122,6 +122,9 @@ public class ImexPublicationRegister extends FullPublicationEnricher{
             if (imexPublication == null && Pattern.matches(ImexCentralClient.pubmed_regexp.toString(), pubId) && getPublicationRegister() != null) {
                 try {
                     imexPublication = (ImexPublication)getPublicationRegister().registerPublicationInImexCentral(publicationToEnrich);
+                    if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
+                        ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationRegisteredInImexCentral(publicationToEnrich);
+                    }
                 } catch (BridgeFailedException e) {
                     throw new EnricherException("The publication "+pubId+" cannot be registered in IMEx central.");
                 }
@@ -136,9 +139,6 @@ public class ImexPublicationRegister extends FullPublicationEnricher{
                 }
             }
             return imexPublication;
-        }
-        else{
-
         }
 
         return null;
