@@ -25,7 +25,7 @@ public interface ImexAssigner {
      * @return the imex id if the IMEx assigner was successful, null otherwise
      * @throws psidev.psi.mi.jami.bridges.exception.BridgeFailedException if no record found or no IMEx id
      */
-    public void assignImexIdentifier(Publication publication, Publication imexPublication) throws BridgeFailedException;
+    public Publication assignImexIdentifier(Publication publication, Publication imexPublication) throws BridgeFailedException;
 
     /**
      * Add a IMEx primary reference to the experiment

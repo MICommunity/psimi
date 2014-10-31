@@ -20,6 +20,8 @@ public interface PublicationImexEnricherListener
 
     public void onImexIdConflicts(Publication originalPublication, Collection<Xref> conflictingXrefs);
 
+    public void onMissingImexId(Publication publication);
+
     public void onCurationDepthUpdated(Publication publication, CurationDepth oldDepth);
 
     public void onImexAdminGroupUpdated(Publication publication, Source oldSource);
@@ -27,4 +29,6 @@ public interface PublicationImexEnricherListener
     public void onImexStatusUpdated(Publication publication, PublicationStatus oldStatus);
 
     public void onImexPublicationIdentifierSynchronized(Publication publication);
+
+    public void onPublicationAlreadyRegisteredInImexCentral(Publication publication, String imex);
 }
