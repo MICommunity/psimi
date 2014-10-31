@@ -36,4 +36,9 @@ public interface PublicationImexEnricherListener
 
     public void onPublicationWhichCannotBeRegistered(Publication publication);
 
+    public void onPublicationNotEligibleForImex(Publication publication);
+
+    public void onImexIdAssigned(Publication publication, String imex);
+
+
 }
