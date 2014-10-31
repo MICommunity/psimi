@@ -37,7 +37,7 @@ public class ImexAssignerImpl implements ImexAssigner {
         this.imexCentral = client;
     }
 
-    public void assignImexIdentifier(Publication publication, Publication imexPublication) throws BridgeFailedException {
+    public Publication assignImexIdentifier(Publication publication, Publication imexPublication) throws BridgeFailedException {
 
         String pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
         String source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
@@ -53,6 +53,8 @@ public class ImexAssignerImpl implements ImexAssigner {
         if (imexPublication.getImexId() != null) {
             publication.assignImexId(imexPublication.getImexId());
         }
+
+        return imexPublication;
     }
 
     public boolean updateImexIdentifierForExperiment(Experiment experiment, String imexId) throws EnricherException {
