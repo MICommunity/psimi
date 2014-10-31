@@ -31,4 +31,9 @@ public interface PublicationImexEnricherListener
     public void onImexPublicationIdentifierSynchronized(Publication publication);
 
     public void onPublicationAlreadyRegisteredInImexCentral(Publication publication, String imex);
+
+    public void onPublicationRegisteredInImexCentral(Publication publication);
+
+    public void onPublicationWhichCannotBeRegistered(Publication publication);
+
 }

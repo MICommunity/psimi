@@ -125,8 +125,20 @@ public class ImexPublicationRegister extends FullPublicationEnricher{
                 } catch (BridgeFailedException e) {
                     throw new EnricherException("The publication "+pubId+" cannot be registered in IMEx central.");
                 }
+
+                if (imexPublication == null){
+                    if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
+                        ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationWhichCannotBeRegistered(publicationToEnrich);
+                    }
+                    else{
+                        getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "The publication cannot be registered in IMEx central", null);
+                    }
+                }
             }
             return imexPublication;
+        }
+        else{
+
         }
 
         return null;
