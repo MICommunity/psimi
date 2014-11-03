@@ -40,5 +40,5 @@ public interface PublicationImexEnricherListener
 
     public void onImexIdAssigned(Publication publication, String imex);
 
-
+    public void onImexIdNotRecognized(Publication publication, String imex);
 }
