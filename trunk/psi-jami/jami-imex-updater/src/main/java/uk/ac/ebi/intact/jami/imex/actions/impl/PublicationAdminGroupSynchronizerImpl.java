@@ -57,7 +57,7 @@ public class PublicationAdminGroupSynchronizerImpl implements PublicationAdminGr
         }
     }
 
-    private boolean containsAdminGroup(List<Source> adminGroupList, Source group){
+    protected boolean containsAdminGroup(List<Source> adminGroupList, Source group){
 
         if (!adminGroupList.isEmpty()){
             for (Source source : adminGroupList){
