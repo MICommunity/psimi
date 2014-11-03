@@ -112,4 +112,8 @@ public class MinimalCuratedPublicationEnricher extends AbstractMIEnricher<Public
     protected void onEnrichedVersionNotFound(Publication objectToEnrich) throws EnricherException {
          this.delegate.onEnrichedVersionNotFound(objectToEnrich);
     }
+
+    protected MinimalPublicationEnricher getDelegate() {
+        return delegate;
+    }
 }

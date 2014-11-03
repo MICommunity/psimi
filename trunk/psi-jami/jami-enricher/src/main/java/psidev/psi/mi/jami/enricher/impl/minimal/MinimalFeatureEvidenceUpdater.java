@@ -28,10 +28,7 @@ public class MinimalFeatureEvidenceUpdater extends MinimalFeatureEvidenceEnriche
     }
 
     protected MinimalFeatureEvidenceUpdater(MinimalFeatureUpdater<FeatureEvidence> minimalUpdater){
-        if (minimalUpdater == null){
-            throw new IllegalArgumentException("The minimal feature updater is required");
-        }
-        this.minimalUpdater = minimalUpdater;
+        this.minimalUpdater = minimalUpdater != null ? minimalUpdater : new MinimalFeatureUpdater<FeatureEvidence>();
     }
 
     @Override
@@ -158,5 +155,9 @@ public class MinimalFeatureEvidenceUpdater extends MinimalFeatureEvidenceEnriche
     @Override
     public void onEnrichmentError(Protein object, String message, Exception e) {
         this.minimalUpdater.onEnrichmentError(object, message, e);
+    }
+
+    protected MinimalFeatureUpdater<FeatureEvidence> getMinimalUpdater() {
+        return minimalUpdater;
     }
 }

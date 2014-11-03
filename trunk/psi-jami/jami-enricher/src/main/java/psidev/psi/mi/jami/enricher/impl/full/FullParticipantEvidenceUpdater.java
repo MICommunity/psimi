@@ -29,6 +29,11 @@ public class FullParticipantEvidenceUpdater<P extends ParticipantEvidence> exten
         this.minimalUpdater = new MinimalParticipantEvidenceUpdater<P>();
     }
 
+    protected FullParticipantEvidenceUpdater(MinimalParticipantEvidenceUpdater<P> participantEnricher){
+        super();
+        this.minimalUpdater = participantEnricher != null ? participantEnricher : new MinimalParticipantEvidenceUpdater<P>();
+    }
+
     @Override
     protected void processExperimentalPreparations(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         mergeExperimentalPreparations(participantEvidenceToEnrich, participantEvidenceToEnrich.getExperimentalPreparations(), objectSource.getExperimentalPreparations(),
@@ -121,5 +126,9 @@ public class FullParticipantEvidenceUpdater<P extends ParticipantEvidence> exten
     @Override
     public CompositeInteractorEnricher getInteractorEnricher() {
         return this.minimalUpdater.getInteractorEnricher();
+    }
+
+    protected MinimalParticipantEvidenceUpdater<P> getMinimalUpdater() {
+        return minimalUpdater;
     }
 }

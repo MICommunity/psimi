@@ -21,6 +21,10 @@ public class FullInteractionEvidenceUpdater extends FullInteractionEvidenceEnric
         super(new FullInteractionUpdater<InteractionEvidence>());
     }
 
+    protected FullInteractionEvidenceUpdater(FullInteractionUpdater<InteractionEvidence> interactionEnricher) {
+        super(interactionEnricher != null ? interactionEnricher : new FullInteractionUpdater<InteractionEvidence>());
+    }
+
     @Override
     protected void processConfidences(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
         EnricherUtils.mergeConfidences(objectToEnrich, objectToEnrich.getConfidences(), objectSource.getConfidences(), true,

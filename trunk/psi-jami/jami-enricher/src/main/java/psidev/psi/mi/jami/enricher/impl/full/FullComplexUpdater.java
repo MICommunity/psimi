@@ -23,6 +23,11 @@ public class FullComplexUpdater extends FullModelledInteractionUpdater<Complex> 
         this.interactorEnricher = new FullInteractorBaseUpdater<Complex>();
     }
 
+    protected FullComplexUpdater(FullInteractorBaseUpdater<Complex> interactorEnricher){
+        super();
+        this.interactorEnricher = interactorEnricher != null ? interactorEnricher : new FullInteractorBaseUpdater<Complex>();
+    }
+
     /**
      * Strategy for the Interaction enrichment.
      * This method can be overwritten to change how the interaction is enriched.
@@ -82,5 +87,9 @@ public class FullComplexUpdater extends FullModelledInteractionUpdater<Complex> 
 
     public OrganismEnricher getOrganismEnricher() {
         return this.interactorEnricher.getOrganismEnricher();
+    }
+
+    protected FullInteractorBaseUpdater<Complex> getInteractorEnricher() {
+        return interactorEnricher;
     }
 }

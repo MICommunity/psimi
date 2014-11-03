@@ -26,6 +26,11 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
         this.delegate = new MinimalInteractionUpdater<I>();
     }
 
+    protected MinimalModelledInteractionUpdater( MinimalInteractionUpdater<I> delegate){
+        super();
+        this.delegate = delegate != null ? delegate : new MinimalInteractionUpdater<I>();
+    }
+
     @Override
     public void processMinimalUpdates(I objectToEnrich, I objectSource) throws EnricherException {
         this.delegate.processMinimalUpdates(objectToEnrich, objectSource);
@@ -75,6 +80,10 @@ public class MinimalModelledInteractionUpdater<I extends ModelledInteraction>
     @Override
     public void setInteractionEnricherListener(InteractionEnricherListener<I> listener) {
         this.delegate.setInteractionEnricherListener(listener);
+    }
+
+    protected MinimalInteractionUpdater<I> getDelegate() {
+        return delegate;
     }
 }
 

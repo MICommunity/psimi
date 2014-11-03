@@ -22,4 +22,8 @@ public class FullOntologyTermUpdater extends MinimalOntologyTermUpdater {
     public FullOntologyTermUpdater(OntologyTermFetcher cvTermFetcher) {
         super(new FullCvTermUpdater<OntologyTerm>(cvTermFetcher));
     }
+
+    protected FullOntologyTermUpdater(FullCvTermUpdater<OntologyTerm> cvTermEnricher) {
+        super(cvTermEnricher);
+    }
 }

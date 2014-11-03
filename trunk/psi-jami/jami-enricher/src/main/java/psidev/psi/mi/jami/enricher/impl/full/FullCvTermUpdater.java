@@ -33,6 +33,11 @@ public class FullCvTermUpdater<C extends CvTerm> extends FullCvTermEnricher<C>{
         this.minimalCvTermUpdater = new MinimalCvTermUpdater<C>(cvTermFetcher);
     }
 
+    protected FullCvTermUpdater(MinimalCvTermUpdater<C> minimalCvTermUpdater) {
+        super(minimalCvTermUpdater != null ? minimalCvTermUpdater.getCvTermFetcher() : null);
+        this.minimalCvTermUpdater = minimalCvTermUpdater;
+    }
+
     @Override
     protected void processMinimalUpdates(C cvTermToEnrich, C termFetched) throws EnricherException {
         this.minimalCvTermUpdater.processCvTerm(cvTermToEnrich, termFetched);
@@ -82,5 +87,9 @@ public class FullCvTermUpdater<C extends CvTerm> extends FullCvTermEnricher<C>{
     @Override
     public C find(C cvTermToEnrich) throws EnricherException {
         return this.minimalCvTermUpdater.find(cvTermToEnrich);
+    }
+
+    protected MinimalCvTermUpdater<C> getMinimalCvTermUpdater() {
+        return minimalCvTermUpdater;
     }
 }

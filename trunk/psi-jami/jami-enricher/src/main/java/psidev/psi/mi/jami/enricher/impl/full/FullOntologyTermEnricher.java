@@ -22,4 +22,8 @@ public class FullOntologyTermEnricher extends MinimalOntologyTermEnricher {
     public FullOntologyTermEnricher(OntologyTermFetcher cvTermFetcher) {
         super(new FullCvTermEnricher<OntologyTerm>(cvTermFetcher));
     }
+
+    protected FullOntologyTermEnricher(FullCvTermEnricher<OntologyTerm> cvEnricher) {
+        super(cvEnricher);
+    }
 }

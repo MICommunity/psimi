@@ -27,6 +27,11 @@ public class FullFeatureEvidenceUpdater extends FullFeatureUpdater<FeatureEviden
         this.minimalEnricher = new MinimalFeatureEvidenceUpdater();
     }
 
+    protected FullFeatureEvidenceUpdater(MinimalFeatureEvidenceUpdater minimalEnricher){
+        super();
+        this.minimalEnricher = minimalEnricher != null ? minimalEnricher : new MinimalFeatureEvidenceUpdater();
+    }
+
     @Override
     public void processMinimalUpdates(FeatureEvidence objectToEnrich, FeatureEvidence objectSource) throws EnricherException {
         this.minimalEnricher.processMinimalUpdates(objectToEnrich, objectSource);
@@ -138,8 +143,18 @@ public class FullFeatureEvidenceUpdater extends FullFeatureUpdater<FeatureEviden
         this.minimalEnricher.onEnrichmentError(object, message, e);
     }
 
+    @Override
+    protected void processOtherProperties(FeatureEvidence featureToEnrich, FeatureEvidence objectSource) throws EnricherException {
+        super.processOtherProperties(featureToEnrich, objectSource);
+        processParameters(featureToEnrich, objectSource);
+    }
+
     protected void processParameters(FeatureEvidence featureToEnrich, FeatureEvidence objectSource) {
         EnricherUtils.mergeParameters(featureToEnrich, objectSource.getParameters(), objectSource.getParameters(), true,
                 getFeatureEnricherListener() instanceof FeatureEvidenceEnricherListener ? (psidev.psi.mi.jami.listener.ParametersChangeListener<FeatureEvidence>) getFeatureEnricherListener() : null);
+    }
+
+    public MinimalFeatureEvidenceUpdater getMinimalEnricher() {
+        return minimalEnricher;
     }
 }

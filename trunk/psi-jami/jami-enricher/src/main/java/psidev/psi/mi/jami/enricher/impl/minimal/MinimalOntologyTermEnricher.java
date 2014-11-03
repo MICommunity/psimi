@@ -198,4 +198,8 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
     public CvTermEnricherListener<OntologyTerm> getCvTermEnricherListener() {
         return this.cvEnricher.getCvTermEnricherListener();
     }
+
+    protected MinimalCvTermEnricher<OntologyTerm> getCvEnricher() {
+        return cvEnricher;
+    }
 }

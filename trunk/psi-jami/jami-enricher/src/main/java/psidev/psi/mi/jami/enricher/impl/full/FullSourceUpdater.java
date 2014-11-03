@@ -21,4 +21,8 @@ public class FullSourceUpdater extends MinimalSourceUpdater {
     public FullSourceUpdater(SourceFetcher cvTermFetcher) {
         super(new FullCvTermUpdater<Source>(cvTermFetcher));
     }
+
+    protected FullSourceUpdater(FullCvTermUpdater<Source> cvTermUpdater) {
+        super(cvTermUpdater);
+    }
 }

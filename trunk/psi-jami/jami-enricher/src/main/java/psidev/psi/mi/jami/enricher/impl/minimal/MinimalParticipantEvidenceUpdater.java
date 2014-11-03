@@ -28,6 +28,12 @@ public class MinimalParticipantEvidenceUpdater<P extends ParticipantEvidence> ex
         this.minimalUpdater = new MinimalParticipantUpdater<P, FeatureEvidence>();
     }
 
+    protected MinimalParticipantEvidenceUpdater(MinimalParticipantUpdater<P, FeatureEvidence> delegate){
+        super();
+        this.minimalUpdater =  delegate != null ? delegate : new MinimalParticipantUpdater<P, FeatureEvidence>();
+    }
+
+
     @Override
     public void processIdentificationMethods(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         mergeIdentificationMethods(participantEvidenceToEnrich, participantEvidenceToEnrich.getIdentificationMethods(), objectSource.getIdentificationMethods(), true);
@@ -125,5 +131,9 @@ public class MinimalParticipantEvidenceUpdater<P extends ParticipantEvidence> ex
     @Override
     public CompositeInteractorEnricher getInteractorEnricher() {
         return this.minimalUpdater.getInteractorEnricher();
+    }
+
+    protected MinimalParticipantUpdater<P, FeatureEvidence> getMinimalUpdater() {
+        return minimalUpdater;
     }
 }
