@@ -110,8 +110,6 @@ public class ImexPublicationAssigner extends FullPublicationEnricher{
         if(source != null && pubId != null){
             ImexPublication imexPublication = fetchImexPublication(pubId, source);
 
-            boolean canAssign = true;
-
             // the publication is already registered in IMEx central
             if (imexPublication != null){
 
@@ -122,12 +120,8 @@ public class ImexPublicationAssigner extends FullPublicationEnricher{
                     }
                     return null;
                 }
-                // the publication was registered by intact user so we can assign IMEx id
-                else if (isEntitledToAssignImexId(publicationToEnrich, imexPublication)){
-                    canAssign = true;
-                }
                 // the publication has been registered in IMex central but does not have an IMEx id. We cannot assign IMEx id, the curator must have a look at it
-                else {
+                else if (!isEntitledToAssignImexId(publicationToEnrich, imexPublication)){
                     if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
                         ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationAlreadyRegisteredInImexCentral(publicationToEnrich, imexPublication.getImexId());
                         ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationNotEligibleForImex(publicationToEnrich);
