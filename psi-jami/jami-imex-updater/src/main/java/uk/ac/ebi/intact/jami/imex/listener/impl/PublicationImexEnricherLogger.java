@@ -72,4 +72,8 @@ public class PublicationImexEnricherLogger extends PublicationEnricherLogger imp
     public void onImexIdAssigned(Publication publication, String imex) {
         log.info("The IMEx identifier "+imex+" has been assigned to the publication "+publication);
     }
+
+    public void onImexIdNotRecognized(Publication publication, String imex) {
+        log.error("The publication "+publication+" does have an IMEx identifier which is not recognized in IMEx central "+imex);
+    }
 }

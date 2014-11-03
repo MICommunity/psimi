@@ -126,4 +126,11 @@ public class PublicationImexEnricherListenerManager
             }
         }
     }
+
+    public void onImexIdNotRecognized(Publication publication, String imex) {
+        for(PublicationEnricherListener listener : getListenersList()){
+            if (listener instanceof PublicationImexEnricherListener){
+                ((PublicationImexEnricherListener) listener).onImexIdNotRecognized(publication, imex);
+            }
+        }    }
 }

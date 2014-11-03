@@ -282,6 +282,15 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
         this.identifierSynchronizer = identifierSynchronizer;
     }
 
+    @Override
+    protected void onEnrichedVersionNotFound(Publication publicationToEnrich) throws EnricherException {
+        if(getPublicationEnricherListener() instanceof PublicationImexEnricherListener)
+            ((PublicationImexEnricherListener)getPublicationEnricherListener()).onImexIdNotRecognized(publicationToEnrich, publicationToEnrich.getImexId());
+        else{
+            super.onEnrichedVersionNotFound(publicationToEnrich);
+        }
+    }
+
     private ImexPublication fetchImexPublication(String id, String db) throws EnricherException {
         try {
             return (ImexPublication)getPublicationFetcher().fetchByIdentifier(id, db);

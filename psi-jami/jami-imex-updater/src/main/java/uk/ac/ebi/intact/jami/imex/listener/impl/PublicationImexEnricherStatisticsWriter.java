@@ -111,4 +111,8 @@ public class PublicationImexEnricherStatisticsWriter
         checkObject(publication);
         incrementUpdateCount();
     }
+
+    public void onImexIdNotRecognized(Publication publication, String imex) {
+        super.onEnrichmentError(publication, "The publication "+publication+" does have an IMEx identifier which is not recognized in IMEx central "+imex, null);
+    }
 }
