@@ -65,7 +65,7 @@ public class ImexCentralPublicationRegisterImpl implements ImexCentralPublicatio
 
             return newPublication;
         } catch (BridgeFailedException e) {
-            IcentralFault f = (IcentralFault) e.getCause().getCause();
+            IcentralFault f = (IcentralFault) e.getCause();
             // IMEx central throw an Exception when the record cannot be created
             if( f.getFaultInfo().getFaultCode() == ImexCentralClient.NO_RECORD_CREATED ) {
                 log.error("Cannot create a new record in IMEx central for publication " + pubId, e);
