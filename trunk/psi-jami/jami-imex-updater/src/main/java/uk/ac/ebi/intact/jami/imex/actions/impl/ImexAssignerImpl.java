@@ -237,4 +237,12 @@ public class ImexAssignerImpl implements ImexAssigner {
 
         return number+1;
     }
+
+    protected int getCurrentIndex() {
+        return currentIndex;
+    }
+
+    protected Pattern getInteraction_imex_regexp() {
+        return interaction_imex_regexp;
+    }
 }
