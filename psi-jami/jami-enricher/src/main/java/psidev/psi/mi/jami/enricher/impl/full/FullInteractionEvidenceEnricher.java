@@ -145,4 +145,8 @@ public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceE
             }
         }
     }
+
+    protected FullInteractionEnricher<InteractionEvidence> getInteractionEnricher() {
+        return interactionEnricher;
+    }
 }

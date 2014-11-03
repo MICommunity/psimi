@@ -28,6 +28,10 @@ public class FullInteractorPoolUpdater extends AbstractInteractorUpdater<Interac
         super(new FullInteractorPoolEnricher(fetcher));
     }
 
+    protected FullInteractorPoolUpdater(FullInteractorPoolEnricher enricher) {
+        super(enricher != null ? enricher : new FullInteractorPoolEnricher());
+    }
+
     @Override
     protected boolean isFullEnrichment() {
         return true;

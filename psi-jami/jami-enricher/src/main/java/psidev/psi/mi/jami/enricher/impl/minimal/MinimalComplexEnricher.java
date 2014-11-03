@@ -25,10 +25,7 @@ public class MinimalComplexEnricher extends MinimalModelledInteractionEnricher<C
 
     protected MinimalComplexEnricher(MinimalInteractorBaseEnricher<Complex> interactorEnricher){
         super();
-        if (this.interactorEnricher == null){
-             throw new IllegalArgumentException("Interactor enricher cannot be null");
-        }
-        this.interactorEnricher = interactorEnricher;
+        this.interactorEnricher =interactorEnricher != null ?  interactorEnricher : new MinimalInteractorBaseEnricher<Complex>();
     }
 
     /**

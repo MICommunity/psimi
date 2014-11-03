@@ -35,7 +35,7 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
 
     protected FullModelledInteractionEnricher(FullInteractionEnricher<I> interactionEnricher) {
         super();
-        this.interactionEnricher = interactionEnricher != null ? interactionEnricher : new FullInteractionEnricher();
+        this.interactionEnricher = interactionEnricher != null ? interactionEnricher : new FullInteractionEnricher<I>();
     }
 
     @Override
@@ -243,5 +243,9 @@ public class FullModelledInteractionEnricher<I extends ModelledInteraction> exte
 
     public void setEvidenceEnricher(InteractionEvidenceEnricher evidenceEnricher) {
         this.evidenceEnricher = evidenceEnricher;
+    }
+
+    protected FullInteractionEnricher<I> getInteractionEnricher() {
+        return interactionEnricher;
     }
 }

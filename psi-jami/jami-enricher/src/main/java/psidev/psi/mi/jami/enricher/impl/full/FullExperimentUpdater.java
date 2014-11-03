@@ -26,6 +26,11 @@ public class FullExperimentUpdater extends FullExperimentEnricher {
         this.delegate = new MinimalExperimentUpdater();
     }
 
+    protected FullExperimentUpdater(MinimalExperimentUpdater delegate){
+        super();
+        this.delegate = delegate != null ? delegate : new MinimalExperimentUpdater();
+    }
+
     @Override
     public void processExperiment(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException {
 
@@ -54,5 +59,9 @@ public class FullExperimentUpdater extends FullExperimentEnricher {
     @Override
     protected void processVariableParameters(Experiment experimentToEnrich, Experiment objectSource) {
         mergerVariableParameters(experimentToEnrich, objectSource, true);
+    }
+
+    protected MinimalExperimentUpdater getDelegate() {
+        return delegate;
     }
 }

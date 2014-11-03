@@ -28,6 +28,11 @@ public class MinimalInteractionEvidenceUpdater
         this.delegate = new MinimalInteractionUpdater<InteractionEvidence>();
     }
 
+    protected MinimalInteractionEvidenceUpdater( MinimalInteractionUpdater<InteractionEvidence> delegate){
+        super();
+        this.delegate = delegate != null ? delegate : new MinimalInteractionUpdater<InteractionEvidence>();
+    }
+
     @Override
     public void processMinimalUpdates(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException {
         this.delegate.processMinimalUpdates(objectToEnrich, objectSource);
@@ -89,6 +94,10 @@ public class MinimalInteractionEvidenceUpdater
     @Override
     public void setInteractionEnricherListener(InteractionEnricherListener<InteractionEvidence> listener) {
         this.delegate.setInteractionEnricherListener(listener);
+    }
+
+    public MinimalInteractionUpdater<InteractionEvidence> getDelegate() {
+        return delegate;
     }
 }
 

@@ -31,10 +31,7 @@ public class FullInteractionUpdater<I extends Interaction>
 
     protected FullInteractionUpdater(MinimalInteractionUpdater<I> delegate){
         super();
-        if (delegate == null){
-            throw new IllegalArgumentException("Interaction enricher delegate is required");
-        }
-        this.delegate = delegate;
+        this.delegate = delegate != null ? delegate : new MinimalInteractionUpdater<I>();
     }
 
     @Override
@@ -106,5 +103,9 @@ public class FullInteractionUpdater<I extends Interaction>
     @Override
     public void setInteractionEnricherListener(InteractionEnricherListener<I> listener) {
         delegate.setInteractionEnricherListener(listener);
+    }
+
+    protected MinimalInteractionUpdater<I> getDelegate() {
+        return delegate;
     }
 }

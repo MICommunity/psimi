@@ -23,6 +23,10 @@ public class FullModelledInteractionUpdater<I extends ModelledInteraction> exten
         super(new FullInteractionUpdater<I>());
     }
 
+    protected FullModelledInteractionUpdater(FullInteractionUpdater<I> interactionEnricher) {
+        super(interactionEnricher != null ? interactionEnricher : new FullInteractionUpdater<I>());
+    }
+
     @Override
     protected void processConfidences(I objectToEnrich, I objectSource) {
         EnricherUtils.mergeConfidences(objectToEnrich, objectToEnrich.getModelledConfidences(), objectSource.getModelledConfidences(), true,

@@ -34,6 +34,11 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
         this.minimalPublicationUpdater = new MinimalPublicationUpdater(fetcher);
     }
 
+    protected FullPublicationUpdater(MinimalPublicationUpdater minimalPublicationUpdater) {
+        super(minimalPublicationUpdater != null ? minimalPublicationUpdater.getPublicationFetcher() : null);
+        this.minimalPublicationUpdater = minimalPublicationUpdater;
+    }
+
     @Override
     public void processPublication(Publication publicationToEnrich, Publication fetchedPublication) throws EnricherException {
         this.minimalPublicationUpdater.processPublication(publicationToEnrich, fetchedPublication);
@@ -91,5 +96,9 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     @Override
     public Publication find(Publication publicationToEnrich) throws EnricherException {
         return this.minimalPublicationUpdater.find(publicationToEnrich);
+    }
+
+    protected MinimalPublicationUpdater getMinimalPublicationUpdater() {
+        return minimalPublicationUpdater;
     }
 }

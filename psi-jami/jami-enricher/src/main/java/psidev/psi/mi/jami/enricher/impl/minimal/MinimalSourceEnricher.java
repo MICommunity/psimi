@@ -101,4 +101,8 @@ public class MinimalSourceEnricher extends AbstractMIEnricher<Source> implements
     public CvTermEnricherListener<Source> getCvTermEnricherListener() {
         return this.delegate.getCvTermEnricherListener();
     }
+
+    protected MinimalCvTermEnricher<Source> getDelegate() {
+        return delegate;
+    }
 }

@@ -33,10 +33,8 @@ public class FullFeatureUpdater<F extends Feature> extends FullFeatureEnricher<F
     }
 
     protected FullFeatureUpdater(MinimalFeatureUpdater<F> minimalUpdater){
-        if (minimalUpdater == null){
-            throw new IllegalArgumentException("The minimal feature updater is required");
-        }
-        this.minimalUpdater = minimalUpdater;
+        super();
+        this.minimalUpdater = minimalUpdater != null ? minimalUpdater : new MinimalFeatureUpdater<F>();
     }
 
     @Override
@@ -180,5 +178,9 @@ public class FullFeatureUpdater<F extends Feature> extends FullFeatureEnricher<F
     @Override
     public void onEnrichmentError(Protein object, String message, Exception e) {
         this.minimalUpdater.onEnrichmentError(object, message, e);
+    }
+
+    protected MinimalFeatureUpdater<F> getMinimalUpdater() {
+        return minimalUpdater;
     }
 }

@@ -23,6 +23,11 @@ public class MinimalComplexUpdater extends MinimalModelledInteractionUpdater<Com
         this.interactorEnricher = new MinimalInteractorBaseUpdater<Complex>();
     }
 
+    public MinimalComplexUpdater(MinimalInteractorBaseUpdater<Complex> interactorEnricher){
+        super();
+        this.interactorEnricher = interactorEnricher != null ? interactorEnricher : new MinimalInteractorBaseUpdater<Complex>();
+    }
+
     /**
      * Strategy for the Interaction enrichment.
      * This method can be overwritten to change how the interaction is enriched.
@@ -81,5 +86,9 @@ public class MinimalComplexUpdater extends MinimalModelledInteractionUpdater<Com
 
     public OrganismEnricher getOrganismEnricher() {
         return this.interactorEnricher.getOrganismEnricher();
+    }
+
+    protected MinimalInteractorBaseUpdater<Complex> getInteractorEnricher() {
+        return interactorEnricher;
     }
 }
