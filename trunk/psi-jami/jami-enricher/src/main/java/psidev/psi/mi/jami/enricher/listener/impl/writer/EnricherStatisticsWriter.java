@@ -205,13 +205,17 @@ public abstract class EnricherStatisticsWriter<T> implements EnricherListener<T>
             failureWriter.write(EnricherUtils.COLUMN_SEPARATOR);
             if(message != null) {
                 failureWriter.write(message);
-                failureWriter.write(": ");
-                failureWriter.write(e.getClass().getCanonicalName());
+                if (e != null){
+                    failureWriter.write(": ");
+                    failureWriter.write(e.getClass().getCanonicalName());
+                }
             }
             else {
                 failureWriter.write(e.getClass().getCanonicalName());
-                failureWriter.write(": ");
-                failureWriter.write(e.getMessage());
+                if (e != null){
+                    failureWriter.write(": ");
+                    failureWriter.write(e.getMessage());
+                }
             }
             failureWriter.flush();
         } catch (IOException e2) {
