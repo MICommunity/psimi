@@ -245,4 +245,8 @@ public class ImexAssignerImpl implements ImexAssigner {
     protected Pattern getInteraction_imex_regexp() {
         return interaction_imex_regexp;
     }
+
+    protected void setCurrentIndex(int currentIndex) {
+        this.currentIndex = currentIndex;
+    }
 }
