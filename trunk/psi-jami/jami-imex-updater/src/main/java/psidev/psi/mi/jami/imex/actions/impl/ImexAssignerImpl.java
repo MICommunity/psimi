@@ -144,7 +144,7 @@ public class ImexAssignerImpl implements ImexAssigner {
                 // we may have conflict of imex-primary
                 else {
                     // collect all imex references having same id
-                    Collection<Xref> imexRefs = XrefUtils.collectAllXrefsHavingDatabaseAndId(imexPrimaryRefs, Xref.IMEX_MI, Xref.IMEX, imexId+"-"+currentIndex);
+                    Collection<Xref> imexRefs = XrefUtils.collectAllXrefsHavingDatabaseAndId(imexPrimaryRefs, Xref.IMEX_MI, Xref.IMEX, interaction.getImexId());
 
                     // remove duplicated references
                     if (imexRefs.size() == imexPrimaryRefs.size()) {

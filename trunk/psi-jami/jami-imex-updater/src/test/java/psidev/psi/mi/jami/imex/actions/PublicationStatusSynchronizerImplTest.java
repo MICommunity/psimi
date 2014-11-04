@@ -6,7 +6,10 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
+import psidev.psi.mi.jami.bridges.imex.PublicationStatus;
 import psidev.psi.mi.jami.bridges.imex.extension.ImexPublication;
+import psidev.psi.mi.jami.bridges.imex.mock.MockImexCentralClient;
+import psidev.psi.mi.jami.imex.actions.impl.PublicationStatusSynchronizerImpl;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 
 import java.util.Date;
@@ -26,6 +29,9 @@ public class PublicationStatusSynchronizerImplTest{
 
     @Before
     public void createImexPublications() throws BridgeFailedException {
+
+        imexStatusSynchronizerTest = new PublicationStatusSynchronizerImpl(new MockImexCentralClient());
+
         Publication pub1 = new Publication();
         Identifier pubmed = new Identifier();
         pubmed.setNs("pmid");
@@ -53,7 +59,7 @@ public class PublicationStatusSynchronizerImplTest{
 
         imexStatusSynchronizerTest.synchronizePublicationStatusWithImexCentral(intactPublication, intactPub1);
 
-        Assert.assertEquals("NEW", intactPub1.getStatus());
+        Assert.assertEquals(PublicationStatus.NEW, intactPub1.getStatus());
     }
 
     @Test
@@ -64,6 +70,6 @@ public class PublicationStatusSynchronizerImplTest{
 
         imexStatusSynchronizerTest.synchronizePublicationStatusWithImexCentral(intactPublication, intactPub2);
 
-        Assert.assertEquals("RELEASED", intactPub2.getStatus());
+        Assert.assertEquals(PublicationStatus.RELEASED, intactPub2.getStatus());
     }
 }

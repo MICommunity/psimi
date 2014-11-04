@@ -171,7 +171,7 @@ public class PublicationIdentifierSynchronizerImplTest {
     }
 
     @Test
-    public void synchronized_new_identifier_already_existing_aborted() throws BridgeFailedException {
+    public void synchronized_new_identifier_already_existing_aborted() throws EnricherException {
 
         psidev.psi.mi.jami.model.Publication intactPublication = new DefaultPublication( "12345");
         intactPublication.setSource(new DefaultSource("intact"));
@@ -179,7 +179,7 @@ public class PublicationIdentifierSynchronizerImplTest {
         try {
             identifierSynchronizerTest.synchronizePublicationIdentifier(intactPublication, intactPubUnassigned);
             Assert.assertFalse(true);
-        } catch (EnricherException e) {
+        } catch (BridgeFailedException e) {
             Assert.assertTrue(intactPubUnassigned.getIdentifiers().isEmpty());
         }
     }
