@@ -138,6 +138,14 @@ public class ImexPublicationRegister extends FullPublicationEnricher{
                     }
                 }
             }
+            else{
+                if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
+                    ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationWhichCannotBeRegistered(publicationToEnrich);
+                }
+                else{
+                    getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "The publication cannot be registered in IMEx central", null);
+                }
+            }
             return imexPublication;
         }
 
