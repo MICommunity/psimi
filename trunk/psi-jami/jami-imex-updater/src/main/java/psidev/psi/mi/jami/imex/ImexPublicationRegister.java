@@ -50,7 +50,9 @@ public class ImexPublicationRegister extends FullPublicationEnricher{
                     ((PublicationImexEnricherListener)getPublicationEnricherListener()).onImexAdminGroupUpdated(publicationToEnrich, fetched.getSource());
                 }
             } catch (BridgeFailedException e) {
-                getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the admin group of publication "+publicationToEnrich+" in IMEx central", e);
+                if (getPublicationEnricherListener() != null){
+                    getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the admin group of publication "+publicationToEnrich+" in IMEx central", e);
+                }
             }
         }
     }
@@ -65,7 +67,9 @@ public class ImexPublicationRegister extends FullPublicationEnricher{
                             ((ImexPublication) fetched).getStatus());
                 }
             } catch (BridgeFailedException e) {
-                getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the status of publication " + publicationToEnrich + " in IMEx central", e);
+                if (getPublicationEnricherListener() != null){
+                    getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the status of publication " + publicationToEnrich + " in IMEx central", e);
+                }
             }
         }
     }
@@ -133,7 +137,7 @@ public class ImexPublicationRegister extends FullPublicationEnricher{
                     if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
                         ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationWhichCannotBeRegistered(publicationToEnrich);
                     }
-                    else{
+                    else if (getPublicationEnricherListener() != null){
                         getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "The publication cannot be registered in IMEx central", null);
                     }
                 }
@@ -142,7 +146,7 @@ public class ImexPublicationRegister extends FullPublicationEnricher{
                 if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
                     ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationWhichCannotBeRegistered(publicationToEnrich);
                 }
-                else{
+                else if (getPublicationEnricherListener() != null){
                     getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "The publication cannot be registered in IMEx central", null);
                 }
             }

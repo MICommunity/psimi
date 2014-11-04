@@ -65,7 +65,9 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
                     ((PublicationImexEnricherListener)getPublicationEnricherListener()).onImexAdminGroupUpdated(publicationToEnrich, fetched.getSource());
                 }
             } catch (BridgeFailedException e) {
-                getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the admin group of publication "+publicationToEnrich+" in IMEx central", e);
+                if (getPublicationEnricherListener() != null){
+                    getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the admin group of publication "+publicationToEnrich+" in IMEx central", e);
+                }
             }
         }
     }
@@ -80,7 +82,9 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
                             ((ImexPublication) fetched).getStatus());
                 }
             } catch (BridgeFailedException e) {
-                getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the status of publication " + publicationToEnrich + " in IMEx central", e);
+                if (getPublicationEnricherListener() != null){
+                    getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the status of publication " + publicationToEnrich + " in IMEx central", e);
+                }
             }
         }
     }
@@ -106,14 +110,18 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
                 // annotation is a duplicate, we delete it
                 if (hasFullCoverage){
                     annotIterator.remove();
-                    getPublicationEnricherListener().onRemovedAnnotation(publicationToEnrich, ann);
+                    if (getPublicationEnricherListener() != null){
+                        getPublicationEnricherListener().onRemovedAnnotation(publicationToEnrich, ann);
+                    }
                 }
                 // first time we see a full coverage, if not the same text, we update it
                 else if (ann.getValue() == null || !ann.getValue().equals(FULL_COVERAGE_TEXT)){
                     hasFullCoverage = true;
 
                     ann.setValue(FULL_COVERAGE_TEXT);
-                    getPublicationEnricherListener().onAddedAnnotation(publicationToEnrich, ann);
+                    if (getPublicationEnricherListener() != null){
+                        getPublicationEnricherListener().onAddedAnnotation(publicationToEnrich, ann);
+                    }
                 }
                 // we found full coverage with same annotation text
                 else {
@@ -126,7 +134,9 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
                 // annotation is a duplicate, we delete it
                 if (hasImexCuration){
                     annotIterator.remove();
-                    getPublicationEnricherListener().onRemovedAnnotation(publicationToEnrich, ann);
+                    if (getPublicationEnricherListener() != null){
+                        getPublicationEnricherListener().onRemovedAnnotation(publicationToEnrich, ann);
+                    }
                 }
                 // we found imex curation
                 else {
@@ -138,14 +148,18 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
         if (!hasFullCoverage){
             Annotation ann = AnnotationUtils.createAnnotation(FULL_COVERAGE, FULL_COVERAGE_MI, FULL_COVERAGE_TEXT);
             publicationToEnrich.getAnnotations().add(ann);
-            getPublicationEnricherListener().onAddedAnnotation(publicationToEnrich, ann);
+            if (getPublicationEnricherListener() != null){
+                getPublicationEnricherListener().onAddedAnnotation(publicationToEnrich, ann);
+            }
 
         }
 
         if (!hasImexCuration){
             Annotation ann = AnnotationUtils.createAnnotation(IMEX_CURATION, IMEX_CURATION_MI, IMEX_CURATION);
             publicationToEnrich.getAnnotations().add(ann);
-            getPublicationEnricherListener().onAddedAnnotation(publicationToEnrich, ann);
+            if (getPublicationEnricherListener() != null){
+                getPublicationEnricherListener().onAddedAnnotation(publicationToEnrich, ann);
+            }
         }
     }
 
@@ -182,7 +196,7 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
         // if the publication identifier is not in sync with IMEx central,
         // try to synchronize it first but does not update the publication
         try {
-            if (fetched instanceof ImexPublication &&
+            if (fetched instanceof ImexPublication && getIdentifierSynchronizer() != null &&
                     !getIdentifierSynchronizer().isPublicationIdentifierInSyncWithImexCentral(pubId, source, (ImexPublication)fetched)){
                 getIdentifierSynchronizer().synchronizePublicationIdentifier(publicationToEnrich, fetched);
                 if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
@@ -208,7 +222,7 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
             if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
                 ((PublicationImexEnricherListener)getPublicationEnricherListener()).onMissingImexId(publicationToEnrich);
             }
-            else{
+            else if (getPublicationEnricherListener() != null){
                 getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "The publication does not have a single IMEx identifier and cannot be updated", null);
             }
         }
@@ -250,7 +264,7 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
             else if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
                 ((PublicationImexEnricherListener)getPublicationEnricherListener()).onImexIdConflicts(publication, imexPrimaryRefs);
             }
-            else{
+            else if (getPublicationEnricherListener() != null){
                 getPublicationEnricherListener().onEnrichmentError(publication, "The publication has several IMEx identifiers and cannot be updated", null);
             }
         }

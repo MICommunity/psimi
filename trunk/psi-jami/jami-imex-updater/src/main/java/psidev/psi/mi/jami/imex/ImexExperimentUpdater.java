@@ -46,7 +46,8 @@ public class ImexExperimentUpdater extends FullExperimentEnricher{
 
     @Override
     protected void processXrefs(Experiment experimentToEnrich, Experiment objectSource) {
-        if (experimentToEnrich.getPublication() != null && experimentToEnrich.getPublication().getImexId() != null){
+        if (experimentToEnrich.getPublication() != null && experimentToEnrich.getPublication().getImexId() != null
+                && getImexAssigner() != null){
 
             try {
                 getImexAssigner().updateImexIdentifierForExperiment(experimentToEnrich, experimentToEnrich.getPublication().getImexId());
@@ -58,6 +59,9 @@ public class ImexExperimentUpdater extends FullExperimentEnricher{
                 if (getExperimentEnricherListener() instanceof ExperimentImexEnricherListener){
                     ((ExperimentImexEnricherListener)getExperimentEnricherListener()).onImexIdConflicts(experimentToEnrich,
                             XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(experimentToEnrich.getXrefs(), Xref.IMEX_MI, Xref.IMEX, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY));
+                }
+                else if (getExperimentEnricherListener() != null){
+                    getExperimentEnricherListener().onEnrichmentError(experimentToEnrich, "Cannot update Imex primary reference", e);
                 }
             }
         }
