@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.enricher.impl.full.FullPublicationEnricher;
 import psidev.psi.mi.jami.model.Publication;
 import psidev.psi.mi.jami.model.Source;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import uk.ac.ebi.intact.jami.bridges.imex.ImexCentralClient;
 import uk.ac.ebi.intact.jami.bridges.imex.extension.ImexPublication;
@@ -178,7 +179,11 @@ public class ImexPublicationAssigner extends FullPublicationEnricher{
     protected boolean isEntitledToAssignImexId(Publication publicationToEnrich, ImexPublication imexPublication) throws EnricherException {
 
         Source source = publicationToEnrich.getSource();
-        return source != null && DefaultCvTermComparator.areEquals(source, imexPublication.getSource());
+        Source source2 = imexPublication.getSource();
+        if (source2 == null){
+           source2 = new DefaultSource(imexPublication.getOwner());
+        }
+        return source != null && DefaultCvTermComparator.areEquals(source, source2);
     }
 
     public ImexAssigner getImexAssigner() {
