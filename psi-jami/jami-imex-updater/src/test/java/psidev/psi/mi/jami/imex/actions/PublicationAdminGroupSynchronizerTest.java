@@ -85,7 +85,7 @@ public class PublicationAdminGroupSynchronizerTest {
         imexAdminGroupSynchronizerTest.synchronizePublicationAdminGroup(intactPublication, noIntactPub);
         
         Assert.assertEquals(1, noIntactPub.getSources().size());
-        Assert.assertEquals("INTACT", noIntactPub.getSources().iterator().next());
+        Assert.assertEquals("INTACT", noIntactPub.getSources().iterator().next().getShortName().toUpperCase());
         noIntactPub.getSources().clear();
     }
 
@@ -98,7 +98,7 @@ public class PublicationAdminGroupSynchronizerTest {
         imexAdminGroupSynchronizerTest.synchronizePublicationAdminGroup(intactPublication, intactPub);
 
         Assert.assertEquals(2, intactPub.getSources().size());
-        Assert.assertEquals("INTACT", intactPub.getSources().iterator().next());
+        Assert.assertEquals("INTACT", intactPub.getSources().iterator().next().getShortName().toUpperCase());
     }
 
     @Test
@@ -117,21 +117,17 @@ public class PublicationAdminGroupSynchronizerTest {
         group.remove();
     }
 
-    @Test
-    public void synchronize_unknown_admin_add_intact() {
+    @Test(expected = BridgeFailedException.class)
+    public void synchronize_unknown_admin() throws BridgeFailedException {
 
         Publication intactPublication = new DefaultPublication("12348");
         intactPublication.setSource(new DefaultSource("i2d"));
 
-        try {
-            imexAdminGroupSynchronizerTest.synchronizePublicationAdminGroup(intactPublication, noIntactPub2);
-            Assert.assertEquals(1, noIntactPub2.getSources().size());
-            Iterator<Source> group = noIntactPub2.getSources().iterator();
+        imexAdminGroupSynchronizerTest.synchronizePublicationAdminGroup(intactPublication, noIntactPub2);
+        Assert.assertEquals(1, noIntactPub2.getSources().size());
+        Iterator<Source> group = noIntactPub2.getSources().iterator();
 
-            Assert.assertEquals("INTACT", group.next().getShortName().toUpperCase());
-            noIntactPub2.getSources().clear();
-        } catch (BridgeFailedException e) {
-            Assert.assertFalse(true);
-        }
+        Assert.assertEquals("INTACT", group.next().getShortName().toUpperCase());
+        noIntactPub2.getSources().clear();
     }
 }
