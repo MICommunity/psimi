@@ -42,7 +42,8 @@ public class ImexInteractionUpdater extends FullInteractionEnricher{
             InteractionEvidence evidence = (InteractionEvidence)objectToEnrich;
             if (evidence.getExperiment() != null &&
                     evidence.getExperiment().getPublication() != null
-                    && evidence.getExperiment().getPublication().getImexId() != null){
+                    && evidence.getExperiment().getPublication().getImexId() != null
+                    && getImexAssigner() != null){
 
                 try {
                     getImexAssigner().clearInteractionImexContext();
@@ -57,6 +58,9 @@ public class ImexInteractionUpdater extends FullInteractionEnricher{
                         ((InteractionImexEnricherListener)getInteractionEnricherListener()).onImexIdConflicts(evidence,
                                 XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(evidence.getXrefs(), Xref.IMEX_MI, Xref.IMEX, Xref.IMEX_PRIMARY_MI,
                                         Xref.IMEX_PRIMARY));
+                    }
+                    else{
+                        throw e;
                     }
                 }
             }

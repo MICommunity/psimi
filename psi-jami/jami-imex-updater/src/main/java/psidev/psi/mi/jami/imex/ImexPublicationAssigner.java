@@ -159,7 +159,7 @@ public class ImexPublicationAssigner extends FullPublicationEnricher{
                     if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
                         ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationWhichCannotBeRegistered(publicationToEnrich);
                     }
-                    else{
+                    else if (getPublicationEnricherListener() != null){
                         getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "The publication cannot be registered in IMEx central", null);
                     }
                 }
@@ -167,7 +167,7 @@ public class ImexPublicationAssigner extends FullPublicationEnricher{
                 return imexPublication;
             }
             // unassigned publication, cannot use the webservice to automatically assign IMEx id for now, ask the curator to manually register and assign IMEx id to this publication
-            else {
+            else if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
                 ((PublicationImexEnricherListener)getPublicationEnricherListener()).onPublicationNotEligibleForImex(publicationToEnrich);
                 return null;
             }
