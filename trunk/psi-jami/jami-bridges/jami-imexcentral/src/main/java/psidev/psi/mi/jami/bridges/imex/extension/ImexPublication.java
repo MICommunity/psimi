@@ -51,6 +51,10 @@ public class ImexPublication extends DefaultPublication{
         if (this.delegate.getCreationDate() != null){
             this.creationDate = this.delegate.getCreationDate().toGregorianCalendar().getTime();
         }
+        // init pub status
+        if (this.delegate.getStatus() != null){
+            this.status =  PublicationStatus.valueOf(this.delegate.getStatus());
+        }
     }
 
     @Override
@@ -197,7 +201,7 @@ public class ImexPublication extends DefaultPublication{
     }
 
     public PublicationStatus getStatus() {
-        return PublicationStatus.valueOf(this.delegate.getStatus());
+        return status;
     }
 
     public void setStatus(PublicationStatus status) {
