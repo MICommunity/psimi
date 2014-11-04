@@ -1,4 +1,4 @@
-package uk.ac.ebi.intact.jami.bridges.imex;
+package psidev.psi.mi.jami.bridges.imex;
 
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;

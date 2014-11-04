@@ -1,4 +1,4 @@
-package uk.ac.ebi.intact.jami.bridges.imex.mock;
+package psidev.psi.mi.jami.bridges.imex.mock;
 
 import edu.ucla.mbi.imex.central.ws.v20.*;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
@@ -7,10 +7,10 @@ import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.utils.XrefUtils;
 import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
-import uk.ac.ebi.intact.jami.bridges.imex.ImexCentralClient;
-import uk.ac.ebi.intact.jami.bridges.imex.Operation;
-import uk.ac.ebi.intact.jami.bridges.imex.PublicationStatus;
-import uk.ac.ebi.intact.jami.bridges.imex.extension.ImexPublication;
+import psidev.psi.mi.jami.bridges.imex.ImexCentralClient;
+import psidev.psi.mi.jami.bridges.imex.Operation;
+import psidev.psi.mi.jami.bridges.imex.PublicationStatus;
+import psidev.psi.mi.jami.bridges.imex.extension.ImexPublication;
 
 import java.util.*;
 import java.util.regex.Pattern;

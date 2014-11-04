@@ -1,4 +1,4 @@
-package uk.ac.ebi.intact.jami.bridges.imex;
+package psidev.psi.mi.jami.bridges.imex;
 
 /**
  * Various statuses an IMEx publication can have.
