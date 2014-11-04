@@ -1,4 +1,4 @@
-package uk.ac.ebi.intact.jami.bridges.imex;
+package psidev.psi.mi.jami.bridges.imex;
 
 import edu.ucla.mbi.imex.central.ws.v20.*;
 import edu.ucla.mbi.imex.central.ws.v20.Publication;
@@ -6,7 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.model.*;
-import uk.ac.ebi.intact.jami.bridges.imex.extension.ImexPublication;
+import psidev.psi.mi.jami.bridges.imex.extension.ImexPublication;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;

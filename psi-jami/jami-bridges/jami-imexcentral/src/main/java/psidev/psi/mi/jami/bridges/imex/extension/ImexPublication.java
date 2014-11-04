@@ -1,11 +1,11 @@
-package uk.ac.ebi.intact.jami.bridges.imex.extension;
+package psidev.psi.mi.jami.bridges.imex.extension;
 
 import edu.ucla.mbi.imex.central.ws.v20.Identifier;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
 import psidev.psi.mi.jami.model.impl.DefaultSource;
 import psidev.psi.mi.jami.utils.XrefUtils;
-import uk.ac.ebi.intact.jami.bridges.imex.PublicationStatus;
+import psidev.psi.mi.jami.bridges.imex.PublicationStatus;
 
 import java.util.*;
 
