@@ -25,6 +25,7 @@ public class ImexPublication extends DefaultPublication{
     private Date creationDate;
     private List<Source> sources;
     private PublicationStatus status;
+    private List<String> curators;
 
     public ImexPublication(edu.ucla.mbi.imex.central.ws.v20.Publication delegate) {
         super();
@@ -216,7 +217,10 @@ public class ImexPublication extends DefaultPublication{
         if (this.delegate.getAdminUserList() != null){
            return this.delegate.getAdminUserList().getUser();
         }
-        return Collections.EMPTY_LIST;
+        else if (this.curators == null){
+            this.curators = new ArrayList<String>();
+        }
+        return this.curators;
     }
 
     public List<Source> getSources() {
