@@ -262,7 +262,10 @@ public class DefaultInteractionEvidence extends AbstractInteraction<ParticipantE
     protected void processRemovedXrefEvent(Xref removed) {
         // the removed identifier is pubmed
         if (imexId != null && imexId.equals(removed)){
-            imexId = null;
+            Collection<Xref> existingImex = XrefUtils.collectAllXrefsHavingDatabaseAndQualifier(getXrefs(), Xref.IMEX_MI, Xref.IMEX, Xref.IMEX_PRIMARY_MI, Xref.IMEX_PRIMARY);
+            if (!existingImex.isEmpty()){
+                imexId = existingImex.iterator().next();
+            }
         }
     }
 
