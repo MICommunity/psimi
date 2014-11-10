@@ -66,20 +66,12 @@ public class PublicationIdentifierSynchronizerImpl implements PublicationIdentif
 
     public void synchronizePublicationIdentifier(Publication publication, Publication imexPublication) throws EnricherException, BridgeFailedException {
 
-        String pubId = null;
-        String source = null;
-        if (publication.getImexId() != null){
-            pubId = imexPublication.getImexId();
-            source = Xref.IMEX;
-        }
-        else{
-            pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
-            source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
-            if (pubId == null && !publication.getIdentifiers().isEmpty()){
-                Xref id = publication.getXrefs().iterator().next();
-                source = INTERNAL;
-                pubId = id.getId();
-            }
+        String pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
+        String source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
+        if (pubId == null && !publication.getIdentifiers().isEmpty()){
+            Xref id = publication.getXrefs().iterator().next();
+            source = INTERNAL;
+            pubId = id.getId();
         }
 
         // if the publication id is not in IMEx central, we need to synchronize
