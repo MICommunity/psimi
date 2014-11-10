@@ -1,16 +1,18 @@
 package psidev.psi.mi.jami.bridges.imex.mock;
 
-import edu.ucla.mbi.imex.central.ws.v20.*;
+import edu.ucla.mbi.imex.central.ws.v20.IcentralFault;
+import edu.ucla.mbi.imex.central.ws.v20.Identifier;
+import edu.ucla.mbi.imex.central.ws.v20.ImexCentralFault;
+import edu.ucla.mbi.imex.central.ws.v20.Publication;
 import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
-import psidev.psi.mi.jami.model.Xref;
-import psidev.psi.mi.jami.model.impl.DefaultPublication;
-import psidev.psi.mi.jami.model.impl.DefaultSource;
-import psidev.psi.mi.jami.utils.XrefUtils;
-import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 import psidev.psi.mi.jami.bridges.imex.ImexCentralClient;
 import psidev.psi.mi.jami.bridges.imex.Operation;
 import psidev.psi.mi.jami.bridges.imex.PublicationStatus;
 import psidev.psi.mi.jami.bridges.imex.extension.ImexPublication;
+import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.model.impl.DefaultSource;
+import psidev.psi.mi.jami.utils.XrefUtils;
+import psidev.psi.mi.jami.utils.comparator.cv.DefaultCvTermComparator;
 
 import java.util.*;
 import java.util.regex.Pattern;
@@ -272,7 +274,7 @@ public class MockImexCentralClient implements ImexCentralClient {
 
     public psidev.psi.mi.jami.model.Publication createPublicationById( String identifier, String source ) throws BridgeFailedException {
 
-        psidev.psi.mi.jami.model.Publication p = new DefaultPublication();
+        psidev.psi.mi.jami.model.Publication p = new ImexPublication(new Publication());
         p.getIdentifiers().add(XrefUtils.createIdentityXref(source, identifier));
         allPublications.add( p );
         return p;
