@@ -185,28 +185,22 @@ public class ImexPublicationUpdater extends FullPublicationEnricher{
 
     @Override
     protected void processIdentifiers(Publication publicationToEnrich, Publication fetched) {
-        String pubId = publicationToEnrich.getPubmedId() != null ? publicationToEnrich.getPubmedId() : publicationToEnrich.getDoi();
-        String source = publicationToEnrich.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
-        if (pubId == null && !publicationToEnrich.getIdentifiers().isEmpty()) {
-            Xref id = publicationToEnrich.getXrefs().iterator().next();
-            source = id.getDatabase().getShortName();
-            pubId = id.getId();
-        }
-
-        // if the publication identifier is not in sync with IMEx central,
-        // try to synchronize it first but does not update the publication
-        try {
-            if (fetched instanceof ImexPublication && getIdentifierSynchronizer() != null &&
-                    !getIdentifierSynchronizer().isPublicationIdentifierInSyncWithImexCentral(pubId, source, (ImexPublication)fetched)){
-                getIdentifierSynchronizer().synchronizePublicationIdentifier(publicationToEnrich, fetched);
-                if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
-                    ((PublicationImexEnricherListener)getPublicationEnricherListener()).onImexPublicationIdentifierSynchronized(publicationToEnrich);
+        if (publicationToEnrich.getImexId() != null){
+            // if the publication identifier is not in sync with IMEx central,
+            // try to synchronize it first but does not update the publication
+            try {
+                if (fetched instanceof ImexPublication && getIdentifierSynchronizer() != null &&
+                        !getIdentifierSynchronizer().isPublicationIdentifierInSyncWithImexCentral(publicationToEnrich.getImexId(), Xref.IMEX, (ImexPublication)fetched)){
+                    getIdentifierSynchronizer().synchronizePublicationIdentifier(publicationToEnrich, fetched);
+                    if (getPublicationEnricherListener() instanceof PublicationImexEnricherListener){
+                        ((PublicationImexEnricherListener)getPublicationEnricherListener()).onImexPublicationIdentifierSynchronized(publicationToEnrich);
+                    }
                 }
+            } catch (BridgeFailedException e) {
+                getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the identifier of publication " + publicationToEnrich + " in IMEx central", e);
+            } catch (EnricherException e) {
+                getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the identifier of publication " + publicationToEnrich + " in IMEx central", e);
             }
-        } catch (BridgeFailedException e) {
-            getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the identifier of publication " + publicationToEnrich + " in IMEx central", e);
-        } catch (EnricherException e) {
-            getPublicationEnricherListener().onEnrichmentError(publicationToEnrich, "Cannot update the identifier of publication " + publicationToEnrich + " in IMEx central", e);
         }
     }
 
