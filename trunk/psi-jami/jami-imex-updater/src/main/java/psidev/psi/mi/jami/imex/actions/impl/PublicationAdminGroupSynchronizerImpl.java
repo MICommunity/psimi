@@ -37,12 +37,20 @@ public class PublicationAdminGroupSynchronizerImpl implements PublicationAdminGr
     public void synchronizePublicationAdminGroup(Publication publication, ImexPublication imexPublication) throws BridgeFailedException {
 
         List<Source> sources = imexPublication.getSources();
-        String pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
-        String source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
-        if (pubId == null && !publication.getIdentifiers().isEmpty()){
-            Xref id = publication.getXrefs().iterator().next();
-            source = id.getDatabase().getShortName();
-            pubId = id.getId();
+        String pubId = null;
+        String source = null;
+        if (publication.getImexId() != null){
+           pubId = imexPublication.getImexId();
+           source = Xref.IMEX;
+        }
+        else{
+            pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
+            source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
+            if (pubId == null && !publication.getIdentifiers().isEmpty()){
+                Xref id = publication.getXrefs().iterator().next();
+                source = id.getDatabase().getShortName();
+                pubId = id.getId();
+            }
         }
 
         // add other database admin group if it exists

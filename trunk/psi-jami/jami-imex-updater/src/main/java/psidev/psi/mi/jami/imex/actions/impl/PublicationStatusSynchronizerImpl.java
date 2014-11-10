@@ -38,12 +38,20 @@ public class PublicationStatusSynchronizerImpl implements PublicationStatusSynch
            return;
         }
         if (imexStatus == null || (imexStatus != null && !newStatus.equals(imexStatus))){
-            String pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
-            String source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
-            if (pubId == null && !publication.getIdentifiers().isEmpty()){
-                Xref id = publication.getXrefs().iterator().next();
-                source = id.getDatabase().getShortName();
-                pubId = id.getId();
+            String pubId = null;
+            String source = null;
+            if (publication.getImexId() != null){
+                pubId = imexPublication.getImexId();
+                source = Xref.IMEX;
+            }
+            else{
+                pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
+                source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
+                if (pubId == null && !publication.getIdentifiers().isEmpty()){
+                    Xref id = publication.getXrefs().iterator().next();
+                    source = id.getDatabase().getShortName();
+                    pubId = id.getId();
+                }
             }
             imexCentral.updatePublicationStatus( pubId, source, newStatus );
             log.info("Updating imex status to " + newStatus.toString());
@@ -64,12 +72,20 @@ public class PublicationStatusSynchronizerImpl implements PublicationStatusSynch
         PublicationStatus imexStatus = imexPublication.getStatus();
 
         if (imexStatus == null || (imexStatus != null && !PublicationStatus.DISCARDED.equals(imexStatus))){
-            String pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
-            String source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
-            if (pubId == null && !publication.getIdentifiers().isEmpty()){
-                Xref id = publication.getXrefs().iterator().next();
-                source = id.getDatabase().getShortName();
-                pubId = id.getId();
+            String pubId = null;
+            String source = null;
+            if (publication.getImexId() != null){
+                pubId = imexPublication.getImexId();
+                source = Xref.IMEX;
+            }
+            else{
+                pubId = publication.getPubmedId() != null ? publication.getPubmedId() : publication.getDoi();
+                source = publication.getPubmedId() != null ? Xref.PUBMED : Xref.DOI;
+                if (pubId == null && !publication.getIdentifiers().isEmpty()){
+                    Xref id = publication.getXrefs().iterator().next();
+                    source = id.getDatabase().getShortName();
+                    pubId = id.getId();
+                }
             }
             imexCentral.updatePublicationStatus( pubId, source, PublicationStatus.DISCARDED );
             log.info("Updating imex status to DISCARDED");
