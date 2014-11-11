@@ -212,7 +212,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-commons</artifactId>
-            <version>${pom.version}</version>
+            <version>${jami.commons.version}</version>
         </dependency>
 
         <!-- slf4j -->
