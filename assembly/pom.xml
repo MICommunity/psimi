@@ -117,7 +117,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-core</artifactId>
-            <version>${jami.version}</version>
+            <version>${jami.core.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
@@ -230,6 +230,13 @@
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-xml</artifactId>
             <version>${jami.version}</version>
+            <type>zip</type>
+            <classifier>distribution</classifier>
+        </dependency>
+       <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-commons</artifactId>
+            <version>${jami.commons.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
