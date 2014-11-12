@@ -27,5 +27,5 @@ public interface OrganismEnricher extends MIEnricher<Organism>{
      */
     public OrganismEnricherListener getOrganismEnricherListener();
 
-    public CvTermEnricher<CvTerm> getCvTermEmricher();
+    public CvTermEnricher<CvTerm> getCvTermEnricher();
 }

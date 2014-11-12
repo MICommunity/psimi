@@ -67,7 +67,7 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
     /*
      * Cv enricher is not needed here
       */
-    public CvTermEnricher<CvTerm> getCvTermEmricher() {
+    public CvTermEnricher<CvTerm> getCvTermEnricher() {
         return null;
     }
 
