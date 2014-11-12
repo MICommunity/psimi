@@ -38,11 +38,15 @@ public class FullOrganismUpdater extends MinimalOrganismUpdater {
 
     @Override
     protected void processOtherProperties(Organism organismToEnrich, Organism organismFetched) throws EnricherException {
-        EnricherUtils.mergeAliases(organismToEnrich, organismToEnrich.getAliases(), organismFetched.getAliases(), false, getOrganismEnricherListener());
+        processAliases(organismToEnrich, organismFetched);
 
         processCellType(organismToEnrich, organismFetched);
         processTissue(organismToEnrich, organismFetched);
         processCompartment(organismToEnrich, organismFetched);
+    }
+
+    protected void processAliases(Organism organismToEnrich, Organism organismFetched) {
+        EnricherUtils.mergeAliases(organismToEnrich, organismToEnrich.getAliases(), organismFetched.getAliases(), false, getOrganismEnricherListener());
     }
 
     protected void processCellType(Organism entityToEnrich, Organism fetched) throws EnricherException {
