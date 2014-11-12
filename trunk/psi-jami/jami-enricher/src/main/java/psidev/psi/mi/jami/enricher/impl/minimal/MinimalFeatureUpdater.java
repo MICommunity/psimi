@@ -70,7 +70,7 @@ public class MinimalFeatureUpdater<F extends  Feature> extends MinimalFeatureEnr
     }
 
     @Override
-    protected void processShortLabel(F objectToEnrich, F objectSource) {
+    protected void processShortLabel(F objectToEnrich, F objectSource) throws EnricherException{
         if(objectSource.getShortName() != null
                 && ! objectSource.getShortName().equalsIgnoreCase(objectToEnrich.getShortName())){
 
@@ -82,7 +82,7 @@ public class MinimalFeatureUpdater<F extends  Feature> extends MinimalFeatureEnr
     }
 
     @Override
-    protected void processFullName(F objectToEnrich, F objectSource) {
+    protected void processFullName(F objectToEnrich, F objectSource) throws EnricherException{
         // == Full Name ======================================================================
         if((objectSource.getFullName() != null && !objectSource.getFullName().equals(objectToEnrich.getFullName()))
                 || (objectSource.getFullName() == null
@@ -96,7 +96,7 @@ public class MinimalFeatureUpdater<F extends  Feature> extends MinimalFeatureEnr
     }
 
     @Override
-    protected void processIdentifiers(F objectToEnrich, F objectSource) {
+    protected void processIdentifiers(F objectToEnrich, F objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getIdentifiers(), objectSource.getIdentifiers(), true, true,
                 getFeatureEnricherListener(), getFeatureEnricherListener());
     }

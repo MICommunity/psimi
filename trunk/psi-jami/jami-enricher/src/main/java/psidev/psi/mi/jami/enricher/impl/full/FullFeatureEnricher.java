@@ -83,17 +83,17 @@ public class FullFeatureEnricher<F extends Feature> extends MinimalFeatureEnrich
         processRole(featureToEnrich);
     }
 
-    protected void processXrefs(F objectToEnrich, F cvTermFetched) {
+    protected void processXrefs(F objectToEnrich, F cvTermFetched) throws EnricherException{
         EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getXrefs(), cvTermFetched.getXrefs(), false, false,
                 getFeatureEnricherListener(), getFeatureEnricherListener());
     }
 
-    protected void processAnnotations(F objectToEnrich, F fetchedObject){
+    protected void processAnnotations(F objectToEnrich, F fetchedObject) throws EnricherException{
         EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), false,
                 getFeatureEnricherListener());
     }
 
-    protected void processAliases(F objectToEnrich, F termFetched) {
+    protected void processAliases(F objectToEnrich, F termFetched) throws EnricherException{
         EnricherUtils.mergeAliases(objectToEnrich, objectToEnrich.getAliases(), termFetched.getAliases(), false, getFeatureEnricherListener());
     }
 
