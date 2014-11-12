@@ -116,7 +116,7 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
             listener.onEnrichmentComplete(organismToEnrich, EnrichmentStatus.SUCCESS, "Organism successfully enriched.");
     }
 
-    protected void processTaxid(Organism organismToEnrich, Organism organismFetched) {
+    protected void processTaxid(Organism organismToEnrich, Organism organismFetched) throws EnricherException{
         // nothing to do
     }
 

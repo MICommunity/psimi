@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import psidev.psi.mi.jami.bridges.fetcher.OrganismFetcher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.model.Organism;
 
 /**
@@ -50,7 +51,7 @@ public class MinimalOrganismUpdater extends MinimalOrganismEnricher {
     }
 
     @Override
-    protected void processTaxid(Organism organismToEnrich, Organism organismFetched) {
+    protected void processTaxid(Organism organismToEnrich, Organism organismFetched) throws EnricherException{
         if (organismToEnrich.getTaxId() != organismFetched.getTaxId()){
             int oldTaxid = organismToEnrich.getTaxId();
             organismToEnrich.setTaxId(organismFetched.getTaxId());
