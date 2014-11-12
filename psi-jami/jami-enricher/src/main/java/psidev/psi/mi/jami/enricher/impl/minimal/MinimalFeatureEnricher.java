@@ -102,12 +102,12 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
         processIdentifiers(objectToEnrich, objectSource);
     }
 
-    protected void processIdentifiers(F objectToEnrich, F objectSource) {
+    protected void processIdentifiers(F objectToEnrich, F objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getIdentifiers(), objectSource.getIdentifiers(), false, true,
                 getFeatureEnricherListener(), getFeatureEnricherListener());
     }
 
-    protected void processFullName(F objectToEnrich, F objectSource) {
+    protected void processFullName(F objectToEnrich, F objectSource) throws EnricherException{
         if(objectToEnrich.getFullName() == null
                 && objectSource.getFullName() != null){
 
@@ -117,7 +117,7 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
         }
     }
 
-    protected void processShortLabel(F objectToEnrich, F objectSource) {
+    protected void processShortLabel(F objectToEnrich, F objectSource) throws EnricherException{
         if(objectToEnrich.getShortName() == null
                 && objectSource.getShortName() != null){
 

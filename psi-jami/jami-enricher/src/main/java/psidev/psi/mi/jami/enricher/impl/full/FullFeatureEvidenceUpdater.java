@@ -149,7 +149,7 @@ public class FullFeatureEvidenceUpdater extends FullFeatureUpdater<FeatureEviden
         processParameters(featureToEnrich, objectSource);
     }
 
-    protected void processParameters(FeatureEvidence featureToEnrich, FeatureEvidence objectSource) {
+    protected void processParameters(FeatureEvidence featureToEnrich, FeatureEvidence objectSource) throws EnricherException{
         EnricherUtils.mergeParameters(featureToEnrich, objectSource.getParameters(), objectSource.getParameters(), true,
                 getFeatureEnricherListener() instanceof FeatureEvidenceEnricherListener ? (psidev.psi.mi.jami.listener.ParametersChangeListener<FeatureEvidence>) getFeatureEnricherListener() : null);
     }
