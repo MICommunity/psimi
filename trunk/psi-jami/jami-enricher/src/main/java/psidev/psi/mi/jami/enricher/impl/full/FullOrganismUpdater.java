@@ -28,11 +28,11 @@ public class FullOrganismUpdater extends MinimalOrganismUpdater {
         super(organismFetcher);
     }
 
-    public CvTermEnricher<CvTerm> getCvEnricher() {
+    public CvTermEnricher<CvTerm> getCvTermEnricher() {
         return cvEnricher;
     }
 
-    public void setCvEnricher(CvTermEnricher<CvTerm> cvEnricher) {
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> cvEnricher) {
         this.cvEnricher = cvEnricher;
     }
 
@@ -53,12 +53,12 @@ public class FullOrganismUpdater extends MinimalOrganismUpdater {
                 getOrganismEnricherListener().onCellTypeUpdate(entityToEnrich, old);
             }
         }
-        else if (getCvEnricher() != null
+        else if (getCvTermEnricher() != null
                 && entityToEnrich.getCellType() != fetched.getCellType()){
-            getCvEnricher().enrich(entityToEnrich.getCellType(), fetched.getCellType());
+            getCvTermEnricher().enrich(entityToEnrich.getCellType(), fetched.getCellType());
         }
-        if (getCvEnricher() != null && entityToEnrich.getCellType() != null){
-            getCvEnricher().enrich(entityToEnrich.getCellType());
+        if (getCvTermEnricher() != null && entityToEnrich.getCellType() != null){
+            getCvTermEnricher().enrich(entityToEnrich.getCellType());
         }
     }
 
@@ -70,12 +70,12 @@ public class FullOrganismUpdater extends MinimalOrganismUpdater {
                 getOrganismEnricherListener().onTissueUpdate(entityToEnrich, old);
             }
         }
-        else if (getCvEnricher() != null
+        else if (getCvTermEnricher() != null
                 && entityToEnrich.getTissue() != fetched.getTissue()){
-            getCvEnricher().enrich(entityToEnrich.getTissue(), fetched.getTissue());
+            getCvTermEnricher().enrich(entityToEnrich.getTissue(), fetched.getTissue());
         }
-        if (getCvEnricher() != null && entityToEnrich.getTissue() != null){
-            getCvEnricher().enrich(entityToEnrich.getTissue());
+        if (getCvTermEnricher() != null && entityToEnrich.getTissue() != null){
+            getCvTermEnricher().enrich(entityToEnrich.getTissue());
         }
     }
 
@@ -87,12 +87,12 @@ public class FullOrganismUpdater extends MinimalOrganismUpdater {
                 getOrganismEnricherListener().onCompartmentUpdate(entityToEnrich, old);
             }
         }
-        else if (getCvEnricher() != null
+        else if (getCvTermEnricher() != null
                 && entityToEnrich.getCompartment() != fetched.getCompartment()){
-            getCvEnricher().enrich(entityToEnrich.getCompartment(), fetched.getCompartment());
+            getCvTermEnricher().enrich(entityToEnrich.getCompartment(), fetched.getCompartment());
         }
-        if (getCvEnricher() != null && entityToEnrich.getCompartment() != null){
-            getCvEnricher().enrich(entityToEnrich.getCompartment());
+        if (getCvTermEnricher() != null && entityToEnrich.getCompartment() != null){
+            getCvTermEnricher().enrich(entityToEnrich.getCompartment());
         }
     }
 }
