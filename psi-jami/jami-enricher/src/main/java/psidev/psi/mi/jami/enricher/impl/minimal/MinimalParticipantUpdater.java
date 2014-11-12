@@ -63,7 +63,7 @@ public class MinimalParticipantUpdater<P extends Participant, F extends Feature>
     }
 
     @Override
-    protected void processAliases(P objectToEnrich, P objectSource) {
+    protected void processAliases(P objectToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeAliases(objectToEnrich, objectToEnrich.getAliases(), objectSource.getAliases(), true,
                 getParticipantEnricherListener() instanceof AliasesChangeListener ? (AliasesChangeListener)getParticipantEnricherListener():null);
     }

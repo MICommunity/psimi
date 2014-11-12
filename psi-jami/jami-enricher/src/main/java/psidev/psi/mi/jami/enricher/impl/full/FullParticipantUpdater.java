@@ -29,14 +29,14 @@ public class FullParticipantUpdater<P extends Participant, F extends Feature>
     }
 
     @Override
-    protected void processXrefs(P objectToEnrich, P objectSource) {
+    protected void processXrefs(P objectToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getXrefs(), objectSource.getXrefs(), true, false,
                 getParticipantEnricherListener() instanceof XrefsChangeListener ? (XrefsChangeListener)getParticipantEnricherListener():null,
                 null);
     }
 
     @Override
-    protected void processAnnotations(P objectToEnrich, P objectSource) {
+    protected void processAnnotations(P objectToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), objectSource.getAnnotations(),
                 true,
                 getParticipantEnricherListener() instanceof AnnotationsChangeListener ? (AnnotationsChangeListener)getParticipantEnricherListener():null);
@@ -84,7 +84,7 @@ public class FullParticipantUpdater<P extends Participant, F extends Feature>
     }
 
     @Override
-    protected void processAliases(P objectToEnrich, P objectSource) {
+    protected void processAliases(P objectToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeAliases(objectToEnrich, objectToEnrich.getAliases(), objectSource.getAliases(), true,
                 getParticipantEnricherListener() instanceof AliasesChangeListener ? (AliasesChangeListener)getParticipantEnricherListener() : null);
     }

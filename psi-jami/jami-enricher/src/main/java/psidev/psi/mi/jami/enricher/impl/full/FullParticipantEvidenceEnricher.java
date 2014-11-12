@@ -50,17 +50,17 @@ public class FullParticipantEvidenceEnricher<P extends ParticipantEvidence> exte
                 false);
     }
 
-    protected void processParameters(P participantEvidenceToEnrich, P objectSource) {
+    protected void processParameters(P participantEvidenceToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeParameters(participantEvidenceToEnrich, participantEvidenceToEnrich.getParameters(), objectSource.getParameters(), false,
                 (getParticipantEnricherListener() instanceof ParticipantEvidenceEnricherListener ? (ParticipantEvidenceEnricherListener)getParticipantEnricherListener() : null));
     }
 
-    protected void processConfidences(P participantEvidenceToEnrich, P objectSource) {
+    protected void processConfidences(P participantEvidenceToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeConfidences(participantEvidenceToEnrich, participantEvidenceToEnrich.getConfidences(), objectSource.getConfidences(), false,
                 (getParticipantEnricherListener() instanceof ParticipantEvidenceEnricherListener ? (ParticipantEvidenceEnricherListener)getParticipantEnricherListener() : null));
     }
 
-    protected void processXrefs(P participantEvidenceToEnrich, P objectSource) {
+    protected void processXrefs(P participantEvidenceToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(participantEvidenceToEnrich, participantEvidenceToEnrich.getXrefs(), objectSource.getXrefs(), false, false,
                 getParticipantEnricherListener() instanceof XrefsChangeListener ? (XrefsChangeListener)getParticipantEnricherListener():null, null);
     }

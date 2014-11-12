@@ -89,7 +89,7 @@ public class MinimalParticipantEvidenceUpdater<P extends ParticipantEvidence> ex
     }
 
     @Override
-    public void processAliases(P objectToEnrich, P objectSource) {
+    public void processAliases(P objectToEnrich, P objectSource) throws EnricherException{
         this.minimalUpdater.processAliases(objectToEnrich, objectSource);
     }
 
