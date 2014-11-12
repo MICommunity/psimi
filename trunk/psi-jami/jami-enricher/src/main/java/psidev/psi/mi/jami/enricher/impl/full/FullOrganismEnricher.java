@@ -45,7 +45,7 @@ public class FullOrganismEnricher extends MinimalOrganismEnricher {
         processCompartment(organismToEnrich, organismFetched);
     }
 
-    protected void processAliases(Organism organismToEnrich, Organism organismFetched) {
+    protected void processAliases(Organism organismToEnrich, Organism organismFetched) throws EnricherException{
         EnricherUtils.mergeAliases(organismToEnrich, organismToEnrich.getAliases(), organismFetched.getAliases(), false, getOrganismEnricherListener());
     }
 
