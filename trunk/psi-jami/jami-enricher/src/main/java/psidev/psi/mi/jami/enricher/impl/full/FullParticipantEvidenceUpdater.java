@@ -41,19 +41,19 @@ public class FullParticipantEvidenceUpdater<P extends ParticipantEvidence> exten
     }
 
     @Override
-    protected void processParameters(P participantEvidenceToEnrich, P objectSource) {
+    protected void processParameters(P participantEvidenceToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeParameters(participantEvidenceToEnrich, participantEvidenceToEnrich.getParameters(), objectSource.getParameters(), true,
                 (getParticipantEnricherListener() instanceof ParticipantEvidenceEnricherListener ? (ParticipantEvidenceEnricherListener)getParticipantEnricherListener() : null));
     }
 
     @Override
-    protected void processConfidences(P participantEvidenceToEnrich, P objectSource) {
+    protected void processConfidences(P participantEvidenceToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeConfidences(participantEvidenceToEnrich, participantEvidenceToEnrich.getConfidences(), objectSource.getConfidences(), true,
                 (getParticipantEnricherListener() instanceof ParticipantEvidenceEnricherListener ? (ParticipantEvidenceEnricherListener) getParticipantEnricherListener() : null));
     }
 
     @Override
-    protected void processXrefs(P participantEvidenceToEnrich, P objectSource) {
+    protected void processXrefs(P participantEvidenceToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(participantEvidenceToEnrich, participantEvidenceToEnrich.getXrefs(), objectSource.getXrefs(), true, false,
                 getParticipantEnricherListener() instanceof XrefsChangeListener ? (XrefsChangeListener)getParticipantEnricherListener():null, null);
     }
@@ -84,7 +84,7 @@ public class FullParticipantEvidenceUpdater<P extends ParticipantEvidence> exten
     }
 
     @Override
-    protected void processAliases(P objectToEnrich, P objectSource) {
+    protected void processAliases(P objectToEnrich, P objectSource) throws EnricherException{
         this.minimalUpdater.processAliases(objectToEnrich, objectSource);
     }
 

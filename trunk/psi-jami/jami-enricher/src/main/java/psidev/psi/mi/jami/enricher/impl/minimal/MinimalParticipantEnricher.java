@@ -50,7 +50,7 @@ public class MinimalParticipantEnricher<P extends Participant , F extends Featur
         processBiologicalRole(objectToEnrich);
     }
 
-    protected void processAliases(P objectToEnrich, P objectSource) {
+    protected void processAliases(P objectToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeAliases(objectToEnrich, objectToEnrich.getAliases(), objectSource.getAliases(), false,
                 getParticipantEnricherListener() instanceof AliasesChangeListener ? (AliasesChangeListener)getParticipantEnricherListener() : null);
     }

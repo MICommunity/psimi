@@ -35,14 +35,14 @@ public class FullParticipantEnricher<P extends Participant, F extends Feature>
                 false, getParticipantEnricherListener());
     }
 
-    protected void processXrefs(P objectToEnrich, P objectSource) {
+    protected void processXrefs(P objectToEnrich, P objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getXrefs(), objectSource.getXrefs(), false,
                 false,
                 getParticipantEnricherListener() instanceof XrefsChangeListener ? (XrefsChangeListener)getParticipantEnricherListener():null,
                 null);
     }
 
-    protected void processAnnotations(P objectToEnrich, P objectSource) {
+    protected void processAnnotations(P objectToEnrich, P objectSource) throws EnricherException {
         EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), objectSource.getAnnotations(), false,
                 getParticipantEnricherListener() instanceof AnnotationsChangeListener ? (AnnotationsChangeListener)getParticipantEnricherListener():null);
     }
