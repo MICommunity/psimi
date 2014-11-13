@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl.full;
 
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalCuratedPublicationEnricher;
 import psidev.psi.mi.jami.enricher.impl.minimal.MinimalPublicationEnricher;
 import psidev.psi.mi.jami.model.CurationDepth;
@@ -34,7 +35,7 @@ public class FullCuratedPublicationEnricher extends MinimalCuratedPublicationEnr
      * @param publicationToEnrich   The publication which is being enriched.
      */
     @Override
-    protected void processOtherProperties(Publication publicationToEnrich, Publication fetched) {
+    protected void processOtherProperties(Publication publicationToEnrich, Publication fetched) throws EnricherException {
 
         // == RELEASE date ===================================================================
         processReleasedDate(publicationToEnrich, fetched);
@@ -43,7 +44,7 @@ public class FullCuratedPublicationEnricher extends MinimalCuratedPublicationEnr
         processCurationDepth(publicationToEnrich, fetched);
     }
 
-    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) {
+    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if (publicationToEnrich.getCurationDepth().equals(CurationDepth.undefined)
                 && !fetched.getCurationDepth().equals(CurationDepth.undefined)){
             publicationToEnrich.setCurationDepth(fetched.getCurationDepth());
@@ -53,7 +54,7 @@ public class FullCuratedPublicationEnricher extends MinimalCuratedPublicationEnr
         }
     }
 
-    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) {
+    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if (publicationToEnrich.getReleasedDate() == null && fetched.getReleasedDate() != null){
             publicationToEnrich.setReleasedDate(fetched.getReleasedDate());
             if (getPublicationEnricherListener() != null){

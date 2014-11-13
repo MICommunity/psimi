@@ -100,7 +100,7 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
         // do nothing
     }
 
-    protected void processPublicationDate(Publication publicationToEnrich, Publication fetched) {
+    protected void processPublicationDate(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if(publicationToEnrich.getPublicationDate() == null
                 && fetched.getPublicationDate() != null) {
             publicationToEnrich.setPublicationDate(fetched.getPublicationDate());
@@ -109,7 +109,7 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
         }
     }
 
-    protected void processAuthors(Publication publicationToEnrich, Publication fetched) {
+    protected void processAuthors(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         // only add authors if empty collection. Authors are an ordered list and it does not make sens to complete an author list. Either it is there or it is not.
         if(!fetched.getAuthors().isEmpty() && publicationToEnrich.getAuthors().isEmpty()){
             for(String author : fetched.getAuthors()){
@@ -120,7 +120,7 @@ public class MinimalPublicationEnricher extends AbstractMIEnricher<Publication> 
         }
     }
 
-    protected void processIdentifiers(Publication publicationToEnrich, Publication fetched) {
+    protected void processIdentifiers(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         EnricherUtils.mergeXrefs(publicationToEnrich, publicationToEnrich.getIdentifiers(), fetched.getIdentifiers(), false, true,
                 getPublicationEnricherListener(), getPublicationEnricherListener());
     }
