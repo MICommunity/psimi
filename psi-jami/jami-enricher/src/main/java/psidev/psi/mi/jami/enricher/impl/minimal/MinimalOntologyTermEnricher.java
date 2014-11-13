@@ -71,7 +71,7 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
         processChildren(cvTermToEnrich, cvTermFetched);
     }
 
-    protected void processDefinition(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) {
+    protected void processDefinition(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException{
         if (cvTermToEnrich.getDefinition() == null && cvTermFetched.getDefinition() != null){
             String oldDef = cvTermToEnrich.getDefinition();
             cvTermToEnrich.setDefinition(cvTermFetched.getDefinition());

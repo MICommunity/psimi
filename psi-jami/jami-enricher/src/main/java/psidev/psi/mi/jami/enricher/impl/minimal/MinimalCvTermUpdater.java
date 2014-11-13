@@ -41,7 +41,7 @@ public class MinimalCvTermUpdater<C extends CvTerm> extends MinimalCvTermEnriche
         processShortabel(cvTermToEnrich, cvTermFetched);
     }
 
-    protected void processShortabel(C cvTermToEnrich, C cvTermFetched) {
+    protected void processShortabel(C cvTermToEnrich, C cvTermFetched) throws EnricherException{
         if(cvTermFetched.getShortName() != null
                 && ! cvTermFetched.getShortName().equalsIgnoreCase(cvTermToEnrich.getShortName())){
 
@@ -53,13 +53,13 @@ public class MinimalCvTermUpdater<C extends CvTerm> extends MinimalCvTermEnriche
     }
 
     @Override
-    protected void processIdentifiers(C cvTermToEnrich, C cvTermFetched) {
+    protected void processIdentifiers(C cvTermToEnrich, C cvTermFetched) throws EnricherException{
         EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getIdentifiers(), cvTermFetched.getIdentifiers(), true, true,
                 getCvTermEnricherListener(), getCvTermEnricherListener());
     }
 
     @Override
-    protected void processFullName(C cvTermToEnrich, C cvTermFetched) {
+    protected void processFullName(C cvTermToEnrich, C cvTermFetched) throws EnricherException{
         // == Full Name ======================================================================
         if((cvTermFetched.getFullName() != null && !cvTermFetched.getFullName().equals(cvTermToEnrich.getFullName()))
              || (cvTermFetched.getFullName() == null

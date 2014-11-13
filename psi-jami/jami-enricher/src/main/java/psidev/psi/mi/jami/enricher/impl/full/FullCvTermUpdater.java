@@ -44,17 +44,17 @@ public class FullCvTermUpdater<C extends CvTerm> extends FullCvTermEnricher<C>{
     }
 
     @Override
-    protected void processAnnotations(C cvTermToEnrich, C termFetched) {
+    protected void processAnnotations(C cvTermToEnrich, C termFetched) throws EnricherException{
         EnricherUtils.mergeAnnotations(cvTermToEnrich, cvTermToEnrich.getAnnotations(), termFetched.getAnnotations(), true, getCvTermEnricherListener());
     }
 
     @Override
-    protected void processSynonyms(C cvTermToEnrich, C termFetched) {
+    protected void processSynonyms(C cvTermToEnrich, C termFetched) throws EnricherException{
         EnricherUtils.mergeAliases(cvTermToEnrich, cvTermToEnrich.getSynonyms(), termFetched.getSynonyms(), true, getCvTermEnricherListener());
     }
 
     @Override
-    protected void processXrefs(C cvTermToEnrich, C cvTermFetched) {
+    protected void processXrefs(C cvTermToEnrich, C cvTermFetched) throws EnricherException{
         EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getXrefs(), cvTermFetched.getXrefs(), true, false,
                 getCvTermEnricherListener(), getCvTermEnricherListener());
     }

@@ -35,7 +35,7 @@ public class MinimalOntologyTermUpdater extends MinimalOntologyTermEnricher{
     }
 
     @Override
-    protected void processDefinition(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) {
+    protected void processDefinition(OntologyTerm cvTermToEnrich, OntologyTerm cvTermFetched) throws EnricherException{
         if ((cvTermFetched.getDefinition() != null && !cvTermFetched.getDefinition().equalsIgnoreCase(cvTermToEnrich.getDefinition())
                 || (cvTermFetched.getDefinition() == null && cvTermFetched.getDefinition() != null))){
             String oldDef = cvTermToEnrich.getDefinition();

@@ -88,12 +88,12 @@ public class MinimalCvTermEnricher<C extends CvTerm> extends AbstractMIEnricher<
         processIdentifiers(cvTermToEnrich, cvTermFetched);
     }
 
-    protected void processIdentifiers(C cvTermToEnrich, C cvTermFetched) {
+    protected void processIdentifiers(C cvTermToEnrich, C cvTermFetched) throws EnricherException {
         EnricherUtils.mergeXrefs(cvTermToEnrich, cvTermToEnrich.getIdentifiers(), cvTermFetched.getIdentifiers(), false, true,
                 getCvTermEnricherListener(), getCvTermEnricherListener());
     }
 
-    protected void processFullName(C cvTermToEnrich, C cvTermFetched) {
+    protected void processFullName(C cvTermToEnrich, C cvTermFetched) throws EnricherException{
         if(cvTermToEnrich.getFullName() == null
                 && cvTermFetched.getFullName() != null){
 
