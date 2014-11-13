@@ -39,25 +39,25 @@ public class FullExperimentUpdater extends FullExperimentEnricher {
     }
 
     @Override
-    protected void processXrefs(Experiment experimentToEnrich, Experiment objectSource) {
+    protected void processXrefs(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(experimentToEnrich, experimentToEnrich.getXrefs(), objectSource.getXrefs(), true, false,
                 getExperimentEnricherListener(), null);
     }
 
     @Override
-    protected void processAnnotations(Experiment experimentToEnrich, Experiment objectSource) {
+    protected void processAnnotations(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
         EnricherUtils.mergeAnnotations(experimentToEnrich, experimentToEnrich.getAnnotations(), objectSource.getAnnotations(), true,
                 getExperimentEnricherListener());
     }
 
     @Override
-    protected void processConfidences(Experiment experimentToEnrich, Experiment objectSource) {
+    protected void processConfidences(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
         EnricherUtils.mergeConfidences(experimentToEnrich, experimentToEnrich.getConfidences(), objectSource.getConfidences(), true,
                 getExperimentEnricherListener());
     }
 
     @Override
-    protected void processVariableParameters(Experiment experimentToEnrich, Experiment objectSource) {
+    protected void processVariableParameters(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
         mergerVariableParameters(experimentToEnrich, objectSource, true);
     }
 
