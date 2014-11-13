@@ -46,7 +46,7 @@ public class FullCuratedPublicationUpdater extends FullCuratedPublicationEnriche
     }
 
     @Override
-    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) {
+    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if ((publicationToEnrich.getCurationDepth() != null &&
                 publicationToEnrich.getCurationDepth().equals(fetched.getCurationDepth())
         || (publicationToEnrich.getCurationDepth() == null && fetched.getCurationDepth() != null))){
@@ -59,7 +59,7 @@ public class FullCuratedPublicationUpdater extends FullCuratedPublicationEnriche
     }
 
     @Override
-    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) {
+    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if ((publicationToEnrich.getReleasedDate() != null &&
                 publicationToEnrich.getReleasedDate().equals(fetched.getReleasedDate())
                 || (publicationToEnrich.getReleasedDate() == null && fetched.getReleasedDate() != null))){

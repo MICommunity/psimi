@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.enricher.impl.minimal;
 
 import org.apache.commons.collections.CollectionUtils;
 import psidev.psi.mi.jami.bridges.fetcher.PublicationFetcher;
+import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
 import psidev.psi.mi.jami.model.Publication;
 
@@ -34,7 +35,7 @@ public class MinimalPublicationUpdater extends MinimalPublicationEnricher {
     }
 
     @Override
-    protected void processPublicationDate(Publication publicationToEnrich, Publication fetched) {
+    protected void processPublicationDate(Publication publicationToEnrich, Publication fetched) throws EnricherException {
         // == PUBLICATION DATE =================================================================================
         if((fetched.getPublicationDate() != null && !fetched.getPublicationDate().equals( publicationToEnrich.getPublicationDate()) )
                 || (fetched.getPublicationDate() == null && publicationToEnrich.getPublicationDate() != null)) {
@@ -46,13 +47,13 @@ public class MinimalPublicationUpdater extends MinimalPublicationEnricher {
     }
 
     @Override
-    protected void processIdentifiers(Publication publicationToEnrich, Publication fetched) {
+    protected void processIdentifiers(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         EnricherUtils.mergeXrefs(publicationToEnrich, publicationToEnrich.getIdentifiers(), fetched.getIdentifiers(), true, true,
                 getPublicationEnricherListener(), getPublicationEnricherListener());
     }
 
     @Override
-    protected void processAuthors(Publication publicationToEnrich, Publication fetched) {
+    protected void processAuthors(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         // == AUTHORS ===========================================================================================
         if(!CollectionUtils.isEqualCollection(publicationToEnrich.getAuthors(), fetched.getAuthors())){
             Iterator<String> authorIterator = publicationToEnrich.getAuthors().iterator();

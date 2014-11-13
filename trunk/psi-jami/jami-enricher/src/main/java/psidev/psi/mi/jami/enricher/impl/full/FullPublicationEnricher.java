@@ -56,7 +56,7 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
         processAnnotations(publicationToEnrich, fetched);
     }
 
-    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) {
+    protected void processCurationDepth(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if (publicationToEnrich.getCurationDepth().equals(CurationDepth.undefined)
                 && !fetched.getCurationDepth().equals(CurationDepth.undefined)){
             publicationToEnrich.setCurationDepth(fetched.getCurationDepth());
@@ -66,7 +66,7 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
         }
     }
 
-    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) {
+    protected void processReleasedDate(Publication publicationToEnrich, Publication fetched) throws EnricherException {
         if (publicationToEnrich.getReleasedDate() == null && fetched.getReleasedDate() != null){
             publicationToEnrich.setReleasedDate(fetched.getReleasedDate());
             if (getPublicationEnricherListener() != null){
@@ -75,17 +75,17 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
         }
     }
 
-    protected void processXrefs(Publication publicationToEnrich, Publication fetched) {
+    protected void processXrefs(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         EnricherUtils.mergeXrefs(publicationToEnrich, publicationToEnrich.getXrefs(), fetched.getXrefs(), false, false,
                 getPublicationEnricherListener(), getPublicationEnricherListener());
     }
 
-    protected void processAnnotations(Publication publicationToEnrich, Publication fetched) {
+    protected void processAnnotations(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         EnricherUtils.mergeAnnotations(publicationToEnrich, publicationToEnrich.getAnnotations(), fetched.getAnnotations(), false,
                 getPublicationEnricherListener());
     }
 
-    protected void processJournal(Publication publicationToEnrich, Publication fetched) {
+    protected void processJournal(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if(publicationToEnrich.getJournal() == null
                 && fetched.getJournal() != null) {
             publicationToEnrich.setJournal(fetched.getJournal());
@@ -94,7 +94,7 @@ public class FullPublicationEnricher extends MinimalPublicationEnricher {
         }
     }
 
-    protected void processPublicationTitle(Publication publicationToEnrich, Publication fetched) {
+    protected void processPublicationTitle(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if(publicationToEnrich.getTitle() == null
                 && fetched.getTitle() != null) {
             publicationToEnrich.setTitle(fetched.getTitle());

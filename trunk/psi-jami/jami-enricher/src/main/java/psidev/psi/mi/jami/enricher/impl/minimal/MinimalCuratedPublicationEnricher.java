@@ -67,7 +67,7 @@ public class MinimalCuratedPublicationEnricher extends AbstractMIEnricher<Public
         return sourceEnricher;
     }
 
-    protected void processOtherProperties(Publication publicationToEnrich, Publication fetchedPublication) {
+    protected void processOtherProperties(Publication publicationToEnrich, Publication fetchedPublication) throws EnricherException{
          // nothing to do
     }
 

@@ -45,19 +45,19 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     }
 
     @Override
-    protected void processXrefs(Publication publicationToEnrich, Publication fetched) {
+    protected void processXrefs(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         EnricherUtils.mergeXrefs(publicationToEnrich, publicationToEnrich.getXrefs(), fetched.getXrefs(), true, false,
                 getPublicationEnricherListener(), getPublicationEnricherListener());
     }
 
     @Override
-    protected void processAnnotations(Publication publicationToEnrich, Publication fetched) {
+    protected void processAnnotations(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         EnricherUtils.mergeAnnotations(publicationToEnrich, publicationToEnrich.getAnnotations(), fetched.getAnnotations(), true,
                 getPublicationEnricherListener());
     }
 
     @Override
-    protected void processJournal(Publication publicationToEnrich, Publication fetched) {
+    protected void processJournal(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if((fetched.getJournal() != null && !fetched.getJournal().equals(publicationToEnrich.getJournal()))
                 || (fetched.getJournal() == null && publicationToEnrich.getJournal() != null)) {
             String oldJournal = publicationToEnrich.getJournal();
@@ -68,7 +68,7 @@ public class FullPublicationUpdater extends FullPublicationEnricher{
     }
 
     @Override
-    protected void processPublicationTitle(Publication publicationToEnrich, Publication fetched) {
+    protected void processPublicationTitle(Publication publicationToEnrich, Publication fetched) throws EnricherException{
         if((fetched.getTitle() != null && !fetched.getTitle().equals(publicationToEnrich.getTitle()))
                 || (fetched.getTitle() == null && publicationToEnrich.getTitle() != null)) {
             String oldTitle = publicationToEnrich.getTitle();
