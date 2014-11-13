@@ -158,7 +158,7 @@ public class MinimalCvTermEnricher<C extends CvTerm> extends AbstractMIEnricher<
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(C cvTermToEnrich) {
+    protected void onEnrichedVersionNotFound(C cvTermToEnrich) throws EnricherException{
         if(getCvTermEnricherListener() != null)
             getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED, "The cvTerm does not exist.");
     }

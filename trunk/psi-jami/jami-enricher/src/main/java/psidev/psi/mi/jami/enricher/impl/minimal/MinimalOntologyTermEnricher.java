@@ -107,7 +107,7 @@ public class MinimalOntologyTermEnricher extends AbstractMIEnricher<OntologyTerm
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(OntologyTerm cvTermToEnrich) {
+    protected void onEnrichedVersionNotFound(OntologyTerm cvTermToEnrich) throws EnricherException {
         if(getCvTermEnricherListener() != null)
             getCvTermEnricherListener().onEnrichmentComplete(cvTermToEnrich, EnrichmentStatus.FAILED, "The ontology term does not exist.");
     }
