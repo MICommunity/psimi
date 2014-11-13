@@ -41,22 +41,22 @@ public class FullExperimentEnricher extends MinimalExperimentEnricher {
         processOtherProperties(experimentToEnrich);
     }
 
-    protected void processXrefs(Experiment experimentToEnrich, Experiment objectSource) {
+    protected void processXrefs(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(experimentToEnrich, experimentToEnrich.getXrefs(), objectSource.getXrefs(), false, false,
                 getExperimentEnricherListener(), null);
     }
 
-    protected void processAnnotations(Experiment experimentToEnrich, Experiment objectSource) {
+    protected void processAnnotations(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
         EnricherUtils.mergeAnnotations(experimentToEnrich, experimentToEnrich.getAnnotations(), objectSource.getAnnotations(), false,
                 getExperimentEnricherListener());
     }
 
-    protected void processConfidences(Experiment experimentToEnrich, Experiment objectSource) {
+    protected void processConfidences(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
         EnricherUtils.mergeConfidences(experimentToEnrich, experimentToEnrich.getConfidences(), objectSource.getConfidences(), false,
                 getExperimentEnricherListener());
     }
 
-    protected void processVariableParameters(Experiment experimentToEnrich, Experiment objectSource) {
+    protected void processVariableParameters(Experiment experimentToEnrich, Experiment objectSource) throws EnricherException{
         mergerVariableParameters(experimentToEnrich, objectSource, false);
     }
 
