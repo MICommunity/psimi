@@ -19,7 +19,7 @@ import java.util.Date;
 public class MinimalInteractionUpdater<I extends Interaction>
         extends MinimalInteractionEnricher<I> {
 
-    protected void processCreatedDate(I objectToEnrich, I objectSource) {
+    protected void processCreatedDate(I objectToEnrich, I objectSource) throws EnricherException{
         if ((objectSource.getCreatedDate() != null && !objectSource.getCreatedDate().equals(objectToEnrich.getCreatedDate()))
                 || (objectSource.getCreatedDate() == null && objectToEnrich.getCreatedDate() != null)){
             Date oldDate = objectToEnrich.getCreatedDate();
@@ -30,7 +30,7 @@ public class MinimalInteractionUpdater<I extends Interaction>
         }
     }
 
-    protected void processUpdateDate(I objectToEnrich, I objectSource) {
+    protected void processUpdateDate(I objectToEnrich, I objectSource) throws EnricherException{
         if ((objectSource.getUpdatedDate() != null && !objectSource.getUpdatedDate().equals(objectToEnrich.getUpdatedDate()))
                 || (objectSource.getUpdatedDate() == null && objectToEnrich.getUpdatedDate() != null)){
             Date oldDate = objectToEnrich.getUpdatedDate();
@@ -41,7 +41,7 @@ public class MinimalInteractionUpdater<I extends Interaction>
         }
     }
 
-    protected void processShortName(I objectToEnrich, I objectSource) {
+    protected void processShortName(I objectToEnrich, I objectSource) throws EnricherException{
         if ((objectSource.getShortName() != null && !objectSource.getShortName().equals(objectToEnrich.getShortName()))
                 || (objectSource.getShortName() == null && objectToEnrich.getShortName() != null)){
             String oldName = objectToEnrich.getShortName();
@@ -56,7 +56,7 @@ public class MinimalInteractionUpdater<I extends Interaction>
         // do nothing
     }
 
-    protected void processIdentifiers(I objectToEnrich, I objectSource) {
+    protected void processIdentifiers(I objectToEnrich, I objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getIdentifiers(), objectSource.getIdentifiers(),true, true,
                 getInteractionEnricherListener(), getInteractionEnricherListener());
     }

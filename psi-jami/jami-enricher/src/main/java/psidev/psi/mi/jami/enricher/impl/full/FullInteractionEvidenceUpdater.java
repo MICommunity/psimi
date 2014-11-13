@@ -26,20 +26,20 @@ public class FullInteractionEvidenceUpdater extends FullInteractionEvidenceEnric
     }
 
     @Override
-    protected void processConfidences(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
+    protected void processConfidences(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException{
         EnricherUtils.mergeConfidences(objectToEnrich, objectToEnrich.getConfidences(), objectSource.getConfidences(), true,
                 (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener ? (InteractionEvidenceEnricherListener) getInteractionEnricherListener() : null));
     }
 
     @Override
-    protected void processParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
+    protected void processParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException{
 
         EnricherUtils.mergeParameters(objectToEnrich, objectToEnrich.getParameters(), objectSource.getParameters(), true,
                 (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener ? (InteractionEvidenceEnricherListener) getInteractionEnricherListener() : null));
     }
 
     @Override
-    protected void processVariableParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
+    protected void processVariableParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException{
         mergerVariableParameters(objectToEnrich, objectSource, true);
     }
 

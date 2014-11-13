@@ -87,18 +87,18 @@ public class FullInteractionEvidenceEnricher extends MinimalInteractionEvidenceE
         this.interactionEnricher.setInteractionEnricherListener(listener);
     }
 
-    protected void processConfidences(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
+    protected void processConfidences(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException{
         EnricherUtils.mergeConfidences(objectToEnrich, objectToEnrich.getConfidences(), objectSource.getConfidences(), false,
                 (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener ? (InteractionEvidenceEnricherListener) getInteractionEnricherListener() : null));
     }
 
-    protected void processParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
+    protected void processParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException{
 
         EnricherUtils.mergeParameters(objectToEnrich, objectToEnrich.getParameters(), objectSource.getParameters(), false,
                 (getInteractionEnricherListener() instanceof InteractionEvidenceEnricherListener ? (InteractionEvidenceEnricherListener)getInteractionEnricherListener():null));
     }
 
-    protected void processVariableParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) {
+    protected void processVariableParameters(InteractionEvidence objectToEnrich, InteractionEvidence objectSource) throws EnricherException{
         mergerVariableParameters(objectToEnrich, objectSource, false);
     }
 
