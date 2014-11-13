@@ -92,7 +92,7 @@ public class MinimalInteractionEnricher<I extends Interaction>
         processParticipants(objectToEnrich, objectSource);
     }
 
-    protected void processCreatedDate(I objectToEnrich, I objectSource) {
+    protected void processCreatedDate(I objectToEnrich, I objectSource) throws EnricherException{
         if (objectToEnrich.getCreatedDate() == null && objectSource.getCreatedDate() != null){
              objectToEnrich.setCreatedDate(objectSource.getCreatedDate());
             if (getInteractionEnricherListener() != null){
@@ -101,7 +101,7 @@ public class MinimalInteractionEnricher<I extends Interaction>
         }
     }
 
-    protected void processUpdateDate(I objectToEnrich, I objectSource) {
+    protected void processUpdateDate(I objectToEnrich, I objectSource) throws EnricherException{
         if (objectToEnrich.getUpdatedDate() == null && objectSource.getUpdatedDate() != null){
             objectToEnrich.setUpdatedDate(objectSource.getUpdatedDate());
             if (getInteractionEnricherListener() != null){
@@ -110,7 +110,7 @@ public class MinimalInteractionEnricher<I extends Interaction>
         }
     }
 
-    protected void processShortName(I objectToEnrich, I objectSource) {
+    protected void processShortName(I objectToEnrich, I objectSource) throws EnricherException{
         if (objectToEnrich.getShortName() == null && objectSource.getShortName() != null){
             objectToEnrich.setShortName(objectSource.getShortName());
             if (getInteractionEnricherListener() != null){
@@ -123,7 +123,7 @@ public class MinimalInteractionEnricher<I extends Interaction>
         // do nothing
     }
 
-    protected void processIdentifiers(I objectToEnrich, I objectSource) {
+    protected void processIdentifiers(I objectToEnrich, I objectSource) throws EnricherException{
         EnricherUtils.mergeXrefs(objectToEnrich, objectToEnrich.getIdentifiers(), objectSource.getIdentifiers(),false, true,
                 getInteractionEnricherListener(), getInteractionEnricherListener());
     }
