@@ -26,9 +26,7 @@ public class FullParticipantEvidenceEnricher<P extends ParticipantEvidence> exte
             throws EnricherException {
         super.processOtherProperties(participantEvidenceToEnrich);
 
-        if(!participantEvidenceToEnrich.getExperimentalPreparations().isEmpty() && getCvTermEnricher() != null){
-            getCvTermEnricher().enrich(participantEvidenceToEnrich.getExperimentalPreparations());
-        }
+        processExperimentalPreparations(participantEvidenceToEnrich);
     }
 
     @Override
@@ -48,6 +46,14 @@ public class FullParticipantEvidenceEnricher<P extends ParticipantEvidence> exte
     protected void processExperimentalPreparations(P participantEvidenceToEnrich, P objectSource) throws EnricherException {
         mergeExperimentalPreparations(participantEvidenceToEnrich, participantEvidenceToEnrich.getExperimentalPreparations(), objectSource.getExperimentalPreparations(),
                 false);
+
+        processExperimentalPreparations(participantEvidenceToEnrich);
+    }
+
+    protected void processExperimentalPreparations(P participantEvidenceToEnrich) throws EnricherException {
+        if(!participantEvidenceToEnrich.getExperimentalPreparations().isEmpty() && getCvTermEnricher() != null){
+            getCvTermEnricher().enrich(participantEvidenceToEnrich.getExperimentalPreparations());
+        }
     }
 
     protected void processParameters(P participantEvidenceToEnrich, P objectSource) throws EnricherException{
