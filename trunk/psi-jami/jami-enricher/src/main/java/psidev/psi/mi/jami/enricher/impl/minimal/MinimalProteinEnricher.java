@@ -140,7 +140,7 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(Protein objectToEnrich) {
+    protected void onEnrichedVersionNotFound(Protein objectToEnrich) throws EnricherException{
         if (getListener() != null){
             getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED ,
@@ -161,14 +161,14 @@ public class MinimalProteinEnricher extends AbstractInteractorEnricher<Protein> 
     }
 
     @Override
-    protected void onInteractorCheckFailure(Protein objectToEnrich, Protein fetchedObject) {
+    protected void onInteractorCheckFailure(Protein objectToEnrich, Protein fetchedObject) throws EnricherException{
         if(getListener() != null)
             getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED , "Cannot enrich the protein because the interactor type is not a protein/peptide type and/or there is a conflict with the organism.");
     }
 
     @Override
-    protected boolean canEnrichInteractor(Protein entityToEnrich, Protein fetchedEntity) {
+    protected boolean canEnrichInteractor(Protein entityToEnrich, Protein fetchedEntity) throws EnricherException{
         if (fetchedEntity == null){
             onEnrichedVersionNotFound(entityToEnrich);
             return false;
