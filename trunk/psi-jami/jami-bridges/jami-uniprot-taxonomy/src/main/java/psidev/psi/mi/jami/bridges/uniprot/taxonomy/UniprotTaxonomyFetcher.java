@@ -104,6 +104,10 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
             String mnemonic = getLiteral(model, taxonomyResource, "mnemonic");
             if (mnemonic != null) organism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, mnemonic));
 
+            if (organism.getCommonName() == null){
+                organism.setCommonName(scientificName);
+            }
+
         }catch (IOException e) {
             throw new BridgeFailedException("Input stream failed to open",e);
         }
