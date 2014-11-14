@@ -182,6 +182,10 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
                 getListener().onInteractorTypeUpdate(entityToEnrich, null);
             }
         }
+        processInteractorType(entityToEnrich);
+    }
+
+    protected void processInteractorType(T entityToEnrich) throws EnricherException {
         if (cvTermEnricher != null && entityToEnrich.getInteractorType() != null){
             cvTermEnricher.enrich(entityToEnrich.getInteractorType());
         }
@@ -195,6 +199,10 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
             }
         }
 
+        processOrganism(entityToEnrich);
+    }
+
+    protected void processOrganism(T entityToEnrich) throws EnricherException {
         if (organismEnricher != null && entityToEnrich.getOrganism() != null){
             organismEnricher.enrich(entityToEnrich.getOrganism());
         }
