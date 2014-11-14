@@ -57,7 +57,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     }
 
     @Override
-    protected void processShortLabel(T bioactiveEntityToEnrich, T fetched) {
+    protected void processShortLabel(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         if(!fetched.getShortName().equalsIgnoreCase(bioactiveEntityToEnrich.getShortName())){
             String oldValue = bioactiveEntityToEnrich.getShortName();
             bioactiveEntityToEnrich.setShortName(fetched.getShortName());
@@ -66,19 +66,19 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
         }    }
 
     @Override
-    public void processAliases(T bioactiveEntityToEnrich, T fetched) {
+    public void processAliases(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         EnricherUtils.mergeAliases(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getAliases(), fetched.getAliases(), true,
                 getListener());
     }
 
     @Override
-    protected void processIdentifiers(T bioactiveEntityToEnrich, T fetched) {
+    protected void processIdentifiers(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getIdentifiers(), fetched.getIdentifiers(), true, true,
                 getListener(), getListener());
     }
 
     @Override
-    public void processFullName(T bioactiveEntityToEnrich, T fetched) {
+    public void processFullName(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         if((fetched.getFullName() != null && !fetched.getFullName().equalsIgnoreCase(bioactiveEntityToEnrich.getFullName())
                 || (fetched.getFullName() == null && bioactiveEntityToEnrich.getFullName() != null))){
             String oldValue = bioactiveEntityToEnrich.getFullName();
@@ -132,13 +132,13 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     }
 
     @Override
-    protected void processAnnotations(T objectToEnrich, T fetchedObject){
+    protected void processAnnotations(T objectToEnrich, T fetchedObject)throws EnricherException{
         EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), true,
                 getListener());
     }
 
     @Override
-    protected void processXrefs(T bioactiveEntityToEnrich, T fetched) {
+    protected void processXrefs(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), true, false,
                 getListener(), getListener());
     }
