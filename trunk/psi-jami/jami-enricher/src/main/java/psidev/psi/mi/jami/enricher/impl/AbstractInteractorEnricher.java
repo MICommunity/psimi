@@ -129,7 +129,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         }
     }
 
-    protected void processAnnotations(T objectToEnrich, T fetchedObject){
+    protected void processAnnotations(T objectToEnrich, T fetchedObject) throws EnricherException{
         EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), false,
                 getListener());
     }
@@ -152,21 +152,21 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
         // do nothing by default. Only for sequences
     }
 
-    protected void processShortLabel(T bioactiveEntityToEnrich, T fetched) {
+    protected void processShortLabel(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         // do nothing by default as shortlabel is mandatory and only the updater can override it
     }
 
-    public void processAliases(T bioactiveEntityToEnrich, T fetched) {
+    public void processAliases(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         EnricherUtils.mergeAliases(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getAliases(), fetched.getAliases(), false,
                 getListener());
     }
 
-    protected void processIdentifiers(T bioactiveEntityToEnrich, T fetched) {
+    protected void processIdentifiers(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getIdentifiers(), fetched.getIdentifiers(), false, true,
                 getListener(), getListener());
     }
 
-    public void processFullName(T bioactiveEntityToEnrich, T fetched) {
+    public void processFullName(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         if(bioactiveEntityToEnrich.getFullName() == null
                 && fetched.getFullName() != null){
             bioactiveEntityToEnrich.setFullName(fetched.getFullName());
@@ -205,7 +205,7 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
                 getListener());
     }
 
-    protected void processXrefs(T bioactiveEntityToEnrich, T fetched) {
+    protected void processXrefs(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
         EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), false, false,
                 getListener(), getListener());
     }
