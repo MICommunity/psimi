@@ -89,9 +89,18 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
 
             organism = new DefaultOrganism( taxID );
 
+            String mnemonic = getLiteral(model, taxonomyResource, "mnemonic");
+            if (mnemonic != null) organism.setCommonName(mnemonic);
+
             String commonName = getLiteral(model, taxonomyResource, "commonName");
-            if(commonName != null && commonName.length() > 0)
-                organism.setCommonName(commonName);
+            if(commonName != null && commonName.length() > 0){
+                if (mnemonic == null){
+                    organism.setCommonName(commonName);
+                }
+                else{
+                    organism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, commonName));
+                }
+            }
 
             String scientificName = getLiteral(model, taxonomyResource, "scientificName");
             if(scientificName != null && scientificName.length() > 0)
@@ -100,9 +109,6 @@ public class UniprotTaxonomyFetcher implements OrganismFetcher {
             String synonym = getLiteral(model, taxonomyResource, "synonym");
             if(synonym != null && synonym.length() > 0)
                 organism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, synonym));
-
-            String mnemonic = getLiteral(model, taxonomyResource, "mnemonic");
-            if (mnemonic != null) organism.getAliases().add(AliasUtils.createAlias(Alias.SYNONYM, Alias.SYNONYM_MI, mnemonic));
 
             if (organism.getCommonName() == null){
                 organism.setCommonName(scientificName);
