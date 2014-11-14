@@ -123,20 +123,26 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
 
     @Override
     protected void processChecksums(T bioactiveEntityToEnrich, T fetched) throws EnricherException {
-        EnricherUtils.mergeChecksums(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getChecksums(), fetched.getChecksums(), true,
-                getListener());
+        if (fetched != null){
+            EnricherUtils.mergeChecksums(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getChecksums(), fetched.getChecksums(), true,
+                    getListener());
+        }
     }
 
     @Override
     protected void processAnnotations(T objectToEnrich, T fetchedObject)throws EnricherException{
-        EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), true,
-                getListener());
+        if (fetchedObject != null){
+            EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), true,
+                    getListener());
+        }
     }
 
     @Override
     protected void processXrefs(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
-        EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), true, false,
-                getListener(), getListener());
+        if (fetched != null){
+            EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), true, false,
+                    getListener(), getListener());
+        }
     }
 
     @Override
