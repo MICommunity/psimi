@@ -101,9 +101,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
             getCvTermEnricher().enrich(entityToEnrich.getInteractorType(), fetched.getInteractorType());
         }
 
-        if (getCvTermEnricher() != null){
-            getCvTermEnricher().enrich(entityToEnrich.getInteractorType());
-        }
+        processInteractorType(entityToEnrich);
     }
 
     @Override
@@ -120,9 +118,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
             getOrganismEnricher().enrich(entityToEnrich.getOrganism(), fetched.getOrganism());
         }
 
-        if (getOrganismEnricher() != null && entityToEnrich.getOrganism() != null){
-            getOrganismEnricher().enrich(entityToEnrich.getOrganism());
-        }
+        processOrganism(entityToEnrich);
     }
 
     @Override
