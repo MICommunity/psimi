@@ -179,7 +179,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     }
 
     @Override
-    protected boolean canEnrichInteractor(T entityToEnrich, T fetchedEntity) {
+    protected boolean canEnrichInteractor(T entityToEnrich, T fetchedEntity) throws EnricherException{
         return interactorEnricher.canEnrichInteractor(entityToEnrich, fetchedEntity);
     }
 
