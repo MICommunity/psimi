@@ -174,7 +174,7 @@ public abstract class AbstractInteractorUpdater<T extends Interactor> extends Ab
     }
 
     @Override
-    protected void onInteractorCheckFailure(T objectToEnrich, T fetchedObject) {
+    protected void onInteractorCheckFailure(T objectToEnrich, T fetchedObject) throws EnricherException {
         interactorEnricher.onInteractorCheckFailure(objectToEnrich, fetchedObject);
     }
 
