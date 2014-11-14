@@ -325,12 +325,12 @@ public class UniprotProteinFetcher
         }
 
         //SHORT NAME - ShortName/FullName/UniprotID/UniprotAC
-        if(shortName != null){
+        if(entity.getUniProtId() != null){
+            p = new DefaultProtein(entity.getUniProtId().getValue().toLowerCase());
+        }else if(shortName != null){
             p = new DefaultProtein(shortName);
         }else if(fullName != null){
             p = new DefaultProtein(fullName);
-        }else if(entity.getUniProtId() != null){
-            p = new DefaultProtein(entity.getUniProtId().getValue().toLowerCase());
         }else {
             p = new DefaultProtein(entity.getPrimaryUniProtAccession().getValue().toLowerCase());
 
