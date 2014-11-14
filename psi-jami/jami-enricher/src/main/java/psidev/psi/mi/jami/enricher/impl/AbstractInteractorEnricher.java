@@ -130,8 +130,10 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     }
 
     protected void processAnnotations(T objectToEnrich, T fetchedObject) throws EnricherException{
-        EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), false,
-                getListener());
+        if (fetchedObject != null){
+            EnricherUtils.mergeAnnotations(objectToEnrich, objectToEnrich.getAnnotations(), fetchedObject.getAnnotations(), false,
+                    getListener());
+        }
     }
 
     public InteractorFetcher<T> getInteractorFetcher() {
@@ -209,13 +211,17 @@ public abstract class AbstractInteractorEnricher<T extends Interactor> extends A
     }
 
     protected void processChecksums(T bioactiveEntityToEnrich, T fetched) throws EnricherException {
-        EnricherUtils.mergeChecksums(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getChecksums(), fetched.getChecksums(), false,
-                getListener());
+        if (fetched != null){
+            EnricherUtils.mergeChecksums(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getChecksums(), fetched.getChecksums(), false,
+                    getListener());
+        }
     }
 
     protected void processXrefs(T bioactiveEntityToEnrich, T fetched) throws EnricherException{
-        EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), false, false,
-                getListener(), getListener());
+        if (fetched != null){
+            EnricherUtils.mergeXrefs(bioactiveEntityToEnrich, bioactiveEntityToEnrich.getXrefs(), fetched.getXrefs(), false, false,
+                    getListener(), getListener());
+        }
     }
 
     private void processMinimalEnrichment(T objectToEnrich, T fetchedObject) throws EnricherException {
