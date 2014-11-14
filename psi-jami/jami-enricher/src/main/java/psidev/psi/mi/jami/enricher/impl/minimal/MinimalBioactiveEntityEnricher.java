@@ -53,7 +53,7 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(BioactiveEntity objectToEnrich) {
+    protected void onEnrichedVersionNotFound(BioactiveEntity objectToEnrich) throws EnricherException{
         getListener().onEnrichmentComplete(
                 objectToEnrich, EnrichmentStatus.FAILED,
                 "Could not fetch a bioactive entity with the provided CHEBI identifier.");
@@ -72,14 +72,14 @@ public class MinimalBioactiveEntityEnricher extends AbstractInteractorEnricher<B
     }
 
     @Override
-    protected void onInteractorCheckFailure(BioactiveEntity objectToEnrich, BioactiveEntity fetchedObject) {
+    protected void onInteractorCheckFailure(BioactiveEntity objectToEnrich, BioactiveEntity fetchedObject) throws EnricherException{
         if(getListener() != null)
             getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED , "Cannot enrich the bioactive entity because the interactor type is not a bioactive entity type.");
     }
 
     @Override
-    protected boolean canEnrichInteractor(BioactiveEntity entityToEnrich, BioactiveEntity fetchedEntity) {
+    protected boolean canEnrichInteractor(BioactiveEntity entityToEnrich, BioactiveEntity fetchedEntity) throws EnricherException{
         if (fetchedEntity == null){
             onEnrichedVersionNotFound(entityToEnrich);
             return false;

@@ -44,7 +44,7 @@ public class MinimalInteractorBaseEnricher<T extends Interactor> extends Abstrac
     }
 
     @Override
-    protected void onInteractorCheckFailure(T objectToEnrich, T fetchedObject) {
+    protected void onInteractorCheckFailure(T objectToEnrich, T fetchedObject) throws EnricherException{
         // nothing to do here
     }
 

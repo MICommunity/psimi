@@ -58,7 +58,7 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> {
     }
 
     @Override
-    protected void onEnrichedVersionNotFound(Gene objectToEnrich) {
+    protected void onEnrichedVersionNotFound(Gene objectToEnrich) throws EnricherException{
         getListener().onEnrichmentComplete(
                 objectToEnrich , EnrichmentStatus.FAILED ,
                 "Could not fetch a gene with the provided identifier.");
@@ -77,14 +77,14 @@ public class MinimalGeneEnricher extends AbstractInteractorEnricher<Gene> {
     }
 
     @Override
-    protected void onInteractorCheckFailure(Gene objectToEnrich, Gene fetchedObject) {
+    protected void onInteractorCheckFailure(Gene objectToEnrich, Gene fetchedObject) throws EnricherException{
         if(getListener() != null)
             getListener().onEnrichmentComplete(
                     objectToEnrich , EnrichmentStatus.FAILED , "Cannot enrich the gene because the interactor type is not a gene type or we have a mismatch between the gene taxid to enrich and the fetched gene taxid.");
     }
 
     @Override
-    protected boolean canEnrichInteractor(Gene entityToEnrich, Gene fetchedEntity) {
+    protected boolean canEnrichInteractor(Gene entityToEnrich, Gene fetchedEntity) throws EnricherException{
         if (fetchedEntity == null){
             onEnrichedVersionNotFound(entityToEnrich);
             return false;
