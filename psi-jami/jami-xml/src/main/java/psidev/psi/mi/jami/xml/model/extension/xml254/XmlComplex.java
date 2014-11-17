@@ -1,30 +1,34 @@
-package psidev.psi.mi.jami.xml.model.extension;
+package psidev.psi.mi.jami.xml.model.extension.xml254;
 
 import psidev.psi.mi.jami.model.CvTerm;
 import psidev.psi.mi.jami.model.Organism;
 import psidev.psi.mi.jami.model.Xref;
+import psidev.psi.mi.jami.xml.model.extension.AbstractXmlComplex;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Xml implementation for complex
+ * Xml implementation of ModelledInteraction
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
  * @version $Id$
  * @since <pre>08/10/13</pre>
  */
-@XmlType(name = "defaultComplex")
+@XmlRootElement(name = "interaction", namespace = "http://psi.hupo.org/mi/mif")
 @XmlAccessorType(XmlAccessType.NONE)
 public class XmlComplex extends AbstractXmlComplex {
 
-    public XmlComplex(){
-        super();
+    public XmlComplex() {
     }
 
     public XmlComplex(String name, CvTerm type) {
         super(name, type);
+    }
+
+    public XmlComplex(String name, String fullName, CvTerm type) {
+        super(name, fullName, type);
     }
 
     public XmlComplex(String name, String fullName, Organism organism, Xref uniqueId) {
@@ -63,27 +67,23 @@ public class XmlComplex extends AbstractXmlComplex {
         super(name, fullName, type, organism, uniqueId);
     }
 
-    public XmlComplex(String name, String fullName, CvTerm type) {
-        super(name, fullName, type);
-    }
-
-    public XmlComplex(String name, CvTerm type, Organism organism) {
-        super(name, type, organism);
-    }
-
-    public XmlComplex(String name, String fullName, CvTerm type, Organism organism) {
-        super(name, fullName, type, organism);
-    }
-
-    public XmlComplex(String name, CvTerm type, Xref uniqueId) {
-        super(name, type, uniqueId);
+    public XmlComplex(String name, CvTerm type, Organism organism, Xref uniqueId) {
+        super(name, type, organism, uniqueId);
     }
 
     public XmlComplex(String name, String fullName, CvTerm type, Xref uniqueId) {
         super(name, fullName, type, uniqueId);
     }
 
-    public XmlComplex(String name, CvTerm type, Organism organism, Xref uniqueId) {
-        super(name, type, organism, uniqueId);
+    public XmlComplex(String name, CvTerm type, Xref uniqueId) {
+        super(name, type, uniqueId);
+    }
+
+    public XmlComplex(String name, String fullName, CvTerm type, Organism organism) {
+        super(name, fullName, type, organism);
+    }
+
+    public XmlComplex(String name, CvTerm type, Organism organism) {
+        super(name, type, organism);
     }
 }

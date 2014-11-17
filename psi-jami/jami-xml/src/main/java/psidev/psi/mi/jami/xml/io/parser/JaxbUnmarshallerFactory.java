@@ -97,8 +97,10 @@ public class JaxbUnmarshallerFactory {
                 return createModelledXml253JAXBUnmarshaller();
             case mixed:
                 return createEvidenceXml253JAXBUnmarshaller();
+            case complex:
+                return createComplexXml253JAXBUnmarshaller();
             default:
-                return createEvidenceXml253JAXBUnmarshaller();
+                throw new IllegalArgumentException("Cannot create unmarshaller for interaction category: "+category);
         }
     }
 
@@ -113,8 +115,10 @@ public class JaxbUnmarshallerFactory {
                 return createModelledXml254JAXBUnmarshaller();
             case mixed:
                 return createEvidenceXml254JAXBUnmarshaller();
+            case complex:
+                return createComplexXml254JAXBUnmarshaller();
             default:
-                return createEvidenceXml254JAXBUnmarshaller();
+                throw new IllegalArgumentException("Cannot create unmarshaller for interaction category: "+category);
         }
     }
 
@@ -137,8 +141,10 @@ public class JaxbUnmarshallerFactory {
                 return createModelledFullXml253JAXBUnmarshaller();
             case mixed:
                 return createEvidenceFullXml253JAXBUnmarshaller();
+            case complex:
+                return createComplexFullXml253JAXBUnmarshaller();
             default:
-                return createEvidenceFullXml253JAXBUnmarshaller();
+                throw new IllegalArgumentException("Cannot create unmarshaller for interaction category: "+category);
         }
     }
 
@@ -153,8 +159,10 @@ public class JaxbUnmarshallerFactory {
                 return createModelledFullXml254JAXBUnmarshaller();
             case mixed:
                 return createEvidenceFullXml254JAXBUnmarshaller();
+            case complex:
+                return createComplexFullXml254JAXBUnmarshaller();
             default:
-                return createEvidenceFullXml254JAXBUnmarshaller();
+                throw new IllegalArgumentException("Cannot create unmarshaller for interaction category: "+category);
         }
 
     }
@@ -174,6 +182,16 @@ public class JaxbUnmarshallerFactory {
     private Unmarshaller createModelledXml253JAXBUnmarshaller() throws JAXBException {
         JAXBContext ctx = JAXBContext.newInstance(
                 psidev.psi.mi.jami.xml.model.extension.xml253.XmlModelledInteraction.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlExperiment.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlSource.class,
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlAnnotation.class);
+        return ctx.createUnmarshaller();
+    }
+
+    private Unmarshaller createComplexXml253JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(
+                psidev.psi.mi.jami.xml.model.extension.xml253.XmlComplex.class,
                 psidev.psi.mi.jami.xml.model.extension.xml253.XmlExperiment.class,
                 psidev.psi.mi.jami.xml.model.extension.xml253.XmlInteractor.class,
                 psidev.psi.mi.jami.xml.model.extension.xml253.XmlSource.class,
@@ -204,6 +222,16 @@ public class JaxbUnmarshallerFactory {
     private Unmarshaller createModelledXml254JAXBUnmarshaller() throws JAXBException {
         JAXBContext ctx = JAXBContext.newInstance(
                 psidev.psi.mi.jami.xml.model.extension.xml254.XmlModelledInteraction.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlExperiment.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlInteractor.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlSource.class,
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlAnnotation.class);
+        return ctx.createUnmarshaller();
+    }
+
+    private Unmarshaller createComplexXml254JAXBUnmarshaller() throws JAXBException {
+        JAXBContext ctx = JAXBContext.newInstance(
+                psidev.psi.mi.jami.xml.model.extension.xml254.XmlComplex.class,
                 psidev.psi.mi.jami.xml.model.extension.xml254.XmlExperiment.class,
                 psidev.psi.mi.jami.xml.model.extension.xml254.XmlInteractor.class,
                 psidev.psi.mi.jami.xml.model.extension.xml254.XmlSource.class,
@@ -243,6 +271,12 @@ public class JaxbUnmarshallerFactory {
         return ctx.createUnmarshaller();
     }
 
+    private Unmarshaller createComplexFullXml253JAXBUnmarshaller() throws JAXBException {
+
+        JAXBContext ctx = JAXBContext.newInstance(Xml253ComplexEntrySet.class);
+        return ctx.createUnmarshaller();
+    }
+
     private Unmarshaller createEvidenceFullXml253JAXBUnmarshaller() throws JAXBException {
 
         JAXBContext ctx = JAXBContext.newInstance(Xml253ExperimentalEntrySet.class);
@@ -264,6 +298,12 @@ public class JaxbUnmarshallerFactory {
     private Unmarshaller createModelledFullXml254JAXBUnmarshaller() throws JAXBException {
 
         JAXBContext ctx = JAXBContext.newInstance(Xml254ModelledEntrySet.class);
+        return ctx.createUnmarshaller();
+    }
+
+    private Unmarshaller createComplexFullXml254JAXBUnmarshaller() throws JAXBException {
+
+        JAXBContext ctx = JAXBContext.newInstance(Xml254ComplexEntrySet.class);
         return ctx.createUnmarshaller();
     }
 
