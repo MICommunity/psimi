@@ -62,19 +62,7 @@ public class PsiInteractionReader implements ItemReader<psidev.psi.mi.jami.model
                     + resource);
         }
 
-        InputStream inputStreamToAnalyse = null;
-        try {
-            inputStreamToAnalyse = resource.getInputStream();
-
-            MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
-            MIDataSourceOptionFactory optionFactory = MIDataSourceOptionFactory.getInstance();
-
-            this.interactionDataSource = dataSourceFactory.getInteractionSourceWith(optionFactory.getDefaultOptions(inputStreamToAnalyse));
-        } catch (IOException e) {
-            logger.warn("Input resource cannot be opened " + resource.getDescription());
-            throw new ItemStreamException("Input resource must be readable: "
-                    + resource, e);
-        }
+        initialiseInputDataStream();
 
         if (this.interactionDataSource == null){
             throw new ItemStreamException("The resource " + resource.getDescription() + " is not recognized as a valid MI datasource. We expect MITAB or Psi-XML files.");
@@ -116,5 +104,25 @@ public class PsiInteractionReader implements ItemReader<psidev.psi.mi.jami.model
 
     public void setResource(Resource source) {
         this.resource = source;
+    }
+
+    protected void initialiseInputDataStream() {
+        InputStream inputStreamToAnalyse = null;
+        try {
+            inputStreamToAnalyse = resource.getInputStream();
+
+            MIDataSourceFactory dataSourceFactory = MIDataSourceFactory.getInstance();
+            MIDataSourceOptionFactory optionFactory = MIDataSourceOptionFactory.getInstance();
+
+            this.interactionDataSource = dataSourceFactory.getInteractionSourceWith(optionFactory.getDefaultOptions(inputStreamToAnalyse));
+        } catch (IOException e) {
+            logger.warn("Input resource cannot be opened " + resource.getDescription());
+            throw new ItemStreamException("Input resource must be readable: "
+                    + resource, e);
+        }
+    }
+
+    protected void setInteractionDataSource(InteractionStream interactionDataSource) {
+        this.interactionDataSource = interactionDataSource;
     }
 }
