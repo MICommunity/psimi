@@ -141,6 +141,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter2};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlBinaryInteractionEvidenceWriter writer2 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlBinaryInteractionEvidenceWriter(streamWriter, objectIndex);
@@ -162,6 +164,8 @@ public class PsiXmlElementWriterFactory {
                             default:
                                 switch (interactionCategory){
                                     case modelled:
+                                        return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
+                                    case complex:
                                         return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlInteractionEvidenceWriter writer2 =
@@ -231,6 +235,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setPreAssemblyWriter(preassemblyWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter3};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlBinaryInteractionEvidenceWriter writer2 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlBinaryInteractionEvidenceWriter(streamWriter, objectIndex);
@@ -252,6 +258,8 @@ public class PsiXmlElementWriterFactory {
                             default:
                                 switch (interactionCategory){
                                     case modelled:
+                                        return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
+                                    case complex:
                                         return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlInteractionEvidenceWriter writer2 =
@@ -309,6 +317,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setParameterWriter(parameterWriters[1]);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter2};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlBasicBinaryInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlBasicBinaryInteractionWriter(streamWriter, objectIndex);
@@ -341,6 +351,20 @@ public class PsiXmlElementWriterFactory {
                                 switch (interactionCategory){
                                     case modelled:
                                         return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
+                                    case complex:
+                                        psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlComplexWriter complexWriter =
+                                                new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlComplexWriter(streamWriter, objectIndex);
+                                        complexWriter.setAliasWriter(aliasWriter);
+                                        complexWriter.setAttributeWriter(attributeWriter);
+                                        complexWriter.setXrefWriter(primaryRefWriter);
+                                        complexWriter.setInteractionTypeWriter(interactionTypeWriter);
+                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
+                                        complexWriter.setParticipantWriter(participantWriters[1]);
+                                        complexWriter.setChecksumWriter(checksumWriter);
+                                        complexWriter.setExperimentWriter(experimentWriter);
+                                        complexWriter.setParameterWriter(parameterWriters[1]);
+                                        return new PsiXmlInteractionWriter[]{complexWriter, modelledWriter2};
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlBasicInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlBasicInteractionWriter(streamWriter, objectIndex);
@@ -403,6 +427,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setParameterWriter(parameterWriters[1]);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter3};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlBasicBinaryInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlBasicBinaryInteractionWriter(streamWriter, objectIndex);
@@ -435,6 +461,20 @@ public class PsiXmlElementWriterFactory {
                                 switch (interactionCategory){
                                     case modelled:
                                         return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
+                                    case complex:
+                                        psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlComplexWriter complexWriter =
+                                                new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlComplexWriter(streamWriter, objectIndex);
+                                        complexWriter.setAliasWriter(aliasWriter);
+                                        complexWriter.setAttributeWriter(attributeWriter);
+                                        complexWriter.setXrefWriter(primaryRefWriter);
+                                        complexWriter.setInteractionTypeWriter(interactionTypeWriter);
+                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
+                                        complexWriter.setParticipantWriter(participantWriters[1]);
+                                        complexWriter.setChecksumWriter(checksumWriter);
+                                        complexWriter.setExperimentWriter(experimentWriter);
+                                        complexWriter.setParameterWriter(parameterWriters[1]);
+                                        return new PsiXmlInteractionWriter[]{complexWriter, modelledWriter3};
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlBasicInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlBasicInteractionWriter(streamWriter, objectIndex);
@@ -535,6 +575,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter2};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlNamedBinaryInteractionEvidenceWriter writer2 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlNamedBinaryInteractionEvidenceWriter(streamWriter, objectIndex);
@@ -556,6 +598,8 @@ public class PsiXmlElementWriterFactory {
                             default:
                                 switch (interactionCategory){
                                     case modelled:
+                                        return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
+                                    case complex:
                                         return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml30.XmlNamedInteractionEvidenceWriter writer2 =
@@ -625,6 +669,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter3};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlNamedBinaryInteractionEvidenceWriter writer2 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlNamedBinaryInteractionEvidenceWriter(streamWriter, objectIndex);
@@ -646,6 +692,8 @@ public class PsiXmlElementWriterFactory {
                             default:
                                 switch (interactionCategory){
                                     case modelled:
+                                        return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
+                                    case complex:
                                         return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml30.XmlNamedInteractionEvidenceWriter writer2 =
@@ -703,6 +751,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setParameterWriter(parameterWriters[1]);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter2};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedBinaryInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedBinaryInteractionWriter(streamWriter, objectIndex);
@@ -735,6 +785,20 @@ public class PsiXmlElementWriterFactory {
                                 switch (interactionCategory){
                                     case modelled:
                                         return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
+                                    case complex:
+                                        psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlComplexWriter complexWriter =
+                                                new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlComplexWriter(streamWriter, objectIndex);
+                                        complexWriter.setAliasWriter(aliasWriter);
+                                        complexWriter.setAttributeWriter(attributeWriter);
+                                        complexWriter.setXrefWriter(primaryRefWriter);
+                                        complexWriter.setInteractionTypeWriter(interactionTypeWriter);
+                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
+                                        complexWriter.setParticipantWriter(participantWriters[1]);
+                                        complexWriter.setChecksumWriter(checksumWriter);
+                                        complexWriter.setExperimentWriter(experimentWriter);
+                                        complexWriter.setParameterWriter(parameterWriters[1]);
+                                        return new PsiXmlInteractionWriter[]{complexWriter, modelledWriter2};
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.compact.xml25.XmlNamedInteractionWriter(streamWriter, objectIndex);
@@ -797,6 +861,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setParameterWriter(parameterWriters[1]);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter3};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlNamedBinaryInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlNamedBinaryInteractionWriter(streamWriter, objectIndex);
@@ -829,6 +895,20 @@ public class PsiXmlElementWriterFactory {
                                 switch (interactionCategory){
                                     case modelled:
                                         return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
+                                    case complex:
+                                        psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlComplexWriter complexWriter =
+                                                new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlComplexWriter(streamWriter, objectIndex);
+                                        complexWriter.setAliasWriter(aliasWriter);
+                                        complexWriter.setAttributeWriter(attributeWriter);
+                                        complexWriter.setXrefWriter(primaryRefWriter);
+                                        complexWriter.setInteractionTypeWriter(interactionTypeWriter);
+                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
+                                        complexWriter.setParticipantWriter(participantWriters[1]);
+                                        complexWriter.setChecksumWriter(checksumWriter);
+                                        complexWriter.setExperimentWriter(experimentWriter);
+                                        complexWriter.setParameterWriter(parameterWriters[1]);
+                                        return new PsiXmlInteractionWriter[]{complexWriter, modelledWriter3};
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlNamedInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.expanded.xml25.XmlNamedInteractionWriter(streamWriter, objectIndex);
@@ -932,6 +1012,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter2};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30.XmlBinaryInteractionEvidenceWriter writer2 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30.XmlBinaryInteractionEvidenceWriter(streamWriter, objectIndex);
@@ -954,6 +1036,8 @@ public class PsiXmlElementWriterFactory {
                             default:
                                 switch (interactionCategory){
                                     case modelled:
+                                        return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
+                                    case complex:
                                         return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml30.XmlInteractionEvidenceWriter writer2 =
@@ -1024,6 +1108,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setCausalRelationshipWriter(relationshipWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter3};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml30.XmlBinaryInteractionEvidenceWriter writer2 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml30.XmlBinaryInteractionEvidenceWriter(streamWriter, objectIndex);
@@ -1046,6 +1132,8 @@ public class PsiXmlElementWriterFactory {
                             default:
                                 switch (interactionCategory){
                                     case modelled:
+                                        return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
+                                    case complex:
                                         return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
                                     default:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml30.XmlInteractionEvidenceWriter writer2 =
@@ -1106,6 +1194,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setXmlInferredInteractionWriter(extendedInferredInteractionWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter2};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlBasicBinaryInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlBasicBinaryInteractionWriter(streamWriter, objectIndex);
@@ -1140,6 +1230,20 @@ public class PsiXmlElementWriterFactory {
                                 switch (interactionCategory){
                                     case modelled:
                                         return new PsiXmlInteractionWriter[]{modelledWriter2, modelledWriter2};
+                                    case complex:
+                                        psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlComplexWriter complexWriter =
+                                                new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlComplexWriter(streamWriter, objectIndex);
+                                        complexWriter.setAliasWriter(aliasWriter);
+                                        complexWriter.setAttributeWriter(attributeWriter);
+                                        complexWriter.setXrefWriter(primaryRefWriter);
+                                        complexWriter.setInteractionTypeWriter(interactionTypeWriter);
+                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
+                                        complexWriter.setParticipantWriter(participantWriters[1]);
+                                        complexWriter.setChecksumWriter(checksumWriter);
+                                        complexWriter.setExperimentWriter(experimentWriter);
+                                        complexWriter.setParameterWriter(parameterWriters[1]);
+                                        return new PsiXmlInteractionWriter[]{complexWriter, modelledWriter2};
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlBasicInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.compact.xml25.XmlBasicInteractionWriter(streamWriter, objectIndex);
@@ -1206,6 +1310,8 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setXmlInferredInteractionWriter(extendedInferredInteractionWriter);
 
                                         return new PsiXmlInteractionWriter[]{modelledWriter4, modelledWriter3};
+                                    case complex:
+                                        throw new IllegalArgumentException("Cannot create a XML complex writer for binary interactions");
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlBasicBinaryInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlBasicBinaryInteractionWriter(streamWriter, objectIndex);
@@ -1240,6 +1346,20 @@ public class PsiXmlElementWriterFactory {
                                 switch (interactionCategory){
                                     case modelled:
                                         return new PsiXmlInteractionWriter[]{modelledWriter3, modelledWriter3};
+                                    case complex:
+                                        psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlComplexWriter complexWriter =
+                                                new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlComplexWriter(streamWriter, objectIndex);
+                                        complexWriter.setAliasWriter(aliasWriter);
+                                        complexWriter.setAttributeWriter(attributeWriter);
+                                        complexWriter.setXrefWriter(primaryRefWriter);
+                                        complexWriter.setInteractionTypeWriter(interactionTypeWriter);
+                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
+                                        complexWriter.setParticipantWriter(participantWriters[1]);
+                                        complexWriter.setChecksumWriter(checksumWriter);
+                                        complexWriter.setExperimentWriter(experimentWriter);
+                                        complexWriter.setParameterWriter(parameterWriters[1]);
+                                        return new PsiXmlInteractionWriter[]{complexWriter, modelledWriter3};
                                     case basic:
                                         psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlBasicInteractionWriter writer3 =
                                                 new psidev.psi.mi.jami.xml.io.writer.elements.impl.extended.expanded.xml25.XmlBasicInteractionWriter(streamWriter, objectIndex);

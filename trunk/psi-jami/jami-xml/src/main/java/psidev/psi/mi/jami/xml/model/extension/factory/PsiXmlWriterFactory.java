@@ -53,8 +53,10 @@ public class PsiXmlWriterFactory {
                             return new psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlModelledBinaryWriter();
                         case basic:
                             return new psidev.psi.mi.jami.xml.io.writer.compact.extended.LightCompactXmlBinaryWriter();
-                        default:
+                        case mixed:
                             return new psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlBinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot find a XML binary writer for interaction category: "+interactionCategory);
                     }
                 default:
                     switch (interactionCategory){
@@ -64,8 +66,10 @@ public class PsiXmlWriterFactory {
                             return new psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlModelledBinaryWriter();
                         case basic:
                             return new psidev.psi.mi.jami.xml.io.writer.expanded.extended.LightExpandedXmlBinaryWriter();
-                        default:
+                        case mixed:
                             return new psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlBinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot find a XML binary writer for interaction category: "+interactionCategory);
                     }
             }
         }
@@ -79,8 +83,10 @@ public class PsiXmlWriterFactory {
                             return new CompactXmlNamedBinaryEvidenceWriter();
                         case basic:
                             return new LightCompactXmlNamedBinaryWriter();
-                        default:
+                        case mixed:
                             return new CompactXmlNamedBinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot find a XML binary writer for interaction category: "+interactionCategory);
                     }
                 default:
                     switch (interactionCategory){
@@ -90,8 +96,10 @@ public class PsiXmlWriterFactory {
                             return new ExpandedXmlNamedModelledBinaryWriter();
                         case basic:
                             return new LightExpandedXmlNamedBinaryWriter();
-                        default:
+                        case mixed:
                             return new ExpandedXmlNamedBinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot find a XML binary writer for interaction category: "+interactionCategory);
                     }
             }
         }
@@ -105,8 +113,10 @@ public class PsiXmlWriterFactory {
                             return new CompactXmlModelledBinaryWriter();
                         case basic:
                             return new LightCompactXmlBinaryWriter();
-                        default:
+                        case mixed:
                             return new CompactXmlBinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot find a XML binary writer for interaction category: "+interactionCategory);
                     }
                 default:
                     switch (interactionCategory){
@@ -116,8 +126,10 @@ public class PsiXmlWriterFactory {
                             return new ExpandedXmlModelledBinaryWriter();
                         case basic:
                             return new LightExpandedXmlBinaryWriter();
-                        default:
+                        case mixed:
                             return new ExpandedXmlBinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot find a XML binary writer for interaction category: "+interactionCategory);
                     }
             }
         }
@@ -139,6 +151,8 @@ public class PsiXmlWriterFactory {
                             return new psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlModelledWriter();
                         case basic:
                             return new psidev.psi.mi.jami.xml.io.writer.compact.extended.LightCompactXmlWriter();
+                        case complex:
+                            return new psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlComplexWriter();
                         default:
                             return new psidev.psi.mi.jami.xml.io.writer.compact.extended.CompactXmlWriter();
                     }
@@ -150,6 +164,8 @@ public class PsiXmlWriterFactory {
                             return new psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlModelledWriter();
                         case basic:
                             return new psidev.psi.mi.jami.xml.io.writer.expanded.extended.LightExpandedXmlWriter();
+                        case complex:
+                            return new psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlComplexWriter();
                         default:
                             return new psidev.psi.mi.jami.xml.io.writer.expanded.extended.ExpandedXmlWriter();
                     }
@@ -165,6 +181,8 @@ public class PsiXmlWriterFactory {
                             return new CompactXmlNamedEvidenceWriter();
                         case basic:
                             return new LightCompactXmlNamedWriter();
+                        case complex:
+                            return new CompactXmlComplexWriter();
                         default:
                             return new CompactXmlNamedWriter();
                     }
@@ -176,6 +194,8 @@ public class PsiXmlWriterFactory {
                             return new ExpandedXmlNamedModelledWriter();
                         case basic:
                             return new LightExpandedXmlNamedWriter();
+                        case complex:
+                            return new ExpandedXmlComplexWriter();
                         default:
                             return new ExpandedXmlNamedWriter();
                     }
@@ -191,6 +211,8 @@ public class PsiXmlWriterFactory {
                             return new CompactXmlModelledWriter();
                         case basic:
                             return new LightCompactXmlWriter();
+                        case complex:
+                            return new CompactXmlComplexWriter();
                         default:
                             return new CompactXmlWriter();
                     }
@@ -202,6 +224,8 @@ public class PsiXmlWriterFactory {
                             return new ExpandedXmlModelledWriter();
                         case basic:
                             return new LightExpandedXmlWriter();
+                        case complex:
+                            return new ExpandedXmlComplexWriter();
                         default:
                             return new ExpandedXmlWriter();
                     }
