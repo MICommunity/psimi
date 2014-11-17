@@ -50,8 +50,10 @@ public class MitabWriterFactory {
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab25ModelledBinaryWriter();
                         case basic:
                             return new LightMitab25BinaryWriter();
-                        default:
+                        case mixed:
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab25BinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
                 case v2_6:
                     switch (interactionCategory){
@@ -61,8 +63,10 @@ public class MitabWriterFactory {
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab26ModelledBinaryWriter();
                         case basic:
                             return new LightMitab25BinaryWriter();
-                        default:
+                        case mixed:
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab26BinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
                 default:
                     switch (interactionCategory){
@@ -72,8 +76,10 @@ public class MitabWriterFactory {
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab27ModelledBinaryWriter();
                         case basic:
                             return new LightMitab27BinaryWriter();
-                        default:
+                        case mixed:
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab27BinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
             }
         }
@@ -87,8 +93,10 @@ public class MitabWriterFactory {
                             return new Mitab25ModelledBinaryWriter();
                         case basic:
                             return new LightMitab25BinaryWriter();
-                        default:
+                        case mixed:
                             return new Mitab25BinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
                 case v2_6:
                     switch (interactionCategory){
@@ -98,8 +106,10 @@ public class MitabWriterFactory {
                             return new Mitab26ModelledBinaryWriter();
                         case basic:
                             return new LightMitab25BinaryWriter();
-                        default:
+                        case mixed:
                             return new Mitab26BinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
                 default:
                     switch (interactionCategory){
@@ -109,8 +119,10 @@ public class MitabWriterFactory {
                             return new Mitab27ModelledBinaryWriter();
                         case basic:
                             return new LightMitab27BinaryWriter();
-                        default:
+                        case mixed:
                             return new Mitab27BinaryWriter();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
             }
         }
@@ -131,8 +143,10 @@ public class MitabWriterFactory {
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab25ModelledWriter();
                         case basic:
                             return new LightMitab25Writer();
-                        default:
+                        case mixed:
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab25Writer();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
                 case v2_6:
                     switch (interactionCategory){
@@ -142,8 +156,10 @@ public class MitabWriterFactory {
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab26ModelledWriter();
                         case basic:
                             return new LightMitab25Writer();
-                        default:
+                        case mixed:
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab26Writer();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
                 default:
                     switch (interactionCategory){
@@ -153,8 +169,10 @@ public class MitabWriterFactory {
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab27ModelledWriter();
                         case basic:
                             return new LightMitab27Writer();
-                        default:
+                        case mixed:
                             return new psidev.psi.mi.jami.tab.io.writer.extended.Mitab27Writer();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
             }
         }
@@ -168,8 +186,10 @@ public class MitabWriterFactory {
                             return new Mitab25ModelledWriter();
                         case basic:
                             return new LightMitab25Writer();
-                        default:
+                        case mixed:
                             return new Mitab25Writer();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
                 case v2_6:
                     switch (interactionCategory){
@@ -179,8 +199,10 @@ public class MitabWriterFactory {
                             return new Mitab26ModelledWriter();
                         case basic:
                             return new LightMitab25Writer();
-                        default:
+                        case mixed:
                             return new Mitab26Writer();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
                 default:
                     switch (interactionCategory){
@@ -190,8 +212,10 @@ public class MitabWriterFactory {
                             return new Mitab27ModelledWriter();
                         case basic:
                             return new LightMitab27Writer();
-                        default:
+                        case mixed:
                             return new Mitab27Writer();
+                        default:
+                            throw new IllegalArgumentException("Cannot create a MITAB writer for Interaction category: "+interactionCategory);
                     }
             }
         }

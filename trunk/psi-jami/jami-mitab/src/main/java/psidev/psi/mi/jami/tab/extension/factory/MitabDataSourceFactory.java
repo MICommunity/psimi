@@ -44,12 +44,12 @@ public class MitabDataSourceFactory {
                     return new MitabBinaryEvidenceStreamSource();
                 case modelled:
                     return new MitabModelledBinaryStreamSource();
-                case complex:
-                    return new MitabModelledBinaryStreamSource();
                 case basic:
                     return new LightMitabBinaryStreamSource();
-                default:
+                case mixed:
                     return new MitabBinaryEvidenceStreamSource();
+                default:
+                    throw new IllegalArgumentException("Cannot create a MITAB binary source for Interaction category: "+interactionCategory);
             }
         }
         else{
@@ -58,12 +58,12 @@ public class MitabDataSourceFactory {
                     return new MitabBinaryEvidenceSource();
                 case modelled:
                     return new MitabModelledBinarySource();
-                case complex:
-                    return new MitabModelledBinarySource();
                 case basic:
                     return new LightMitabBinarySource();
-                default:
+                case mixed:
                     return new MitabBinaryEvidenceSource();
+                default:
+                    throw new IllegalArgumentException("Cannot create a MITAB binary source for Interaction category: "+interactionCategory);
             }
         }
     }
@@ -79,12 +79,12 @@ public class MitabDataSourceFactory {
                     return new MitabEvidenceStreamSource();
                 case modelled:
                     return new MitabModelledStreamSource();
-                case complex:
-                    return new MitabModelledStreamSource();
                 case basic:
                     return new LightMitabStreamSource();
-                default:
+                case mixed:
                     return new MitabEvidenceStreamSource();
+                default:
+                    throw new IllegalArgumentException("Cannot create a MITAB source for Interaction category: "+interactionCategory);
             }
         }
         else{
@@ -93,12 +93,12 @@ public class MitabDataSourceFactory {
                     return new MitabEvidenceSource();
                 case modelled:
                     return new MitabModelledSource();
-                case complex:
-                    return new MitabModelledSource();
                 case basic:
                     return new LightMitabSource();
-                default:
+                case mixed:
                     return new MitabEvidenceSource();
+                default:
+                    throw new IllegalArgumentException("Cannot create a MITAB source for Interaction category: "+interactionCategory);
             }
         }
     }
