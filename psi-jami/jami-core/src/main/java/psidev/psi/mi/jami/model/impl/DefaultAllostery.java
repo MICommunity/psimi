@@ -87,6 +87,7 @@ public class DefaultAllostery<T extends AllostericEffector> extends DefaultCoope
 
     @Override
     public String toString() {
-        return "allostery: " + super.toString();
+        return "Allostery: outcome: "+(getOutCome() != null ? getOutCome().toString() : "")
+                + (getResponse() != null ? ", response: " + getResponse().toString() : "");
     }
 }

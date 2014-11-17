@@ -39,6 +39,6 @@ public class DefaultMoleculeEffector implements MoleculeEffector {
 
     @Override
     public String toString() {
-        return "molecule effector: " + participant.toString();
+        return "molecule effector: " + getMolecule().toString();
     }
 }

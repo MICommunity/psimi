@@ -275,7 +275,8 @@ public class DefaultInteractionEvidence extends AbstractInteraction<ParticipantE
 
     @Override
     public String toString() {
-        return imexId != null ? imexId.getId() : super.toString();
+        return "Interaction evidence: "+(getImexId() != null ? getImexId() :
+                (getShortName() != null ? getShortName()+", " : "") + (getInteractionType() != null ? getInteractionType().toString() : ""));
     }
 
     /**

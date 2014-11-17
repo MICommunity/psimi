@@ -332,7 +332,10 @@ public class DefaultBioactiveEntity extends DefaultMolecule implements Bioactive
 
     @Override
     public String toString() {
-        return chebi != null ? chebi.getId() : (standardInchiKey != null ? standardInchiKey.getValue() : (smile != null ? smile.getValue() : (standardInchi != null ? standardInchi.getValue() : super.toString())));
+        return "Bioactive Entity: "+
+                (getChebi() != null ? getChebi() : (getStandardInchiKey() != null ? getStandardInchiKey() :
+                        (getSmile() != null ? getSmile() : (getStandardInchi() != null ? getStandardInchi() :
+                        super.toString()))));
     }
 
     private class BioctiveEntityIdentifierList extends AbstractListHavingProperties<Xref> {

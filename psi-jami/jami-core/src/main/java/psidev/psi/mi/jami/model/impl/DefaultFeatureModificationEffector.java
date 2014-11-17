@@ -39,6 +39,6 @@ public class DefaultFeatureModificationEffector implements FeatureModificationEf
 
     @Override
     public String toString() {
-        return "feature modification effector: " + feature.toString();
+        return "feature modification effector: " + getFeatureModification().toString();
     }
 }

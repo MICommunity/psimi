@@ -206,4 +206,9 @@ public abstract class AbstractParticipantPool<I extends Interaction, F extends F
         }
     }
 
+
+    @Override
+    public String toString() {
+        return "Participant pool: "+getInteractor().toString() + (getStoichiometry() != null ? ", pool size: " + size() : "");
+    }
 }

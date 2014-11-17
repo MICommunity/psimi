@@ -117,7 +117,7 @@ public class DefaultPosition implements Position {
 
     @Override
     public String toString() {
-        return status.toString() + ": " + start  +".."+ end;
+        return getStatus().toString() + ": " + getStart()  +".."+ getEnd();
     }
 
     @Override

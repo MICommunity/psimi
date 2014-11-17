@@ -59,6 +59,6 @@ public class DefaultAlias implements Alias {
 
     @Override
     public String toString() {
-        return name + (type != null ? "("+type.toString()+")" : "");
+        return getName() + (getType() != null ? "("+getType().toString()+")" : "");
     }
 }

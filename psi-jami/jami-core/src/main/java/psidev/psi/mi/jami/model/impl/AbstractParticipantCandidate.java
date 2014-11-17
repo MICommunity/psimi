@@ -29,4 +29,9 @@ public abstract class AbstractParticipantCandidate<P extends ParticipantPool, F 
     public void setParentPool(P pool) {
         this.parentPool = pool;
     }
+
+    @Override
+    public String toString() {
+        return "Participant candidate: "+getInteractor().toString() + (getStoichiometry() != null ? ", stoichiometry: " + getStoichiometry().toString() : "");
+    }
 }

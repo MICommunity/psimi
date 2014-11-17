@@ -342,7 +342,9 @@ public class DefaultCvTerm implements CvTerm {
 
     @Override
     public String toString() {
-        return (miIdentifier != null ? miIdentifier.getId() : (modIdentifier != null ? modIdentifier.getId() : (parIdentifier != null ? parIdentifier.getId() : "-"))) + " ("+shortName+")";
+        return (getMIIdentifier() != null ? getMIIdentifier() :
+                (getMODIdentifier() != null ? getMODIdentifier() :
+                        (getPARIdentifier() != null ? getPARIdentifier() : "-"))) + " ("+getShortName()+")";
     }
 
     private class CvTermIdentifierList extends AbstractListHavingProperties<Xref> {

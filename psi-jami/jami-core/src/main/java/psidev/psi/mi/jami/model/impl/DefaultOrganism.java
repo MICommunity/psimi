@@ -162,6 +162,6 @@ public class DefaultOrganism implements Organism {
 
     @Override
     public String toString() {
-        return taxId + "(" + (commonName != null ? commonName : "-" )+")";
+        return "Organism: "+getTaxId() + "(" + (getCommonName() != null ? getCommonName() : "-" )+")";
     }
 }

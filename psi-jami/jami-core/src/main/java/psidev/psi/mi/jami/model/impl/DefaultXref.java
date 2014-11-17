@@ -86,6 +86,6 @@ public class DefaultXref implements Xref {
 
     @Override
     public String toString() {
-        return database.toString() + ":" + id.toString() + (qualifier != null ? " (" + qualifier.toString() + ")" : "");
+        return getDatabase().toString() + ":" + getId() + (getQualifier() != null ? " (" + getQualifier().toString() + ")" : "");
     }
 }

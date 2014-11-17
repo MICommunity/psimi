@@ -3,7 +3,6 @@ package psidev.psi.mi.jami.model.impl;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -304,6 +303,9 @@ public class DefaultExperiment implements Experiment {
 
     @Override
     public String toString() {
-        return publication.toString() + "( " + interactionDetectionMethod.toString() + (hostOrganism != null ? ", " + hostOrganism.toString():"") + " )";
+        return "Experiment: "
+                +(getPublication() != null ? getPublication().toString():"no publication")
+                + "( " + getInteractionDetectionMethod().toString()
+                + (getHostOrganism() != null ? ", " + getHostOrganism().toString():"") + " )";
     }
 }

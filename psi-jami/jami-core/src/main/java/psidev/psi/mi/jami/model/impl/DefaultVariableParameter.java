@@ -127,6 +127,6 @@ public class DefaultVariableParameter implements VariableParameter {
 
     @Override
     public String toString() {
-        return description.toString() + (unit != null ? "(unit: "+unit.toString()+")":"");
+        return getDescription().toString() + (getUnit() != null ? "(unit: "+getUnit().toString()+")":"");
     }
 }

@@ -63,6 +63,6 @@ public class DefaultAnnotation implements Annotation {
 
     @Override
     public String toString() {
-        return topic.toString()+(value != null ? ": " + value : "");
+        return getTopic().toString()+(getValue() != null ? ": " + getValue() : "");
     }
 }

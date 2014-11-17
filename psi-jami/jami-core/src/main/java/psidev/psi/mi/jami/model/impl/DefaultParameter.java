@@ -99,7 +99,9 @@ public class DefaultParameter implements Parameter {
 
     @Override
     public String toString() {
-        return type.toString() + ": " + value  + (uncertainty != null ? " ~" + uncertainty.toString() : "" + (unit != null ? "("+unit.toString()+")" : ""));
+        return getType().toString() + ": " + getValue()
+                + (getUncertainty() != null ? " ~" + getUncertainty().toString() : ""
+                + (getUnit() != null ? "("+getUnit().toString()+")" : ""));
     }
 
     @Override

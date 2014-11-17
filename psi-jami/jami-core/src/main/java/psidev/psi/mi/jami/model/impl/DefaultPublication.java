@@ -483,7 +483,11 @@ public class DefaultPublication implements Publication {
 
     @Override
     public String toString() {
-        return (imexId != null ? imexId.getId() : (pubmedId != null ? pubmedId.getId() : (doi != null ? doi.getId() : (title != null ? title : "-"))));
+        return "Publication: "+
+                (getImexId() != null ? getImexId() :
+                        (getPubmedId() != null ? getPubmedId() :
+                                (getDoi() != null ? getDoi() :
+                                        (getTitle() != null ? getTitle() : "-"))));
     }
 
     private class PublicationIdentifierList extends AbstractListHavingProperties<Xref> {

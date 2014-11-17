@@ -123,6 +123,6 @@ public class DefaultCooperativeEffect implements CooperativeEffect {
 
     @Override
     public String toString() {
-        return "Outcome: "+(outcome != null ? outcome.toString() : "") + (response != null ? ", response: " + response.toString() : "");
+        return "Outcome: "+(getOutCome() != null ? getOutCome().toString() : "") + (getResponse() != null ? ", response: " + getResponse().toString() : "");
     }
 }

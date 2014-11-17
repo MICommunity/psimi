@@ -118,6 +118,6 @@ public class DefaultRange implements Range {
 
     @Override
     public String toString() {
-        return start.toString() + " - " + end.toString() + (isLink ? "(linked)" : "");
+        return getStart().toString() + " - " + getEnd().toString() + (isLink() ? "(linked)" : "");
     }
 }

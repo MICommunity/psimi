@@ -170,6 +170,6 @@ public abstract class AbstractEntity<F extends Feature> implements Entity<F> {
 
     @Override
     public String toString() {
-        return getInteractor().toString() + " ( " + getInteractor().toString() + ")" + (getStoichiometry() != null ? ", stoichiometry: " + getStoichiometry().toString() : "");
+        return "Entity: "+getInteractor().toString() + (getStoichiometry() != null ? ", stoichiometry: " + getStoichiometry().toString() : "");
     }
 }

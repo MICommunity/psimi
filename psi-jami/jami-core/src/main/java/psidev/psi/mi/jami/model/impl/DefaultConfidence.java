@@ -53,7 +53,7 @@ public class DefaultConfidence implements Confidence {
 
     @Override
     public String toString() {
-        return type.toString() + ": " + value;
+        return getType().toString() + ": " + getValue();
     }
 
     @Override

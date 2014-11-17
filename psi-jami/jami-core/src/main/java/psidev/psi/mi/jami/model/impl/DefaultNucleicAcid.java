@@ -226,7 +226,9 @@ public class DefaultNucleicAcid extends DefaultPolymer implements NucleicAcid{
 
     @Override
     public String toString() {
-        return ddbjEmblGenbank != null ? ddbjEmblGenbank.getId() : (refseq != null ? refseq.getId() : super.toString());
+        return "Nucleic acid: "
+                +(getDdbjEmblGenbank() != null ? getDdbjEmblGenbank()
+                : (getRefseq() != null ? getRefseq() : super.toString()));
     }
 
     private class NucleicAcidIdentifierList extends AbstractListHavingProperties<Xref> {
