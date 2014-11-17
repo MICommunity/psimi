@@ -73,6 +73,8 @@ public class InteractionWriterFactory {
                     logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
                 } catch (InstantiationException e) {
                     logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
+                }  catch (Exception e) {
+                    logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
                 }
             }
         }
