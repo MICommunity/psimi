@@ -56,6 +56,8 @@ public class MIDataSourceFactory {
                     logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
                 } catch (InstantiationException e) {
                     logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
+                } catch (Exception e){
+                    logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
                 }
             }
         }
@@ -80,6 +82,8 @@ public class MIDataSourceFactory {
                 } catch (IllegalAccessException e) {
                     logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
                 } catch (InstantiationException e) {
+                    logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
+                } catch (Exception e) {
                     logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
                 }
             }
