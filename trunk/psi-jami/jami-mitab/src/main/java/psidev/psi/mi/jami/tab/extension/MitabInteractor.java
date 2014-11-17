@@ -93,6 +93,6 @@ public class MitabInteractor extends DefaultInteractor implements FileSourceCont
 
     @Override
     public String toString() {
-        return "Interactor: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Interactor: "+getSourceLocator().toString():super.toString());
     }
 }

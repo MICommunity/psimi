@@ -46,6 +46,6 @@ public class MitabModelledParticipant extends DefaultModelledParticipant impleme
 
     @Override
     public String toString() {
-        return "Participant: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Participant: "+getSourceLocator().toString():super.toString());
     }
 }

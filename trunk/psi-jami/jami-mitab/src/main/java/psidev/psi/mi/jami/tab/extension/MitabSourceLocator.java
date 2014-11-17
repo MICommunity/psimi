@@ -25,6 +25,6 @@ public class MitabSourceLocator extends FileSourceLocator {
 
     @Override
     public String toString() {
-        return "Line: "+getLineNumber() + ", MITAB Column: "+ columnNumber + ", Character number: " + getCharNumber();
+        return "Line: "+getLineNumber() + ", MITAB Column: "+ getColumnNumber() + ", Character number: " + getCharNumber();
     }
 }

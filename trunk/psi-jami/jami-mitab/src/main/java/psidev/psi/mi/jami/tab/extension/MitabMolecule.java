@@ -93,6 +93,6 @@ public class MitabMolecule extends DefaultMolecule implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "Molecule: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Molecule: "+getSourceLocator().toString():super.toString());
     }
 }

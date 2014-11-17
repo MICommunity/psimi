@@ -113,6 +113,6 @@ public class MitabXref implements Xref,FileSourceContext {
 
     @Override
     public String toString() {
-        return "Mitab Xref: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Mitab Xref: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

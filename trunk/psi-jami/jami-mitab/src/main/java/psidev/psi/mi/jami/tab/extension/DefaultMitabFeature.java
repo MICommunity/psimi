@@ -56,6 +56,6 @@ public class DefaultMitabFeature extends DefaultFeature implements MitabFeature<
 
     @Override
     public String toString() {
-        return "Feature: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Feature: "+getSourceLocator().toString():super.toString());
     }
 }

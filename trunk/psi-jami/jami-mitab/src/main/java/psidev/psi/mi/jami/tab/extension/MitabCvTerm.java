@@ -64,6 +64,6 @@ public class MitabCvTerm extends DefaultCvTerm implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "Mitab CV Term: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Mitab CV Term: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

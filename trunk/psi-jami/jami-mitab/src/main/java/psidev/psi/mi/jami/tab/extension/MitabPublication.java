@@ -72,6 +72,6 @@ public class MitabPublication extends DefaultPublication implements FileSourceCo
 
     @Override
     public String toString() {
-        return "Publication: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Publication: "+getSourceLocator().toString():super.toString());
     }
 }

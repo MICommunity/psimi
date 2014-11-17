@@ -47,6 +47,6 @@ public class MitabConfidence extends DefaultModelledConfidence implements FileSo
 
     @Override
     public String toString() {
-        return "Mitab Confidence: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Mitab Confidence: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

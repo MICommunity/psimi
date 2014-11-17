@@ -50,6 +50,6 @@ public class MitabAnnotation extends DefaultAnnotation implements FileSourceCont
 
     @Override
     public String toString() {
-        return "Mitab Annotation: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Mitab Annotation: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

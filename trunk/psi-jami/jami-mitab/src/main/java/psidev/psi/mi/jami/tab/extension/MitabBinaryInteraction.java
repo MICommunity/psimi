@@ -72,6 +72,6 @@ public class MitabBinaryInteraction extends DefaultBinaryInteraction implements 
 
     @Override
     public String toString() {
-        return "Binary interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Binary interaction: "+getSourceLocator().toString():super.toString());
     }
 }

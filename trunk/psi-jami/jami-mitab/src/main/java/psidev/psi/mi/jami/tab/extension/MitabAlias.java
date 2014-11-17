@@ -60,6 +60,6 @@ public class MitabAlias extends DefaultAlias implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "Mitab Alias: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Mitab Alias: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

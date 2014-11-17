@@ -86,6 +86,6 @@ public class MitabSource extends DefaultSource implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "Source: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Source: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

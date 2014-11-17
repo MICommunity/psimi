@@ -89,6 +89,6 @@ public class MitabAuthor implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "First Author: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "First Author: "+(getSourceLocator() != null ? getSourceLocator().toString():"-");
     }
 }

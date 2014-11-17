@@ -73,6 +73,6 @@ public class MitabGene extends DefaultGene implements FileSourceContext {
 
     @Override
     public String toString() {
-        return "Gene: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Gene: "+getSourceLocator().toString():super.toString());
     }
 }
