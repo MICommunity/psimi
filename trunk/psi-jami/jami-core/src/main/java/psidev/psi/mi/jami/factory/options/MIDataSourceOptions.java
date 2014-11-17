@@ -12,7 +12,7 @@ public class MIDataSourceOptions {
 
     /**
      * The option to describe the type of interaction object we want to return.
-     * It has to be an enum of type InteractionCategory (evidence, modelled, basic, mixed). If this option is not provided,
+     * It has to be an enum of type InteractionCategory (evidence, modelled, basic, complex, mixed). If this option is not provided,
      * the default value will vary depending on the type of the datasource.
      * Some datasources such as PSI-MI XML 3.0 files do not need this option as it can read a mix of interaction evidences and modelled
      */

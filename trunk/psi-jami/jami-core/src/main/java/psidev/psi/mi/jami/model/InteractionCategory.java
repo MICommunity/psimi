@@ -6,6 +6,7 @@ package psidev.psi.mi.jami.model;
  * - modelled: for ModelledInteraction implementations.
  * - basic: for basic implementations of Interaction
  * - mixed: for a mix of any kind of interactions
+ * - complex: for biological complexes. Not all datasources support this kind of interactions
  *
  *
  * @author Marine Dumousseau (marine@ebi.ac.uk)
@@ -15,5 +16,5 @@ package psidev.psi.mi.jami.model;
 
 public enum InteractionCategory {
 
-    evidence, modelled, basic, mixed
+    evidence, modelled, basic, complex, mixed
 }
