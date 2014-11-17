@@ -50,7 +50,7 @@ public class InteractionWriterOptions {
 
     /**
      * The option to describe the type of interaction object we want to write.
-     * It has to be an enum of type InteractionCategory(mixed, modelled, evidence, basic). If this option is not provided,
+     * It has to be an enum of type InteractionCategory(mixed, modelled, evidence, complex, basic). If this option is not provided,
      * the default value will vary depending on the type of the interaction writer.
      * The PSI-MI XML 3.0 writer do not need this option.
      */
