@@ -96,6 +96,6 @@ public class MitabParticipantEvidence extends DefaultParticipantEvidence impleme
 
     @Override
     public String toString() {
-        return "Participant: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Participant: "+getSourceLocator().toString():super.toString());
     }
 }

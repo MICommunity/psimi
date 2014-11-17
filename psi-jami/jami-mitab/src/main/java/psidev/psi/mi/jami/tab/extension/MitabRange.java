@@ -54,6 +54,6 @@ public class MitabRange extends DefaultRange implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "Feature Range: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Feature Range: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

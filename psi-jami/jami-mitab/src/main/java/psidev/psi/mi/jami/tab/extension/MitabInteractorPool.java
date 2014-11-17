@@ -93,6 +93,6 @@ public class MitabInteractorPool extends DefaultInteractorPool implements FileSo
 
     @Override
     public String toString() {
-        return "Interactor set: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Interactor set: "+getSourceLocator().toString():super.toString());
     }
 }

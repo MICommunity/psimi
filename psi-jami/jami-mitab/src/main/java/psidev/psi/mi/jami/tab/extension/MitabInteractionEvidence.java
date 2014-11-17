@@ -90,6 +90,6 @@ public class MitabInteractionEvidence extends DefaultInteractionEvidence impleme
 
     @Override
     public String toString() {
-        return "Interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Interaction: "+getSourceLocator().toString():super.toString());
     }
 }

@@ -46,6 +46,6 @@ public class MitabParticipant extends DefaultParticipant implements FileSourceCo
 
     @Override
     public String toString() {
-        return "Participant: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Participant: "+getSourceLocator().toString():super.toString());
     }
 }

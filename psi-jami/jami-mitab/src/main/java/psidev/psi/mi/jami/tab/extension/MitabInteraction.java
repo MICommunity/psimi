@@ -40,6 +40,6 @@ public class MitabInteraction extends DefaultInteraction implements FileSourceCo
 
     @Override
     public String toString() {
-        return "Interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Interaction: "+getSourceLocator().toString():super.toString());
     }
 }

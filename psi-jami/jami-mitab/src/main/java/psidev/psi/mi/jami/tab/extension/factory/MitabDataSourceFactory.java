@@ -44,6 +44,8 @@ public class MitabDataSourceFactory {
                     return new MitabBinaryEvidenceStreamSource();
                 case modelled:
                     return new MitabModelledBinaryStreamSource();
+                case complex:
+                    return new MitabModelledBinaryStreamSource();
                 case basic:
                     return new LightMitabBinaryStreamSource();
                 default:
@@ -55,6 +57,8 @@ public class MitabDataSourceFactory {
                 case evidence:
                     return new MitabBinaryEvidenceSource();
                 case modelled:
+                    return new MitabModelledBinarySource();
+                case complex:
                     return new MitabModelledBinarySource();
                 case basic:
                     return new LightMitabBinarySource();
@@ -75,6 +79,8 @@ public class MitabDataSourceFactory {
                     return new MitabEvidenceStreamSource();
                 case modelled:
                     return new MitabModelledStreamSource();
+                case complex:
+                    return new MitabModelledStreamSource();
                 case basic:
                     return new LightMitabStreamSource();
                 default:
@@ -86,6 +92,8 @@ public class MitabDataSourceFactory {
                 case evidence:
                     return new MitabEvidenceSource();
                 case modelled:
+                    return new MitabModelledSource();
+                case complex:
                     return new MitabModelledSource();
                 case basic:
                     return new LightMitabSource();

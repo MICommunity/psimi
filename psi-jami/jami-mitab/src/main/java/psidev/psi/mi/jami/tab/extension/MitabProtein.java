@@ -94,6 +94,6 @@ public class MitabProtein extends DefaultProtein implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "MProtein: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Mitab Protein: "+getSourceLocator().toString():super.toString());
     }
 }

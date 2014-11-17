@@ -94,6 +94,6 @@ public class MitabComplex extends DefaultComplex implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "Complex: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Complex: "+getSourceLocator().toString():super.toString());
     }
 }

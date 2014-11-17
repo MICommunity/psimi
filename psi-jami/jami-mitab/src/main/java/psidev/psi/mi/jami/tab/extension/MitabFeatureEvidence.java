@@ -70,6 +70,6 @@ public class MitabFeatureEvidence extends DefaultFeatureEvidence implements Mita
 
     @Override
     public String toString() {
-        return "Feature: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Feature: "+getSourceLocator().toString():super.toString());
     }
 }

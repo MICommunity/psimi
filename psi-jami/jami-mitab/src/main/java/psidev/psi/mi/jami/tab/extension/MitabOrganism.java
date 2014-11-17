@@ -52,6 +52,6 @@ public class MitabOrganism extends DefaultOrganism implements FileSourceContext{
 
     @Override
     public String toString() {
-        return "Organism: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Organism: "+getSourceLocator().toString():super.toString());
     }
 }

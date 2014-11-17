@@ -35,6 +35,6 @@ public class MitabStoichiometry extends DefaultStoichiometry implements FileSour
 
     @Override
     public String toString() {
-        return "Mitab Stoichiometry: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Mitab Stoichiometry: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

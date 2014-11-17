@@ -61,6 +61,6 @@ public class MitabParameter extends DefaultModelledParameter implements FileSour
 
     @Override
     public String toString() {
-        return "Mitab Parameter: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Mitab Parameter: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

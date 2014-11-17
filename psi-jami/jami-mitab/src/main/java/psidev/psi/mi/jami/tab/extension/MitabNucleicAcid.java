@@ -94,6 +94,6 @@ public class MitabNucleicAcid extends DefaultNucleicAcid implements FileSourceCo
 
     @Override
     public String toString() {
-        return "Nucleic acid: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Nucleic acid: "+getSourceLocator().toString():super.toString());
     }
 }
