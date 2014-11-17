@@ -100,6 +100,6 @@ public class XmlPolymer extends XmlMolecule implements Polymer {
 
     @Override
     public String toString() {
-        return "Polymer: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Polymer: "+getSourceLocator().toString():super.toString());
     }
 }

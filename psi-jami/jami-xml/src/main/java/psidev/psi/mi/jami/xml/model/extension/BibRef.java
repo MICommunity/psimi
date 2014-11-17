@@ -333,7 +333,7 @@ public class BibRef
 
     @Override
     public String toString() {
-        return "Bibref: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Bibref: "+getSourceLocator().toString():super.toString());
     }
 
     protected void initialiseAnnotationWrapper(){

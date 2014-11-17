@@ -175,7 +175,13 @@ public abstract class AbstractXmlCvTerm implements CvTerm, FileSourceContext, Lo
             return getShortName();
         }
         else {
-            return (xrefContainer.getMIIdentifier() != null ? xrefContainer.getMIIdentifier() : (xrefContainer.getMODIdentifier() != null ? xrefContainer.getMODIdentifier() : (xrefContainer.getPARIdentifier() != null ? xrefContainer.getPARIdentifier() : "-"))) + " ("+getShortName()+")";
+            return (xrefContainer.getMIIdentifier() != null ?
+                    xrefContainer.getMIIdentifier() :
+                    (xrefContainer.getMODIdentifier() != null ?
+                            xrefContainer.getMODIdentifier() :
+                            (xrefContainer.getPARIdentifier() != null ?
+                                    xrefContainer.getPARIdentifier() : "-")))
+                    + " ("+getShortName()+")";
         }
     }
 

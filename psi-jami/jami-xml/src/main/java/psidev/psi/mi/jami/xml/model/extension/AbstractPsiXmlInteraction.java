@@ -134,7 +134,7 @@ public abstract class AbstractPsiXmlInteraction<T extends Participant> extends A
 
         @Override
         public String toString() {
-            return "Inferred Interaction List: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+            return "Inferred Interaction List: "+(getSourceLocator() != null ? getSourceLocator().toString():"-");
         }
     }
 }

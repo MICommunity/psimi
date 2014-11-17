@@ -252,7 +252,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
     @Override
     public String toString() {
-        return "Participant: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Participant: "+getSourceLocator().toString():super.toString());
     }
 
     protected void setFeatureWrapper(JAXBFeatureWrapper<F> jaxbFeatureWrapper) {
@@ -302,7 +302,7 @@ public abstract class AbstractXmlEntity<F extends Feature> implements ExtendedPs
 
         @Override
         public String toString() {
-            return "Participant Interactor Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+            return "Participant Interactor Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
         }
 
         public FileSourceLocator getSourceLocator() {

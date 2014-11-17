@@ -213,7 +213,7 @@ public class XmlFeatureEvidenceWrapper implements ModelledFeature, ExtendedPsiXm
 
         @Override
         public String toString() {
-            return "Feature Reference in inferred participant: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+            return "Feature Reference in inferred participant: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
         }
 
         @Override

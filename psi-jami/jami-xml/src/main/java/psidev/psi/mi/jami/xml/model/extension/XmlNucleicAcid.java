@@ -141,6 +141,6 @@ public class XmlNucleicAcid extends DefaultNucleicAcid implements ExtendedPsiXml
 
     @Override
     public String toString() {
-        return "Nucleic Acid: "+(sourceLocator != null ? sourceLocator.toString():super.toString());
+        return (getSourceLocator() != null ? "Nucleic Acid: "+getSourceLocator().toString():super.toString());
     }
 }

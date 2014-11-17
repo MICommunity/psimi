@@ -48,7 +48,7 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
 
     @Override
     public String toString() {
-        return "Pre-assembly: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Pre-assembly: "+getSourceLocator().toString():super.toString());
     }
 
     public void addAffectedInteractionRef(int affectedInteraction, PsiXmlLocator locator){
@@ -91,7 +91,7 @@ public class XmlPreAssembly extends DefaultPreassemby implements FileSourceConte
 
         @Override
         public String toString() {
-            return "Affected modelled interaction Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+            return "Affected modelled interaction Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
         }
 
         public FileSourceLocator getSourceLocator() {

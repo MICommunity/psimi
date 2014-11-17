@@ -148,6 +148,6 @@ public class XmlGene extends DefaultGene implements ExtendedPsiXmlInteractor, Fi
 
     @Override
     public String toString() {
-        return "Gene: "+(sourceLocator != null ? sourceLocator.toString():super.toString());
+        return (getSourceLocator() != null ? "Gene: "+getSourceLocator().toString():super.toString());
     }
 }

@@ -86,7 +86,7 @@ public class ExperimentalCvTerm
 
     @Override
     public String toString() {
-        return "Experimental Cv Term: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Experimental Cv Term: "+getSourceLocator().toString():super.toString());
     }
 
     ////////////////////////////////////////////////////////////////// classes
@@ -225,7 +225,7 @@ public class ExperimentalCvTerm
 
             @Override
             public String toString() {
-                return "Cv Term Experiment Reference : "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+                return "Cv Term Experiment Reference : "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
             }
 
             public FileSourceLocator getSourceLocator() {

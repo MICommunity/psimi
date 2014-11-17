@@ -235,6 +235,6 @@ public class XmlOrganism implements Organism, FileSourceContext, Locatable{
 
     @Override
     public String toString() {
-        return "Organism: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Organism: "+getSourceLocator().toString():super.toString());
     }
 }

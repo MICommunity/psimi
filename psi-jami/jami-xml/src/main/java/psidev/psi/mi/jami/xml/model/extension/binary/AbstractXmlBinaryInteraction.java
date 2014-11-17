@@ -143,6 +143,6 @@ public abstract class AbstractXmlBinaryInteraction<P extends Participant> extend
 
     @Override
     public String toString() {
-        return "Binary interaction: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Binary interaction: "+getSourceLocator().toString():super.toString());
     }
 }

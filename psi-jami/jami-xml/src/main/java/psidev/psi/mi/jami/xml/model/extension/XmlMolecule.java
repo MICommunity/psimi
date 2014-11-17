@@ -86,6 +86,6 @@ public class XmlMolecule extends XmlInteractor implements Molecule {
 
     @Override
     public String toString() {
-        return "Molecule: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Molecule: "+getSourceLocator().toString():super.toString());
     }
 }

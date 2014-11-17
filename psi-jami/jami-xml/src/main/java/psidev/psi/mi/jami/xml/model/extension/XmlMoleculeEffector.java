@@ -54,7 +54,7 @@ public class XmlMoleculeEffector implements MoleculeEffector, FileSourceContext 
 
     @Override
     public String toString() {
-        return "Allosteric molecule effector: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Allosteric molecule effector: "+getSourceLocator().toString():super.toString());
     }
 
     ////////////////////////////////// inner classes

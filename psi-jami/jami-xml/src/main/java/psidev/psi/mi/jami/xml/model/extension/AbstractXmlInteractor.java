@@ -350,7 +350,7 @@ public abstract class AbstractXmlInteractor implements Interactor, FileSourceCon
 
     @Override
     public String toString() {
-        return "Interactor: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Interactor: "+getSourceLocator().toString():super.toString());
     }
 
     @Override

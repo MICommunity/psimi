@@ -53,7 +53,7 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
 
     @Override
     public String toString() {
-        return "Allostery: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Allostery: "+getSourceLocator().toString():super.toString());
     }
 
     public CvTerm getAllostericMechanism() {
@@ -156,7 +156,7 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
 
         @Override
         public String toString() {
-            return "Allosteric molecule Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+            return "Allosteric molecule Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
         }
 
         @Override
@@ -223,7 +223,7 @@ public class XmlAllostery<T extends AllostericEffector> extends DefaultCooperati
 
         @Override
         public String toString() {
-            return "Affected modelled interaction Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+            return "Affected modelled interaction Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
         }
 
         public FileSourceLocator getSourceLocator() {

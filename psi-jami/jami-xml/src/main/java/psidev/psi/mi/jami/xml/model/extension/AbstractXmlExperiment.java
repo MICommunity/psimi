@@ -543,7 +543,7 @@ public abstract class AbstractXmlExperiment implements ExtendedPsiXmlExperiment,
 
     @Override
     public String toString() {
-        return "ExperimentDescription: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "ExperimentDescription: "+getSourceLocator().toString():super.toString());
     }
 
     @Override

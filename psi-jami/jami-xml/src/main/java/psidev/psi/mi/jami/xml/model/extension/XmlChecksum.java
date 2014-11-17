@@ -44,6 +44,6 @@ public class XmlChecksum extends DefaultChecksum implements FileSourceContext {
 
     @Override
     public String toString() {
-        return "Checksum: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return "Checksum: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
     }
 }

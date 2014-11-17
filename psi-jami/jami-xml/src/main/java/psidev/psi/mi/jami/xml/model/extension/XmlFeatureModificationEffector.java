@@ -54,7 +54,7 @@ public class XmlFeatureModificationEffector implements FeatureModificationEffect
 
     @Override
     public String toString() {
-        return "Allosteric PTM effector: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Allosteric PTM effector: "+getSourceLocator().toString():super.toString());
     }
 
     ////////////////////////////////// inner classes

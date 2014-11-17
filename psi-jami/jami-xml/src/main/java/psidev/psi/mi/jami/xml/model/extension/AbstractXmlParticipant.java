@@ -355,7 +355,7 @@ public abstract class AbstractXmlParticipant<I extends Interaction, F extends Fe
 
         @Override
         public String toString() {
-            return "Participant Interaction Reference: "+ref+(getSourceLocator() != null ? ","+getSourceLocator().toString():super.toString());
+            return "Participant Interaction Reference: "+(ref+(getSourceLocator() != null ? ","+getSourceLocator().toString():super.toString()));
         }
 
         public FileSourceLocator getSourceLocator() {

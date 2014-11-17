@@ -314,7 +314,7 @@ public abstract class AbstractXmlInteraction<T extends Participant> implements F
 
     @Override
     public String toString() {
-        return "Interaction: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Interaction: "+getSourceLocator().toString():super.toString());
     }
 
     public void setJAXBAttributeWrapper(JAXBAttributeWrapper jaxbAttributeWrapper) {

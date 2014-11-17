@@ -269,7 +269,7 @@ public class InferredInteraction
 
             @Override
             public String toString() {
-                return "Inferred Interaction Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+                return "Inferred Interaction Experiment Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
             }
 
             public FileSourceLocator getSourceLocator() {
