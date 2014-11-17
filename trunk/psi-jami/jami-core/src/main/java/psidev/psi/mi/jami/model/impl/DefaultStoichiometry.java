@@ -62,6 +62,6 @@ public class DefaultStoichiometry implements Stoichiometry {
 
     @Override
     public String toString() {
-        return "minValue: " + minValue + ", maxValue: " + maxValue;
+        return "minValue: " + getMinValue() + ", maxValue: " + getMaxValue();
     }
 }

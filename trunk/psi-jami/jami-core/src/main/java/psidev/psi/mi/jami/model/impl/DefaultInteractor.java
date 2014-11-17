@@ -285,6 +285,8 @@ public class DefaultInteractor implements Interactor {
 
     @Override
     public String toString() {
-        return shortName + (organism != null ? ", " + organism.toString() : "") + (interactorType != null ? ", " + interactorType.toString() : "")  ;
+        return getShortName()
+                + (getOrganism() != null ? ", " + getOrganism().toString() : "")
+                + (getInteractorType() != null ? ", " + getInteractorType().toString() : "")  ;
     }
 }

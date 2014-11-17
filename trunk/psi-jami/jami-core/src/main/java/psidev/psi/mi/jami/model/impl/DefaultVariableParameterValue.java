@@ -69,6 +69,6 @@ public class DefaultVariableParameterValue implements VariableParameterValue {
 
     @Override
     public String toString() {
-        return value != null ? value.toString() : super.toString();
+        return (getValue() != null ? getValue().toString() : "-");
     }
 }

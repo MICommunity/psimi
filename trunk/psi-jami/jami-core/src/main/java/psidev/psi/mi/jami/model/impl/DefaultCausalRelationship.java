@@ -48,6 +48,6 @@ public class DefaultCausalRelationship implements CausalRelationship {
 
     @Override
     public String toString() {
-        return relationType.toString() + ": " + target.toString();
+        return getRelationType().toString() + ": " + getTarget().toString();
     }
 }

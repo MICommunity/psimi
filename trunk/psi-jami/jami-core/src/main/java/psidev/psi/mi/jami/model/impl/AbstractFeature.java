@@ -295,7 +295,8 @@ public abstract class AbstractFeature<P extends Entity, F extends Feature> imple
 
     @Override
     public String toString() {
-        return type != null ? type.toString() : (!ranges.isEmpty() ? "("+ranges.iterator().next().toString()+"...)" : " (-)");
+        return "Feature: "+(getShortName() != null ? getShortName()+" " : "")+(getType() != null ? getType().toString()+" " : "")
+                + (!getRanges().isEmpty() ? "("+getRanges().toString()+")" : " (-)");
     }
 
     protected class FeatureIdentifierList extends AbstractListHavingProperties<Xref> {

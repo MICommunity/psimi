@@ -58,6 +58,6 @@ public class DefaultChecksum implements Checksum {
 
     @Override
     public String toString() {
-        return method.toString() + ": " + value;
+        return getMethod().toString() + ": " + getValue();
     }
 }

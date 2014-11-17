@@ -190,6 +190,6 @@ public abstract class AbstractParticipant<I extends Interaction, F extends Featu
 
     @Override
     public String toString() {
-        return getInteractor().toString() + " ( " + getInteractor().toString() + ")" + (getStoichiometry() != null ? ", stoichiometry: " + getStoichiometry().toString() : "");
+        return "Participant: "+getInteractor().toString() + (getStoichiometry() != null ? ", stoichiometry: " + getStoichiometry().toString() : "");
     }
 }

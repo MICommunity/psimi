@@ -325,7 +325,10 @@ public class DefaultProtein extends DefaultPolymer implements Protein {
 
     @Override
     public String toString() {
-        return geneName != null ? geneName.getName() : (uniprotkb != null ? uniprotkb.getId() : (refseq != null ? refseq.getId() : super.toString()));
+        return "Protein"
+                +(getGeneName() != null ? getGeneName() :
+                (getUniprotkb() != null ? getUniprotkb() :
+                        (getRefseq() != null ? getRefseq() : super.toString())));
     }
 
     private class ProteinIdentifierList extends AbstractListHavingProperties<Xref> {

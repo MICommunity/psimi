@@ -369,7 +369,11 @@ public class DefaultGene extends DefaultMolecule implements Gene {
 
     @Override
     public String toString() {
-        return ensembl != null ? ensembl.getId() : (ensemblGenome != null ? ensemblGenome.getId() : (entrezGeneId != null ? entrezGeneId.getId() : (refseq != null ? refseq.getId() : super.toString())));
+        return "Gene: "
+                +(getEnsembl() != null ? getEnsembl() :
+                (getEnsemblGenome() != null ? getEnsemblGenome() :
+                        (getEntrezGeneId() != null ? getEntrezGeneId() :
+                                (getRefseq() != null ? getRefseq() : super.toString()))));
     }
 
     private class GeneIdentifierList extends AbstractListHavingProperties<Xref> {

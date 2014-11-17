@@ -249,7 +249,7 @@ public abstract class AbstractInteraction<T extends Participant> implements Inte
 
     @Override
     public String toString() {
-        return (shortName != null ? shortName+", " : "") + (interactionType != null ? interactionType.toString() : "");
+        return "Interaction: "+(getShortName() != null ? getShortName()+", " : "") + (getInteractionType() != null ? getInteractionType().toString() : "");
     }
 
     protected void processAddedChecksumEvent(Checksum added) {

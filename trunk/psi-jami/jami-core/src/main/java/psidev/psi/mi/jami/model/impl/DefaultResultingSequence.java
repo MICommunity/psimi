@@ -90,7 +90,7 @@ public class DefaultResultingSequence implements ResultingSequence {
 
     @Override
     public String toString() {
-        return (originalSequence != null ? "original sequence: "+originalSequence : "") +
-                (newSequence != null ? "new sequence: "+newSequence : "");
+        return (getOriginalSequence() != null ? "original sequence: "+getOriginalSequence() : "") +
+                (getNewSequence() != null ? "new sequence: "+getNewSequence() : "");
     }
 }

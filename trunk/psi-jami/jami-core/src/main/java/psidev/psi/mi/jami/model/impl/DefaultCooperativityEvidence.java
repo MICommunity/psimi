@@ -83,6 +83,6 @@ public class DefaultCooperativityEvidence implements CooperativityEvidence {
 
     @Override
     public String toString() {
-        return publication != null ? publication.toString() : super.toString();
+        return "Cooperativity evidence: "+(getPublication() != null ? getPublication().toString() : "no publication");
     }
 }

@@ -306,6 +306,8 @@ implements ExperimentalParticipantPool{
 
     @Override
     public String toString() {
-        return super.toString() + (experimentalRole != null ? ", " + experimentalRole.toString() : "") + (expressedIn != null ? ", " + expressedIn.toString() : "");
+        return super.toString() + (getExperimentalRole() != null ? ", "
+                + getExperimentalRole().toString() : "")
+                + (getExpressedInOrganism() != null ? ", " + getExpressedInOrganism().toString() : "");
     }
 }
