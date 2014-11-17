@@ -204,7 +204,7 @@ public abstract class AbstractXmlModelledInteraction extends AbstractPsiXmlInter
     }
 
     public List<Experiment> getExperiments() {
-        if (this.jaxbExperimentWrapper != null){
+        if (this.jaxbExperimentWrapper == null){
             this.jaxbExperimentWrapper = new JAXBExperimentWrapper();
         }
         return this.jaxbExperimentWrapper.experiments;
