@@ -201,6 +201,6 @@ public class XmlBioactiveEntity extends DefaultBioactiveEntity implements Extend
 
     @Override
     public String toString() {
-        return "Bioactive entity: "+(sourceLocator != null ? sourceLocator.toString():super.toString());
+        return (getSourceLocator() != null ? "Bioactive entity: "+getSourceLocator().toString():super.toString());
     }
 }

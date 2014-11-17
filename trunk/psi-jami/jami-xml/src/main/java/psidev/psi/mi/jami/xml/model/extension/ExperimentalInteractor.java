@@ -312,7 +312,7 @@ public class ExperimentalInteractor implements FileSourceContext, Locatable
 
         @Override
         public String toString() {
-            return "Experimental Interactor Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+            return "Experimental Interactor Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
         }
 
         public FileSourceLocator getSourceLocator() {

@@ -68,7 +68,7 @@ public class XmlCooperativityEvidence implements CooperativityEvidence, FileSour
 
     @Override
     public String toString() {
-        return "Cooperativity evidence: "+sourceLocator != null ? sourceLocator.toString():super.toString();
+        return (getSourceLocator() != null ? "Cooperativity evidence: "+getSourceLocator().toString():super.toString());
     }
 
     protected void initialiseEvidenceMethods(){

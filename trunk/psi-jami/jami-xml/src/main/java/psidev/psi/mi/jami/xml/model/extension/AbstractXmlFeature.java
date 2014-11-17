@@ -238,7 +238,7 @@ public abstract class AbstractXmlFeature<P extends Entity, F extends Feature> im
 
     @Override
     public String toString() {
-        return "Feature: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Feature: "+getSourceLocator().toString():super.toString());
     }
 
     @Override

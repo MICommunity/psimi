@@ -115,6 +115,6 @@ public abstract class AbstractAvailability implements FileSourceContext, Locatab
 
     @Override
     public String toString() {
-        return "Availability: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return "Availability: "+(getSourceLocator() != null ? getSourceLocator().toString():"-");
     }
 }

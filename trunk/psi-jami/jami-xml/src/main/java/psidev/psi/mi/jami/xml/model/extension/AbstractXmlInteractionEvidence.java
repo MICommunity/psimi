@@ -727,7 +727,7 @@ public abstract class AbstractXmlInteractionEvidence extends AbstractPsiXmlInter
 
                 @Override
                 public String toString() {
-                    return "Interaction Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+                    return "Interaction Experiment Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
                 }
 
                 public FileSourceLocator getSourceLocator() {

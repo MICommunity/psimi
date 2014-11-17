@@ -191,7 +191,7 @@ public class XmlConfidence extends AbstractXmlConfidence  {
 
             @Override
             public String toString() {
-                return "Confidence Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+                return "Confidence Experiment Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
             }
 
             public FileSourceLocator getSourceLocator() {

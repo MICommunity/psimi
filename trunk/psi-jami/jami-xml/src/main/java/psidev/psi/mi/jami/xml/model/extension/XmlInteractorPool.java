@@ -167,7 +167,7 @@ public class XmlInteractorPool extends XmlInteractor implements InteractorPool {
 
     @Override
     public String toString() {
-        return "Interactor set: "+(getSourceLocator() != null ? getSourceLocator().toString():super.toString());
+        return (getSourceLocator() != null ? "Interactor set: "+getSourceLocator().toString():super.toString());
     }
 
     @Override

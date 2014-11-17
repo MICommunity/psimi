@@ -358,7 +358,7 @@ public class XmlRange implements Range, FileSourceContext, Locatable {
 
         @Override
         public String toString() {
-            return "Feature range participant reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+            return "Feature range participant reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
         }
 
         @Override

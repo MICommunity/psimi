@@ -250,6 +250,6 @@ public class XmlComplex extends DefaultComplex implements ExtendedPsiXmlInteract
 
     @Override
     public String toString() {
-        return "Complex : "+(sourceLocator != null ? sourceLocator.toString():super.toString());
+        return (getSourceLocator() != null ? "Complex : "+getSourceLocator().toString():super.toString());
     }
 }

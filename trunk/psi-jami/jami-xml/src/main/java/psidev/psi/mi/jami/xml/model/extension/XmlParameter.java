@@ -81,7 +81,7 @@ public class XmlParameter extends AbstractXmlParameter  {
 
         @Override
         public String toString() {
-            return "Parameter Experiment Reference: "+ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString());
+            return "Parameter Experiment Reference: "+(ref+(getSourceLocator() != null ? ", "+getSourceLocator().toString():super.toString()));
         }
 
         public FileSourceLocator getSourceLocator() {
