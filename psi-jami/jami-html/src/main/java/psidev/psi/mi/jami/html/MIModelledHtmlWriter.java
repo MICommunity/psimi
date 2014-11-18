@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.html;
 
+import psidev.psi.mi.jami.html.utils.HtmlWriterUtils;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.File;
