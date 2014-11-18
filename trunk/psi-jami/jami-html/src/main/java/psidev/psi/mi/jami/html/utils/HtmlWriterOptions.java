@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.html;
+package psidev.psi.mi.jami.html.utils;
 
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 

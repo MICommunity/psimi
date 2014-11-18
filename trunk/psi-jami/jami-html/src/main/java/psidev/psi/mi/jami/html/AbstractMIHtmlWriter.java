@@ -3,6 +3,8 @@ package psidev.psi.mi.jami.html;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
 import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.html.utils.HtmlWriterOptions;
+import psidev.psi.mi.jami.html.utils.HtmlWriterUtils;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 
