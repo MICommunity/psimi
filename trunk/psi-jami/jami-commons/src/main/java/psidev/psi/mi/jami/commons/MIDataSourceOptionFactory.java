@@ -141,7 +141,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the MITAB datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getMitabOptions(boolean streaming, Object inputData){
-        return getMitabOptions(null, null, streaming, new MitabParserLogger(), inputData);
+        return getMitabOptions(InteractionCategory.evidence, ComplexType.n_ary, streaming, new MitabParserLogger(), inputData);
     }
 
     /**
@@ -152,7 +152,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the MITAB datasource with the provided listener
      */
     public Map<String, Object> getMitabOptions(MIFileParserListener listener, Object inputData){
-        return getMitabOptions(null, null, true, listener, inputData);
+        return getMitabOptions(InteractionCategory.evidence, ComplexType.n_ary, true, listener, inputData);
     }
 
     /**
@@ -202,7 +202,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getXmlOptions(boolean streaming, Object inputData){
-        return getXmlOptions(null, null, streaming, new PsiXmlParserLogger(), inputData, null, null);
+        return getXmlOptions(null, ComplexType.n_ary, streaming, new PsiXmlParserLogger(), inputData, null, null);
     }
 
     /**
@@ -214,7 +214,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource with the provided listener
      */
     public Map<String, Object> getXmlOptions(MIFileParserListener listener, Object inputData){
-        return getXmlOptions(null, null, true, listener, inputData, null, null);
+        return getXmlOptions(null, ComplexType.n_ary, true, listener, inputData, null, null);
     }
 
     /**

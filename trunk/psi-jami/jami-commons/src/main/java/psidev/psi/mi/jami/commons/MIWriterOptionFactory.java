@@ -46,7 +46,7 @@ public class MIWriterOptionFactory {
      * @return the options for the MITAB InteractionWriter
      */
     public Map<String, Object> getDefaultMitabOptions(File outputFile){
-        Map<String, Object> options = getMitabOptions(outputFile, InteractionCategory.mixed, ComplexType.n_ary, null, true, null, false);
+        Map<String, Object> options = getMitabOptions(outputFile, InteractionCategory.mixed, ComplexType.n_ary, null, true, MitabVersion.v2_7, false);
         return options;
     }
 
@@ -58,7 +58,7 @@ public class MIWriterOptionFactory {
      * @return the options for the MITAB InteractionWriter
      */
     public Map<String, Object> getMitabOptions(InteractionCategory objectCategory, ComplexType complexType, File outputFile){
-        Map<String, Object> options = getMitabOptions(outputFile, objectCategory, complexType, null, true, null, false);
+        Map<String, Object> options = getMitabOptions(outputFile, objectCategory, complexType, null, true, MitabVersion.v2_7, false);
         return options;
     }
 
@@ -70,7 +70,7 @@ public class MIWriterOptionFactory {
      * @return the options for a MITAB interaction writer.
      */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, File outputFile){
-        Map<String, Object> options = getMitabOptions(outputFile, null, null, null, writeHeader, version, false);
+        Map<String, Object> options = getMitabOptions(outputFile, InteractionCategory.mixed, ComplexType.n_ary, null, writeHeader, version, false);
         return options;
     }
 
@@ -80,7 +80,7 @@ public class MIWriterOptionFactory {
      * @return the options for the MITAB InteractionWriter
      */
     public Map<String, Object> getDefaultMitabOptions(OutputStream output){
-        Map<String, Object> options = getMitabOptions(output, InteractionCategory.mixed, ComplexType.n_ary, null, true, null, false);
+        Map<String, Object> options = getMitabOptions(output, InteractionCategory.mixed, ComplexType.n_ary, null, true, MitabVersion.v2_7, false);
         return options;
     }
 
@@ -92,7 +92,7 @@ public class MIWriterOptionFactory {
      * @return the options for the MITAB InteractionWriter
      */
     public Map<String, Object> getMitabOptions(InteractionCategory objectCategory, ComplexType complexType, OutputStream output){
-        Map<String, Object> options = getMitabOptions(output, objectCategory, complexType, null, true, null, false);
+        Map<String, Object> options = getMitabOptions(output, objectCategory, complexType, null, true, MitabVersion.v2_7, false);
         return options;
     }
 
@@ -104,7 +104,7 @@ public class MIWriterOptionFactory {
      * @return the options for a MITAB interaction writer.
      */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, OutputStream output){
-        Map<String, Object> options = getMitabOptions(output, null, null, null, writeHeader, version, false);
+        Map<String, Object> options = getMitabOptions(output, InteractionCategory.mixed, ComplexType.n_ary, null, writeHeader, version, false);
         return options;
     }
 
@@ -114,7 +114,7 @@ public class MIWriterOptionFactory {
      * @return the options for the MITAB InteractionWriter
      */
     public Map<String, Object> getDefaultMitabOptions(Writer writer){
-        Map<String, Object> options = getMitabOptions(writer, InteractionCategory.mixed, ComplexType.n_ary, null, true, null, false);
+        Map<String, Object> options = getMitabOptions(writer, InteractionCategory.mixed, ComplexType.n_ary, null, true, MitabVersion.v2_7, false);
         return options;
     }
 
@@ -126,7 +126,7 @@ public class MIWriterOptionFactory {
      * @return the options for the MITAB InteractionWriter
      */
     public Map<String, Object> getMitabOptions(InteractionCategory objectCategory, ComplexType complexType, Writer writer){
-        Map<String, Object> options = getMitabOptions(writer, objectCategory, complexType, null, true, null, false);
+        Map<String, Object> options = getMitabOptions(writer, objectCategory, complexType, null, true, MitabVersion.v2_7, false);
         return options;
     }
 
@@ -138,7 +138,7 @@ public class MIWriterOptionFactory {
      * @return the options for a MITAB interaction writer.
      */
     public Map<String, Object> getMitabOptions(boolean writeHeader, MitabVersion version, Writer writer){
-        Map<String, Object> options = getMitabOptions(writer, null, null, null, writeHeader, version, false);
+        Map<String, Object> options = getMitabOptions(writer, InteractionCategory.mixed, ComplexType.n_ary, null, writeHeader, version, false);
         return options;
     }
 
