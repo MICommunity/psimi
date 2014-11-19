@@ -19,4 +19,9 @@ public class HtmlWriterOptions extends InteractionWriterOptions {
      * If this option is not provided, it will write a header and body by default.
      */
     public static final String WRITE_HTML_HEADER_BODY_OPTION = "write_html_header_option_key";
+
+    /**
+     * The html format value to use with HtmlWriterOptions.OUTPUT_FORMAT_OPTION_KEY
+     */
+    public static final String MI_HTML_FORMAT = "mi_html";
 }
