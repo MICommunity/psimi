@@ -130,7 +130,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the MITAB datasource using the provided objectCategory
      */
     public Map<String, Object> getMitabOptions(InteractionCategory objectCategory, psidev.psi.mi.jami.model.ComplexType complexType, Object inputData){
-        return getMitabOptions(objectCategory, complexType, true, null, inputData);
+        return getMitabOptions(objectCategory, complexType, true, new MitabParserLogger(), inputData);
     }
 
     /**
@@ -141,7 +141,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the MITAB datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getMitabOptions(boolean streaming, Object inputData){
-        return getMitabOptions(null, null, streaming, null, inputData);
+        return getMitabOptions(null, null, streaming, new MitabParserLogger(), inputData);
     }
 
     /**
@@ -190,7 +190,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the Psi Xml datasource using the provided objectCategory
      */
     public Map<String, Object> getXmlOptions(InteractionCategory objectCategory, psidev.psi.mi.jami.model.ComplexType complexType, Object inputData){
-        return getXmlOptions(objectCategory, complexType, true, null, inputData, null, null);
+        return getXmlOptions(objectCategory, complexType, true, new PsiXmlParserLogger(), inputData, null, null);
     }
 
     /**
@@ -202,7 +202,7 @@ public class MIDataSourceOptionFactory {
      * @return the options for the PSI-XML datasource and specify if we want a Streaming MIFileDatasource
      */
     public Map<String, Object> getXmlOptions(boolean streaming, Object inputData){
-        return getXmlOptions(null, null, streaming, null, inputData, null, null);
+        return getXmlOptions(null, null, streaming, new PsiXmlParserLogger(), inputData, null, null);
     }
 
     /**
