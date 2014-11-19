@@ -34,7 +34,7 @@ public class MIHtmlOptionFactory {
      * @param outputFile : the file where to write the interactions
      * @return the options for the HTML InteractionWriter
      */
-    public Map<String, Object> getHtmlOptions(File outputFile){
+    public Map<String, Object> getDefaultHtmlOptions(File outputFile){
         Map<String, Object> options = getHtmlOptions(outputFile, InteractionCategory.mixed, true);
         return options;
     }
@@ -66,7 +66,7 @@ public class MIHtmlOptionFactory {
      * @param output : the output
      * @return the options for the HTML InteractionWriter
      */
-    public Map<String, Object> getDefaultMitabOptions(OutputStream output){
+    public Map<String, Object> getDefaultHtmlOptions(OutputStream output){
         Map<String, Object> options = getHtmlOptions(output, InteractionCategory.mixed, true);
         return options;
     }
