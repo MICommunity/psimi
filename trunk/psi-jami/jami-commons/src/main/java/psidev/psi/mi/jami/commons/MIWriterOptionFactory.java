@@ -156,9 +156,8 @@ public class MIWriterOptionFactory {
         Map<String, Object> options = new HashMap<String, Object>(10);
         options.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, output);
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.mitab.toString());
-        if (objectCategory != null){
-            options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, InteractionCategory.mixed);
-        }        options.put(InteractionWriterOptions.COMPLEX_TYPE_OPTION_KEY, complexType != null ? complexType : ComplexType.n_ary);
+        options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, InteractionCategory.mixed);
+        options.put(InteractionWriterOptions.COMPLEX_TYPE_OPTION_KEY, complexType != null ? complexType : ComplexType.n_ary);
         if (expansion != null){
             options.put(InteractionWriterOptions.COMPLEX_EXPANSION_OPTION_KEY, expansion);
         }
@@ -422,9 +421,7 @@ public class MIWriterOptionFactory {
 
         options.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, output);
         options.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIFileType.psimi_xml.toString());
-        if (objectCategory != null){
-            options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, objectCategory != null ? objectCategory : InteractionCategory.mixed);
-        }
+        options.put(MIDataSourceOptions.INTERACTION_CATEGORY_OPTION_KEY, objectCategory != null ? objectCategory : InteractionCategory.mixed);
         options.put(InteractionWriterOptions.COMPLEX_TYPE_OPTION_KEY, complexType != null ? complexType : ComplexType.n_ary);
         options.put(PsiXmlWriterOptions.XML_TYPE_OPTION, xmlType != null ? xmlType : PsiXmlType.expanded);
         if (elementCache != null){
