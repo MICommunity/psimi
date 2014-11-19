@@ -83,6 +83,7 @@ public class PsiInteractionWriter implements ItemWriter<psidev.psi.mi.jami.model
         try {
             currentPosition = position();
             executionContext.putLong(CURRENT_POSITION, currentPosition);
+            this.interactionWriter.flush();
 
         } catch (IOException e) {
             throw new ItemStreamException( "Impossible to get the last position of the writer" );
@@ -92,6 +93,7 @@ public class PsiInteractionWriter implements ItemWriter<psidev.psi.mi.jami.model
     public void close() throws ItemStreamException {
         if (interactionWriter != null) {
             try {
+                this.interactionWriter.end();
                 interactionWriter.close();
             } catch (MIIOException e) {
                 throw new ItemStreamException( "Impossible to close " + output.getDescription(), e );
@@ -146,6 +148,9 @@ public class PsiInteractionWriter implements ItemWriter<psidev.psi.mi.jami.model
         if (restarted) {
             checkFileSize();
             truncate();
+        }
+        else{
+            this.interactionWriter.start();
         }
 
         outputBufferedWriter.flush();
