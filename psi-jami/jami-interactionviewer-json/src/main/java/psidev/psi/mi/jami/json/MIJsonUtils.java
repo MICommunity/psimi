@@ -1,19 +1,13 @@
 package psidev.psi.mi.jami.json;
 
 import org.json.simple.JSONValue;
-import psidev.psi.mi.jami.factory.InteractionWriterFactory;
-import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
-import psidev.psi.mi.jami.json.binary.MIJsonEvidenceWriter;
-import psidev.psi.mi.jami.json.binary.MIJsonModelledWriter;
-import psidev.psi.mi.jami.json.nary.LightMIJsonWriter;
-import psidev.psi.mi.jami.json.nary.MIJsonWriter;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.Interactor;
+import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Utility class for public properties
@@ -111,38 +105,5 @@ public class MIJsonUtils {
             db = "generated";
         }
         return new String[]{db, interactorId};
-    }
-
-    public static void initialiseWriterFactoryWithMIJsonWriters(){
-        InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
-
-        Map<String, Object> supportedOptions1 = createMIJsonWriterOptions(InteractionCategory.evidence, ComplexType.n_ary);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.json.nary.MIJsonEvidenceWriter.class, supportedOptions1);
-        Map<String, Object> supportedOptions2 = createMIJsonWriterOptions(InteractionCategory.modelled, ComplexType.n_ary);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.json.nary.MIJsonModelledWriter.class, supportedOptions2);
-        Map<String, Object> supportedOptions3 = createMIJsonWriterOptions(InteractionCategory.mixed, ComplexType.n_ary);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.json.nary.MIJsonWriter.class, supportedOptions3);
-        Map<String, Object> supportedOptions4 = createMIJsonWriterOptions(InteractionCategory.basic, ComplexType.n_ary);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.json.nary.LightMIJsonWriter.class, supportedOptions4);
-
-        Map<String, Object> supportedOptions5 = createMIJsonWriterOptions(InteractionCategory.evidence, ComplexType.binary);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.json.binary.MIJsonEvidenceWriter.class, supportedOptions5);
-        Map<String, Object> supportedOptions6 = createMIJsonWriterOptions(InteractionCategory.modelled, ComplexType.binary);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.json.binary.MIJsonModelledWriter.class, supportedOptions6);
-        Map<String, Object> supportedOptions7 = createMIJsonWriterOptions(InteractionCategory.mixed, ComplexType.binary);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.json.binary.MIJsonWriter.class, supportedOptions7);
-        Map<String, Object> supportedOptions8 = createMIJsonWriterOptions(InteractionCategory.basic, ComplexType.binary);
-        writerFactory.registerDataSourceWriter(psidev.psi.mi.jami.json.binary.LightMIJsonWriter.class, supportedOptions8);
-    }
-
-    private static Map<String, Object> createMIJsonWriterOptions(InteractionCategory interactionCategory, ComplexType complexType) {
-        Map<String, Object> supportedOptions4 = new HashMap<String, Object>(9);
-        supportedOptions4.put(InteractionWriterOptions.OUTPUT_FORMAT_OPTION_KEY, "interactionViewerJson");
-        supportedOptions4.put(InteractionWriterOptions.INTERACTION_CATEGORY_OPTION_KEY, interactionCategory);
-        supportedOptions4.put(InteractionWriterOptions.COMPLEX_TYPE_OPTION_KEY, complexType);
-        supportedOptions4.put(InteractionWriterOptions.COMPLEX_EXPANSION_OPTION_KEY, null);
-        supportedOptions4.put(MIJsonWriterOptions.ONTOLOGY_FETCHER_OPTION_KEY, null);
-        supportedOptions4.put(InteractionWriterOptions.OUTPUT_OPTION_KEY, null);
-        return supportedOptions4;
     }
 }
