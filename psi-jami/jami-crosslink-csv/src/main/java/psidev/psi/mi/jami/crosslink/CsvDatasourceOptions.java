@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.crosslink.utils;
+package psidev.psi.mi.jami.crosslink;
 
 import psidev.psi.mi.jami.factory.options.MIFileDataSourceOptions;
 
@@ -18,4 +18,9 @@ public class CsvDatasourceOptions extends MIFileDataSourceOptions{
      * If this option is not provided, the value by default is CsvType.mix
      */
     public static final String CSV_TYPE_OPTION_KEY = "crosslink_csv_type_key";
+
+    /**
+     * The cross link format value to use with CsvDataSourceOptions.INPUT_TYPE_OPTION_KEY
+     */
+    public static final String CROSSLINK_CSV_FORMAT = "crosslink_csv";
 }
