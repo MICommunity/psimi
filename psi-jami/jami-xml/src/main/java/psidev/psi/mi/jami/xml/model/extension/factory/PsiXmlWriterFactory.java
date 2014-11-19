@@ -80,7 +80,7 @@ public class PsiXmlWriterFactory {
                         case evidence:
                             return new CompactXmlNamedBinaryEvidenceWriter();
                         case modelled:
-                            return new CompactXmlNamedBinaryEvidenceWriter();
+                            return new CompactXmlNamedModelledBinaryWriter();
                         case basic:
                             return new LightCompactXmlNamedBinaryWriter();
                         case mixed:
@@ -178,7 +178,7 @@ public class PsiXmlWriterFactory {
                         case evidence:
                             return new CompactXmlNamedEvidenceWriter();
                         case modelled:
-                            return new CompactXmlNamedEvidenceWriter();
+                            return new CompactXmlNamedModelledWriter();
                         case basic:
                             return new LightCompactXmlNamedWriter();
                         case complex:
