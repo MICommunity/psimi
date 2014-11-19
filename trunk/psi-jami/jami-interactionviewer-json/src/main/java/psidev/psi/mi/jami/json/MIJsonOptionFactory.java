@@ -36,7 +36,7 @@ public class MIJsonOptionFactory {
      * @param outputFile : the file where to write the interactions
      * @return the options for the JSON InteractionWriter
      */
-    public Map<String, Object> getJsonOptions(File outputFile){
+    public Map<String, Object> getDefaultJsonOptions(File outputFile){
         Map<String, Object> options = getJsonOptions(outputFile, InteractionCategory.mixed, null, MIJsonType.n_ary_only, null, null);
         return options;
     }
@@ -107,7 +107,7 @@ public class MIJsonOptionFactory {
      * @param output : the output
      * @return the options for the JSON InteractionWriter
      */
-    public Map<String, Object> getJsonOptions(OutputStream output){
+    public Map<String, Object> getDefaultJsonOptions(OutputStream output){
         Map<String, Object> options = getJsonOptions(output, InteractionCategory.mixed, null, MIJsonType.n_ary_only, null, null);
         return options;
     }
@@ -180,7 +180,7 @@ public class MIJsonOptionFactory {
      * @param writer : the writer
      * @return the options for the JSON InteractionWriter
      */
-    public Map<String, Object> getJsonOptions(Writer writer){
+    public Map<String, Object> getDefaultJsonOptions(Writer writer){
         Map<String, Object> options = getJsonOptions(writer, InteractionCategory.mixed, null, MIJsonType.n_ary_only, null, null);
         return options;
     }
