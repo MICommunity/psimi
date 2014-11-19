@@ -50,7 +50,7 @@ public class PsiXmlDataSourceFactory {
                 case mixed:
                     return new XmlBinaryStreamSource();
                 default:
-                    return new XmlBinaryEvidenceStreamSource();
+                    throw new IllegalArgumentException("Cannot find a XML binary source for interaction category: "+interactionCategory);
             }
         }
         else{
@@ -64,7 +64,7 @@ public class PsiXmlDataSourceFactory {
                 case mixed:
                     return new XmlBinarySource();
                 default:
-                    return new XmlBinaryEvidenceSource();
+                    throw new IllegalArgumentException("Cannot find a XML binary source for interaction category: "+interactionCategory);
             }
         }
     }
@@ -84,9 +84,10 @@ public class PsiXmlDataSourceFactory {
                     return new LightXmlStreamSource();
                 case mixed:
                     return new XmlStreamSource();
+                case complex:
+                    return new XmlComplexStreamSource();
                 default:
-                    return new XmlEvidenceStreamSource();
-            }
+                    throw new IllegalArgumentException("Cannot find a XML source for interaction category: "+interactionCategory);            }
         }
         else{
             switch (interactionCategory){
@@ -98,9 +99,10 @@ public class PsiXmlDataSourceFactory {
                     return new LightXmlSource();
                 case mixed:
                     return new XmlSource();
+                case complex:
+                    return new XmlComplexSource();
                 default:
-                    return new XmlEvidenceSource();
-            }
+                    throw new IllegalArgumentException("Cannot find a XML source for interaction category: "+interactionCategory);            }
         }
     }
 }
