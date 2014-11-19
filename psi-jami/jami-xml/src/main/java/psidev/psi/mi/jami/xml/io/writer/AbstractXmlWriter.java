@@ -689,6 +689,14 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
 
     protected abstract void initialiseSubWriters();
 
+    protected PsiXmlElementWriterFactory getSubWritersFactory() {
+        return subWritersFactory;
+    }
+
+    protected void setSubWritersFactory(PsiXmlElementWriterFactory subWritersFactory) {
+        this.subWritersFactory = subWritersFactory != null ? subWritersFactory : PsiXmlElementWriterFactory.getInstance();
+    }
+
     private void registerInteractionForEntry(T interaction) {
         this.interactionsToWrite.clear();
         this.interactionsToWrite.add(interaction);
