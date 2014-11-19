@@ -74,7 +74,7 @@ public class PsiXmlElementWriterFactory {
         }
     }
 
-    private static PsiXmlInteractionWriter[] createDefaultPsiXmlInteractionWriters(XMLStreamWriter streamWriter, PsiXmlObjectCache objectIndex,
+    public static PsiXmlInteractionWriter[] createDefaultPsiXmlInteractionWriters(XMLStreamWriter streamWriter, PsiXmlObjectCache objectIndex,
                                                                                    PsiXmlVersion version, PsiXmlType xmlType,
                                                                                    InteractionCategory interactionCategory, ComplexType complexType,
                                                                                    PsiXmlElementWriter<Alias> aliasWriter,
@@ -508,7 +508,7 @@ public class PsiXmlElementWriterFactory {
         }
     }
 
-    private static PsiXmlInteractionWriter[] createNamedPsiXmlInteractionWriters(XMLStreamWriter streamWriter, PsiXmlObjectCache objectIndex,
+    public static PsiXmlInteractionWriter[] createNamedPsiXmlInteractionWriters(XMLStreamWriter streamWriter, PsiXmlObjectCache objectIndex,
                                                                                  PsiXmlVersion version, PsiXmlType xmlType,
                                                                                  InteractionCategory interactionCategory, ComplexType complexType,
                                                                                  PsiXmlElementWriter<Alias> aliasWriter,
@@ -942,7 +942,7 @@ public class PsiXmlElementWriterFactory {
         }
     }
 
-    private static PsiXmlInteractionWriter[] createExtendedPsiXmlInteractionWriters(XMLStreamWriter streamWriter, PsiXmlObjectCache objectIndex,
+    public static PsiXmlInteractionWriter[] createExtendedPsiXmlInteractionWriters(XMLStreamWriter streamWriter, PsiXmlObjectCache objectIndex,
                                                                                     PsiXmlVersion version, PsiXmlType xmlType,
                                                                                     InteractionCategory interactionCategory, ComplexType complexType,
                                                                                     PsiXmlElementWriter<Alias> aliasWriter,
