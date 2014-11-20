@@ -131,7 +131,24 @@ public abstract class AbstractXmlModelledInteractionWriter<I extends ModelledInt
             for (Object ann : object.getAnnotations()){
                 getAttributeWriter().write((Annotation) ann);
             }
+            for (Object c : object.getChecksums()){
+                getChecksumWriter().write((Checksum)c);
+            }
             // write cooperative effect
+            // can only write the FIRST cooperative effect
+            if (!object.getCooperativeEffects().isEmpty()){
+                writeCooperativeEffect(object, false);
+            }
+            // write end attributeList
+            getStreamWriter().writeEndElement();
+        }
+        // write checksum
+        else if (!object.getChecksums().isEmpty()){
+            // write start attribute list
+            getStreamWriter().writeStartElement("attributeList");
+            for (Object c : object.getChecksums()){
+                getChecksumWriter().write((Checksum)c);
+            }
             // can only write the FIRST cooperative effect
             if (!object.getCooperativeEffects().isEmpty()){
                 writeCooperativeEffect(object, false);
