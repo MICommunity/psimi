@@ -2,10 +2,7 @@ package psidev.psi.mi.jami.batch;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.batch.core.BatchStatus;
-import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.*;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
@@ -160,6 +157,25 @@ public class MIBatchJobManager {
     }
 
     /**
+     *
+     * @param jobName
+     * @param parameters the parameters of type key-value separated by comma
+     * @return
+     * @throws JobExecutionAlreadyRunningException
+     * @throws JobRestartException
+     * @throws JobInstanceAlreadyCompleteException
+     */
+    public String startJobWithParameters(String jobName, String parameters) throws JobParametersInvalidException, JobInstanceAlreadyExistsException, NoSuchJobException {
+        String jobId = jobName+"_"+System.currentTimeMillis();
+
+        if (log.isInfoEnabled()) log.info("Starting job: "+jobName+", job id: "+jobId);
+
+        jobOperator.start(jobName, "MIJobId=" + jobId+(parameters != null ? ","+parameters:""));
+
+        return jobId;
+    }
+
+    /**
      * The job status of a given job name and id
      * @param jobName
      * @param jobId
@@ -218,5 +234,13 @@ public class MIBatchJobManager {
 
     public void setJobOperator(JobOperator jobOperator) {
         this.jobOperator = jobOperator;
+    }
+
+    public JobRepository getJobRepository() {
+        return jobRepository;
+    }
+
+    public JobOperator getJobOperator() {
+        return jobOperator;
     }
 }
