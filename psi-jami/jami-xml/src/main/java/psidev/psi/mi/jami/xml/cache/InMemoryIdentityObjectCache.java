@@ -121,6 +121,16 @@ public class InMemoryIdentityObjectCache implements PsiXmlObjectCache {
         }
     }
 
+    @Override
+    public int getLastGeneratedId() {
+        return this.current;
+    }
+
+    @Override
+    public void resetLastGeneratedIdTo(int id) {
+        this.current = id;
+    }
+
     private int nextId(){
         current++;
         return current;
