@@ -114,4 +114,16 @@ public interface PsiXmlObjectCache {
     public boolean hasRegisteredSubComplexes();
 
     public void removeObject(Object o);
+
+    /**
+     *
+     * @return the last generated id
+     */
+    public int getLastGeneratedId();
+
+    /**
+     * Reset the last generated id to a specific value
+     * @param id
+     */
+    public void resetLastGeneratedIdTo(int id);
 }
