@@ -104,55 +104,71 @@ public class XmlSourceWriter implements PsiXmlSourceWriter {
             // write release/release date
             writeReleaseAttributes(object);
             // write names
-            boolean hasShortName = object.getShortName() != null;
-            boolean hasFullName = object.getFullName() != null;
-            boolean hasAliases = !object.getSynonyms().isEmpty();
-            if (hasShortName || hasFullName || hasAliases){
-                this.streamWriter.writeStartElement("names");
-                // write shortname
-                if (hasShortName){
-                    this.streamWriter.writeStartElement("shortLabel");
-                    this.streamWriter.writeCharacters(object.getShortName());
-                    this.streamWriter.writeEndElement();
-                }
-                // write fullname
-                if (hasFullName){
-                    this.streamWriter.writeStartElement("fullName");
-                    this.streamWriter.writeCharacters(object.getFullName());
-                    this.streamWriter.writeEndElement();
-                }
-                // write aliases
-                for (Alias alias : object.getSynonyms()){
-                    getAliasWriter().write(alias);
-                }
-                // write end names
-                this.streamWriter.writeEndElement();
-            }
+            writeNames(object);
             // write bibRef
-            if (object.getPublication() != null){
-                getPublicationWriter().write(object.getPublication());
-            }
+            writeBibRef(object);
             // write Xref
-            if (!object.getIdentifiers().isEmpty()){
-                writeXrefFromSourceIdentifiers(object);
-            }
-            else if (!object.getXrefs().isEmpty()){
-                writeXrefFromSourceXrefs(object);
-            }
+            writeXref(object);
             // write attributes
-            if (!object.getAnnotations().isEmpty()){
-                // write start attribute list
-                this.streamWriter.writeStartElement("attributeList");
-                for (Annotation ann : object.getAnnotations()){
-                    getAttributeWriter().write(ann);
-                }
-                // write end attributeList
-                this.streamWriter.writeEndElement();
-            }
+            writeAttributes(object);
             // write end source
             this.streamWriter.writeEndElement();
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to write the source of the entry: "+object.toString(), e);
+        }
+    }
+
+    protected void writeAttributes(Source object) throws XMLStreamException {
+        if (!object.getAnnotations().isEmpty()){
+            // write start attribute list
+            this.streamWriter.writeStartElement("attributeList");
+            for (Annotation ann : object.getAnnotations()){
+                getAttributeWriter().write(ann);
+            }
+            // write end attributeList
+            this.streamWriter.writeEndElement();
+        }
+    }
+
+    protected void writeXref(Source object) throws XMLStreamException {
+        if (!object.getIdentifiers().isEmpty()){
+            writeXrefFromSourceIdentifiers(object);
+        }
+        else if (!object.getXrefs().isEmpty()){
+            writeXrefFromSourceXrefs(object);
+        }
+    }
+
+    protected void writeBibRef(Source object) {
+        if (object.getPublication() != null){
+            getPublicationWriter().write(object.getPublication());
+        }
+    }
+
+    protected void writeNames(Source object) throws XMLStreamException {
+        boolean hasShortName = object.getShortName() != null;
+        boolean hasFullName = object.getFullName() != null;
+        boolean hasAliases = !object.getSynonyms().isEmpty();
+        if (hasShortName || hasFullName || hasAliases){
+            this.streamWriter.writeStartElement("names");
+            // write shortname
+            if (hasShortName){
+                this.streamWriter.writeStartElement("shortLabel");
+                this.streamWriter.writeCharacters(object.getShortName());
+                this.streamWriter.writeEndElement();
+            }
+            // write fullname
+            if (hasFullName){
+                this.streamWriter.writeStartElement("fullName");
+                this.streamWriter.writeCharacters(object.getFullName());
+                this.streamWriter.writeEndElement();
+            }
+            // write aliases
+            for (Alias alias : object.getSynonyms()){
+                getAliasWriter().write(alias);
+            }
+            // write end names
+            this.streamWriter.writeEndElement();
         }
     }
 
