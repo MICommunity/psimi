@@ -134,72 +134,22 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
             this.streamWriter.writeAttribute("id", Integer.toString(id));
 
             // write names
-            this.streamWriter.writeStartElement("names");
-            // write shortname
-            if (object.getShortName() != null){
-                this.streamWriter.writeStartElement("shortLabel");
-                this.streamWriter.writeCharacters(object.getShortName());
-                this.streamWriter.writeEndElement();
-            }
-            // write fullname
-            if (object.getFullName() != null){
-                this.streamWriter.writeStartElement("fullName");
-                this.streamWriter.writeCharacters(object.getFullName());
-                this.streamWriter.writeEndElement();
-            }
-            // write aliases
-            for (Alias alias : object.getAliases()){
-                getAliasWriter().write(alias);
-            }
-            // write end names
-            this.streamWriter.writeEndElement();
+            writeNames(object);
 
             // write Xref
-            if (!object.getIdentifiers().isEmpty()){
-                writeXrefFromInteractorIdentifiers(object);
-            }
-            else if (!object.getXrefs().isEmpty()){
-                writeXrefFromInteractorXrefs(object);
-            }
-            // write set members if interactor pool
-            else {
-                writeOtherSetMembers(object, true, true);
-            }
+            writeXref(object);
 
             // write interactor type
-           getInteractorTypeWriter().write(object.getInteractorType(), "interactorType");
+            writeInteractorType(object);
 
             // write organism
-            if (object.getOrganism() != null){
-                getOrganismWriter().write(object.getOrganism());
-            }
+            writeOrganism(object);
 
             // write sequence
             processSequence(object);
 
             // write attributes
-            if (!object.getAnnotations().isEmpty()){
-                // write start attribute list
-                this.streamWriter.writeStartElement("attributeList");
-                for (Annotation ann : object.getAnnotations()){
-                    getAttributeWriter().write(ann);
-                }
-                for (Checksum c : object.getChecksums()){
-                    getChecksumWriter().write(c);
-                }
-                // write end attributeList
-                this.streamWriter.writeEndElement();
-            }
-            // write checksum
-            else if (!object.getChecksums().isEmpty()){
-                // write start attribute list
-                this.streamWriter.writeStartElement("attributeList");
-                for (Checksum c : object.getChecksums()){
-                    getChecksumWriter().write(c);
-                }
-                // write end attributeList
-                this.streamWriter.writeEndElement();
-            }
+            writeAttributes(object);
 
             // write end interactor
             this.streamWriter.writeEndElement();
@@ -207,6 +157,76 @@ public class XmlInteractorWriter implements PsiXmlElementWriter<Interactor> {
         } catch (XMLStreamException e) {
             throw new MIIOException("Impossible to write the interactor : "+object.toString(), e);
         }
+    }
+
+    protected void writeAttributes(Interactor object) throws XMLStreamException {
+        if (!object.getAnnotations().isEmpty()){
+            // write start attribute list
+            this.streamWriter.writeStartElement("attributeList");
+            for (Annotation ann : object.getAnnotations()){
+                getAttributeWriter().write(ann);
+            }
+            for (Checksum c : object.getChecksums()){
+                getChecksumWriter().write(c);
+            }
+            // write end attributeList
+            this.streamWriter.writeEndElement();
+        }
+        // write checksum
+        else if (!object.getChecksums().isEmpty()){
+            // write start attribute list
+            this.streamWriter.writeStartElement("attributeList");
+            for (Checksum c : object.getChecksums()){
+                getChecksumWriter().write(c);
+            }
+            // write end attributeList
+            this.streamWriter.writeEndElement();
+        }
+    }
+
+    protected void writeOrganism(Interactor object) {
+        if (object.getOrganism() != null){
+            getOrganismWriter().write(object.getOrganism());
+        }
+    }
+
+    protected void writeInteractorType(Interactor object) {
+        getInteractorTypeWriter().write(object.getInteractorType(), "interactorType");
+    }
+
+    protected void writeXref(Interactor object) throws XMLStreamException {
+        if (!object.getIdentifiers().isEmpty()){
+            writeXrefFromInteractorIdentifiers(object);
+        }
+        else if (!object.getXrefs().isEmpty()){
+            writeXrefFromInteractorXrefs(object);
+        }
+        // write set members if interactor pool
+        else {
+            writeOtherSetMembers(object, true, true);
+        }
+    }
+
+    protected void writeNames(Interactor object) throws XMLStreamException {
+        this.streamWriter.writeStartElement("names");
+        // write shortname
+        if (object.getShortName() != null){
+            this.streamWriter.writeStartElement("shortLabel");
+            this.streamWriter.writeCharacters(object.getShortName());
+            this.streamWriter.writeEndElement();
+        }
+        // write fullname
+        if (object.getFullName() != null){
+            this.streamWriter.writeStartElement("fullName");
+            this.streamWriter.writeCharacters(object.getFullName());
+            this.streamWriter.writeEndElement();
+        }
+        // write aliases
+        for (Alias alias : object.getAliases()){
+            getAliasWriter().write(alias);
+        }
+        // write end names
+        this.streamWriter.writeEndElement();
     }
 
     protected void processSequence(Interactor object) throws XMLStreamException {
