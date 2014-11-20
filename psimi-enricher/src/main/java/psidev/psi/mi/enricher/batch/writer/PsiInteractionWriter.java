@@ -14,6 +14,7 @@ import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
+import psidev.psi.mi.jami.model.Interaction;
 
 import java.io.*;
 import java.nio.channels.Channels;
@@ -207,7 +208,9 @@ public class PsiInteractionWriter implements ItemWriter<psidev.psi.mi.jami.model
             throw new IllegalStateException("The writer needs to be initialised before writing");
         }
 
-        this.interactionWriter.write(items);
+        for (Interaction i : items){
+            this.interactionWriter.write(i);
+        }
     }
 
     public void setWriterOptions(Map<String, Object> writerOptions) {
