@@ -131,4 +131,12 @@ public class DefaultMitabWriter implements InteractionWriter {
         }
         this.delegate.reset();
     }
+
+    protected InteractionWriter getDelegate() {
+        return delegate;
+    }
+
+    protected void setDelegate(InteractionWriter delegate) {
+        this.delegate = delegate;
+    }
 }
