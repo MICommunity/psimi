@@ -22,7 +22,7 @@ public class MIJsonWriterOptions extends InteractionWriterOptions {
     /**
      * The json type. It should be an enum of type MIJsonType. If it is not provided, it will be MIJsonType.n_ary_only
      */
-    public static final String MI_JSON_TYPE = "interaction_viewer_json";
+    public static final String MI_JSON_TYPE = "interaction_viewer_json_type";
 
     /**
      * The json format value to use with MIJsonWriterOptions.OUTPUT_FORMAT_OPTION_KEY
