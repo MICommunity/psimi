@@ -229,6 +229,8 @@
                 <entry key="xml_version_key" value-type="psidev.psi.mi.jami.xml.PsiXmlVersion" value="${xml.version}"/>
                 <entry key="xml25_extended_key" value-type="java.lang.Boolean" value="${xml.extended}" />
                 <entry key="interaction_category_key" value-type="psidev.psi.mi.jami.model.InteractionCategory" value="mixed"/>
+                <entry key="complex_type_key" value-type="psidev.psi.mi.jami.model.ComplexType" value="n_ary"/>
+
             </map>
         </property>
         <property name="output" ref="miFileOutput"/>
