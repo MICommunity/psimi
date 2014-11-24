@@ -147,6 +147,7 @@
                 <entry key="complex_expansion_key" value-ref="spokeExpansion"/>
                 <entry key="output_format_key" value="mitab"/>
                 <entry key="interaction_category_key" value-type="psidev.psi.mi.jami.model.InteractionCategory" value="evidence"/>
+                <entry key="complex_type_key" value-type="psidev.psi.mi.jami.model.ComplexType" value="n_ary"/>
             </map>
         </property>
         <property name="output" ref="miFileOutput"/>
