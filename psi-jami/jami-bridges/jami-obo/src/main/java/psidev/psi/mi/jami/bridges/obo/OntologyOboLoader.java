@@ -350,8 +350,11 @@ public class OntologyOboLoader extends AbstractOboLoader<OntologyTerm> {
                 for ( Iterator iterator1 = term.getRelationships().iterator(); iterator1.hasNext(); ) {
                     TermRelationship relation = ( TermRelationship ) iterator1.next();
 
-                    addLinkToTerm( relation.getObjectTerm().getIdentifier(),
-                            relation.getSubjectTerm().getIdentifier(), id2Terms);
+                    if (relation.getPredicateTerm() != null && ("is_a".equals(relation.getPredicateTerm().getName())
+                            || "part_of".equals(relation.getPredicateTerm().getName()))){
+                        addLinkToTerm( relation.getObjectTerm().getIdentifier(),
+                                relation.getSubjectTerm().getIdentifier(), id2Terms);
+                    }
                 }
             }
         }
