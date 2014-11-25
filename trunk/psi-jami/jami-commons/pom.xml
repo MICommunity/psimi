@@ -4,12 +4,12 @@
   <parent>
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>psi-jami</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
 
   <groupId>psidev.psi.mi.jami</groupId>
   <artifactId>jami-commons</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.0</version>
     <name>PSI :: JAMI - commons</name>
     <description>JAMI commons</description>
 
@@ -17,19 +17,26 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-commons</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-commons</developerConnection>
+        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-commons</url>
+    </scm>
+
+
   <dependencies>
       <!-- JAMI mitab-->
       <dependency>
           <groupId>psidev.psi.mi.jami</groupId>
           <artifactId>jami-mitab</artifactId>
-          <version>${jami.mitab.version}</version>
+          <version>1.1.0</version>
       </dependency>
 
       <!-- JAMI xml-->
       <dependency>
           <groupId>psidev.psi.mi.jami</groupId>
           <artifactId>jami-xml</artifactId>
-          <version>${jami.xml.version}</version>
+          <version>1.1.0</version>
       </dependency>
 
       <!-- apache commons-->
