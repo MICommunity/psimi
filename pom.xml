@@ -28,7 +28,7 @@
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
         <module>psimitab-search</module>
-        <!--<module>assembly</module>-->
+        <module>assembly</module>
         <module>psi-jami</module>
         <module>validator</module>
         <module>psimi-enricher</module>
@@ -45,6 +45,7 @@
         <jami.xml.version>1.1.1-SNAPSHOT</jami.xml.version>
         <jami.mitab.version>1.1.1-SNAPSHOT</jami.mitab.version>
         <jami.batch.version>1.1.1-SNAPSHOT</jami.batch.version>
+        <jami.bridges.version>1.1.1-SNAPSHOT</jami.briges.version>
         <calimocho.version>2.5.2-SNAPSHOT</calimocho.version>
         <validator.version>2.0.7-SNAPSHOT</validator.version>
     </properties>
