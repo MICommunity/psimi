@@ -5,7 +5,7 @@
     <parent>
         <artifactId>psimi-master</artifactId>
         <groupId>psidev.psi.mi</groupId>
-        <version>1.8.5-SNAPSHOT</version>
+        <version>1.8.6-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -229,7 +229,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-xml</artifactId>
-            <version>${jami.version}</version>
+            <version>${jami.xml.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
