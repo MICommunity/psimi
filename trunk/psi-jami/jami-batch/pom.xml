@@ -9,7 +9,7 @@
 
   <groupId>psidev.psi.mi.jami</groupId>
   <artifactId>jami-batch</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.1.0</version>
     <name>PSI :: JAMI - Spring Batch</name>
     <description>JAMI Spring batch basic classes</description>
 
@@ -95,4 +95,10 @@
     </dependency>
 
   </dependencies>
+
+  <scm>
+    <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-batch-1.1.0</connection>
+    <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-batch-1.1.0</developerConnection>
+    <url>http://code.google.com/p/psimi/source/browse/tags/jami-batch-1.1.0</url>
+  </scm>
 </project>
