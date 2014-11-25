@@ -4,12 +4,12 @@
   <parent>
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>psi-jami</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
 
   <groupId>psidev.psi.mi.jami</groupId>
   <artifactId>jami-batch</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.1.0</version>
     <name>PSI :: JAMI - Spring Batch</name>
     <description>JAMI Spring batch basic classes</description>
 
@@ -23,6 +23,12 @@
     <batch.step.startLimit />
     <batch.step.commitInterval />
   </properties>
+
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-batch</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-batch</developerConnection>
+        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-batch</url>
+    </scm>
 
   <dependencies>
       <!-- commons for jdbc data sources and batch data source initializer-->
