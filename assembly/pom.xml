@@ -222,7 +222,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-mitab</artifactId>
-            <version>${jami.version}</version>
+            <version>${jami.mitab.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
