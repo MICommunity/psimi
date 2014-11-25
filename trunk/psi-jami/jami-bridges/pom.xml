@@ -9,7 +9,7 @@
 
     <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>jami-bridges</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>PSI :: JAMI - Bridges</name>
     <description>Bridges master module based on JAMI core interfaces</description>
@@ -71,10 +71,4 @@
     <module>jami-ontology-manager</module>
     <module>jami-imexcentral</module>
   </modules>
-
-  <scm>
-    <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-bridges-1.1.0</connection>
-    <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-bridges-1.1.0</developerConnection>
-    <url>http://code.google.com/p/psimi/source/browse/tags/jami-bridges-1.1.0</url>
-  </scm>
 </project>
