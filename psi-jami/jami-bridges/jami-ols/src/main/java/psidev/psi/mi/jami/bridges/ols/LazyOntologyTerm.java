@@ -10,6 +10,7 @@ import uk.ac.ebi.ols.soap.Query;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -79,6 +80,26 @@ public class LazyOntologyTerm
         } catch (RemoteException e) {
             throw new LazyTermLoadingException("Cannot load children", e);
         }
+        String id = !getIdentifiers().isEmpty() ? getIdentifiers().iterator().next().getId():null;
+        Iterator<Map.Entry<String,String>> childrenIterator = childrenIDs.entrySet().iterator();
+
+        try {
+            Map<String, String> relations = getQueryService().getTermRelations(id, getOntologyName());
+
+            while (childrenIterator.hasNext()){
+                Map.Entry<String,String> child = childrenIterator.next();
+
+                if (relations.containsKey(child.getKey())){
+                    String relation = relations.get(child.getKey());
+                    // remove other parents to avoid cyclic dependencies
+                    if (relation == null || (!relation.equals("part_of") && !relation.equals("is_a"))){
+                        childrenIterator.remove();
+                    }
+                }
+            }
+        } catch (RemoteException e) {
+            throw new IllegalStateException( "RemoteException while trying to connect to OLS." );
+        }
 
         for(Map.Entry<String,String> entry: childrenIDs.entrySet()){
             this.children.add( new LazyOntologyTerm(getQueryService(),
@@ -96,6 +117,25 @@ public class LazyOntologyTerm
         } catch (RemoteException e) {
             log.warn("LazyOntologyTerm "+toString()+" failed whilst attempting to access metaData.",e);
             throw new IllegalStateException("The query service has failed.");
+        }
+        Iterator<Map.Entry<String,String>> parentIterator = parentIDs.entrySet().iterator();
+
+        while (parentIterator.hasNext()){
+            Map.Entry<String,String> parent = parentIterator.next();
+
+            try {
+                Map<String, String> relations = getQueryService().getTermRelations(parent.getKey(), getOntologyName());
+                String id = !getIdentifiers().isEmpty() ? getIdentifiers().iterator().next().getId():null;
+                if (relations.containsKey(id)){
+                    String relation = relations.get(id);
+                    // remove other parents to avoid cyclic dependencies
+                    if (relation == null || (!relation.equals("part_of") && !relation.equals("is_a"))){
+                        parentIterator.remove();
+                    }
+                }
+            } catch (RemoteException e) {
+                throw new IllegalStateException( "RemoteException while trying to connect to OLS." );
+            }
         }
 
         for(Map.Entry<String,String> entry: parentIDs.entrySet()){
