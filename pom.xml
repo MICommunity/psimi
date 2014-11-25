@@ -42,6 +42,7 @@
         <jami.version>1.0.1-SNAPSHOT</jami.version>
         <jami.commons.version>1.0.2-SNAPSHOT</jami.commons.version>
         <jami.core.version>1.2.1-SNAPSHOT</jami.core.version>
+        <jami.xml.version>1.1.1-SNAPSHOT</jami.xml.version>
         <calimocho.version>2.5.2-SNAPSHOT</calimocho.version>
         <validator.version>2.0.7-SNAPSHOT</validator.version>
     </properties>
