@@ -1,218 +1,104 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>psidev.psi.mi.jami</groupId>
+    <artifactId>psi-jami</artifactId>
+    <version>1.0.0</version>
+  </parent>
 
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>psidev.psi.mi</groupId>
-    <artifactId>psimi-master</artifactId>
-    <packaging>pom</packaging>
-    <version>1.8.6-SNAPSHOT</version>
+  <groupId>psidev.psi.mi.jami</groupId>
+  <artifactId>jami-batch</artifactId>
+  <version>1.1.0</version>
+    <name>PSI :: JAMI - Spring Batch</name>
+    <description>JAMI Spring batch basic classes</description>
 
-    <name>PSI</name>
-    <description>Base build file</description>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <batch.db.driver />
+    <batch.db.url />
+    <batch.db.user />
+    <batch.db.password />
+    <batch.db.initScripts />
+    <batch.step.startLimit />
+    <batch.step.commitInterval />
+  </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/trunk/</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-batch</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-batch</developerConnection>
+        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-batch</url>
     </scm>
 
-    <modules>
-        <module>psi25-xml</module>
-        <module>psi25-xml-rdf</module>
-        <module>psimitab-parser</module>
-        <module>psimitab-organism</module>
-        <module>psimi-examples</module>
-        <module>calimocho</module>
-        <module>calimocho-tab</module>
-        <module>calimocho-xml</module>
-        <module>calimocho-xgmml</module>
-        <module>calimocho-solr</module>
-        <module>psimitab-search</module>
-        <!--<module>assembly</module>-->
-        <module>psi-jami</module>
-        <module>validator</module>
-        <module>psimi-enricher</module>
-  </modules>
+  <dependencies>
+      <!-- commons for jdbc data sources and batch data source initializer-->
+      <dependency>
+          <groupId>commons-dbcp</groupId>
+          <artifactId>commons-dbcp</artifactId>
+          <version>1.4</version>
+      </dependency>
+      <dependency>
+          <groupId>commons-io</groupId>
+          <artifactId>commons-io</artifactId>
+          <version>2.4</version>
+      </dependency>
 
-    <properties>
-        <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
-        <psimi.version>${pom.version}</psimi.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jami.version>1.0.1-SNAPSHOT</jami.version>
-        <jami.commons.version>1.1.1-SNAPSHOT</jami.commons.version>
-        <jami.core.version>1.2.1-SNAPSHOT</jami.core.version>
-        <jami.xml.version>1.1.1-SNAPSHOT</jami.xml.version>
-        <jami.mitab.version>1.1.1-SNAPSHOT</jami.mitab.version>
-        <jami.batch.version>1.1.1-SNAPSHOT</jami.batch.version>
-        <calimocho.version>2.5.2-SNAPSHOT</calimocho.version>
-        <validator.version>2.0.7-SNAPSHOT</validator.version>
-    </properties>
+      <!-- Spring Batch -->
+      <dependency>
+          <groupId>org.springframework.batch</groupId>
+          <artifactId>spring-batch-core</artifactId>
+          <version>2.2.1.RELEASE</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-jdbc</artifactId>
+          <version>3.2.4.RELEASE</version>
+      </dependency>
 
-    <developers>
-        <developer>
-            <id>skerrien</id>
-            <name>Samuel Kerrien</name>
-            <email>skerrien@ebi.ac.uk</email>
-            <organization>EBI</organization>
-            <timezone>0</timezone>
-        </developer>
+      <!-- h2 dependencies -->
+      <dependency>
+          <groupId>com.h2database</groupId>
+          <artifactId>h2</artifactId>
+          <version>1.3.173</version>
+      </dependency>
 
-        <developer>
-            <id>mmueller</id>
-            <name>Michael Mueller</name>
-            <email>mmueller@ebi.ac.uk</email>
-            <organization>EBI</organization>
-            <timezone>0</timezone>
-        </developer>
+      <!-- other spring -->
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-tx</artifactId>
+          <version>3.2.4.RELEASE</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-expression</artifactId>
+          <version>3.2.4.RELEASE</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-core</artifactId>
+          <version>3.2.4.RELEASE</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-context</artifactId>
+          <version>3.2.4.RELEASE</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-beans</artifactId>
+          <version>3.2.4.RELEASE</version>
+      </dependency>
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-aop</artifactId>
+          <version>3.2.4.RELEASE</version>
+      </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
 
-        <developer>
-            <id>baranda</id>
-            <name>Bruno Aranda</name>
-            <email>baranda@ebi.ac.uk</email>
-            <organization>EBI</organization>
-            <timezone>0</timezone>
-        </developer>
-
-        <developer>
-            <id>nneuhaus</id>
-            <name>Nadin Neuhauser</name>
-            <email>nneuhaus@ebi.ac.uk</email>
-            <organization>EBI</organization>
-            <timezone>0</timezone>
-        </developer>
-
-        <developer>
-            <id>marine</id>
-            <name>Marine Dumousseau</name>
-            <email>marine@ebi.ac.uk</email>
-            <organization>EBI</organization>
-            <timezone>0</timezone>
-        </developer>
-
-        <developer>
-            <id>ntoro</id>
-            <name>Noemi del-Toro</name>
-            <email>ntoro@ebi.ac.uk</email>
-            <organization>EBI</organization>
-            <timezone>0</timezone>
-        </developer>
-
-        <developer>
-            <id>rafael</id>
-            <name>Rafael Jimenez</name>
-            <email>rafael@ebi.ac.uk</email>
-            <organization>EBI</organization>
-            <timezone>0</timezone>
-        </developer>
-
-    </developers>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <build>
-        <defaultGoal>clean install</defaultGoal>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>--&gt;
-                <finalName>${artifactId}-${version}</finalName>
-                <outputDirectory>${assembly.outputDirectory}</outputDirectory>
-                </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-release-plugin</artifactId>
-                    <version>2.1</version>
-                    <configuration>
-                        <goals>deploy</goals>
-                    </configuration>
-                </plugin>
-                <plugin>
-                    <groupId>org.ops4j</groupId>
-                    <artifactId>maven-pax-plugin</artifactId>
-                    <version>1.4</version>
-                    <extensions>true</extensions>
-                </plugin>
-                <plugin>
-                    <groupId>org.apache.felix</groupId>
-                    <artifactId>maven-bundle-plugin</artifactId>
-                    <version>1.4.3</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
-
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.3.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                    <excludes>
-                        <exclude>**/test/**/*.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.1.2</version>
-                <executions>
-                    <execution>
-                        <id>attach-source</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-
-    <repositories>
-        <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
-
-
-    <pluginRepositories>
-        <pluginRepository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
-        </pluginRepository>
-    </pluginRepositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.8.1</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>ebi-repo</id>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo</url>
-        </repository>
-
-        <snapshotRepository>
-            <id>ebi-repo-snapshots</id>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/repositories/ebi-repo-snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+  </dependencies>
 </project>
