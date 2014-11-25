@@ -25,7 +25,7 @@ public class MiDataSourceFactoryTest {
         MIDataSourceFactory.getInstance().registerDataSource(null, Collections.EMPTY_MAP);
     }
 
-    @Test()
+    @Test
     public void test_missing_file_data_source_options() throws IllegalAccessException, InstantiationException {
 
         MIDataSourceFactory.getInstance().registerDataSource(MockExperimentDataSource.class, Collections.EMPTY_MAP);
