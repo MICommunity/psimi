@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>jami-mitab</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0</version>
     <name>PSI :: JAMI - MITAB</name>
     <description>JAMI - MITAB parser and writer</description>
 
@@ -39,4 +39,10 @@
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
         </repository>
     </repositories>
+
+  <scm>
+    <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-mitab-1.1.0</connection>
+    <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-mitab-1.1.0</developerConnection>
+    <url>http://code.google.com/p/psimi/source/browse/tags/jami-mitab-1.1.0</url>
+  </scm>
 </project>
