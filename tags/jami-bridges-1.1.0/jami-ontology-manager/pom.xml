@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>psidev.psi.mi.jami.bridges</groupId>
+        <artifactId>jami-bridges</artifactId>
+        <version>1.1.0</version>
+    </parent>
+    <groupId>psidev.psi.mi.jami.bridges</groupId>
+    <artifactId>jami-ontology-manager</artifactId>
+    <version>1.1.0</version>
+    <name>PSI :: JAMI - Ontology manager</name>
+    <description>Jami ontology manager extension</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <dependencies>
+        <!-- ontology manager -->
+        <dependency>
+            <groupId>psidev.psi.tools</groupId>
+            <artifactId>ontology-manager</artifactId>
+            <version>2.0.5</version>
+        </dependency>
+
+        <!-- jami obo and jami ols-->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-ols</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-obo</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <!-- JAMI commons -->
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-commons</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+</project>
