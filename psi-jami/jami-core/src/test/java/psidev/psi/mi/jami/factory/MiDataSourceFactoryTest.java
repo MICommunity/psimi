@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.factory;
 
 import junit.framework.Assert;
 import org.junit.Test;
+import psidev.psi.mi.jami.datasource.MIDataSource;
 import psidev.psi.mi.jami.datasource.MockExperimentDataSource;
 import psidev.psi.mi.jami.datasource.MockInteractionDataSource;
 
@@ -24,14 +25,15 @@ public class MiDataSourceFactoryTest {
         MIDataSourceFactory.getInstance().registerDataSource(null, Collections.EMPTY_MAP);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test()
     public void test_missing_file_data_source_options() throws IllegalAccessException, InstantiationException {
 
         MIDataSourceFactory.getInstance().registerDataSource(MockExperimentDataSource.class, Collections.EMPTY_MAP);
 
         Map<String, Object> requiredOptions = new HashMap<String, Object>();
 
-        MIDataSourceFactory.getInstance().getMIDataSourceWith(requiredOptions);
+        MIDataSource datasource = MIDataSourceFactory.getInstance().getMIDataSourceWith(requiredOptions);
+        Assert.assertNull(datasource);
     }
 
     @Test
