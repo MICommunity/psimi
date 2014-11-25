@@ -187,7 +187,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-batch</artifactId>
-            <version>${jami.version}</version>
+            <version>${jami.batch.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
