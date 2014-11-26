@@ -21,10 +21,15 @@ import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
+import psidev.psi.mi.jami.factory.InteractionWriterFactory;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
-import psidev.psi.mi.jami.json.binary.MIJsonBinaryEvidenceWriter;
-import psidev.psi.mi.jami.json.binary.MIJsonWriter;
-import psidev.psi.mi.jami.model.*;
+import psidev.psi.mi.jami.json.InteractionViewerJson;
+import psidev.psi.mi.jami.json.MIJsonOptionFactory;
+import psidev.psi.mi.jami.json.MIJsonType;
+import psidev.psi.mi.jami.model.ComplexType;
+import psidev.psi.mi.jami.model.CvTerm;
+import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.InteractionCategory;
 import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
 
@@ -192,20 +197,29 @@ public class MIJsonBinaryServlet extends HttpServlet{
     }
 
     private InteractionStream processMIData(String request, InputStream dataStream, HttpServletResponse resp, Writer writer, InputStream stream, InteractionStream miDataSource) throws IOException {
+        InteractionWriter interactionWriter = null;
         try{
             MIFileType fileType = fileAnalyzer.identifyMIFileTypeFor(stream);
             MIDataSourceOptionFactory optionFactory = MIDataSourceOptionFactory.getInstance();
             MIDataSourceFactory miFactory = MIDataSourceFactory.getInstance();
-            InteractionWriter interactionWriter = null;
+
+            // initialise writers
+            InteractionViewerJson.initialiseAllMIJsonWriters();
+            MIJsonOptionFactory jsonOptionFactory = MIJsonOptionFactory.getInstance();
+            InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
 
             switch (fileType){
                 case mitab:
-                    miDataSource = miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionCategory.evidence, ComplexType.binary, true, null, dataStream));
-                    interactionWriter = new MIJsonBinaryEvidenceWriter(writer, this.fetcher);
+                    miDataSource = miFactory.getInteractionSourceWith(optionFactory.getMitabOptions(InteractionCategory.evidence,
+                            ComplexType.binary, true, null, dataStream));
+                    interactionWriter = writerFactory.getInteractionWriterWith(jsonOptionFactory.getJsonOptions(writer, InteractionCategory.evidence,
+                            ComplexType.binary, MIJsonType.binary_only, this.fetcher, null));
                     break;
                 case psimi_xml:
-                    miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionCategory.mixed, ComplexType.n_ary, true, null, dataStream, null, new InMemoryPsiXmlCache()));
-                    interactionWriter = new MIJsonWriter(writer, this.fetcher, this.expansionMethod);
+                    miDataSource = miFactory.getInteractionSourceWith(optionFactory.getXmlOptions(InteractionCategory.mixed,
+                            ComplexType.n_ary, true, null, dataStream, null, new InMemoryPsiXmlCache()));
+                    interactionWriter = writerFactory.getInteractionWriterWith(jsonOptionFactory.getJsonOptions(writer, InteractionCategory.mixed,
+                            ComplexType.n_ary, MIJsonType.binary_only, this.fetcher, this.expansionMethod));
                     break;
                 default:
                     dataStream.close();
@@ -215,6 +229,10 @@ public class MIJsonBinaryServlet extends HttpServlet{
             if (miDataSource == null){
                 logger.log(Level.SEVERE, "The input " + request + " is not a valid MI data source.");
                 resp.sendError(400, "The input " + request + " is not a valid MI data source.");
+            }
+            if (interactionWriter == null){
+                logger.log(Level.SEVERE, "The interaction writer does not exist and cannot be instantiated.");
+                resp.sendError(400, "The interaction writer does not exist and cannot be instantiated.");
             }
 
             // then write
@@ -226,6 +244,9 @@ public class MIJsonBinaryServlet extends HttpServlet{
         }
         finally {
             stream.close();
+            if (interactionWriter != null){
+                interactionWriter.close();
+            }
         }
         return miDataSource;
     }
