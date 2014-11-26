@@ -4,7 +4,7 @@
     <parent>
         <groupId>psidev.psi.mi.jami</groupId>
         <artifactId>psi-jami</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <groupId>uk.ac.ebi.intact.jami</groupId>
@@ -18,12 +18,19 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-examples</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-examples</developerConnection>
+        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-examples</url>
+    </scm>
+
+
     <dependencies>
         <!-- jami commons to get factories utils, jami-core, xml and mitab implementations -->
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-commons</artifactId>
-            <version>${pom.version}</version>
+            <version>1.1.0</version>
         </dependency>
 
         <dependency>
