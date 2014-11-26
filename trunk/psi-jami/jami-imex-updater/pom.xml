@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>psidev.psi.mi.jami</groupId>
@@ -10,7 +9,7 @@
 
   <groupId>psidev.psi.mi.jami</groupId>
   <artifactId>jami-imex-updater</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
     <name>PSI :: JAMI - IMEx assigner</name>
     <description>JAMI module to assign IMEx ids to publications</description>
 
@@ -20,9 +19,9 @@
   </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-imex-updater</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-imex-updater</developerConnection>
-        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-imex-updater</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-imex-updater-1.0.0</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-imex-updater-1.0.0</developerConnection>
+        <url>http://psimi.googlecode.com/svn/tags/jami-imex-updater-1.0.0</url>
     </scm>
 
   <dependencies>
