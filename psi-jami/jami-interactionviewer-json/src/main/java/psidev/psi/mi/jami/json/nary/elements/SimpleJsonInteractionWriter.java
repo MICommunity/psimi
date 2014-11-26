@@ -62,7 +62,7 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
     public void write(I object) throws IOException {
         Xref preferredIdentifier = !object.getIdentifiers().isEmpty() ? (Xref)object.getIdentifiers().iterator().next() : null;
         String[] keyValues = MIJsonUtils.extractInteractionId(preferredIdentifier, object);
-        int id = 0;
+        String id = null;
 
         // if the interaction has not yet been processed, we write the interactor
         if (!processedInteractors.containsKey(keyValues[0]+"_"+keyValues[1])){
@@ -70,13 +70,14 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
             if (!processedInteractors.isEmpty()){
                 MIJsonUtils.writeSeparator(writer);
             }
+            id = keyValues[0]+"_"+keyValues[1];
             this.processedInteractors.put(keyValues[0]+"_"+keyValues[1], keyValues[0]+"_"+keyValues[1]);
 
             MIJsonUtils.writeStartObject(writer);
             MIJsonUtils.writeProperty("object","interaction", writer);
             // write accession
             MIJsonUtils.writeSeparator(writer);
-            MIJsonUtils.writeProperty("id", Integer.toString(id), writer);
+            MIJsonUtils.writeProperty("id", id, writer);
 
             // then interaction type
             if (object.getInteractionType() != null){
