@@ -235,6 +235,13 @@
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-imex-updater</artifactId>
+            <version>${jami.imex.version}</version>
+            <type>zip</type>
+            <classifier>distribution</classifier>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-examples</artifactId>
             <version>${jami.examples.version}</version>
             <type>zip</type>
