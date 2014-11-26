@@ -81,9 +81,7 @@ public class InteractionViewerJson {
         supportedOptions4.put(MIJsonWriterOptions.OUTPUT_FORMAT_OPTION_KEY, MIJsonWriterOptions.MI_JSON_FORMAT);
         supportedOptions4.put(MIJsonWriterOptions.INTERACTION_CATEGORY_OPTION_KEY, interactionCategory != null ?
                 interactionCategory : InteractionCategory.mixed);
-        if (complexType != null){
-            supportedOptions4.put(MIJsonWriterOptions.COMPLEX_TYPE_OPTION_KEY, complexType);
-        }
+        supportedOptions4.put(MIJsonWriterOptions.COMPLEX_TYPE_OPTION_KEY, complexType);
         supportedOptions4.put(MIJsonWriterOptions.MI_JSON_TYPE, type);
         supportedOptions4.put(MIJsonWriterOptions.OUTPUT_OPTION_KEY, null);
         supportedOptions4.put(MIJsonWriterOptions.COMPLEX_EXPANSION_OPTION_KEY, null);
