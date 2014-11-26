@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.json;
 
 import org.json.simple.JSONValue;
 import psidev.psi.mi.jami.model.Interaction;
+import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.Interactor;
 import psidev.psi.mi.jami.model.Xref;
 import psidev.psi.mi.jami.utils.comparator.interactor.UnambiguousExactInteractorBaseComparator;
@@ -99,6 +100,10 @@ public class MIJsonUtils {
         if (ref != null){
             interactorId = JSONValue.escape(ref.getId());
             db = JSONValue.escape(ref.getDatabase().getShortName());
+        }
+        else if (interaction instanceof InteractionEvidence && ((InteractionEvidence)interaction).getImexId() != null){
+           interactorId = ((InteractionEvidence)interaction).getImexId();
+            db = "imex";
         }
         else{
             interactorId = Integer.toString(interaction.hashCode());

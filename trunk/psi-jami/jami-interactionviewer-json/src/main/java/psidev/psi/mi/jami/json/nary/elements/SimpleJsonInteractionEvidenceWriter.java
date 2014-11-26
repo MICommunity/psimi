@@ -76,9 +76,9 @@ public class SimpleJsonInteractionEvidenceWriter extends SimpleJsonInteractionWr
     }
 
     protected void initialiseDefaultParticipantWriter() {
-        super.setParticipantWriter(new SimpleJsonModelledParticipantWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
+        super.setParticipantWriter(new SimpleJsonParticipantEvidenceWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
                 getProcessedParticipants(), getIdGenerator(), getFetcher()));
-        ((SimpleJsonModelledParticipantWriter)getParticipantWriter()).setCvWriter(getCvWriter());
+        ((SimpleJsonParticipantEvidenceWriter)getParticipantWriter()).setCvWriter(getCvWriter());
     }
 
     public JsonElementWriter<InteractionEvidence> getExperimentWriter() {
