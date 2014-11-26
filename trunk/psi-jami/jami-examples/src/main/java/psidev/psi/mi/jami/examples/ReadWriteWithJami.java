@@ -1,4 +1,4 @@
-package uk.ac.ebi.intact.jami;
+package psidev.psi.mi.jami.examples;
 
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIWriterOptionFactory;
