@@ -25,19 +25,19 @@ public class SimpleJsonParticipantEvidenceWriter extends SimpleJsonParticipantWr
     private JsonElementWriter<Organism> hostOrganismWriter;
 
     public SimpleJsonParticipantEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, String> processedInteractors){
-        super(writer, processedFeatures, processedInteractors);
+                                               Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants);
     }
 
     public SimpleJsonParticipantEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator,
-                                               OntologyTermFetcher fetcher){
-        super(writer, processedFeatures, processedInteractors, idGenerator, fetcher);
+                                               Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator, OntologyTermFetcher fetcher) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants, idGenerator, fetcher);
     }
 
     @Override
     protected void initialiseDefaultFeatureWriter() {
-        super.setFeatureWriter(new SimpleJsonFeatureEvidenceWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(), getIdGenerator()));
+        super.setFeatureWriter(new SimpleJsonFeatureEvidenceWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
+                getProcessedParticipants(), getIdGenerator()));
         ((SimpleJsonFeatureEvidenceWriter)getFeatureWriter()).setCvWriter(getCvWriter());
         ((SimpleJsonFeatureEvidenceWriter)getFeatureWriter()).setParameterWriter(getParameterWriter());
     }

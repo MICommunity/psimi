@@ -24,13 +24,14 @@ public class SimpleJsonModelledInteractionWriter extends SimpleJsonInteractionWr
     private JsonElementWriter<Parameter> parameterWriter;
 
     public SimpleJsonModelledInteractionWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, String> processedInteractors){
-        super(writer, processedFeatures, processedInteractors);
+                                               Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants);
     }
 
     public SimpleJsonModelledInteractionWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator){
-        super(writer, processedFeatures, processedInteractors, idGenerator);
+                                               Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants,
+                                               IncrementalIdGenerator idGenerator) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants, idGenerator);
     }
 
     protected void writeOtherProperties(ModelledInteraction object) throws IOException {
@@ -90,7 +91,7 @@ public class SimpleJsonModelledInteractionWriter extends SimpleJsonInteractionWr
 
     protected void initialiseDefaultParticipantWriter() {
         super.setParticipantWriter(new SimpleJsonModelledParticipantWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
-                getIdGenerator(), getFetcher()));
+                getProcessedParticipants(), getIdGenerator(), getFetcher()));
         ((SimpleJsonModelledParticipantWriter)getParticipantWriter()).setCvWriter(getCvWriter());
     }
 

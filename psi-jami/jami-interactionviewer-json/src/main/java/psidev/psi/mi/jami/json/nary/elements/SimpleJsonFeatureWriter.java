@@ -26,10 +26,11 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
     private JsonRangeWriter rangeWriter;
     private Map<Feature, Integer> processedFeatures;
     private Map<String, String> processedInteractors;
+    private Map<Entity, Integer> processedParticipants;
     private IncrementalIdGenerator idGenerator;
 
     public SimpleJsonFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-            Map<String, String> processedInteractors){
+            Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants){
         if (writer == null){
             throw new IllegalArgumentException("The json feature writer needs a non null Writer");
         }
@@ -42,22 +43,16 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
             throw new IllegalArgumentException("The json feature writer needs a non null map of processed interactors");
         }
         this.processedInteractors = processedInteractors;
+        if (processedParticipants == null){
+            throw new IllegalArgumentException("The json feature writer needs a non null map of processed participants");
+        }
+        this.processedParticipants = processedParticipants;
     }
 
     public SimpleJsonFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                   Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator){
-        if (writer == null){
-            throw new IllegalArgumentException("The json feature writer needs a non null Writer");
-        }
-        this.writer = writer;
-        if (processedFeatures == null){
-            throw new IllegalArgumentException("The json feature writer needs a non null map of processed features");
-        }
-        this.processedFeatures = processedFeatures;
-        if (processedInteractors == null){
-            throw new IllegalArgumentException("The json feature writer needs a non null map of processed interactors");
-        }
-        this.processedInteractors = processedInteractors;
+                                   Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants,
+                                   IncrementalIdGenerator idGenerator){
+        this(writer, processedFeatures, processedInteractors, processedParticipants);
         this.idGenerator = idGenerator;
     }
 
@@ -181,7 +176,7 @@ public class SimpleJsonFeatureWriter<F extends Feature> implements JsonElementWr
 
     public JsonRangeWriter getRangeWriter() {
         if (this.rangeWriter == null){
-           this.rangeWriter = new SimpleJsonRangeWriter(writer, processedInteractors);
+           this.rangeWriter = new SimpleJsonRangeWriter(writer, processedInteractors, processedParticipants);
         }
         return rangeWriter;
     }
