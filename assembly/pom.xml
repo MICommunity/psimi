@@ -136,9 +136,9 @@
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
-            <groupId>psidev.psi.mi.jami.bridges</groupId>
-            <artifactId>jami-ensembl</artifactId>
-            <version>${jami.bridges.version}</version>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-enricher</artifactId>
+            <version>${jami.enricher.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
