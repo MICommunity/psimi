@@ -9,7 +9,7 @@
 
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>jami-crosslink-csv</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.1.0</version>
     <name>PSI :: JAMI - Cross link CSV</name>
     <description>JAMI - Cross Link CSV parser and data model</description>
 
@@ -18,9 +18,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-crosslink-csv</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-crosslink-csv</developerConnection>
-        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-crosslink-csv</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-crosslink-csv-1.1.0</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-crosslink-csv-1.1.0</developerConnection>
+        <url>http://psimi.googlecode.com/svn/tags/jami-crosslink-csv-1.1.0</url>
     </scm>
 
 
