@@ -32,6 +32,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     private JsonElementWriter<CvTerm> cvWriter;
     private JsonElementWriter featureWriter;
     private Map<Feature, Integer> processedFeatures;
+    private Map<Entity, Integer> processedParticipants;
     private Map<String, String> processedInteractors;
     private Collection<Feature> experimentalFeatures;
     private Collection<Feature> bindingSites;
@@ -44,7 +45,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     private static final Logger logger = Logger.getLogger("SimpleJsonParticipantWriter");
 
     public SimpleJsonParticipantWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, String> processedInteractors){
+                                       Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants){
         if (writer == null){
             throw new IllegalArgumentException("The json participant writer needs a non null Writer");
         }
@@ -57,34 +58,23 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
             throw new IllegalArgumentException("The json participant writer needs a non null map of processed interactors");
         }
         this.processedInteractors = processedInteractors;
-        if (fetcher == null){
-            logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
+        if (processedParticipants == null){
+            throw new IllegalArgumentException("The json participant writer needs a non null map of processed participants");
         }
-        this.fetcher = fetcher;
+        this.processedParticipants = processedParticipants;
         initialiseFeatureCollections();
     }
 
     public SimpleJsonParticipantWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator,
+                                       Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants,
+                                       IncrementalIdGenerator idGenerator,
                                        OntologyTermFetcher fetcher){
-        if (writer == null){
-            throw new IllegalArgumentException("The json participant writer needs a non null Writer");
-        }
-        this.writer = writer;
-        if (processedFeatures == null){
-            throw new IllegalArgumentException("The json participant writer needs a non null map of processed features");
-        }
-        this.processedFeatures = processedFeatures;
-        if (processedInteractors == null){
-            throw new IllegalArgumentException("The json participant writer needs a non null map of processed interactors");
-        }
-        this.processedInteractors = processedInteractors;
+        this(writer, processedFeatures, processedInteractors, processedParticipants);
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
         }
         this.fetcher = fetcher;
         this.idGenerator = idGenerator;
-        initialiseFeatureCollections();
     }
 
     protected void initialiseFeatureCollections(){
@@ -98,8 +88,20 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     public void write(P object) throws IOException {
 
         MIJsonUtils.writeStartObject(writer);
+        // generate participant id
+        int id = 0;
+        if (this.processedParticipants.containsKey(object)){
+            id = this.processedParticipants.get(object);
+        }
+        else{
+            id = getIdGenerator().nextId();
+            this.processedParticipants.put(object, id);
+        }
+        MIJsonUtils.writeProperty("id", Integer.toString(id), writer);
+
         String [] keyValues;
         // write interactor ref
+        MIJsonUtils.writeSeparator(writer);
         if (object.getInteractor() instanceof Complex){
             Interactor interactor = object.getInteractor();
             // interactor are always processed before so the map must contain this key
@@ -302,7 +304,8 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     }
 
     protected void initialiseDefaultFeatureWriter() {
-        this.featureWriter = new SimpleJsonFeatureWriter(this.writer, this.processedFeatures, this.processedInteractors, getIdGenerator());
+        this.featureWriter = new SimpleJsonFeatureWriter(this.writer, this.processedFeatures, this.processedInteractors,
+                this.processedParticipants, getIdGenerator());
         ((SimpleJsonFeatureWriter)this.featureWriter).setCvWriter(getCvWriter());
     }
 
@@ -342,5 +345,9 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
 
     protected Map<String, String> getProcessedInteractors() {
         return processedInteractors;
+    }
+
+    protected Map<Entity, Integer> getProcessedParticipants() {
+        return processedParticipants;
     }
 }

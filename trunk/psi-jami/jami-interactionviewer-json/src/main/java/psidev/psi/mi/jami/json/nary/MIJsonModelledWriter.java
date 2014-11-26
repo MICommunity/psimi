@@ -56,7 +56,8 @@ public class MIJsonModelledWriter extends AbstractMIJsonWriter<ModelledInteracti
 
     @Override
     protected void initialiseInteractionWriter() {
-        super.setInteractionWriter(new SimpleJsonModelledInteractionWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(), getIdGenerator()));
+        super.setInteractionWriter(new SimpleJsonModelledInteractionWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
+                getProcessedParticipants(), getIdGenerator()));
         ((SimpleJsonModelledInteractionWriter)getInteractionWriter()).setFetcher(getFetcher());
     }
 

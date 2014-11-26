@@ -2,10 +2,7 @@ package psidev.psi.mi.jami.json.nary.elements;
 
 import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
-import psidev.psi.mi.jami.model.CvTerm;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.FeatureEvidence;
-import psidev.psi.mi.jami.model.Parameter;
+import psidev.psi.mi.jami.model.*;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -24,14 +21,14 @@ public class SimpleJsonFeatureEvidenceWriter extends SimpleJsonFeatureWriter<Fea
 
     private JsonElementWriter<Parameter> parameterWriter;
 
-    public SimpleJsonFeatureEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                           Map<String, String> processedInteractors){
-        super(writer, processedFeatures, processedInteractors);
+    public SimpleJsonFeatureEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, String> processedInteractors,
+                                           Map<Entity, Integer> processedParticipants) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants);
     }
 
     public SimpleJsonFeatureEvidenceWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, String> processedInteractors,
-                                           IncrementalIdGenerator idGenerator) {
-        super(writer, processedFeatures, processedInteractors, idGenerator);
+                                           Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants, idGenerator);
     }
 
     @Override

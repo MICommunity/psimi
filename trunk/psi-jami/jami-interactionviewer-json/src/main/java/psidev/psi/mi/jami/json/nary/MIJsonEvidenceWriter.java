@@ -91,7 +91,8 @@ public class MIJsonEvidenceWriter extends AbstractMIJsonWriter<InteractionEviden
 
     @Override
     protected void initialiseInteractionWriter() {
-        super.setInteractionWriter(new SimpleJsonInteractionEvidenceWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(), getIdGenerator()));
+        super.setInteractionWriter(new SimpleJsonInteractionEvidenceWriter(getWriter(), getProcessedFeatures(),
+                getProcessedInteractors(), getProcessedParticipants(), getIdGenerator()));
         ((SimpleJsonInteractionEvidenceWriter)getInteractionWriter()).setFetcher(getFetcher());
     }
 }

@@ -2,6 +2,7 @@ package psidev.psi.mi.jami.json.nary.elements;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.ModelledParticipant;
 
@@ -19,19 +20,20 @@ import java.util.Map;
 public class SimpleJsonModelledParticipantWriter extends SimpleJsonParticipantWriter<ModelledParticipant>{
 
     public SimpleJsonModelledParticipantWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, String> processedInteractors){
-        super(writer, processedFeatures, processedInteractors);
+                                               Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants);
     }
 
     public SimpleJsonModelledParticipantWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                               Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator,
-                                               OntologyTermFetcher fetcher){
-        super(writer, processedFeatures, processedInteractors, idGenerator, fetcher);
+                                               Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants,
+                                               IncrementalIdGenerator idGenerator, OntologyTermFetcher fetcher) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants, idGenerator, fetcher);
     }
 
     @Override
     protected void initialiseDefaultFeatureWriter() {
-        super.setFeatureWriter(new SimpleJsonModelledFeatureWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(), getIdGenerator()));
+        super.setFeatureWriter(new SimpleJsonModelledFeatureWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
+                getProcessedParticipants(), getIdGenerator()));
         ((SimpleJsonModelledFeatureWriter)getFeatureWriter()).setCvWriter(getCvWriter());
     }
 }

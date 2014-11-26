@@ -32,6 +32,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     private Writer writer;
     private Map<String, String> processedInteractors;
     private Map<Feature, Integer> processedFeatures;
+    private Map<Entity, Integer> processedParticipants;
     private static final Logger logger = Logger.getLogger("AbstractMIJsonWriter");
 
     private IncrementalIdGenerator idGenerator;
@@ -42,6 +43,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     public AbstractMIJsonWriter(){
         processedInteractors = new HashMap<String, String>();
         processedFeatures = new HashMap<Feature, Integer>();
+        processedParticipants = new HashMap<Entity, Integer>();
         idGenerator = new IncrementalIdGenerator();
     }
 
@@ -50,6 +52,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         initialiseFile(file);
         processedInteractors = new HashMap<String, String>();
         processedFeatures = new HashMap<Feature, Integer>();
+        processedParticipants = new HashMap<Entity, Integer>();
         idGenerator = new IncrementalIdGenerator();
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
@@ -62,6 +65,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         initialiseOutputStream(output);
         processedInteractors = new HashMap<String, String>();
         processedFeatures = new HashMap<Feature, Integer>();
+        processedParticipants = new HashMap<Entity, Integer>();
         idGenerator = new IncrementalIdGenerator();
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
@@ -74,6 +78,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         initialiseWriter(writer);
         processedInteractors = new HashMap<String, String>();
         processedFeatures = new HashMap<Feature, Integer>();
+        processedParticipants = new HashMap<Entity, Integer>();
         idGenerator = new IncrementalIdGenerator();
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
@@ -87,6 +92,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         initialiseWriter(writer);
         this.processedInteractors = processedInteractors;
         this.processedFeatures = processedFeatures;
+        processedParticipants = new HashMap<Entity, Integer>();
         this.idGenerator = idGenerator;
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
@@ -98,6 +104,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
 
         this.processedInteractors = processedInteractors;
         this.processedFeatures = processedFeatures;
+        processedParticipants = new HashMap<Entity, Integer>();
         this.idGenerator = idGenerator;
     }
 
@@ -235,6 +242,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
             writer = null;
             processedInteractors.clear();
             processedFeatures.clear();
+            processedParticipants.clear();
             interactionWriter = null;
             interactorWriter = null;
             idGenerator = new IncrementalIdGenerator();
@@ -255,6 +263,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
                 writer = null;
                 processedInteractors.clear();
                 processedFeatures.clear();
+                processedParticipants.clear();
                 idGenerator = new IncrementalIdGenerator();
                 this.fetcher = null;
                 interactionWriter = null;
@@ -361,6 +370,10 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
 
     protected Map<Feature, Integer> getProcessedFeatures() {
         return processedFeatures;
+    }
+
+    protected Map<Entity, Integer> getProcessedParticipants() {
+        return processedParticipants;
     }
 
     protected IncrementalIdGenerator getIdGenerator() {

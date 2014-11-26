@@ -27,12 +27,13 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
     private JsonElementWriter<Xref> identifierWriter;
     private JsonElementWriter participantWriter;
     private Map<Feature, Integer> processedFeatures;
+    private Map<Entity, Integer> processedParticipants;
     private Map<String, String> processedInteractors;
     private IncrementalIdGenerator idGenerator;
     private OntologyTermFetcher fetcher;
 
     public SimpleJsonInteractionWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, String> processedInteractors){
+                                       Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants){
         if (writer == null){
             throw new IllegalArgumentException("The json interactions writer needs a non null Writer");
         }
@@ -45,22 +46,16 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
             throw new IllegalArgumentException("The json interactions writer needs a non null map of processed interactors");
         }
         this.processedInteractors = processedInteractors;
+        if (processedParticipants == null){
+            throw new IllegalArgumentException("The json interactions writer needs a non null map of processed participants");
+        }
+        this.processedParticipants = processedParticipants;
     }
 
     public SimpleJsonInteractionWriter(Writer writer, Map<Feature, Integer> processedFeatures,
-                                       Map<String, String> processedInteractors, IncrementalIdGenerator idGenerator){
-        if (writer == null){
-            throw new IllegalArgumentException("The json interactions writer needs a non null Writer");
-        }
-        this.writer = writer;
-        if (processedFeatures == null){
-            throw new IllegalArgumentException("The json interactions writer needs a non null map of processed features");
-        }
-        this.processedFeatures = processedFeatures;
-        if (processedInteractors == null){
-            throw new IllegalArgumentException("The json interactions writer needs a non null map of processed interactors");
-        }
-        this.processedInteractors = processedInteractors;
+                                       Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants,
+                                       IncrementalIdGenerator idGenerator){
+        this(writer, processedFeatures, processedInteractors, processedParticipants);
         this.idGenerator = idGenerator;
     }
 
@@ -206,7 +201,8 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
     }
 
     protected void initialiseDefaultParticipantWriter() {
-        this.participantWriter = new SimpleJsonParticipantWriter(this.writer, this.processedFeatures, this.processedInteractors, getIdGenerator(), this.fetcher);
+        this.participantWriter = new SimpleJsonParticipantWriter(this.writer, this.processedFeatures, this.processedInteractors,
+                this.processedParticipants, getIdGenerator(), this.fetcher);
         ((SimpleJsonParticipantWriter)this.participantWriter).setCvWriter(getCvWriter());
     }
 
@@ -232,5 +228,9 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
 
     protected Map<Feature, Integer> getProcessedFeatures() {
         return processedFeatures;
+    }
+
+    protected Map<Entity, Integer> getProcessedParticipants() {
+        return processedParticipants;
     }
 }
