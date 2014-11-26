@@ -8,14 +8,14 @@ import psidev.psi.mi.jami.enricher.ProteinListeningFeatureEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EnrichmentStatus;
 import psidev.psi.mi.jami.enricher.listener.FeatureEnricherListener;
+import psidev.psi.mi.jami.enricher.util.DiffUtils;
 import psidev.psi.mi.jami.enricher.util.EnricherUtils;
+import psidev.psi.mi.jami.enricher.util.diff.Diff;
 import psidev.psi.mi.jami.exception.IllegalRangeException;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultPosition;
 import psidev.psi.mi.jami.utils.AnnotationUtils;
 import psidev.psi.mi.jami.utils.RangeUtils;
-import uk.ac.ebi.intact.commons.util.DiffUtils;
-import uk.ac.ebi.intact.commons.util.diff.Diff;
 
 import java.util.Collection;
 import java.util.Collections;
