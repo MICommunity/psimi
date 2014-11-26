@@ -236,7 +236,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-examples</artifactId>
-            <version>${jami.version}</version>
+            <version>${jami.examples.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
