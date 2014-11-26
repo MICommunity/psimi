@@ -49,6 +49,7 @@
         <jami.crosslink.version>1.1.1-SNAPSHOT</jami.crosslink.version>
         <jami.enricher.version>1.1.1-SNAPSHOT</jami.enricher.version>
         <jami.examples.version>1.1.1-SNAPSHOT</jami.examples.version>
+        <jami.html.version>1.1.1-SNAPSHOT</jami.html.version>
         <calimocho.version>2.5.2-SNAPSHOT</calimocho.version>
         <validator.version>2.0.7-SNAPSHOT</validator.version>
     </properties>
