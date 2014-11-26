@@ -4,12 +4,18 @@
     <parent>
         <groupId>psidev.psi.mi.jami</groupId>
         <artifactId>psi-jami</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <artifactId>jami-html</artifactId>
     <version>1.0.1-SNAPSHOT</version>
     <name>PSI :: PSI-JAMI html parser and writer</name>
+
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-html</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-html</developerConnection>
+        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-html</url>
+    </scm>
 
     <build>
         <plugins>
@@ -64,7 +70,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-core</artifactId>
-            <version>${jami.core.version}</version>
+            <version>1.2.0</version>
         </dependency>
         <!-- apache commons -->
         <dependency>
