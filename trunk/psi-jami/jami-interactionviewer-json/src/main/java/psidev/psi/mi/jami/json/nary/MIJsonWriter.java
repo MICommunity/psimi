@@ -29,8 +29,6 @@ public class MIJsonWriter extends AbstractMIJsonWriter<Interaction> {
 
     public MIJsonWriter(){
         super();
-
-        initialiseSubWritersWith(getWriter());
     }
 
     public MIJsonWriter(File file, OntologyTermFetcher fetcher) throws IOException {
