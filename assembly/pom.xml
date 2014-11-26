@@ -242,6 +242,13 @@
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-html</artifactId>
+            <version>${jami.html.version}</version>
+            <type>zip</type>
+            <classifier>distribution</classifier>
+        </dependency>
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>crosslink-uploader-app</artifactId>
             <version>${jami.version}</version>
             <type>zip</type>
