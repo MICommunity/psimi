@@ -1,7 +1,7 @@
-package psidev.psi.mi.jami.json.nary.elements;
+package psidev.psi.mi.jami.json.elements;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.ModelledParticipant;

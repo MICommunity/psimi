@@ -1,7 +1,7 @@
-package psidev.psi.mi.jami.json.nary.elements;
+package psidev.psi.mi.jami.json.elements;
 
 import psidev.psi.mi.jami.json.MIJsonUtils;
-import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.IOException;

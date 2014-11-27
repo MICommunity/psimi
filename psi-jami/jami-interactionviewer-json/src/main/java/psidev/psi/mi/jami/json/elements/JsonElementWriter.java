@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.json.nary.elements;
+package psidev.psi.mi.jami.json.elements;
 
 import java.io.IOException;
 

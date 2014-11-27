@@ -1,7 +1,7 @@
-package psidev.psi.mi.jami.json.nary.elements;
+package psidev.psi.mi.jami.json.elements;
 
 import psidev.psi.mi.jami.json.MIJsonUtils;
-import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.XrefUtils;
 
@@ -19,7 +19,7 @@ import java.util.Map;
  * @since <pre>18/07/14</pre>
  */
 
-public class SimpleJsonInteractionEvidenceWriter extends SimpleJsonInteractionWriter<InteractionEvidence>{
+public class SimpleJsonInteractionEvidenceWriter<I extends InteractionEvidence> extends SimpleJsonInteractionWriter<I>{
 
     private JsonElementWriter<InteractionEvidence> experimentWriter;
     private JsonElementWriter<Confidence> confidenceWriter;
@@ -36,7 +36,7 @@ public class SimpleJsonInteractionEvidenceWriter extends SimpleJsonInteractionWr
         super(writer, processedFeatures, processedInteractors, processedParticipants, idGenerator);
     }
 
-    protected void writeOtherProperties(InteractionEvidence object) throws IOException {
+    protected void writeOtherProperties(I object) throws IOException {
 
         // write experiment
         getExperimentWriter().write(object);
@@ -116,7 +116,7 @@ public class SimpleJsonInteractionEvidenceWriter extends SimpleJsonInteractionWr
     }
 
     @Override
-    protected void writeAllIdentifiers(InteractionEvidence object) throws IOException {
+    protected void writeAllIdentifiers(I object) throws IOException {
         super.writeAllIdentifiers(object);
         if (object.getImexId() != null && object.getIdentifiers().isEmpty()){
             Collection<Xref> imexIds = XrefUtils.collectAllXrefsHavingDatabaseAndId(object.getXrefs(), Xref.IMEX_MI, Xref.IMEX, object.getImexId());
@@ -128,7 +128,7 @@ public class SimpleJsonInteractionEvidenceWriter extends SimpleJsonInteractionWr
     }
 
     @Override
-    protected void writeOtherIdentifiers(InteractionEvidence object) throws IOException {
+    protected void writeOtherIdentifiers(I object) throws IOException {
         if (object.getImexId() != null){
             Collection<Xref> imexIds = XrefUtils.collectAllXrefsHavingDatabaseAndId(object.getXrefs(), Xref.IMEX_MI, Xref.IMEX, object.getImexId());
             if (!imexIds.isEmpty()){
@@ -139,7 +139,7 @@ public class SimpleJsonInteractionEvidenceWriter extends SimpleJsonInteractionWr
     }
 
     @Override
-    protected boolean hasIdentifiers(InteractionEvidence object) {
+    protected boolean hasIdentifiers(I object) {
         return super.hasIdentifiers(object) || object.getImexId() != null;
     }
 }

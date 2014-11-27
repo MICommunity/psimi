@@ -6,8 +6,7 @@ import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
-import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
+import psidev.psi.mi.jami.json.binary.elements.SimpleJsonBinaryInteractionWriter;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,47 +66,20 @@ public class MIJsonBinaryWriter extends AbstractMIJsonBinaryWriter<BinaryInterac
         }
     }
 
-    @Override
-    protected void writeFeatureProperties(Feature object) throws IOException {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeParticipantProperties(Participant object) throws IOException {
-        // nothing to do
-    }
-
-    @Override
-    protected boolean writeInteractionProperties(BinaryInteraction interaction) throws IOException {
-        return false;
-    }
-
-
-    @Override
-    protected void writeParameters(BinaryInteraction binary) throws IOException {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeConfidences(BinaryInteraction binary) throws IOException {
-        // nothing to do
-    }
-
-    @Override
-    protected String extractImexIdFrom(BinaryInteraction binary) {
-        return null;
-    }
-
     protected void initialiseSubWritersWith(Writer writer) {
 
-        this.modelledBinaryWriter = new MIJsonModelledBinaryWriter(writer, getFetcher());
-        this.binaryEvidenceWriter = new MIJsonBinaryEvidenceWriter(writer, getFetcher());
+        this.modelledBinaryWriter = new MIJsonModelledBinaryWriter(writer, getFetcher(), getProcessedInteractors(), getProcessedFeatures(), getProcessedParticipants(),
+                getIdGenerator());
+        this.binaryEvidenceWriter = new MIJsonBinaryEvidenceWriter(writer, getFetcher(), getProcessedInteractors(), getProcessedFeatures(), getProcessedParticipants(),
+                getIdGenerator());
     }
 
     @Override
     public void close() throws MIIOException {
         try{
             super.close();
+            this.modelledBinaryWriter.close();
+            this.binaryEvidenceWriter.close();
         }
         finally {
             this.modelledBinaryWriter = null;
@@ -119,11 +91,36 @@ public class MIJsonBinaryWriter extends AbstractMIJsonBinaryWriter<BinaryInterac
     public void reset() throws MIIOException {
         try{
             super.reset();
+            this.modelledBinaryWriter.reset();
+            this.binaryEvidenceWriter.reset();
         }
         finally {
             this.modelledBinaryWriter = null;
             this.binaryEvidenceWriter = null;
         }
+    }
+
+    @Override
+    protected void initialiseInteractionWriter() {
+        super.setInteractionWriter(new SimpleJsonBinaryInteractionWriter<BinaryInteraction>(getWriter(), getProcessedFeatures(),
+                getProcessedInteractors(), getProcessedParticipants(), getIdGenerator()));
+        if (getExpansionId() != null){
+            ((SimpleJsonBinaryInteractionWriter)getInteractionWriter()).setExpansionId(getExpansionId());
+        }
+    }
+
+    @Override
+    public void flush() throws MIIOException {
+        super.flush();
+        this.modelledBinaryWriter.flush();
+        this.binaryEvidenceWriter.flush();
+    }
+
+    @Override
+    protected void initExpansionMethodInteractionWriter(Integer expansionId) {
+        ((SimpleJsonBinaryInteractionWriter) getInteractionWriter()).setExpansionId(expansionId);
+        this.modelledBinaryWriter.initExpansionMethodInteractionWriter(expansionId);
+        this.binaryEvidenceWriter.initExpansionMethodInteractionWriter(expansionId);
     }
 
     @Override

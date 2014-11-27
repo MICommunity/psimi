@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.json.nary;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.json.nary.elements.SimpleJsonInteractionWriter;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.elements.SimpleJsonInteractionWriter;
 import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.Interaction;
 
@@ -41,12 +43,14 @@ public class LightMIJsonWriter extends AbstractMIJsonWriter<Interaction> {
         super(writer, fetcher);
     }
 
-    public LightMIJsonWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
-        super(processedInteractors, processedFeatures, idGenerator);
+    public LightMIJsonWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, String> processedInteractors,
+                             Map<Feature, Integer> processedFeatures, Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
+        super(writer, fetcher, processedInteractors, processedFeatures, processedParticipants, idGenerator);
     }
 
-    public LightMIJsonWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
-        super(writer, fetcher, processedInteractors, processedFeatures, idGenerator);
+    public LightMIJsonWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures,
+                             Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
+        super(processedInteractors, processedFeatures, processedParticipants, idGenerator);
     }
 
     @Override
