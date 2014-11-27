@@ -25,11 +25,11 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module" module-name="jami-commons" />
-    <orderEntry type="module" module-name="jami-mitab" />
-    <orderEntry type="library" name="Maven: psidev.psi.mi.jami:jami-core:1.0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: psidev.psi.mi.jami:jami-commons:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: psidev.psi.mi.jami:jami-mitab:1.1.0" level="project" />
+    <orderEntry type="library" name="Maven: psidev.psi.mi.jami:jami-core:1.2.0" level="project" />
     <orderEntry type="library" name="Maven: net.sf.jgrapht:jgrapht:0.8.3" level="project" />
-    <orderEntry type="module" module-name="jami-xml" />
+    <orderEntry type="library" name="Maven: psidev.psi.mi.jami:jami-xml:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.xml.bind:jaxb-api:2.2.7" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-impl:2.2.7" level="project" />
     <orderEntry type="library" name="Maven: com.sun.xml.bind:jaxb-core:2.2.7" level="project" />
@@ -43,7 +43,7 @@
     <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:2.2" level="project" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-io:1.3.2" level="project" />
-    <orderEntry type="module" module-name="jami-crosslink-csv" />
+    <orderEntry type="library" name="Maven: psidev.psi.mi.jami:jami-crosslink-csv:1.1.0" level="project" />
     <orderEntry type="library" name="Maven: com.googlecode.jcsv:jcsv:1.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.3" level="project" />
