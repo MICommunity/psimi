@@ -7,14 +7,16 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import psidev.psi.mi.jami.commons.MIWriterOptionFactory;
 import psidev.psi.mi.jami.commons.PsiJami;
-import psidev.psi.mi.jami.crosslink.extension.datasource.CsvBinaryEvidenceSource;
-import psidev.psi.mi.jami.crosslink.extension.datasource.CsvMixedEvidenceSource;
-import psidev.psi.mi.jami.crosslink.extension.datasource.CsvNaryEvidenceSource;
-import psidev.psi.mi.jami.crosslink.extension.datasource.CsvSource;
+import psidev.psi.mi.jami.crosslink.CrossLinkCsv;
+import psidev.psi.mi.jami.crosslink.CrossLinkCsvOptionFactory;
+import psidev.psi.mi.jami.crosslink.CsvType;
+import psidev.psi.mi.jami.crosslink.listener.CsvParserLogger;
+import psidev.psi.mi.jami.datasource.InteractionSource;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.InteractionWriterFactory;
+import psidev.psi.mi.jami.factory.MIDataSourceFactory;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.model.impl.DefaultOrganism;
 import psidev.psi.mi.jami.model.impl.DefaultPublication;
@@ -86,9 +88,14 @@ public class MICrosslinkServlet extends HttpServlet{
                                Organism organism,
                                Publication publication,
                                String output) throws IOException {
-        CsvSource csvSource=null;
+        InteractionSource csvSource=null;
+        InteractionWriter interactionWriter = null;
         try{
-            InteractionWriter interactionWriter = null;
+
+            // initialise writers
+            CrossLinkCsv.initialiseAllCrossLinkCsvSources();
+            CrossLinkCsvOptionFactory csvOptionFactory = CrossLinkCsvOptionFactory.getInstance();
+            MIDataSourceFactory sourceFactory = MIDataSourceFactory.getInstance();
 
             InteractionWriterFactory writerFactory = InteractionWriterFactory.getInstance();
             MIWriterOptionFactory optionsFactory = MIWriterOptionFactory.getInstance();
@@ -96,7 +103,13 @@ public class MICrosslinkServlet extends HttpServlet{
             Map<String, Object> options;
             // xml 2.5
             if (output.equalsIgnoreCase(XML25_OUTPUT)){
-                csvSource = new CsvMixedEvidenceSource(stream);
+                csvSource = (InteractionSource)sourceFactory.getInteractionSourceWith(csvOptionFactory.
+                        getCsvOptions(CsvType.mix, ComplexType.n_ary, null, new CsvParserLogger(), stream));
+
+                if (csvSource == null){
+                    logger.log(Level.SEVERE, "Cannot find a Crosslink csv datasource for xml25_output.");
+                    resp.sendError(400, "Cannot find a Crosslink csv datasource for xml25_output.");
+                }
 
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".xml");
@@ -104,7 +117,13 @@ public class MICrosslinkServlet extends HttpServlet{
                         PsiXmlType.compact, PsiXmlVersion.v2_5_4);
             }
             else if (output.equalsIgnoreCase(XML25_BINARY_OUTPUT)){
-                csvSource = new CsvBinaryEvidenceSource(stream);
+                csvSource = (InteractionSource)sourceFactory.getInteractionSourceWith(csvOptionFactory.
+                        getCsvOptions(CsvType.binary_only, ComplexType.binary, false, new CsvParserLogger(), stream));
+
+                if (csvSource == null){
+                    logger.log(Level.SEVERE, "Cannot find a Crosslink csv datasource for xml25_binary_output.");
+                    resp.sendError(400, "Cannot find a Crosslink csv datasource for xml25_binary_output.");
+                }
 
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".xml");
@@ -112,7 +131,13 @@ public class MICrosslinkServlet extends HttpServlet{
                         PsiXmlType.compact, PsiXmlVersion.v2_5_4);
             }
             else if (output.equalsIgnoreCase(XML25_NARY_OUTPUT)){
-                csvSource = new CsvNaryEvidenceSource(stream);
+                csvSource = (InteractionSource)sourceFactory.getInteractionSourceWith(csvOptionFactory.
+                        getCsvOptions(CsvType.single_nary, ComplexType.n_ary, null, new CsvParserLogger(), stream));
+
+                if (csvSource == null){
+                    logger.log(Level.SEVERE, "Cannot find a Crosslink csv datasource for xml25_nary_output.");
+                    resp.sendError(400, "Cannot find a Crosslink csv datasource for xml25_nary_output.");
+                }
 
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".xml");
@@ -121,7 +146,13 @@ public class MICrosslinkServlet extends HttpServlet{
             }
             // mitab 2.5
             else if (output.equalsIgnoreCase(TAB25_OUTPUT)){
-                csvSource = new CsvBinaryEvidenceSource(stream);
+                csvSource = (InteractionSource)sourceFactory.getInteractionSourceWith(csvOptionFactory.
+                        getCsvOptions(CsvType.binary_only, ComplexType.binary, false, new CsvParserLogger(), stream));
+
+                if (csvSource == null){
+                    logger.log(Level.SEVERE, "Cannot find a Crosslink csv datasource for tab25_output.");
+                    resp.sendError(400, "Cannot find a Crosslink csv datasource for tab25_output.");
+                }
 
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
@@ -130,7 +161,13 @@ public class MICrosslinkServlet extends HttpServlet{
             }
             // mitab 2.6
             else if (output.equalsIgnoreCase(TAB26_OUTPUT)){
-                csvSource = new CsvBinaryEvidenceSource(stream);
+                csvSource = (InteractionSource)sourceFactory.getInteractionSourceWith(csvOptionFactory.
+                        getCsvOptions(CsvType.binary_only, ComplexType.binary, false, new CsvParserLogger(), stream));
+
+                if (csvSource == null){
+                    logger.log(Level.SEVERE, "Cannot find a Crosslink csv datasource for tab26_output.");
+                    resp.sendError(400, "Cannot find a Crosslink csv datasource for tab26_output.");
+                }
 
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
@@ -139,7 +176,13 @@ public class MICrosslinkServlet extends HttpServlet{
             }
             // mitab 2.7
             else {
-                csvSource = new CsvBinaryEvidenceSource(stream);
+                csvSource = (InteractionSource)sourceFactory.getInteractionSourceWith(csvOptionFactory.
+                        getCsvOptions(CsvType.binary_only, ComplexType.binary, false, new CsvParserLogger(), stream));
+
+                if (csvSource == null){
+                    logger.log(Level.SEVERE, "Cannot find a Crosslink csv datasource for tab27_output.");
+                    resp.sendError(400, "Cannot find a Crosslink csv datasource for tab27_output.");
+                }
 
                 // set attachment header
                 resp.setHeader("Content-disposition","attachment; filename="+request+".txt");
@@ -172,8 +215,13 @@ public class MICrosslinkServlet extends HttpServlet{
             resp.setStatus(200);
         }
         finally {
-            csvSource.close();
+            if (csvSource != null){
+                csvSource.close();
+            }
             stream.close();
+            if (interactionWriter != null){
+                interactionWriter.close();
+            }
         }
     }
 

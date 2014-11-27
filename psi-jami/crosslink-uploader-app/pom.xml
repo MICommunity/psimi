@@ -4,12 +4,12 @@
   <parent>
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>psi-jami</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
   </parent>
 
     <groupId>psidev.psi.mi.jami</groupId>
   <artifactId>crosslink-uploader-app</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.1.0</version>
 
     <name>PSI :: JAMI - cross-link CSV uploader application</name>
     <description>JAMI- cross-link CSV uploader application</description>
@@ -63,14 +63,14 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-commons</artifactId>
-            <version>${pom.version}</version>
+            <version>1.1.0</version>
         </dependency>
 
         <!-- JAMI json-->
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-crosslink-csv</artifactId>
-            <version>${pom.version}</version>
+            <version>1.1.0</version>
         </dependency>
 
         <!-- java servlet -->
