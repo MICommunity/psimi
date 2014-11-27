@@ -1711,6 +1711,23 @@
                                         "description":"The complex type unique short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1298&termName=complex%20type."
                                     }
                                 }
+                            },
+                            "expansion": {
+                                "type":"object",
+                                "required":false,
+                                "description":"The complex expansion method use to explode a n-ary interaction in n-1 binary interactions. It does not make sense for biological complexes. It is usually a term of the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1059&termName=complex%20expansion",
+                                "properties":{
+                                    "id": {
+                                        "type":"integer",
+                                        "required":false,
+                                        "description":"The complex expansion id which is unique per expanded n-ary interactions. It helps to detect all binary pairs that were part of the same n-ary interaction."
+                                    },
+                                    "name": {
+                                        "type":"string",
+                                        "required":true,
+                                        "description":"The complex expansion method short name from the PSI-MI ontology: http://www.ebi.ac.uk/ontology-lookup/browse.do?ontName=MI&termId=MI%3A1059&termName=complex%20expansion."
+                                    }
+                                }
                             }
                         }
                     }
