@@ -31,7 +31,6 @@
         <module>psi-jami</module>
         <module>validator</module>
         <module>psimi-enricher</module>
-        <module>assembly</module>
   </modules>
 
     <properties>
