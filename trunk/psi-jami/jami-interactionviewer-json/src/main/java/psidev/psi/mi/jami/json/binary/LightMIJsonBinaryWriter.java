@@ -2,13 +2,16 @@ package psidev.psi.mi.jami.json.binary;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.binary.elements.SimpleJsonBinaryInteractionWriter;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Map;
 
 /**
  * JSON writer for light interactions
@@ -20,53 +23,43 @@ import java.io.Writer;
 
 public class LightMIJsonBinaryWriter extends AbstractMIJsonBinaryWriter<BinaryInteraction> {
 
-    public LightMIJsonBinaryWriter(){
-        super();
+    public LightMIJsonBinaryWriter() {
     }
 
     public LightMIJsonBinaryWriter(File file, OntologyTermFetcher fetcher) throws IOException {
-
         super(file, fetcher);
     }
 
     public LightMIJsonBinaryWriter(OutputStream output, OntologyTermFetcher fetcher) {
-
         super(output, fetcher);
     }
 
     public LightMIJsonBinaryWriter(Writer writer, OntologyTermFetcher fetcher) {
-
         super(writer, fetcher);
     }
 
-    @Override
-    protected void writeFeatureProperties(Feature object) throws IOException {
-        // nothing to do
+    public LightMIJsonBinaryWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, String> processedInteractors,
+                                   Map<Feature, Integer> processedFeatures, Map<Entity, Integer> processedParticipants,
+                                   IncrementalIdGenerator idGenerator) {
+        super(writer, fetcher, processedInteractors, processedFeatures, processedParticipants, idGenerator);
+    }
+
+    public LightMIJsonBinaryWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures,
+                                   Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
+        super(processedInteractors, processedFeatures, processedParticipants, idGenerator);
     }
 
     @Override
-    protected void writeParticipantProperties(Participant object) throws IOException {
-        // nothing to do
+    protected void initialiseInteractionWriter() {
+        super.setInteractionWriter(new SimpleJsonBinaryInteractionWriter<BinaryInteraction>(getWriter(), getProcessedFeatures(),
+                getProcessedInteractors(), getProcessedParticipants(), getIdGenerator()));
+        if (getExpansionId() != null){
+            ((SimpleJsonBinaryInteractionWriter)getInteractionWriter()).setExpansionId(getExpansionId());
+        }
     }
 
     @Override
-    protected boolean writeInteractionProperties(BinaryInteraction interaction) throws IOException {
-        return false;
-    }
-
-
-    @Override
-    protected void writeParameters(BinaryInteraction binary) throws IOException {
-        // nothing to do
-    }
-
-    @Override
-    protected void writeConfidences(BinaryInteraction binary) throws IOException {
-        // nothing to do
-    }
-
-    @Override
-    protected String extractImexIdFrom(BinaryInteraction binary) {
-        return null;
+    protected void initExpansionMethodInteractionWriter(Integer expansionId) {
+        ((SimpleJsonBinaryInteractionWriter) getInteractionWriter()).setExpansionId(expansionId);
     }
 }

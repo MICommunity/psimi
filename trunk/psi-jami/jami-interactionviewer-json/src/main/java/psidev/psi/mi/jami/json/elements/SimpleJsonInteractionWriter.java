@@ -1,10 +1,10 @@
-package psidev.psi.mi.jami.json.nary.elements;
+package psidev.psi.mi.jami.json.elements;
 
 import org.json.simple.JSONValue;
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.json.MIJsonUtils;
-import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.IOException;
@@ -100,7 +100,6 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
                 BinaryInteraction binary = (BinaryInteraction)object;
                 if (binary.getComplexExpansion() != null){
                     MIJsonUtils.writeSeparator(writer);
-                    MIJsonUtils.writeSeparator(writer);
                     MIJsonUtils.writePropertyKey("expansion", writer);
                     writeExpansionMethod(binary.getComplexExpansion());
                 }
@@ -128,7 +127,12 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
     protected void writeExpansionMethod(CvTerm expansion) throws IOException {
         MIJsonUtils.writeStartObject(writer);
         MIJsonUtils.writeProperty("name", JSONValue.escape(expansion.getShortName()), writer);
+        writeOtherExpansionMethodProperties();
         MIJsonUtils.writeEndObject(writer);
+    }
+
+    protected void writeOtherExpansionMethodProperties() throws IOException {
+        // nothing to do here
     }
 
     protected void writeAllIdentifiers(I object) throws IOException {

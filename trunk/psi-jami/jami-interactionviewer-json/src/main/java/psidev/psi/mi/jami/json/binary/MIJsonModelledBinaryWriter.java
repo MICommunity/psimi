@@ -2,15 +2,16 @@ package psidev.psi.mi.jami.json.binary;
 
 import psidev.psi.mi.jami.binary.ModelledBinaryInteraction;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.json.MIJsonUtils;
-import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.binary.elements.SimpleJsonModelledBinaryInteractionWriter;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
-import psidev.psi.mi.jami.model.Participant;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Writer;
+import java.util.Map;
 
 /**
  * JSON writer for ModelledInteractions
@@ -22,92 +23,41 @@ import java.io.Writer;
 
 public class MIJsonModelledBinaryWriter extends AbstractMIJsonBinaryWriter<ModelledBinaryInteraction> {
 
-    public MIJsonModelledBinaryWriter(){
+    public MIJsonModelledBinaryWriter() {
         super();
     }
 
     public MIJsonModelledBinaryWriter(File file, OntologyTermFetcher fetcher) throws IOException {
-
         super(file, fetcher);
     }
 
     public MIJsonModelledBinaryWriter(OutputStream output, OntologyTermFetcher fetcher) {
-
         super(output, fetcher);
     }
 
     public MIJsonModelledBinaryWriter(Writer writer, OntologyTermFetcher fetcher) {
-
         super(writer, fetcher);
     }
 
-    @Override
-    protected void writeFeatureProperties(Feature object) throws IOException {
-        // nothing to do
+    public MIJsonModelledBinaryWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
+        super(writer, fetcher, processedInteractors, processedFeatures, processedParticipants, idGenerator);
+    }
+
+    public MIJsonModelledBinaryWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
+        super(processedInteractors, processedFeatures, processedParticipants, idGenerator);
     }
 
     @Override
-    protected void writeParticipantProperties(Participant object) throws IOException {
-        // nothing to do
+    protected void initExpansionMethodInteractionWriter(Integer expansionId) {
+        ((SimpleJsonModelledBinaryInteractionWriter)getInteractionWriter()).setExpansionId(expansionId);
     }
 
     @Override
-    protected boolean writeInteractionProperties(ModelledBinaryInteraction interaction) throws IOException {
-        if (interaction instanceof Complex){
-            Complex complex = (Complex)interaction;
-            // then interactor type
-            boolean hasType = complex.getInteractorType() != null;
-            if (hasType){
-                getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writeStartObject("complexType");
-                writeCvTerm(complex.getInteractorType());
-            }
-            // then evidence type
-            hasType = complex.getEvidenceType() != null;
-            if (hasType){
-                getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writeStartObject("evidenceType");
-                writeCvTerm(complex.getEvidenceType());
-            }
-            // then write organism
-            hasType = complex.getOrganism() != null;
-            if (hasType){
-                getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
-                writeNextPropertySeparatorAndIndent();
-                writeStartObject("organism");
-                writeOrganism(complex.getOrganism());
-            }
+    protected void initialiseInteractionWriter() {
+        super.setInteractionWriter(new SimpleJsonModelledBinaryInteractionWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
+                getProcessedParticipants(), getIdGenerator()));
+        if (getExpansionId() != null){
+            ((SimpleJsonModelledBinaryInteractionWriter)getInteractionWriter()).setExpansionId(getExpansionId());
         }
-        return false;
-    }
-
-
-    @Override
-    protected void writeParameters(ModelledBinaryInteraction binary) throws IOException {
-        boolean hasParameters = !binary.getModelledParameters().isEmpty();
-        if (hasParameters){
-            getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("parameters");
-            writeAllParameters(binary.getModelledParameters());
-        }
-    }
-
-    @Override
-    protected void writeConfidences(ModelledBinaryInteraction binary) throws IOException {
-        boolean hasConfidences = !binary.getModelledConfidences().isEmpty();
-        if (hasConfidences){
-            getWriter().write(MIJsonUtils.ELEMENT_SEPARATOR);
-            writeNextPropertySeparatorAndIndent();
-            writeStartObject("confidences");
-            writeAllConfidences(binary.getModelledConfidences());
-        }
-    }
-
-    @Override
-    protected String extractImexIdFrom(ModelledBinaryInteraction binary) {
-        return null;
     }
 }

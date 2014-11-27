@@ -1,7 +1,7 @@
-package psidev.psi.mi.jami.json.nary.elements;
+package psidev.psi.mi.jami.json.elements;
 
 import psidev.psi.mi.jami.json.MIJsonUtils;
-import psidev.psi.mi.jami.json.nary.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @since <pre>18/07/14</pre>
  */
 
-public class SimpleJsonModelledInteractionWriter extends SimpleJsonInteractionWriter<ModelledInteraction>{
+public class SimpleJsonModelledInteractionWriter<I extends ModelledInteraction> extends SimpleJsonInteractionWriter<I>{
 
     private JsonElementWriter<Organism> organismWriter;
     private JsonElementWriter<Confidence> confidenceWriter;
@@ -34,7 +34,7 @@ public class SimpleJsonModelledInteractionWriter extends SimpleJsonInteractionWr
         super(writer, processedFeatures, processedInteractors, processedParticipants, idGenerator);
     }
 
-    protected void writeOtherProperties(ModelledInteraction object) throws IOException {
+    protected void writeOtherProperties(I object) throws IOException {
 
         if (object instanceof Complex) {
             Complex complex = (Complex) object;

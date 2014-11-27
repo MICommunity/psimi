@@ -1,7 +1,8 @@
-package psidev.psi.mi.jami.json.nary.elements;
+package psidev.psi.mi.jami.json.elements;
 
 import org.json.simple.JSONValue;
 import psidev.psi.mi.jami.json.MIJsonUtils;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.*;
 import psidev.psi.mi.jami.utils.RangeUtils;
 
@@ -22,6 +23,7 @@ public class SimpleJsonRangeWriter implements JsonRangeWriter{
     private Writer writer;
     private Map<String, String> processedInteractors;
     private Map<Entity, Integer> processedParticipants;
+    private IncrementalIdGenerator idGenerator;
 
     public SimpleJsonRangeWriter(Writer writer, Map<String, String> processedInteractors,
                                  Map<Entity, Integer> processedParticipants){
@@ -37,6 +39,12 @@ public class SimpleJsonRangeWriter implements JsonRangeWriter{
             throw new IllegalArgumentException("The json range writer needs a non null map of processed participants");
         }
         this.processedParticipants = processedParticipants;
+    }
+
+    public SimpleJsonRangeWriter(Writer writer, Map<String, String> processedInteractors,
+                                 Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator){
+        this(writer, processedInteractors, processedParticipants);
+        this.idGenerator = idGenerator;
     }
 
     public void write(Range object) throws IOException {
@@ -70,22 +78,37 @@ public class SimpleJsonRangeWriter implements JsonRangeWriter{
             String[] extractedInteractorId =  MIJsonUtils.extractInteractorId(interactor.getPreferredIdentifier(), interactor);
             String key = extractedInteractorId[0]+"_"+extractedInteractorId[1];
 
-            if (this.processedInteractors.containsKey(key)){
-
-                MIJsonUtils.writeSeparator(writer);
-                MIJsonUtils.writeProperty("interactorRef", this.processedInteractors.get(key), writer);
+            if (!this.processedInteractors.containsKey(key)){
+                this.processedInteractors.put(key, key);
             }
+            MIJsonUtils.writeSeparator(writer);
+            MIJsonUtils.writeProperty("interactorRef", this.processedInteractors.get(key), writer);
         }
         if (participant != null){
             int id = 0;
             if (this.processedParticipants.containsKey(participant)){
                 id = this.processedParticipants.get(participant);
-                MIJsonUtils.writeSeparator(writer);
-                MIJsonUtils.writeProperty("participantRef", Integer.toString(id), writer);
             }
+            else{
+                id = getIdGenerator().nextId();
+                this.processedParticipants.put(participant, id);
+            }
+            MIJsonUtils.writeSeparator(writer);
+            MIJsonUtils.writeProperty("participantRef", Integer.toString(id), writer);
         }
         // end object
         MIJsonUtils.writeEndObject(writer);
 
+    }
+
+    public IncrementalIdGenerator getIdGenerator() {
+        if (idGenerator == null){
+           idGenerator = new IncrementalIdGenerator();
+        }
+        return idGenerator;
+    }
+
+    public void setIdGenerator(IncrementalIdGenerator idGenerator) {
+        this.idGenerator = idGenerator;
     }
 }

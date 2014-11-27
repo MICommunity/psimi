@@ -1,8 +1,10 @@
 package psidev.psi.mi.jami.json.nary;
 
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.json.nary.elements.SimpleJsonModelledInteractionWriter;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.elements.SimpleJsonModelledInteractionWriter;
 import psidev.psi.mi.jami.model.Complex;
+import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
 import psidev.psi.mi.jami.model.ModelledInteraction;
 
@@ -41,12 +43,14 @@ public class MIJsonModelledWriter extends AbstractMIJsonWriter<ModelledInteracti
         super(writer, fetcher);
     }
 
-    public MIJsonModelledWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
-        super(processedInteractors, processedFeatures, idGenerator);
+    public MIJsonModelledWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, String> processedInteractors,
+                                Map<Feature, Integer> processedFeatures, Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
+        super(writer, fetcher, processedInteractors, processedFeatures, processedParticipants, idGenerator);
     }
 
-    public MIJsonModelledWriter(Writer writer, OntologyTermFetcher fetcher, Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
-        super(writer, fetcher, processedInteractors, processedFeatures, idGenerator);
+    public MIJsonModelledWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures,
+                                Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
+        super(processedInteractors, processedFeatures, processedParticipants, idGenerator);
     }
 
     @Override
@@ -56,9 +60,9 @@ public class MIJsonModelledWriter extends AbstractMIJsonWriter<ModelledInteracti
 
     @Override
     protected void initialiseInteractionWriter() {
-        super.setInteractionWriter(new SimpleJsonModelledInteractionWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
+        super.setInteractionWriter(new SimpleJsonModelledInteractionWriter<ModelledInteraction>(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
                 getProcessedParticipants(), getIdGenerator()));
-        ((SimpleJsonModelledInteractionWriter)getInteractionWriter()).setFetcher(getFetcher());
+        ((SimpleJsonModelledInteractionWriter<ModelledInteraction>)getInteractionWriter()).setFetcher(getFetcher());
     }
 
 }

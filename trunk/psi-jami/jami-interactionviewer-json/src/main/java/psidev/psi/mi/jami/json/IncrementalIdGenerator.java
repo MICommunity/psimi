@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.json.nary;
+package psidev.psi.mi.jami.json;
 
 /**
  * Id generator that will increment ids

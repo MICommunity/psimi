@@ -4,10 +4,11 @@ import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.datasource.InteractionWriter;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
+import psidev.psi.mi.jami.json.IncrementalIdGenerator;
 import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.json.MIJsonWriterOptions;
-import psidev.psi.mi.jami.json.nary.elements.JsonElementWriter;
-import psidev.psi.mi.jami.json.nary.elements.SimpleJsonInteractorWriter;
+import psidev.psi.mi.jami.json.elements.JsonElementWriter;
+import psidev.psi.mi.jami.json.elements.SimpleJsonInteractorWriter;
 import psidev.psi.mi.jami.model.*;
 
 import java.io.*;
@@ -87,12 +88,13 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
     }
 
     protected AbstractMIJsonWriter(Writer writer, OntologyTermFetcher fetcher,
-                                   Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+                                   Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures,
+                                   Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
 
         initialiseWriter(writer);
         this.processedInteractors = processedInteractors;
         this.processedFeatures = processedFeatures;
-        processedParticipants = new HashMap<Entity, Integer>();
+        this.processedParticipants = processedParticipants;
         this.idGenerator = idGenerator;
         if (fetcher == null){
             logger.warning("The ontology fetcher is null so all the features will be listed as otherFeatures");
@@ -100,11 +102,12 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         this.fetcher = fetcher;
     }
 
-    protected AbstractMIJsonWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures, IncrementalIdGenerator idGenerator) {
+    protected AbstractMIJsonWriter(Map<String, String> processedInteractors, Map<Feature, Integer> processedFeatures,
+                                   Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
 
         this.processedInteractors = processedInteractors;
         this.processedFeatures = processedFeatures;
-        processedParticipants = new HashMap<Entity, Integer>();
+        this.processedParticipants = processedParticipants;
         this.idGenerator = idGenerator;
     }
 

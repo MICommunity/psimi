@@ -3,7 +3,7 @@ package psidev.psi.mi.jami.json.nary;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.options.InteractionWriterOptions;
-import psidev.psi.mi.jami.json.nary.elements.SimpleJsonInteractionWriter;
+import psidev.psi.mi.jami.json.elements.SimpleJsonInteractionWriter;
 import psidev.psi.mi.jami.model.Complex;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
@@ -49,14 +49,18 @@ public class MIJsonWriter extends AbstractMIJsonWriter<Interaction> {
 
     protected void initialiseSubWritersWith(Writer writer) {
 
-        this.modelledWriter = new MIJsonModelledWriter(writer, getFetcher());
-        this.evidenceWriter = new MIJsonEvidenceWriter(writer, getFetcher());
+        this.modelledWriter = new MIJsonModelledWriter(writer, getFetcher(), getProcessedInteractors(), getProcessedFeatures(), getProcessedParticipants(),
+                getIdGenerator());
+        this.evidenceWriter = new MIJsonEvidenceWriter(writer, getFetcher(), getProcessedInteractors(), getProcessedFeatures(), getProcessedParticipants(),
+                getIdGenerator());
     }
 
     @Override
     public void close() throws MIIOException {
         try{
             super.close();
+            this.modelledWriter.close();
+            this.evidenceWriter.close();
         }
         finally {
             this.modelledWriter = null;
@@ -68,11 +72,20 @@ public class MIJsonWriter extends AbstractMIJsonWriter<Interaction> {
     public void reset() throws MIIOException {
         try{
             super.reset();
+            this.modelledWriter.reset();
+            this.evidenceWriter.reset();
         }
         finally {
             this.modelledWriter = null;
             this.evidenceWriter = null;
         }
+    }
+
+    @Override
+    public void flush() throws MIIOException {
+        super.flush();
+        this.modelledWriter.flush();
+        this.evidenceWriter.flush();
     }
 
     @Override
