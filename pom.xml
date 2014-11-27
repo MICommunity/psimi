@@ -28,10 +28,10 @@
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
         <module>psimitab-search</module>
-        <module>assembly</module>
         <module>psi-jami</module>
         <module>validator</module>
         <module>psimi-enricher</module>
+        <module>assembly</module>
   </modules>
 
     <properties>
