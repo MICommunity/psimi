@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta name="description" content="JAMI-JSON"/>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<meta http-equiv="Content-Language" content="en-GB"/>
+<meta http-equiv="Window-target" content="_top"/>
+<meta name="viewport" content = "width = device-width, initial-scale = 1.0, minimum-scale = 1.0, maximum-scale = 1.0, user-scalable = no" />
+
+<title>
+    JAMI-Json application
+</title>
+</head>
+<body>
+
+<h2>Generating JSON from binary interactions (expands binary interactions if it finds n-ary interactions)</h2>
+
+<form id="form1_1" action="miJsonBinary" method="POST" name="url_form1">
+    URL: <input id="inputUrl1" type="text" name="url1"/>
+    <input id="submitUrl1" type="submit" value="Submit" />
+</form>
+<form id="form1_2" action="miJsonBinary" method="POST" enctype="multipart/form-data" name="file_form1">
+    Local File: <input id="inputFile1" type="file" name="file1" />
+    <input id="submitFile1" type="submit" value="Submit" />
+</form>
+
+<h2>Generating JSON from a mix of binary/n-ary interactions. Does not expand binary interactions</h2>
+
+<form id="form2_1" action="miJson" method="POST" name="url_form2">
+    URL: <input id="inputUrl2" type="text" name="url2"/>
+    <input id="submitUrl2"  type="submit" value="Submit" />
+</form>
+<form id="form2_2" action="miJson" method="POST" enctype="multipart/form-data" name="file_form2">
+    Local File: <input id="inputFile2" type="file" name="file2" />
+    <input id="submitFile2"  type="submit" value="Submit" />
+</form>
+</body>
+</html>
