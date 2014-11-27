@@ -23,6 +23,13 @@
         <jetty.contextPath>/jami/crosslink</jetty.contextPath>
     </properties>
 
+    <scm>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/crosslink-uploader-app</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/crosslink-uploader-app</developerConnection>
+        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/crosslink-uploader-app</url>
+    </scm>
+
+
     <build>
         <finalName>${artifactId}-${version}</finalName>
 
