@@ -61,7 +61,7 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
 
     public void write(I object) throws IOException {
         Xref preferredIdentifier = !object.getIdentifiers().isEmpty() ? (Xref)object.getIdentifiers().iterator().next() : null;
-        String[] keyValues = MIJsonUtils.extractInteractionId(preferredIdentifier, object);
+        String[] keyValues = generateInteractionIdentifier(object, preferredIdentifier);
         String id = null;
 
         // if the interaction has not yet been processed, we write the interactor
@@ -122,6 +122,10 @@ public class SimpleJsonInteractionWriter<I extends Interaction> implements JsonE
             MIJsonUtils.writeEndObject(writer);
 
         }
+    }
+
+    protected String[] generateInteractionIdentifier(I object, Xref preferredIdentifier) {
+        return MIJsonUtils.extractInteractionId(preferredIdentifier, object);
     }
 
     protected void writeExpansionMethod(CvTerm expansion) throws IOException {

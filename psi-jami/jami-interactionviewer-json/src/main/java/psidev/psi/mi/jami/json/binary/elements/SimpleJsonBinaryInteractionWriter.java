@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.json.elements.SimpleJsonInteractionWriter;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
+import psidev.psi.mi.jami.model.Xref;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class SimpleJsonBinaryInteractionWriter<I extends BinaryInteraction> extends SimpleJsonInteractionWriter<I>{
 
     private Integer expansionId;
+    private int currentBinaryNumber =0;
 
     public SimpleJsonBinaryInteractionWriter(Writer writer, Map<Feature, Integer> processedFeatures,
                                              Map<String, String> processedInteractors, Map<Entity, Integer> processedParticipants) {
@@ -36,6 +38,7 @@ public class SimpleJsonBinaryInteractionWriter<I extends BinaryInteraction> exte
 
     public void setExpansionId(Integer expansionId) {
         this.expansionId = expansionId;
+        this.currentBinaryNumber = 0;
     }
 
     @Override
@@ -44,5 +47,16 @@ public class SimpleJsonBinaryInteractionWriter<I extends BinaryInteraction> exte
             MIJsonUtils.writeSeparator(getWriter());
             MIJsonUtils.writeProperty("id", Integer.toString(expansionId), getWriter());
         }
+    }
+
+    @Override
+    protected String[] generateInteractionIdentifier(I object, Xref preferredIdentifier) {
+        return MIJsonUtils.extractBinaryInteractionId(preferredIdentifier, object, expansionId != null ? currentBinaryNumber:null);
+    }
+
+    @Override
+    public void write(I object) throws IOException {
+        super.write(object);
+        this.currentBinaryNumber++;
     }
 }

@@ -134,7 +134,7 @@ public abstract class AbstractMIJsonWriter<I extends Interaction, B extends Bina
         try {
             binaryInteractions = expansionMethod.expand(interaction);
             // we expanded a n-ary interaction
-            if(binaryInteractions.size() > 1){
+            if(binaryInteractions.size() >= 1){
                 this.binaryWriter.setExpansionId(currentExpansionId);
                 currentExpansionId++;
             }

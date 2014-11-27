@@ -1,6 +1,7 @@
 package psidev.psi.mi.jami.json;
 
 import org.json.simple.JSONValue;
+import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
 import psidev.psi.mi.jami.model.Interactor;
@@ -107,6 +108,31 @@ public class MIJsonUtils {
         }
         else{
             interactorId = Integer.toString(interaction.hashCode());
+            db = "generated";
+        }
+        return new String[]{db, interactorId};
+    }
+
+    /**
+     *
+     * @param ref
+     * @param interaction
+     * @param number a suffix
+     * @return  an array of String : first the database, then the interactionId, then a number to append
+     */
+    public static String[] extractBinaryInteractionId(Xref ref, BinaryInteraction interaction, Integer number){
+        String interactorId = null;
+        String db = null;
+        if (ref != null){
+            interactorId = JSONValue.escape(ref.getId())+(number != null ? "_"+number:"");
+            db = JSONValue.escape(ref.getDatabase().getShortName());
+        }
+        else if (interaction instanceof InteractionEvidence && ((InteractionEvidence)interaction).getImexId() != null){
+            interactorId = ((InteractionEvidence)interaction).getImexId()+(number != null ? "_"+number:"");
+            db = "imex";
+        }
+        else{
+            interactorId = Integer.toString(interaction.hashCode())+(number != null ? "_"+number:"");
             db = "generated";
         }
         return new String[]{db, interactorId};
