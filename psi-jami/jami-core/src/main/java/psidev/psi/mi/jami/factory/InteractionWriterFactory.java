@@ -4,6 +4,7 @@ import psidev.psi.mi.jami.datasource.InteractionWriter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -70,11 +71,11 @@ public class InteractionWriterFactory {
                 try {
                     return instantiateNewWriter(entry.getKey(), requiredOptions);
                 } catch (IllegalAccessException e) {
-                    logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
+                    logger.log(Level.SEVERE, "We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.", e);
                 } catch (InstantiationException e) {
-                    logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
+                    logger.log(Level.SEVERE, "We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.", e);
                 }  catch (Exception e) {
-                    logger.warning("We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.");
+                    logger.log(Level.WARNING, "We cannot instantiate interaction writer of type " + entry.getKey() + " with the given options.", e);
                 }
             }
         }
