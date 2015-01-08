@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.Interaction;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -53,11 +54,11 @@ public class MIDataSourceFactory {
                 try {
                     return instantiateNewDataSource(entry.getKey(), requiredOptions);
                 } catch (IllegalAccessException e) {
-                    logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
+                    logger.log(Level.SEVERE,"We cannot instantiate data source of type " + entry.getKey() + " with the given options.", e);
                 } catch (InstantiationException e) {
-                    logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
+                    logger.log(Level.SEVERE,"We cannot instantiate data source of type " + entry.getKey() + " with the given options.", e);
                 } catch (Exception e){
-                    logger.warning("We cannot instantiate data source of type " + entry.getKey() + " with the given options.");
+                    logger.log(Level.WARNING,"We cannot instantiate data source of type " + entry.getKey() + " with the given options.", e);
                 }
             }
         }
@@ -80,11 +81,11 @@ public class MIDataSourceFactory {
                 try {
                     return (InteractionStream) instantiateNewDataSource(entry.getKey(), requiredOptions);
                 } catch (IllegalAccessException e) {
-                    logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
+                    logger.log(Level.SEVERE,"We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.", e);
                 } catch (InstantiationException e) {
-                    logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
-                } catch (Exception e) {
-                    logger.warning("We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.");
+                    logger.log(Level.SEVERE,"We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.", e);
+                } catch (Exception e){
+                    logger.log(Level.WARNING,"We cannot instantiate interaction data source of type " + entry.getKey() + " with the given options.", e);
                 }
             }
         }
