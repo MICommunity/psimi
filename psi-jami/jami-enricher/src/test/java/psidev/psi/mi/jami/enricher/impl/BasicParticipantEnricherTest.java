@@ -45,8 +45,8 @@ public class BasicParticipantEnricherTest {
         assertNull(participantEnricher.getFeatureEnricher());
         assertNull(participantEnricher.getCvTermEnricher());
 
-        participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
-                new ParticipantEnricherLogger() ,
+        participantEnricher.setParticipantEnricherListener(new ParticipantEnricherListenerManager(
+                new ParticipantEnricherLogger(),
                 new ParticipantEnricherListener<Participant>() {
 
                     public void onEnrichmentError(Participant object, String message, Exception e) {
@@ -95,8 +95,8 @@ public class BasicParticipantEnricherTest {
 
                     public void onEnrichmentComplete(Participant object, EnrichmentStatus status, String message) {
                         assertTrue(object == persistentParticipant);
-                        assertEquals(EnrichmentStatus.SUCCESS , status);
-                        persistentInt ++ ;
+                        assertEquals(EnrichmentStatus.SUCCESS, status);
+                        persistentInt++;
                     }
 
                     public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {
@@ -129,8 +129,8 @@ public class BasicParticipantEnricherTest {
 
         participantEnricher.setCvTermEnricher(new MinimalCvTermEnricher(new MockCvTermFetcher()));
 
-        participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
-                new ParticipantEnricherLogger() ,
+        participantEnricher.setParticipantEnricherListener(new ParticipantEnricherListenerManager(
+                new ParticipantEnricherLogger(),
                 new ParticipantEnricherListener<Participant>() {
 
                     public void onBiologicalRoleUpdate(Participant participant, CvTerm oldType) {
@@ -175,8 +175,8 @@ public class BasicParticipantEnricherTest {
 
                     public void onEnrichmentComplete(Participant object, EnrichmentStatus status, String message) {
                         assertTrue(object == persistentParticipant);
-                        assertEquals(EnrichmentStatus.SUCCESS , status);
-                        persistentInt ++;
+                        assertEquals(EnrichmentStatus.SUCCESS, status);
+                        persistentInt++;
                     }
 
                     public void onEnrichmentError(Participant object, String message, Exception e) {
@@ -217,8 +217,8 @@ public class BasicParticipantEnricherTest {
         assertNotNull(persistentParticipant.getBiologicalRole());
         assertNull(persistentParticipant.getBiologicalRole().getFullName());
 
-        participantEnricher.setParticipantListener(new ParticipantEnricherListenerManager(
-                new ParticipantEnricherLogger() ,
+        participantEnricher.setParticipantEnricherListener(new ParticipantEnricherListenerManager(
+                new ParticipantEnricherLogger(),
                 new ParticipantEnricherListener<Participant>() {
 
                     public void onEnrichmentError(Participant object, String message, Exception e) {
@@ -232,6 +232,7 @@ public class BasicParticipantEnricherTest {
                     public void onRemovedFeature(Participant participant, Feature removed) {
                         Assert.fail();
                     }
+
                     public void onBiologicalRoleUpdate(Participant participant, CvTerm oldType) {
                         Assert.fail();
                     }
@@ -266,8 +267,8 @@ public class BasicParticipantEnricherTest {
 
                     public void onEnrichmentComplete(Participant object, EnrichmentStatus status, String message) {
                         assertTrue(object == persistentParticipant);
-                        assertEquals(EnrichmentStatus.SUCCESS , status);
-                        persistentInt ++;
+                        assertEquals(EnrichmentStatus.SUCCESS, status);
+                        persistentInt++;
                     }
 
                     public void onInteractorUpdate(Entity entity, Interactor oldInteractor) {

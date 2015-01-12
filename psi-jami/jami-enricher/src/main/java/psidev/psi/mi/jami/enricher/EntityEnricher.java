@@ -33,4 +33,10 @@ public interface EntityEnricher<P extends Entity, F extends Feature> extends MIE
      */
     public EntityEnricherListener getParticipantEnricherListener();
 
+    public void setInteractorEnricher(CompositeInteractorEnricher interactorEnricher);
+
+    public void setFeatureEnricher(FeatureEnricher<F> enricher);
+
+    public void setParticipantEnricherListener(EntityEnricherListener listener);
+
 }

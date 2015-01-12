@@ -28,4 +28,8 @@ public interface OrganismEnricher extends MIEnricher<Organism>{
     public OrganismEnricherListener getOrganismEnricherListener();
 
     public CvTermEnricher<CvTerm> getCvTermEnricher();
+
+    public void setOrganismEnricherListener(OrganismEnricherListener listener);
+
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> enricher);
 }

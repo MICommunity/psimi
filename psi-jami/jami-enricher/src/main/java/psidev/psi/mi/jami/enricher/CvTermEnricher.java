@@ -25,4 +25,6 @@ public interface CvTermEnricher<C extends CvTerm> extends MIEnricher<C>{
      * @return  the current listener. May be null.
      */
     public CvTermEnricherListener<C> getCvTermEnricherListener();
+
+    public void setCvTermEnricherListener(CvTermEnricherListener<C> listener);
 }

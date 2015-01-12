@@ -20,4 +20,6 @@ public interface ProteinEnricher extends InteractorEnricher<Protein>{
      * @return  The current remapper.
      */
     public ProteinMapper getProteinMapper();
+
+    public void setProteinMapper(ProteinMapper mapper);
 }

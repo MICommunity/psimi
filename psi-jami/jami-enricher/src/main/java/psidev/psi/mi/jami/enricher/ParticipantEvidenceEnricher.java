@@ -15,4 +15,6 @@ public interface ParticipantEvidenceEnricher<T extends ParticipantEvidence> exte
 
     public OrganismEnricher getOrganismEnricher();
 
+    public void setOrganismEnricher(OrganismEnricher enricher);
+
 }

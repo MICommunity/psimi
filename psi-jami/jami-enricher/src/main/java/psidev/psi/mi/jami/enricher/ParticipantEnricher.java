@@ -19,4 +19,6 @@ public interface ParticipantEnricher <P extends Participant, F extends Feature> 
      */
     public CvTermEnricher<CvTerm> getCvTermEnricher();
 
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> enricher);
+
 }

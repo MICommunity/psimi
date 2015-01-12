@@ -15,4 +15,6 @@ import psidev.psi.mi.jami.model.ModelledInteraction;
 public interface ModelledInteractionEnricher<I extends ModelledInteraction> extends InteractionEnricher<I> {
 
     public SourceEnricher getSourceEnricher();
+
+    public void setSourceEnricher(SourceEnricher enricher);
 }

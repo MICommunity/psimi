@@ -40,7 +40,7 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
 
     private FeatureEnricherListener<F> listener;
     private CvTermEnricher cvTermEnricher;
-    private Collection<F> featuresWithRangesToUpdate;
+    private Collection<F> featuresWithRangesToUpdate = Collections.EMPTY_LIST;
 
     public MinimalFeatureEnricher(){
     }

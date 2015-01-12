@@ -31,4 +31,8 @@ public interface FeatureEnricher <F extends Feature> extends MIEnricher<F>{
      */
     public CvTermEnricher<CvTerm> getCvTermEnricher();
 
+    public void setFeatureEnricherListener(FeatureEnricherListener<F> listener);
+
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> cvEnricher);
+
 }

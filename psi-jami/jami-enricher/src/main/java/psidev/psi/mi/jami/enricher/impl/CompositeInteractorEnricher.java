@@ -170,4 +170,52 @@ public class CompositeInteractorEnricher implements InteractorEnricher<Interacto
     public OrganismEnricher getOrganismEnricher() {
         return this.interactorBaseEnricher.getOrganismEnricher();
     }
+
+    public void setListener(InteractorEnricherListener<Interactor> listener) {
+        this.interactorBaseEnricher.setListener(listener);
+    }
+
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> enricher) {
+        this.interactorBaseEnricher.setCvTermEnricher(enricher);
+        if (getProteinEnricher() != null){
+            getProteinEnricher().setCvTermEnricher(enricher);
+        }
+        if (getPolymerBaseEnricher() != null){
+            getPolymerBaseEnricher().setCvTermEnricher(enricher);
+        }
+        if (getGeneEnricher() != null){
+            getGeneEnricher().setCvTermEnricher(enricher);
+        }
+        if (getBioactiveEntityEnricher() != null){
+            getBioactiveEntityEnricher().setCvTermEnricher(enricher);
+        }
+        if (getComplexEnricher() != null){
+            getComplexEnricher().setCvTermEnricher(enricher);
+        }
+        if (getInteractorPoolEnricher() != null){
+            getInteractorPoolEnricher().setCvTermEnricher(enricher);
+        }
+    }
+
+    public void setOrganismEnricher(OrganismEnricher enricher) {
+        this.interactorBaseEnricher.setOrganismEnricher(enricher);
+        if (getProteinEnricher() != null){
+            getProteinEnricher().setOrganismEnricher(enricher);
+        }
+        if (getPolymerBaseEnricher() != null){
+            getPolymerBaseEnricher().setOrganismEnricher(enricher);
+        }
+        if (getGeneEnricher() != null){
+            getGeneEnricher().setOrganismEnricher(enricher);
+        }
+        if (getBioactiveEntityEnricher() != null){
+            getBioactiveEntityEnricher().setOrganismEnricher(enricher);
+        }
+        if (getComplexEnricher() != null){
+            getComplexEnricher().setOrganismEnricher(enricher);
+        }
+        if (getInteractorPoolEnricher() != null){
+            getInteractorPoolEnricher().setOrganismEnricher(enricher);
+        }
+    }
 }

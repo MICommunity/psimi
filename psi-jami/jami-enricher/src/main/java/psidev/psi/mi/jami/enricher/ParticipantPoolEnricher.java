@@ -14,4 +14,6 @@ import psidev.psi.mi.jami.model.ParticipantPool;
 public interface ParticipantPoolEnricher<P extends ParticipantPool, F extends Feature> extends ParticipantEnricher<P,F>{
 
     public CompositeEntityEnricher getParticipantCandidateEnricher();
+
+    public void setParticipantCandidateEnricher(CompositeEntityEnricher enricher);
 }

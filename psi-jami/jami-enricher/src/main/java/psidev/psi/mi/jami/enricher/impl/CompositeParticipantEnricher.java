@@ -141,11 +141,55 @@ public class CompositeParticipantEnricher implements ParticipantEnricher<Partici
         return this.entityBaseEnricher.getCvTermEnricher();
     }
 
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> enricher) {
+        this.entityBaseEnricher.setCvTermEnricher(enricher);
+
+        if (this.experimentalEntityEnricher != null){
+            this.experimentalEntityEnricher.setCvTermEnricher(enricher);
+        }
+        if (this.modelledEntityEnricher != null){
+            this.modelledEntityEnricher.setCvTermEnricher(enricher);
+        }
+        if (this.poolEnricher != null){
+            this.poolEnricher.setCvTermEnricher(enricher);
+        }
+    }
+
     public FeatureEnricher getFeatureEnricher() {
         return this.entityBaseEnricher.getFeatureEnricher();
     }
 
     public EntityEnricherListener getParticipantEnricherListener() {
         return this.entityBaseEnricher.getParticipantEnricherListener();
+    }
+
+    public void setInteractorEnricher(CompositeInteractorEnricher interactorEnricher) {
+        this.entityBaseEnricher.setInteractorEnricher(interactorEnricher);
+
+        if (this.experimentalEntityEnricher != null){
+            this.experimentalEntityEnricher.setInteractorEnricher(interactorEnricher);
+        }
+        if (this.modelledEntityEnricher != null){
+            this.modelledEntityEnricher.setInteractorEnricher(interactorEnricher);
+        }
+        if (this.poolEnricher != null){
+            this.poolEnricher.setInteractorEnricher(interactorEnricher);
+        }
+    }
+
+    public void setFeatureEnricher(FeatureEnricher<Feature> enricher) {
+        this.entityBaseEnricher.setFeatureEnricher(enricher);
+
+        if (this.poolEnricher != null){
+            this.poolEnricher.setFeatureEnricher(enricher);
+        }
+    }
+
+    public void setParticipantEnricherListener(EntityEnricherListener listener) {
+        this.entityBaseEnricher.setParticipantEnricherListener(listener);
+
+        if (this.poolEnricher != null){
+            this.poolEnricher.setParticipantEnricherListener(listener);
+        }
     }
 }
