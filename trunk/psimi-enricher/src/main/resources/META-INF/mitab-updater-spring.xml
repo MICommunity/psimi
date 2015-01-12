@@ -102,7 +102,7 @@
         <property name="cvTermEnricher" ref="mitabCvTermEnricher"/>
         <property name="featureEnricher" ref="mitabFeatureEnricher"/>
         <property name="interactorEnricher" ref="mitabInteractorEnricher"/>
-        <property name="participantListener" ref="participantEvidenceListener"/>
+        <property name="participantEnricherListener" ref="participantEvidenceListener"/>
     </bean>
 
     <bean id="mitabParticipantEnricher" class="psidev.psi.mi.jami.enricher.impl.CompositeParticipantEvidenceEnricher">
