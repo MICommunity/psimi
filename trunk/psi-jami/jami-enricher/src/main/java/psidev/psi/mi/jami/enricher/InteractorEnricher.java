@@ -36,4 +36,10 @@ public interface InteractorEnricher<T extends Interactor> extends MIEnricher<T>{
     public CvTermEnricher<CvTerm> getCvTermEnricher();
 
     public OrganismEnricher getOrganismEnricher();
+
+    public void setListener(InteractorEnricherListener<T> listener);
+
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> enricher);
+
+    public void setOrganismEnricher(OrganismEnricher enricher);
 }

@@ -89,8 +89,8 @@ public class FullParticipantEvidenceUpdater<P extends ParticipantEvidence> exten
     }
 
     @Override
-    public void setParticipantListener(EntityEnricherListener listener) {
-        this.minimalUpdater.setParticipantListener(listener);
+    public void setParticipantEnricherListener(EntityEnricherListener listener) {
+        this.minimalUpdater.setParticipantEnricherListener(listener);
     }
 
     @Override

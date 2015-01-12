@@ -18,4 +18,6 @@ public interface SourceEnricher extends CvTermEnricher<Source>{
      * @return  the current listener. May be null.
      */
     public PublicationEnricher getPublicationEnricher();
+
+    public void setPublicationEnricher(PublicationEnricher enricher);
 }

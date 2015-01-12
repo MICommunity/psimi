@@ -20,4 +20,6 @@ public interface InteractionEvidenceEnricher
      */
     public ExperimentEnricher getExperimentEnricher();
 
+    public void setExperimentEnricher(ExperimentEnricher enricher);
+
 }

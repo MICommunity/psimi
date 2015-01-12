@@ -12,4 +12,6 @@ package psidev.psi.mi.jami.enricher;
 public interface CuratedPublicationEnricher extends PublicationEnricher{
 
     public SourceEnricher getSourceEnricher();
+
+    public void setSourceEnricher(SourceEnricher enricher);
 }

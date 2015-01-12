@@ -38,4 +38,12 @@ public interface ExperimentEnricher extends MIEnricher<Experiment>{
      * @return      The listener which is currently being used.
      */
     public ExperimentEnricherListener getExperimentEnricherListener();
+
+    public void setOrganismEnricher(OrganismEnricher organismEnricher);
+
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> cvEnricher);
+
+    public void setPublicationEnricher(PublicationEnricher publicationEnricher);
+
+    public void setExperimentEnricherListener(ExperimentEnricherListener listener);
 }

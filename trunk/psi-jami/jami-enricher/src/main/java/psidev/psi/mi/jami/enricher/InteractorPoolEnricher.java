@@ -20,4 +20,9 @@ public interface InteractorPoolEnricher extends InteractorEnricher<InteractorPoo
     public CompositeInteractorEnricher getInteractorEnricher();
 
     public Comparator<Interactor> getInteractorComparator();
+
+    public void setInteractorEnricher(CompositeInteractorEnricher enricher);
+
+    public void setInteractorComparator(Comparator<Interactor> comparator);
+
 }

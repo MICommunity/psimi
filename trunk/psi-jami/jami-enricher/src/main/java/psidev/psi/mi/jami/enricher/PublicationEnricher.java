@@ -24,4 +24,6 @@ public interface PublicationEnricher extends MIEnricher<Publication>{
      * @return  the current publication listener
      */
     public PublicationEnricherListener getPublicationEnricherListener();
+
+    public void setPublicationEnricherListener(PublicationEnricherListener listener);
 }

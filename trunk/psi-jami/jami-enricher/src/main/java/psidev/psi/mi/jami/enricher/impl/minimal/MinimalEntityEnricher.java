@@ -113,7 +113,7 @@ public class MinimalEntityEnricher<P extends Entity, F extends Feature>
      * Sets the listener for Participant events. If null, events will not be reported.
      * @param listener  The listener to use. Can be null.
      */
-    public void setParticipantListener(EntityEnricherListener listener) {
+    public void setParticipantEnricherListener(EntityEnricherListener listener) {
         this.listener = listener;
     }
 

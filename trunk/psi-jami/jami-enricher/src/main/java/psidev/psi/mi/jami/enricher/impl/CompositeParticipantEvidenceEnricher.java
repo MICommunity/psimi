@@ -90,4 +90,32 @@ public class CompositeParticipantEvidenceEnricher implements ParticipantEnricher
     public EntityEnricherListener getParticipantEnricherListener() {
         return this.entityBaseEnricher.getParticipantEnricherListener();
     }
+
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> enricher) {
+        this.entityBaseEnricher.setCvTermEnricher(enricher);
+        if (poolEntityEnricher != null){
+            poolEntityEnricher.setCvTermEnricher(enricher);
+        }
+    }
+
+    public void setInteractorEnricher(CompositeInteractorEnricher interactorEnricher) {
+        this.entityBaseEnricher.setInteractorEnricher(interactorEnricher);
+        if (poolEntityEnricher != null){
+            poolEntityEnricher.setInteractorEnricher(interactorEnricher);
+        }
+    }
+
+    public void setFeatureEnricher(FeatureEnricher<FeatureEvidence> enricher) {
+        this.entityBaseEnricher.setFeatureEnricher(enricher);
+        if (poolEntityEnricher != null){
+            poolEntityEnricher.setFeatureEnricher(enricher);
+        }
+    }
+
+    public void setParticipantEnricherListener(EntityEnricherListener listener) {
+        this.entityBaseEnricher.setParticipantEnricherListener(listener);
+        if (poolEntityEnricher != null){
+            poolEntityEnricher.setParticipantEnricherListener(listener);
+        }
+    }
 }

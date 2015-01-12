@@ -1,9 +1,7 @@
 package psidev.psi.mi.jami.enricher.impl;
 
-import psidev.psi.mi.jami.enricher.CvTermEnricher;
 import psidev.psi.mi.jami.enricher.EntityEnricher;
 import psidev.psi.mi.jami.enricher.FeatureEnricher;
-import psidev.psi.mi.jami.enricher.ParticipantEnricher;
 import psidev.psi.mi.jami.enricher.exception.EnricherException;
 import psidev.psi.mi.jami.enricher.listener.EntityEnricherListener;
 import psidev.psi.mi.jami.model.*;
@@ -117,5 +115,23 @@ public class CompositeEntityEnricher implements EntityEnricher<Entity, Feature> 
 
     public EntityEnricherListener getParticipantEnricherListener() {
         return this.entityBaseEnricher.getParticipantEnricherListener();
+    }
+
+    public void setInteractorEnricher(CompositeInteractorEnricher interactorEnricher) {
+        this.entityBaseEnricher.setInteractorEnricher(interactorEnricher);
+        if (getModelledEntityEnricher() != null){
+            getModelledEntityEnricher().setInteractorEnricher(interactorEnricher);
+        }
+        if (getExperimentalEntityEnricher() != null){
+            getExperimentalEntityEnricher().setInteractorEnricher(interactorEnricher);
+        }
+    }
+
+    public void setFeatureEnricher(FeatureEnricher<Feature> enricher) {
+        this.entityBaseEnricher.setFeatureEnricher(enricher);
+    }
+
+    public void setParticipantEnricherListener(EntityEnricherListener listener) {
+        this.entityBaseEnricher.setParticipantEnricherListener(listener);
     }
 }

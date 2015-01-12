@@ -60,6 +60,10 @@ public class MinimalOrganismEnricher extends AbstractMIEnricher<Organism>
         this.listener = organismEnricherListener;
     }
 
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> enricher) {
+        // nothing to do
+    }
+
     public OrganismEnricherListener getOrganismEnricherListener() {
         return listener;
     }

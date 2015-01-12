@@ -89,11 +89,39 @@ public class CompositeModelledParticipantEnricher implements ParticipantEnricher
         return this.entityBaseEnricher.getCvTermEnricher();
     }
 
+    public void setCvTermEnricher(CvTermEnricher<CvTerm> enricher) {
+        this.entityBaseEnricher.setCvTermEnricher(enricher);
+        if (poolEntityEnricher != null){
+            poolEntityEnricher.setCvTermEnricher(enricher);
+        }
+    }
+
     public FeatureEnricher getFeatureEnricher() {
         return this.entityBaseEnricher.getFeatureEnricher();
     }
 
     public EntityEnricherListener getParticipantEnricherListener() {
         return this.entityBaseEnricher.getParticipantEnricherListener();
+    }
+
+    public void setInteractorEnricher(CompositeInteractorEnricher interactorEnricher) {
+        this.entityBaseEnricher.setInteractorEnricher(interactorEnricher);
+        if (poolEntityEnricher != null){
+            poolEntityEnricher.setInteractorEnricher(interactorEnricher);
+        }
+    }
+
+    public void setFeatureEnricher(FeatureEnricher<ModelledFeature> enricher) {
+        this.entityBaseEnricher.setFeatureEnricher(enricher);
+        if (poolEntityEnricher != null){
+            poolEntityEnricher.setFeatureEnricher(enricher);
+        }
+    }
+
+    public void setParticipantEnricherListener(EntityEnricherListener listener) {
+        this.entityBaseEnricher.setParticipantEnricherListener(listener);
+        if (poolEntityEnricher != null){
+            poolEntityEnricher.setParticipantEnricherListener(listener);
+        }
     }
 }
