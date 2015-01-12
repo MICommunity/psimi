@@ -107,13 +107,13 @@
     <bean id="xmlBasicEntityEnricher" class="psidev.psi.mi.jami.enricher.impl.full.FullEntityUpdater">
         <property name="featureEnricher" ref="xmlFeatureEnricher"/>
         <property name="interactorEnricher" ref="xmlInteractorEnricher"/>
-        <property name="participantListener" ref="entityListener"/>
+        <property name="participantEnricherListener" ref="entityListener"/>
     </bean>
 
     <bean id="xmlExperimentalEntityEnricher" class="psidev.psi.mi.jami.enricher.impl.full.FullEntityUpdater">
         <property name="featureEnricher" ref="xmlFeatureEvidenceEnricher"/>
         <property name="interactorEnricher" ref="xmlInteractorEnricher"/>
-        <property name="participantListener" ref="entityListener"/>
+        <property name="participantEnricherListener" ref="entityListener"/>
     </bean>
 
     <bean id="xmlParticipantCandidateEnricher" class="psidev.psi.mi.jami.enricher.impl.CompositeEntityEnricher">
@@ -125,21 +125,21 @@
         <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="featureEnricher" ref="xmlFeatureEnricher"/>
         <property name="interactorEnricher" ref="xmlInteractorEnricher"/>
-        <property name="participantListener" ref="participantListener"/>
+        <property name="participantEnricherListener" ref="participantListener"/>
     </bean>
 
     <bean id="xmlParticipantEvidenceEnricher" class="psidev.psi.mi.jami.enricher.impl.full.FullParticipantEvidenceUpdater">
         <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="featureEnricher" ref="xmlFeatureEvidenceEnricher"/>
         <property name="interactorEnricher" ref="xmlInteractorEnricher"/>
-        <property name="participantListener" ref="participantEvidenceListener"/>
+        <property name="participantEnricherListener" ref="participantEvidenceListener"/>
     </bean>
 
     <bean id="xmlParticipantPoolEnricher" class="psidev.psi.mi.jami.enricher.impl.full.FullParticipantPoolUpdater">
         <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="featureEnricher" ref="xmlFeatureEnricher"/>
         <property name="interactorEnricher" ref="xmlInteractorEnricher"/>
-        <property name="participantListener" ref="participantPoolListener"/>
+        <property name="participantEnricherListener" ref="participantPoolListener"/>
         <property name="participantCandidateEnricher" ref="xmlParticipantCandidateEnricher"/>
     </bean>
 
@@ -147,7 +147,7 @@
         <property name="cvTermEnricher" ref="xmlCvTermEnricher"/>
         <property name="featureEnricher" ref="xmlFeatureEvidenceEnricher"/>
         <property name="interactorEnricher" ref="xmlInteractorEnricher"/>
-        <property name="participantListener" ref="experimentalParticipantPoolListener"/>
+        <property name="participantEnricherListener" ref="experimentalParticipantPoolListener"/>
         <property name="participantCandidateEnricher" ref="xmlParticipantCandidateEnricher"/>
     </bean>
 
