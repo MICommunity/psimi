@@ -276,7 +276,8 @@ public abstract class AbstractXmlInteractionWriter<T extends Interaction, P exte
     protected abstract CvTerm writeExperiments(T object) throws XMLStreamException;
     protected abstract void writeOtherAttributes(T object) throws XMLStreamException;
     protected void writeIntraMolecular(T object) throws XMLStreamException{
-        if (InteractionUtils.findInteractionCategoryOf(object,true).equals(ComplexType.self_intra_molecular)){
+        ComplexType type = InteractionUtils.findInteractionCategoryOf(object,true);
+        if (type != null && type == ComplexType.self_intra_molecular){
             getStreamWriter().writeStartElement("intraMolecular");
             getStreamWriter().writeCharacters("true");
             // write end intra molecular
