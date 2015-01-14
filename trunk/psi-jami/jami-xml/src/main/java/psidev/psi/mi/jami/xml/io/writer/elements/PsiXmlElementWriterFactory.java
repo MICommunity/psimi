@@ -39,8 +39,7 @@ public class PsiXmlElementWriterFactory {
                                                                         PsiXmlElementWriter<Alias> aliasWriter,
                                                                         PsiXmlElementWriter<Annotation> attributeWriter,
                                                                         PsiXmlXrefWriter primaryRefWriter,
-                                                                        PsiXmlElementWriter<Confidence> confidenceWriter,
-                                                                        PsiXmlElementWriter<Confidence> modelledConfidenceWriter,
+                                                                        PsiXmlElementWriter[] confidenceWriters,
                                                                         PsiXmlElementWriter<Checksum> checksumWriter,
                                                                         PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                         PsiXmlVariableNameWriter<CvTerm> openCvWriter,
@@ -51,24 +50,24 @@ public class PsiXmlElementWriterFactory {
 
         PsiXmlParameterWriter[] parameterWriters = createParameterWriters(streamWriter, extended, objectIndex, version, publicationWriter);
         PsiXmlParticipantWriter[] participantWriters = createParticipantWriter(streamWriter, extended, objectIndex, version, xmlType, interactionCategory,
-                aliasWriter, attributeWriter, primaryRefWriter, confidenceWriter, interactorWriter, interactionTypeWriter, openCvWriter, parameterWriters[0]);
+                aliasWriter, attributeWriter, primaryRefWriter, confidenceWriters[0], interactorWriter, interactionTypeWriter, openCvWriter, parameterWriters[0]);
         PsiXmlElementWriter inferredInteractionWriter = createInferredInteractionWriter(streamWriter, objectIndex);
 
         if (extended){
             return createExtendedPsiXmlInteractionWriters(streamWriter, objectIndex, version, xmlType, interactionCategory, complexType,
-                    aliasWriter, attributeWriter, primaryRefWriter, modelledConfidenceWriter, checksumWriter, interactionTypeWriter,
+                    aliasWriter, attributeWriter, primaryRefWriter, confidenceWriters, checksumWriter, interactionTypeWriter,
                     experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter,
                     openCvWriter);
         }
         else if (named){
             return createNamedPsiXmlInteractionWriters(streamWriter, objectIndex, version, xmlType, interactionCategory, complexType,
-                    aliasWriter, attributeWriter, primaryRefWriter, modelledConfidenceWriter, checksumWriter, interactionTypeWriter,
+                    aliasWriter, attributeWriter, primaryRefWriter, confidenceWriters, checksumWriter, interactionTypeWriter,
                     experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter,
                     openCvWriter);
         }
         else{
             return createDefaultPsiXmlInteractionWriters(streamWriter, objectIndex, version, xmlType, interactionCategory, complexType,
-                    aliasWriter, attributeWriter, primaryRefWriter, modelledConfidenceWriter, checksumWriter, interactionTypeWriter,
+                    aliasWriter, attributeWriter, primaryRefWriter, confidenceWriters, checksumWriter, interactionTypeWriter,
                     experimentWriter, availabilityWriter, parameterWriters, participantWriters, inferredInteractionWriter, publicationWriter,
                     openCvWriter);
         }
@@ -80,7 +79,7 @@ public class PsiXmlElementWriterFactory {
                                                                                    PsiXmlElementWriter<Alias> aliasWriter,
                                                                                    PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                    PsiXmlXrefWriter primaryRefWriter,
-                                                                                   PsiXmlElementWriter<Confidence> modelledConfidenceWriter,
+                                                                                   PsiXmlElementWriter[] confidenceWriters,
                                                                                    PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                    PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                                    PsiXmlExperimentWriter experimentWriter,
@@ -108,7 +107,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter2.setAttributeWriter(attributeWriter);
                         modelledWriter2.setXrefWriter(primaryRefWriter);
                         modelledWriter2.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter2.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter2.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter2.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter2.setParticipantWriter(participantWriters[1]);
                         modelledWriter2.setChecksumWriter(checksumWriter);
@@ -129,7 +128,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -149,7 +148,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -173,7 +172,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -202,7 +201,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter3.setAttributeWriter(attributeWriter);
                         modelledWriter3.setXrefWriter(primaryRefWriter);
                         modelledWriter3.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter3.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter3.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter3.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter3.setParticipantWriter(participantWriters[1]);
                         modelledWriter3.setChecksumWriter(checksumWriter);
@@ -223,7 +222,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -243,7 +242,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -267,7 +266,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -292,7 +291,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter2.setAttributeWriter(attributeWriter);
                         modelledWriter2.setXrefWriter(primaryRefWriter);
                         modelledWriter2.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter2.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter2.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter2.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter2.setParticipantWriter(participantWriters[1]);
                         modelledWriter2.setChecksumWriter(checksumWriter);
@@ -309,7 +308,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -337,7 +336,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -358,7 +357,7 @@ public class PsiXmlElementWriterFactory {
                                         complexWriter.setAttributeWriter(attributeWriter);
                                         complexWriter.setXrefWriter(primaryRefWriter);
                                         complexWriter.setInteractionTypeWriter(interactionTypeWriter);
-                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setConfidenceWriter(confidenceWriters[1]);
                                         complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
                                         complexWriter.setParticipantWriter(participantWriters[1]);
                                         complexWriter.setChecksumWriter(checksumWriter);
@@ -383,7 +382,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -402,7 +401,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter3.setAttributeWriter(attributeWriter);
                         modelledWriter3.setXrefWriter(primaryRefWriter);
                         modelledWriter3.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter3.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter3.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter3.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter3.setParticipantWriter(participantWriters[1]);
                         modelledWriter3.setChecksumWriter(checksumWriter);
@@ -419,7 +418,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -447,7 +446,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -468,7 +467,7 @@ public class PsiXmlElementWriterFactory {
                                         complexWriter.setAttributeWriter(attributeWriter);
                                         complexWriter.setXrefWriter(primaryRefWriter);
                                         complexWriter.setInteractionTypeWriter(interactionTypeWriter);
-                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setConfidenceWriter(confidenceWriters[1]);
                                         complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
                                         complexWriter.setParticipantWriter(participantWriters[1]);
                                         complexWriter.setChecksumWriter(checksumWriter);
@@ -493,7 +492,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -514,7 +513,7 @@ public class PsiXmlElementWriterFactory {
                                                                                  PsiXmlElementWriter<Alias> aliasWriter,
                                                                                  PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                  PsiXmlXrefWriter primaryRefWriter,
-                                                                                 PsiXmlElementWriter<Confidence> modelledConfidenceWriter,
+                                                                                 PsiXmlElementWriter[] confidenceWriters,
                                                                                  PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                  PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                                  PsiXmlExperimentWriter experimentWriter,
@@ -542,7 +541,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter2.setAttributeWriter(attributeWriter);
                         modelledWriter2.setXrefWriter(primaryRefWriter);
                         modelledWriter2.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter2.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter2.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter2.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter2.setParticipantWriter(participantWriters[1]);
                         modelledWriter2.setChecksumWriter(checksumWriter);
@@ -563,7 +562,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -583,7 +582,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -607,7 +606,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -636,7 +635,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter3.setAttributeWriter(attributeWriter);
                         modelledWriter3.setXrefWriter(primaryRefWriter);
                         modelledWriter3.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter3.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter3.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter3.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter3.setParticipantWriter(participantWriters[1]);
                         modelledWriter3.setChecksumWriter(checksumWriter);
@@ -657,7 +656,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -677,7 +676,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -701,7 +700,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -726,7 +725,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter2.setAttributeWriter(attributeWriter);
                         modelledWriter2.setXrefWriter(primaryRefWriter);
                         modelledWriter2.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter2.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter2.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter2.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter2.setParticipantWriter(participantWriters[1]);
                         modelledWriter2.setChecksumWriter(checksumWriter);
@@ -743,7 +742,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -771,7 +770,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -792,7 +791,7 @@ public class PsiXmlElementWriterFactory {
                                         complexWriter.setAttributeWriter(attributeWriter);
                                         complexWriter.setXrefWriter(primaryRefWriter);
                                         complexWriter.setInteractionTypeWriter(interactionTypeWriter);
-                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setConfidenceWriter(confidenceWriters[1]);
                                         complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
                                         complexWriter.setParticipantWriter(participantWriters[1]);
                                         complexWriter.setChecksumWriter(checksumWriter);
@@ -817,7 +816,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -836,7 +835,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter3.setAttributeWriter(attributeWriter);
                         modelledWriter3.setXrefWriter(primaryRefWriter);
                         modelledWriter3.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter3.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter3.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter3.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter3.setParticipantWriter(participantWriters[1]);
                         modelledWriter3.setChecksumWriter(checksumWriter);
@@ -853,7 +852,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -881,7 +880,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -902,7 +901,7 @@ public class PsiXmlElementWriterFactory {
                                         complexWriter.setAttributeWriter(attributeWriter);
                                         complexWriter.setXrefWriter(primaryRefWriter);
                                         complexWriter.setInteractionTypeWriter(interactionTypeWriter);
-                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setConfidenceWriter(confidenceWriters[1]);
                                         complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
                                         complexWriter.setParticipantWriter(participantWriters[1]);
                                         complexWriter.setChecksumWriter(checksumWriter);
@@ -927,7 +926,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -948,7 +947,7 @@ public class PsiXmlElementWriterFactory {
                                                                                     PsiXmlElementWriter<Alias> aliasWriter,
                                                                                     PsiXmlElementWriter<Annotation> attributeWriter,
                                                                                     PsiXmlXrefWriter primaryRefWriter,
-                                                                                    PsiXmlElementWriter<Confidence> modelledConfidenceWriter,
+                                                                                    PsiXmlElementWriter[] confidenceWriters,
                                                                                     PsiXmlElementWriter<Checksum> checksumWriter,
                                                                                     PsiXmlVariableNameWriter<CvTerm> interactionTypeWriter,
                                                                                     PsiXmlExperimentWriter experimentWriter,
@@ -979,7 +978,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter2.setAttributeWriter(attributeWriter);
                         modelledWriter2.setXrefWriter(primaryRefWriter);
                         modelledWriter2.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter2.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter2.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter2.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter2.setParticipantWriter(participantWriters[1]);
                         modelledWriter2.setChecksumWriter(checksumWriter);
@@ -1000,7 +999,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -1020,7 +1019,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -1045,7 +1044,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -1075,7 +1074,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter3.setAttributeWriter(attributeWriter);
                         modelledWriter3.setXrefWriter(primaryRefWriter);
                         modelledWriter3.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter3.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter3.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter3.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter3.setParticipantWriter(participantWriters[1]);
                         modelledWriter3.setChecksumWriter(checksumWriter);
@@ -1096,7 +1095,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -1116,7 +1115,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -1141,7 +1140,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -1167,7 +1166,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter2.setAttributeWriter(attributeWriter);
                         modelledWriter2.setXrefWriter(primaryRefWriter);
                         modelledWriter2.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter2.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter2.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter2.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter2.setParticipantWriter(participantWriters[1]);
                         modelledWriter2.setChecksumWriter(checksumWriter);
@@ -1185,7 +1184,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -1215,7 +1214,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -1237,7 +1236,7 @@ public class PsiXmlElementWriterFactory {
                                         complexWriter.setAttributeWriter(attributeWriter);
                                         complexWriter.setXrefWriter(primaryRefWriter);
                                         complexWriter.setInteractionTypeWriter(interactionTypeWriter);
-                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setConfidenceWriter(confidenceWriters[1]);
                                         complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
                                         complexWriter.setParticipantWriter(participantWriters[1]);
                                         complexWriter.setChecksumWriter(checksumWriter);
@@ -1263,7 +1262,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -1283,7 +1282,7 @@ public class PsiXmlElementWriterFactory {
                         modelledWriter3.setAttributeWriter(attributeWriter);
                         modelledWriter3.setXrefWriter(primaryRefWriter);
                         modelledWriter3.setInteractionTypeWriter(interactionTypeWriter);
-                        modelledWriter3.setConfidenceWriter(modelledConfidenceWriter);
+                        modelledWriter3.setConfidenceWriter(confidenceWriters[1]);
                         modelledWriter3.setInferredInteractionWriter(inferredInteractionWriter);
                         modelledWriter3.setParticipantWriter(participantWriters[1]);
                         modelledWriter3.setChecksumWriter(checksumWriter);
@@ -1301,7 +1300,7 @@ public class PsiXmlElementWriterFactory {
                                         modelledWriter4.setAttributeWriter(attributeWriter);
                                         modelledWriter4.setXrefWriter(primaryRefWriter);
                                         modelledWriter4.setInteractionTypeWriter(interactionTypeWriter);
-                                        modelledWriter4.setConfidenceWriter(modelledConfidenceWriter);
+                                        modelledWriter4.setConfidenceWriter(confidenceWriters[1]);
                                         modelledWriter4.setInferredInteractionWriter(inferredInteractionWriter);
                                         modelledWriter4.setParticipantWriter(participantWriters[1]);
                                         modelledWriter4.setChecksumWriter(checksumWriter);
@@ -1331,7 +1330,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);
@@ -1353,7 +1352,7 @@ public class PsiXmlElementWriterFactory {
                                         complexWriter.setAttributeWriter(attributeWriter);
                                         complexWriter.setXrefWriter(primaryRefWriter);
                                         complexWriter.setInteractionTypeWriter(interactionTypeWriter);
-                                        complexWriter.setConfidenceWriter(modelledConfidenceWriter);
+                                        complexWriter.setConfidenceWriter(confidenceWriters[1]);
                                         complexWriter.setInferredInteractionWriter(inferredInteractionWriter);
                                         complexWriter.setParticipantWriter(participantWriters[1]);
                                         complexWriter.setChecksumWriter(checksumWriter);
@@ -1379,7 +1378,7 @@ public class PsiXmlElementWriterFactory {
                                         writer2.setAttributeWriter(attributeWriter);
                                         writer2.setXrefWriter(primaryRefWriter);
                                         writer2.setInteractionTypeWriter(interactionTypeWriter);
-                                        writer2.setConfidenceWriter(modelledConfidenceWriter);
+                                        writer2.setConfidenceWriter(confidenceWriters[0]);
                                         writer2.setInferredInteractionWriter(inferredInteractionWriter);
                                         writer2.setParticipantWriter(participantWriters[0]);
                                         writer2.setChecksumWriter(checksumWriter);

@@ -565,7 +565,7 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
         // initialise interaction
         PsiXmlInteractionWriter[] interactionWriters = this.subWritersFactory.createInteractionWritersFor(this.streamWriter, getElementCache(),
                 this.version, xmlType, interactionCategory, complexType, extended, named, aliasWriter, attributeWriter, xrefWriter,
-                confidenceWriters[0], confidenceWriters[1], checksumWriter, cvWriter, openCvWriter, experimentWriter, availabilityWriter,
+                confidenceWriters, checksumWriter, cvWriter, openCvWriter, experimentWriter, availabilityWriter,
                 interactorWriter, publicationWriter);
         setInteractionWriter(interactionWriters[0]);
         // initialise complex
