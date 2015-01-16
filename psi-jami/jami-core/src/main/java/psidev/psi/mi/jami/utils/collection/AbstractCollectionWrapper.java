@@ -38,7 +38,7 @@ public abstract class AbstractCollectionWrapper<T> implements Collection<T> {
     }
 
     public Iterator<T> iterator() {
-        return this.wrappedList.iterator();
+        return new IteratorWrapper<T>(this, this.wrappedList.iterator());
     }
 
     public Object[] toArray() {
