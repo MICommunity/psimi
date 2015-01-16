@@ -1,8 +1,6 @@
 package psidev.psi.mi.jami.utils.collection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Abstract list which is updating some properties when adding/removing elements.
@@ -200,5 +198,20 @@ public abstract class AbstractListHavingProperties<T> extends ArrayList<T> {
 
     public T setOnly(int i, T t) {
         return super.set(i, t);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new IteratorHavingProperties<T>(this, super.iterator());
+    }
+
+    @Override
+    public ListIterator<T> listIterator(int index) {
+        return new ListIteratorHavingProperties<T>(this, super.listIterator(index));
+    }
+
+    @Override
+    public ListIterator<T> listIterator() {
+        return new ListIteratorHavingProperties<T>(this, super.listIterator());
     }
 }
