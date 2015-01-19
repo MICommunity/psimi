@@ -11,6 +11,7 @@ import psidev.psi.mi.jami.utils.comparator.annotation.DefaultAnnotationComparato
 import psidev.psi.mi.jami.utils.comparator.checksum.DefaultChecksumComparator;
 import psidev.psi.mi.jami.utils.comparator.confidence.DefaultConfidenceComparator;
 import psidev.psi.mi.jami.utils.comparator.parameter.DefaultParameterComparator;
+import psidev.psi.mi.jami.utils.comparator.range.DefaultRangeAndResultingSequenceComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultExternalIdentifierComparator;
 import psidev.psi.mi.jami.utils.comparator.xref.DefaultXrefComparator;
 
@@ -111,6 +112,54 @@ public class EnricherUtils {
                     if (xrefListener != null){
                         xrefListener.onAddedXref(termToEnrich, ref);
                     }
+                }
+            }
+        }
+    }
+
+    public static <T extends Feature> void mergeRanges(T termToEnrich, Collection<Range> toEnrichRanges, Collection<Range> fetchedRanges , boolean remove,
+                                                      FeatureChangeListener<T> featureListener){
+
+        Iterator<Range> refIterator = toEnrichRanges.iterator();
+        // remove ranges in toEnrichRanges that are not in fetchedRanges
+        if (remove){
+            while(refIterator.hasNext()){
+                Range ref = refIterator.next();
+                boolean containsRef = false;
+                for (Range ref2 : fetchedRanges){
+                    // identical ranges
+                    if (DefaultRangeAndResultingSequenceComparator.areEquals(ref, ref2)){
+                        containsRef = true;
+                        break;
+                    }
+                }
+                // remove range not in second list
+                if (!containsRef){
+                    refIterator.remove();
+                    if (featureListener != null){
+                        featureListener.onRemovedRange(termToEnrich, ref);
+                    }
+                }
+            }
+        }
+
+        // add ranges from fetchedRanges that are not in toEnrichRanges
+        refIterator = fetchedRanges.iterator();
+        while(refIterator.hasNext()){
+            Range ref = refIterator.next();
+            boolean containsRef = false;
+            for (Range ref2 : toEnrichRanges){
+                // identical ranges
+                if (DefaultRangeAndResultingSequenceComparator.areEquals(ref, ref2)){
+                    containsRef = true;
+                    break;
+                }
+            }
+            // add missing xref not in second list
+            if (!containsRef){
+                toEnrichRanges.add(ref);
+                if (featureListener != null){
+                    featureListener.onAddedRange(termToEnrich, ref);
                 }
             }
         }
