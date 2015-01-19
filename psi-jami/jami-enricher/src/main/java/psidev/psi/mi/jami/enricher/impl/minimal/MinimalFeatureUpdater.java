@@ -54,6 +54,12 @@ public class MinimalFeatureUpdater<F extends  Feature> extends MinimalFeatureEnr
     }
 
     @Override
+    protected void processRanges(F objectToEnrich, F objectSource) {
+        EnricherUtils.mergeRanges(objectToEnrich, objectToEnrich.getRanges(), objectSource.getRanges(), true,
+                getFeatureEnricherListener());
+    }
+
+    @Override
     protected void processFeatureType(F featureToEnrich, F objectSource) throws EnricherException {
         if (!DefaultCvTermComparator.areEquals(featureToEnrich.getType(), objectSource.getType())){
             CvTerm oldType = featureToEnrich.getType();

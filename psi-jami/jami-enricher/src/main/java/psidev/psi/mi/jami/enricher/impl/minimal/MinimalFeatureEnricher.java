@@ -66,6 +66,22 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
     public void processMinimalUpdates(F featureToEnrich) throws EnricherException {
         // == TYPE ==================================================================
         processFeatureType(featureToEnrich);
+
+        processRanges(featureToEnrich);
+    }
+
+    protected void processRanges(F featureToEnrich) throws EnricherException {
+        for (Object r : featureToEnrich.getRanges()){
+            Range range = (Range)r;
+            processRangeStatus(range.getStart().getStatus());
+            processRangeStatus(range.getEnd().getStatus());
+        }
+    }
+
+    protected void processRangeStatus(CvTerm status) throws EnricherException {
+        if(getCvTermEnricher() != null && status != null) {
+            getCvTermEnricher().enrich( status );
+        }
     }
 
     public void enrich(Collection<F> objects) throws EnricherException {
@@ -100,6 +116,13 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
         processFeatureType(objectToEnrich, objectSource);
         // check identifiers
         processIdentifiers(objectToEnrich, objectSource);
+        // check ranges
+        processRanges(objectToEnrich, objectSource);
+    }
+
+    protected void processRanges(F objectToEnrich, F objectSource) {
+        EnricherUtils.mergeRanges(objectToEnrich, objectToEnrich.getRanges(), objectSource.getRanges(), false,
+                getFeatureEnricherListener());
     }
 
     protected void processIdentifiers(F objectToEnrich, F objectSource) throws EnricherException{
