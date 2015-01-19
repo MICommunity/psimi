@@ -120,9 +120,11 @@ public class MinimalFeatureEnricher<F extends Feature> implements ProteinListeni
         processRanges(objectToEnrich, objectSource);
     }
 
-    protected void processRanges(F objectToEnrich, F objectSource) {
+    protected void processRanges(F objectToEnrich, F objectSource) throws EnricherException {
         EnricherUtils.mergeRanges(objectToEnrich, objectToEnrich.getRanges(), objectSource.getRanges(), false,
                 getFeatureEnricherListener());
+
+        processRanges(objectToEnrich);
     }
 
     protected void processIdentifiers(F objectToEnrich, F objectSource) throws EnricherException{

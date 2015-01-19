@@ -54,9 +54,11 @@ public class MinimalFeatureUpdater<F extends  Feature> extends MinimalFeatureEnr
     }
 
     @Override
-    protected void processRanges(F objectToEnrich, F objectSource) {
+    protected void processRanges(F objectToEnrich, F objectSource) throws EnricherException {
         EnricherUtils.mergeRanges(objectToEnrich, objectToEnrich.getRanges(), objectSource.getRanges(), true,
                 getFeatureEnricherListener());
+
+        processRanges(objectToEnrich);
     }
 
     @Override
