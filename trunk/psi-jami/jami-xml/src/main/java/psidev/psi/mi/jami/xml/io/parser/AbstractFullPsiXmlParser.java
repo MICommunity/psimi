@@ -6,6 +6,7 @@ import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.xml.PsiXmlVersion;
 import psidev.psi.mi.jami.xml.XmlEntryContext;
 import psidev.psi.mi.jami.xml.cache.InMemoryPsiXmlCache;
+import psidev.psi.mi.jami.xml.cache.PsiXmlFileIndexCache;
 import psidev.psi.mi.jami.xml.cache.PsiXmlIdCache;
 import psidev.psi.mi.jami.xml.exception.PsiXmlParserException;
 import psidev.psi.mi.jami.xml.listener.PsiXmlParserListener;
@@ -19,6 +20,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.*;
 import java.net.URL;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -45,7 +47,6 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
     private XmlInteractorFactory interactorFactory;
 
     private PsiXmlIdCache indexOfObjects=null;
-    private boolean useDefaultCache = true;
 
     private PsiXmlVersion version;
 
@@ -87,8 +88,6 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
         if (this.entrySet == null){
             try {
                 initialiseEntryContext(XmlEntryContext.getInstance());
-                XmlEntryContext.getInstance().initialiseInferredInteractionList();
-                XmlEntryContext.getInstance().initialiseReferencesList();
             } catch (JAXBException e) {
                 createPsiXmlExceptionFrom("Impossible to read the input source", e);
             }
@@ -165,7 +164,6 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
             this.indexOfObjects.close();
         }
         this.indexOfObjects = null;
-        this.useDefaultCache = true;
         this.version = null;
         this.interactorFactory = null;
 
@@ -265,7 +263,6 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
 
     public void setCacheOfObjects(PsiXmlIdCache indexOfObjects) {
         this.indexOfObjects = indexOfObjects;
-        this.useDefaultCache = false;
     }
 
     public AbstractEntrySet<AbstractEntry<T>> getEntrySet() throws PsiXmlParserException {
@@ -302,7 +299,8 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
     }
 
     private void initialiseEntryContext(XmlEntryContext entryContext) throws PsiXmlParserException, JAXBException {
-
+        entryContext.initialiseInferredInteractionList();
+        entryContext.initialiseReferencesList();
         // set interactor factory
         entryContext.setInteractorFactory(getInteractorFactory());
 
@@ -312,15 +310,24 @@ public abstract class AbstractFullPsiXmlParser<T extends Interaction> implements
 
         entryContext.clear();
         entryContext.setListener(this.listener);
-        if (useDefaultCache){
-            initialiseDefaultCache();
-        }
+
+        initialiseDefaultCache();
         entryContext.setElementCache(this.indexOfObjects);
     }
 
     private void initialiseDefaultCache() {
         if (this.indexOfObjects == null){
-            this.indexOfObjects = new InMemoryPsiXmlCache();
+            if (this.originalFile != null){
+                try {
+                    this.indexOfObjects = new PsiXmlFileIndexCache(this.originalFile, this.unmarshaller, this.version);
+                } catch (IOException e) {
+                    logger.log(Level.SEVERE, "cannot instantiate file index cache so will instantiate memory cache", e);
+                    this.indexOfObjects = new InMemoryPsiXmlCache();
+                }
+            }
+            else{
+                this.indexOfObjects = new InMemoryPsiXmlCache();
+            }
         }
     }
 
