@@ -30,7 +30,7 @@ public class EuroPubmedCentralFetcher
     private static final String RESULT_TYPE = "core"; // "lite";
     private static final String EMAIL = "psi-dev@gmail.com";
 
-    private static final String WSDL_URL="http://www.ebi.ac.uk/webservices/citexplore/v3.0.1/service?wsdl";
+    private static final String WSDL_URL="http://www.ebi.ac.uk/europepmc/webservices/soap?wsdl";
     private static final String WS_NAMESPACE="http://webservice.cdb.ebi.ac.uk/";
     private final static String WS_SERVICE_NAME="WSCitationImplService";
 
