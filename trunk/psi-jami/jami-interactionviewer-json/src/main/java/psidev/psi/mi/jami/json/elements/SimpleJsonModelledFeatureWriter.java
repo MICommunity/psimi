@@ -1,5 +1,6 @@
 package psidev.psi.mi.jami.json.elements;
 
+import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
 import psidev.psi.mi.jami.json.IncrementalIdGenerator;
 import psidev.psi.mi.jami.model.Entity;
 import psidev.psi.mi.jami.model.Feature;
@@ -24,7 +25,8 @@ public class SimpleJsonModelledFeatureWriter extends SimpleJsonFeatureWriter<Mod
     }
 
     public SimpleJsonModelledFeatureWriter(Writer writer, Map<Feature, Integer> processedFeatures, Map<String, String> processedInteractors,
-                                           Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator) {
-        super(writer, processedFeatures, processedInteractors, processedParticipants, idGenerator);
+                                           Map<Entity, Integer> processedParticipants, IncrementalIdGenerator idGenerator,
+                                           OntologyTermFetcher fetcher) {
+        super(writer, processedFeatures, processedInteractors, processedParticipants, idGenerator, fetcher);
     }
 }

@@ -37,7 +37,7 @@ public class SimpleJsonParticipantEvidenceWriter extends SimpleJsonParticipantWr
     @Override
     protected void initialiseDefaultFeatureWriter() {
         super.setFeatureWriter(new SimpleJsonFeatureEvidenceWriter(getWriter(), getProcessedFeatures(), getProcessedInteractors(),
-                getProcessedParticipants(), getIdGenerator()));
+                getProcessedParticipants(), getIdGenerator(), getFetcher()));
         ((SimpleJsonFeatureEvidenceWriter)getFeatureWriter()).setCvWriter(getCvWriter());
         ((SimpleJsonFeatureEvidenceWriter)getFeatureWriter()).setParameterWriter(getParameterWriter());
     }
