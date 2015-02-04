@@ -1,20 +1,15 @@
 package psidev.psi.mi.jami.json.elements;
 
-import psidev.psi.mi.jami.bridges.exception.BridgeFailedException;
 import psidev.psi.mi.jami.bridges.fetcher.OntologyTermFetcher;
-import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.json.IncrementalIdGenerator;
+import psidev.psi.mi.jami.json.MIJsonUtils;
 import psidev.psi.mi.jami.model.*;
-import psidev.psi.mi.jami.utils.CvTermUtils;
-import psidev.psi.mi.jami.utils.OntologyTermUtils;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -34,11 +29,6 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
     private Map<Feature, Integer> processedFeatures;
     private Map<Entity, Integer> processedParticipants;
     private Map<String, String> processedInteractors;
-    private Collection<Feature> experimentalFeatures;
-    private Collection<Feature> bindingSites;
-    private Collection<Feature> mutations;
-    private Collection<Feature> ptms;
-    private Collection<Feature> otherFeatures;
     private IncrementalIdGenerator idGenerator;
     private OntologyTermFetcher fetcher;
 
@@ -62,7 +52,6 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
             throw new IllegalArgumentException("The json participant writer needs a non null map of processed participants");
         }
         this.processedParticipants = processedParticipants;
-        initialiseFeatureCollections();
     }
 
     public SimpleJsonParticipantWriter(Writer writer, Map<Feature, Integer> processedFeatures,
@@ -75,14 +64,6 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
         }
         this.fetcher = fetcher;
         this.idGenerator = idGenerator;
-    }
-
-    protected void initialiseFeatureCollections(){
-        this.experimentalFeatures = new ArrayList<Feature>();
-        this.bindingSites = new ArrayList<Feature>();
-        this.ptms = new ArrayList<Feature>();
-        this.mutations = new ArrayList<Feature>();
-        this.otherFeatures = new ArrayList<Feature>();
     }
 
     public void write(P object) throws IOException {
@@ -132,38 +113,19 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
         }
 
         MIJsonUtils.writeEndObject(writer);
-        clearFeatureCollections();
     }
 
     protected <F extends Feature> void writeAllFeatures(Collection<F> features) throws IOException {
-        Iterator<F> featureIterator = features.iterator();
-        while (featureIterator.hasNext()){
-            recognizeFeatureTypeAndSplitInFeatureCollections(featureIterator.next());
-        }
 
-        if (!experimentalFeatures.isEmpty()){
-            writeFeatures("experimentalFeatures", experimentalFeatures);
-        }
-        if (!mutations.isEmpty()){
-            writeFeatures("pointMutations", mutations);
-        }
-        if (!bindingSites.isEmpty()){
-            writeFeatures("bindingSites", bindingSites);
-        }
-        if (!ptms.isEmpty()){
-            writeFeatures("ptms", ptms);
-        }
-        if (!otherFeatures.isEmpty()){
-            writeFeatures("otherFeatures", otherFeatures);
-        }
+        writeFeatures("features", features);
     }
 
-    protected void writeFeatures(String name, Collection<Feature> features) throws IOException {
+    protected <F extends Feature> void writeFeatures(String name, Collection<F> features) throws IOException {
         MIJsonUtils.writeSeparator(writer);
         MIJsonUtils.writePropertyKey(name, writer);
         MIJsonUtils.writeOpenArray(writer);
 
-        Iterator<Feature> featureIterator = features.iterator();
+        Iterator<F> featureIterator = features.iterator();
         while (featureIterator.hasNext()){
             getFeatureWriter().write(featureIterator.next());
             if (featureIterator.hasNext()){
@@ -172,113 +134,6 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
         }
 
         MIJsonUtils.writeEndArray(writer);
-    }
-
-    protected void clearFeatureCollections(){
-        this.experimentalFeatures.clear();
-        this.bindingSites.clear();
-        this.ptms.clear();
-        this.mutations.clear();
-        this.otherFeatures.clear();
-    }
-
-    protected <F extends Feature> void recognizeFeatureTypeAndSplitInFeatureCollections(F feature) {
-
-        // feature type is not null, we can recognize the feature
-        if (feature.getType() != null){
-            CvTerm type = feature.getType();
-            // all mod terms are ptms
-            if (type.getMODIdentifier() != null){
-                ptms.add(feature);
-            }
-            else if (fetcher == null){
-                if (CvTermUtils.isCvTerm(type, Feature.BINDING_SITE_MI, Feature.BINDING_SITE)) {
-                    bindingSites.add(feature);
-                }
-                else if (CvTermUtils.isCvTerm(type, Feature.MUTATION_MI, Feature.MUTATION) ||
-                        CvTermUtils.isCvTerm(type, Feature.VARIANT_MI, Feature.VARIANT)) {
-                    mutations.add(feature);
-                }
-                else if (CvTermUtils.isCvTerm(type, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
-                    experimentalFeatures.add(feature);
-                }
-                else if (CvTermUtils.isCvTerm(type, Feature.ALLOSTERIC_PTM_MI, Feature.ALLOSTERIC_PTM)) {
-                    ptms.add(feature);
-                }
-                else {
-                    otherFeatures.add(feature);
-                }
-            }
-            else if (type.getMIIdentifier() != null){
-                OntologyTerm term = null;
-                try {
-                    term = fetcher.fetchByIdentifier(type.getMIIdentifier(), CvTerm.PSI_MI);
-                } catch (BridgeFailedException e) {
-                    logger.log(Level.SEVERE, "Cannot fetch the ontology information for the term " + type.getMIIdentifier(), e);
-                }
-
-                // we cannot retrieve the MI term
-                if (term == null){
-                    otherFeatures.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BINDING_SITE_MI, Feature.BINDING_SITE)) {
-                    bindingSites.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.MUTATION_MI, Feature.MUTATION) ||
-                        OntologyTermUtils.isCvTermChildOf(term, Feature.VARIANT_MI, Feature.VARIANT)) {
-                    mutations.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
-                    experimentalFeatures.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.ALLOSTERIC_PTM_MI, Feature.ALLOSTERIC_PTM)){
-                    ptms.add(feature);
-                }
-                else {
-                    otherFeatures.add(feature);
-                }
-            }
-            else {
-                OntologyTerm term = null;
-                String name = type.getFullName() != null ? type.getFullName() : type.getShortName();
-                try {
-                    term = fetcher.fetchByName(name, CvTerm.PSI_MI);
-                    if (term == null){
-                        term = fetcher.fetchByName(name, CvTerm.PSI_MOD);
-                    }
-                } catch (BridgeFailedException e) {
-                    logger.log(Level.SEVERE, "Cannot fetch the ontology information for the term " + (type.getFullName() != null ? type.getFullName() : type.getShortName()), e);
-                }
-
-                // cannot retrieve the term using name
-                if (term == null){
-                    otherFeatures.add(feature);
-                }
-                else if (term.getMODIdentifier() != null){
-                    ptms.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.BINDING_SITE_MI, Feature.BINDING_SITE)) {
-                    bindingSites.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.MUTATION_MI, Feature.MUTATION) ||
-                        OntologyTermUtils.isCvTermChildOf(term, Feature.VARIANT_MI, Feature.VARIANT)) {
-                    mutations.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.EXPERIMENTAL_FEATURE_MI, Feature.EXPERIMENTAL_FEATURE)) {
-                    experimentalFeatures.add(feature);
-                }
-                else if (OntologyTermUtils.isCvTermChildOf(term, Feature.ALLOSTERIC_PTM_MI, Feature.ALLOSTERIC_PTM)){
-                    ptms.add(feature);
-                }
-                else {
-                    otherFeatures.add(feature);
-                }
-            }
-        }
-        // we cannot recognize the feature
-        else {
-            otherFeatures.add(feature);
-        }
     }
 
     protected void writeOtherProperties(P object) throws IOException {
@@ -305,7 +160,7 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
 
     protected void initialiseDefaultFeatureWriter() {
         this.featureWriter = new SimpleJsonFeatureWriter(this.writer, this.processedFeatures, this.processedInteractors,
-                this.processedParticipants, getIdGenerator());
+                this.processedParticipants, getIdGenerator(), this.fetcher);
         ((SimpleJsonFeatureWriter)this.featureWriter).setCvWriter(getCvWriter());
     }
 
@@ -349,5 +204,9 @@ public class SimpleJsonParticipantWriter<P extends Participant> implements JsonE
 
     protected Map<Entity, Integer> getProcessedParticipants() {
         return processedParticipants;
+    }
+
+    protected OntologyTermFetcher getFetcher() {
+        return fetcher;
     }
 }
