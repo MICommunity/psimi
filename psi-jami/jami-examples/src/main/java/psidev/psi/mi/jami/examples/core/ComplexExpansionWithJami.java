@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.examples;
+package psidev.psi.mi.jami.examples.core;
 
 import psidev.psi.mi.jami.binary.BinaryInteraction;
 import psidev.psi.mi.jami.binary.expansion.BipartiteExpansion;
@@ -7,10 +7,12 @@ import psidev.psi.mi.jami.binary.expansion.MatrixExpansion;
 import psidev.psi.mi.jami.binary.expansion.SpokeExpansion;
 import psidev.psi.mi.jami.model.Interaction;
 import psidev.psi.mi.jami.model.InteractionEvidence;
+import psidev.psi.mi.jami.model.Participant;
 import psidev.psi.mi.jami.model.ParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultInteractionEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultParticipantEvidence;
 import psidev.psi.mi.jami.model.impl.DefaultProtein;
+import psidev.psi.mi.jami.utils.CvTermUtils;
 import psidev.psi.mi.jami.xml.model.extension.factory.xml25.XmlBinaryInteractionFactory;
 
 import java.util.Collection;
@@ -76,6 +78,7 @@ public class ComplexExpansionWithJami {
 
         InteractionEvidence nary = new DefaultInteractionEvidence();
         ParticipantEvidence p1 = new DefaultParticipantEvidence(new DefaultProtein("p1"));
+        p1.setExperimentalRole(CvTermUtils.createMICvTerm(Participant.BAIT_ROLE, Participant.BAIT_ROLE_MI));
         ParticipantEvidence p2 = new DefaultParticipantEvidence(new DefaultProtein("p2"));
         ParticipantEvidence p3 = new DefaultParticipantEvidence(new DefaultProtein("p3"));
         nary.addParticipant(p1);

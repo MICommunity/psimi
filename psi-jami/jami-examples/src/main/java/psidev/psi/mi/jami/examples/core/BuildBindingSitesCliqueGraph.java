@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.examples;
+package psidev.psi.mi.jami.examples.core;
 
 import org.apache.commons.lang.StringUtils;
 import psidev.psi.mi.jami.analysis.graph.BindingSiteCliqueFinder;

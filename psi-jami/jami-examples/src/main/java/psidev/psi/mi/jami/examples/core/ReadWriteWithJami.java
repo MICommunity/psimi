@@ -1,4 +1,4 @@
-package psidev.psi.mi.jami.examples;
+package psidev.psi.mi.jami.examples.core;
 
 import psidev.psi.mi.jami.commons.MIDataSourceOptionFactory;
 import psidev.psi.mi.jami.commons.MIWriterOptionFactory;
