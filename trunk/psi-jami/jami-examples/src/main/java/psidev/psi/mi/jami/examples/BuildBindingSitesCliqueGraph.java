@@ -22,7 +22,7 @@ import java.util.Set;
  *
  * For instance, an interaction I1 has 3 participants P1, P2 and P3.
  * P1 has two features F1 and F2, P2 has one feature F3 and P3 has one feature F4
- * We know that F1 has two linked features F3 and F4, F2 binds to F3, F3 binds to F1 and F2 and  and F4 binds to F1
+ * We know that F1 has two linked features F3 and F4, F2 binds to F3, F3 binds to F1, F4 and F2 and F4 binds to F1, F3
  * The clique graph would give two sets of binding features:
  * - F1,F4,F3
  * - F3, F2
