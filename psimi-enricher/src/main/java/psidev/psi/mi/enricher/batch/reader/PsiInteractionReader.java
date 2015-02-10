@@ -10,6 +10,7 @@ import psidev.psi.mi.jami.commons.PsiJami;
 import psidev.psi.mi.jami.datasource.InteractionStream;
 import psidev.psi.mi.jami.exception.MIIOException;
 import psidev.psi.mi.jami.factory.MIDataSourceFactory;
+import psidev.psi.mi.jami.model.Interaction;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +40,13 @@ public class PsiInteractionReader implements ItemReader<psidev.psi.mi.jami.model
             throw new IllegalStateException("The reader must be opened before reading interactions.");
         }
 
-        return interactionIterator.hasNext() ? (psidev.psi.mi.jami.model.Interaction)interactionIterator.next() : null;
+        Interaction next = interactionIterator.hasNext() ? (psidev.psi.mi.jami.model.Interaction)interactionIterator.next() : null;
+        this.interactionCount++;
+        while (next == null && interactionIterator.hasNext()){
+            next = (Interaction)interactionIterator.next();
+            this.interactionCount++;
+        }
+        return next;
     }
 
     public void open(ExecutionContext executionContext) throws ItemStreamException {
