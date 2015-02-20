@@ -33,6 +33,14 @@
             <version>${jami.commons.version}</version>
         </dependency>
 
+        <!-- jami bridges -->
+        <!-- chebi -->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-chebi</artifactId>
+            <version>${jami.bridges.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
