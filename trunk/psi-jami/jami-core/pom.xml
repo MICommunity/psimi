@@ -10,7 +10,7 @@
 
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>jami-core</artifactId>
-    <version>1.2.1-SNAPSHOT</version>
+    <version>1.2.1</version>
     <name>PSI :: JAMI - Core interfaces, default implementations and utility classes</name>
 
     <properties>
@@ -19,9 +19,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-core</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-core</developerConnection>
-        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-core</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-core-1.2.1</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-core-1.2.1</developerConnection>
+        <url>http://psimi.googlecode.com/svn/tags/jami-core-1.2.1</url>
     </scm>
 
     <build>
