@@ -40,7 +40,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jami.version>1.0.1-SNAPSHOT</jami.version>
         <jami.commons.version>1.1.1-SNAPSHOT</jami.commons.version>
-        <jami.core.version>1.2.1-SNAPSHOT</jami.core.version>
+        <jami.core.version>1.2.2-SNAPSHOT</jami.core.version>
         <jami.xml.version>1.1.1-SNAPSHOT</jami.xml.version>
         <jami.mitab.version>1.1.1-SNAPSHOT</jami.mitab.version>
         <jami.batch.version>1.1.1-SNAPSHOT</jami.batch.version>
