@@ -9,7 +9,7 @@
 
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>jami-xml</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
 
     <name>PSI :: JAMI - XML</name>
     <description>JAMI - PSI-XML parser and writer</description>
@@ -19,9 +19,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-xml</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-xml</developerConnection>
-        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-xml</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-xml-1.1.1</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-xml-1.1.1</developerConnection>
+        <url>http://psimi.googlecode.com/svn/tags/jami-xml-1.1.1</url>
     </scm>
 
 
