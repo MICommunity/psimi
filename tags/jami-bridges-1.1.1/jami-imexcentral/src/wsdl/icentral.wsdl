@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!-- $Id::                                                                 $ -->
+
+<definitions targetNamespace="http://imex.mbi.ucla.edu/icentral/ws"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema"
+
+             xmlns:ic="http://imex.mbi.ucla.edu/icentral/ws"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+    <types>
+        <xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+                   targetNamespace="http://imex.mbi.ucla.edu/icentral/ws">
+
+            <xs:complexType name="icentral">
+                <xs:attribute name="wsversion" type="xs:string" fixed="2.0"/>
+            </xs:complexType>
+
+            <xs:complexType name="identifier">
+                <xs:attribute name="ns" type="xs:string" use="required"/>
+                <xs:attribute name="ac" type="xs:string" use="required"/>
+            </xs:complexType>
+
+            <xs:complexType name="publication">
+                <xs:sequence>
+                    <xs:element name="identifier" type="ic:identifier"
+                                minOccurs="1" maxOccurs="unbounded" />
+                    <xs:element name="author" type="xs:string" minOccurs="0" />
+                    <xs:element name="title" type="xs:string" minOccurs="0" />
+                    <xs:element name="paperAbstract" type="xs:string" minOccurs="0" />
+                    <xs:element name="expectedPublicationDate" type="xs:dateTime"
+                                minOccurs="0" />
+                    <xs:element name="publicationDate" type="xs:dateTime" minOccurs="0" />
+                    <xs:element name="releaseDate" type="xs:dateTime" minOccurs="0" />
+                    <xs:element name="creationDate" type="xs:dateTime" minOccurs="0" />
+                    <xs:element name="status" type="xs:string" minOccurs="0" />
+                    <xs:element name="imexAccession" type="xs:string" minOccurs="0" />
+                    <xs:element name="owner" type="xs:string" minOccurs="0" />
+                    <xs:element name="adminUserList" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="user" type="xs:string"
+                                            minOccurs="1" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                    <xs:element name="adminGroupList" minOccurs="0">
+                        <xs:complexType>
+                            <xs:sequence>
+                                <xs:element name="group" type="xs:string"
+                                            minOccurs="1" maxOccurs="unbounded"/>
+                            </xs:sequence>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="attachment">
+                <xs:sequence>
+                    <xs:element name="identifier" type="ic:identifier" minOccurs="0"  maxOccurs="1" />
+                    <xs:element name="parent" type="ic:identifier" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="owner" type="xs:string" minOccurs="0" />
+                    <xs:element name="creationDate" type="xs:dateTime" minOccurs="0" />
+                    <xs:element name="subject" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="body"  type="xs:string" minOccurs="0" maxOccurs="1" />
+                </xs:sequence>
+                <xs:attribute name="type" type="xs:string" use="required" />
+            </xs:complexType>
+
+            <xs:complexType name="identifierList">
+                <xs:sequence>
+                    <xs:element name="identifier" type="ic:identifier"
+                                minOccurs="1" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="publicationList">
+                <xs:sequence>
+                    <xs:element name="publication" type="ic:publication"
+                                minOccurs="1" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:complexType name="attachmentList">
+                <xs:sequence>
+                    <xs:element name="attachment" type="ic:attachment"
+                                minOccurs="1" maxOccurs="unbounded"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="ImexCentralFault">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="faultCode" type="xs:int"/>
+                        <xs:element name="message" type="xs:string" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="publicationResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="publication" type="ic:publication" minOccurs="1" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="publicationListResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="publicationList" type="ic:publicationList"
+                                    minOccurs="1" />
+                        <xs:element name="lastRec" type="xs:long" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="createPublicationById">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="createPublication">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="publication" type="ic:publication"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getPublicationById">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getPublicationByOwner">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="owner" type="xs:string" />
+                        <xs:element name="firstRec" type="xs:int" minOccurs="0" />
+                        <xs:element name="maxRec" type="xs:int" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getPublicationByStatus">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="status" type="xs:string" />
+                        <xs:element name="firstRec" type="xs:int" minOccurs="0" />
+                        <xs:element name="maxRec" type="xs:int" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="queryPublication">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="query" type="xs:string" minOccurs="1" />
+                        <xs:element name="firstRec" type="xs:int" minOccurs="0" />
+                        <xs:element name="maxRec" type="xs:int" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="updatePublication">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1"/>
+                        <xs:element name="publication" type="ic:publication"  minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="updatePublicationIdentifier">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1"/>
+                        <xs:element name="newIdentifier" type="ic:identifier" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="updatePublicationStatus">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1"/>
+                        <xs:element name="status" type="xs:string" minOccurs="1"/>
+                        <xs:element name="message" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="updatePublicationAdminUser">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1"/>
+                        <xs:element name="operation" type="xs:string" minOccurs="1"/>
+                        <xs:element name="user" type="xs:string" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="updatePublicationAdminGroup">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1"/>
+                        <xs:element name="operation" type="xs:string" minOccurs="1"/>
+                        <xs:element name="group" type="xs:string" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getPublicationImexAccession">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1"/>
+                        <xs:element name="create" type="xs:boolean" default="false"
+                                    minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getServerStatus">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="depth" type="xs:string" minOccurs="0"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getServerStatusResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="version" type="xs:string" minOccurs="1"/>
+                        <xs:element name="status" type="xs:string" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="addAttachment">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="parent" type="ic:identifier" minOccurs="1" />
+                        <xs:element name="attachment" type="ic:attachment" minOccurs="1"/>
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getAttachmentById">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getAttachmentByParent">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="parent" type="ic:identifier" minOccurs="1" />
+                        <xs:element name="type" type="xs:string" minOccurs="0" />
+                        <xs:element name="firstRec" type="xs:int" minOccurs="0" />
+                        <xs:element name="maxRec" type="xs:int" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="queryAttachment">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="query" type="xs:string" minOccurs="1" />
+                        <xs:element name="firstRec" type="xs:int" minOccurs="0" />
+                        <xs:element name="maxRec" type="xs:int" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="dropAttachment">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="identifier" type="ic:identifier" minOccurs="1" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="attachmentResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="attachment" type="ic:attachment" minOccurs="1" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="attachmentListResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="attachmentList" type="ic:attachmentList"
+                                    minOccurs="1" />
+                        <xs:element name="lastRec" type="xs:long" minOccurs="0" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+        </xs:schema>
+    </types>
+
+    <message name="ImexCentralFault">
+        <part name="fault" element="ic:ImexCentralFault"/>
+    </message>
+
+    <message name="publicationResponse">
+        <part name="response" element="ic:publicationResponse"/>
+    </message>
+
+    <message name="publicationListResponse">
+        <part name="response" element="ic:publicationListResponse"/>
+    </message>
+
+    <message name="createPublication">
+        <part name="request" element="ic:createPublication"/>
+    </message>
+
+    <message name="createPublicationById">
+        <part name="request" element="ic:createPublicationById"/>
+    </message>
+
+    <message name="getPublicationById">
+        <part name="request" element="ic:getPublicationById"/>
+    </message>
+
+    <message name="getPublicationByOwner">
+        <part name="request" element="ic:getPublicationByOwner"/>
+    </message>
+
+    <message name="getPublicationByStatus">
+        <part name="request" element="ic:getPublicationByStatus"/>
+    </message>
+
+    <message name="queryPublication">
+        <part name="request" element="ic:queryPublication"/>
+    </message>
+
+    <message name="updatePublication">
+        <part name="request" element="ic:updatePublication"/>
+    </message>
+
+    <message name="updatePublicationIdentifier">
+        <part name="request" element="ic:updatePublicationIdentifier"/>
+    </message>
+
+    <message name="updatePublicationStatus">
+        <part name="request" element="ic:updatePublicationStatus"/>
+    </message>
+
+    <message name="updatePublicationAdminUser">
+        <part name="request" element="ic:updatePublicationAdminUser"/>
+    </message>
+
+    <message name="updatePublicationAdminGroup">
+        <part name="request" element="ic:updatePublicationAdminGroup"/>
+    </message>
+
+    <message name="getPublicationImexAccession">
+        <part name="request" element="ic:getPublicationImexAccession"/>
+    </message>
+
+    <message name="getServerStatus">
+        <part name="request" element="ic:getServerStatus"/>
+    </message>
+
+    <message name="getServerStatusResponse">
+        <part name="response" element="ic:getServerStatusResponse"/>
+    </message>
+
+    <message name="addAttachment">
+        <part name="request" element="ic:addAttachment"/>
+    </message>
+
+    <message name="getAttachmentById">
+        <part name="request" element="ic:getAttachmentById"/>
+    </message>
+
+    <message name="getAttachmentByParent">
+        <part name="request" element="ic:getAttachmentByParent"/>
+    </message>
+
+    <message name="queryAttachment">
+        <part name="request" element="ic:queryAttachment"/>
+    </message>
+
+    <message name="dropAttachment">
+        <part name="request" element="ic:dropAttachment"/>
+    </message>
+
+    <message name="attachmentResponse">
+        <part name="response" element="ic:attachmentResponse"/>
+    </message>
+
+    <message name="attachmentListResponse">
+        <part name="response" element="ic:attachmentListResponse"/>
+    </message>
+
+    <portType name="icp20">
+
+        <operation name="createPublication">
+            <input message="ic:createPublication"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="createPublicationById">
+            <input message="ic:createPublicationById"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="getPublicationById">
+            <input message="ic:getPublicationById"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="getPublicationByOwner">
+            <input message="ic:getPublicationByOwner"/>
+            <output message="ic:publicationListResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="getPublicationByStatus">
+            <input message="ic:getPublicationByStatus"/>
+            <output message="ic:publicationListResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="queryPublication">
+            <input message="ic:queryPublication"/>
+            <output message="ic:publicationListResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="updatePublication">
+            <input message="ic:updatePublication"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="updatePublicationIdentifier">
+            <input message="ic:updatePublicationIdentifier"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="updatePublicationStatus">
+            <input message="ic:updatePublicationStatus"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="updatePublicationAdminUser">
+            <input message="ic:updatePublicationAdminUser"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="updatePublicationAdminGroup">
+            <input message="ic:updatePublicationAdminGroup"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="getPublicationImexAccession">
+            <input message="ic:getPublicationImexAccession"/>
+            <output message="ic:publicationResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="getServerStatus">
+            <input message="ic:getServerStatus"/>
+            <output message="ic:getServerStatusResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="addAttachment">
+            <input message="ic:addAttachment"/>
+            <output message="ic:attachmentResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="getAttachmentById">
+            <input message="ic:getAttachmentById"/>
+            <output message="ic:attachmentResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="getAttachmentByParent">
+            <input message="ic:getAttachmentByParent"/>
+            <output message="ic:attachmentListResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="queryAttachment">
+            <input message="ic:queryAttachment"/>
+            <output message="ic:attachmentListResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+        <operation name="dropAttachment">
+            <input message="ic:dropAttachment"/>
+            <output message="ic:attachmentResponse"/>
+            <fault message="ic:ImexCentralFault" name="ImexCentralFault"/>
+        </operation>
+
+    </portType>
+
+    <binding name="ImexCentralPortBinding" type="ic:icp20">
+
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+                      style="document"/>
+
+        <operation name="createPublication">
+            <soap:operation soapAction="urn:createPublication"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="createPublicationById">
+            <soap:operation soapAction="urn:createPublicationById"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="getPublicationById">
+            <soap:operation soapAction="urn:getPublicationById"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="getPublicationByOwner">
+            <soap:operation soapAction="urn:getPublicationByOwner"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="getPublicationByStatus">
+            <soap:operation soapAction="urn:getPublicationByStatus"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="queryPublication">
+            <soap:operation soapAction="urn:queryPublication"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="updatePublication">
+            <soap:operation soapAction="urn:updatePublication"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="updatePublicationIdentifier">
+            <soap:operation soapAction="urn:updatePublicationIdentifier"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="updatePublicationStatus">
+            <soap:operation soapAction="urn:updatePublicationStatus"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="updatePublicationAdminUser">
+            <soap:operation soapAction="urn:updatePublicationAdminUser"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="updatePublicationAdminGroup">
+            <soap:operation soapAction="urn:updatePublicationAdminGroup"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="getPublicationImexAccession">
+            <soap:operation soapAction="urn:updatePublicationStatus"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="addAttachment">
+            <soap:operation soapAction="urn:addAttachment"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="getAttachmentById">
+            <soap:operation soapAction="urn:getAttachmentById"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="getAttachmentByParent">
+            <soap:operation soapAction="urn:getAttachmentByParent"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="queryAttachment">
+            <soap:operation soapAction="urn:queryAttachment"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="dropAttachment">
+            <soap:operation soapAction="urn:dropAttachment"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+        <operation name="getServerStatus">
+            <soap:operation soapAction="urn:getServerStatus"/>
+            <input><soap:body use="literal"/></input>
+            <output><soap:body use="literal"/></output>
+            <fault name="ImexCentralFault">
+                <soap:fault name="ImexCentralFault" use="literal"/>
+            </fault>
+        </operation>
+
+    </binding>
+
+    <service name="ics20">
+        <port name="icp20" binding="ic:ImexCentralPortBinding">
+            <soap:address location=""/>
+        </port>
+    </service>
+</definitions>

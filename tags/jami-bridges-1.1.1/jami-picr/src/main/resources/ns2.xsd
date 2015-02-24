@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="http://model.picr.ebi.ac.uk" xmlns:ns2="http://model.picr.ebi.ac.uk" xmlns:a="http://www.ebi.ac.uk/picr/AccessionMappingService">
+  <xs:import namespace="http://www.ebi.ac.uk/picr/AccessionMappingService" schemaLocation="PicrRESTResult.xsd"/>
+  <xs:element name="CRC64" type="xs:NCName"/>
+  <xs:element name="UPI" type="xs:NCName"/>
+  <xs:element name="identicalCrossReferences">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="ns2:accession"/>
+        <xs:element ref="ns2:accessionVersion"/>
+        <xs:element ref="ns2:databaseDescription"/>
+        <xs:element ref="ns2:databaseName"/>
+        <xs:element ref="ns2:dateAdded"/>
+        <xs:element ref="ns2:dateDeleted"/>
+        <xs:element ref="ns2:deleted"/>
+        <xs:element ref="ns2:gi"/>
+        <xs:element ref="ns2:taxonId"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="accession" type="xs:NCName"/>
+  <xs:element name="accessionVersion" type="xs:integer"/>
+  <xs:element name="databaseDescription" type="xs:string"/>
+  <xs:element name="databaseName" type="xs:NCName"/>
+  <xs:element name="dateAdded" type="xs:dateTime"/>
+  <xs:element name="dateDeleted" type="xs:NMTOKEN"/>
+  <xs:element name="deleted" type="xs:boolean"/>
+  <xs:element name="gi" type="xs:integer"/>
+  <xs:element name="taxonId" type="xs:integer"/>
+  <xs:element name="sequence" type="xs:string"/>
+  <xs:element name="timestamp" type="xs:NMTOKEN"/>
+</xs:schema>

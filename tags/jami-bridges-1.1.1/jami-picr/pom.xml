@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>psidev.psi.mi.jami.bridges</groupId>
+        <artifactId>jami-bridges</artifactId>
+        <version>1.1.1</version>
+    </parent>
+    <groupId>psidev.psi.mi.jami.bridges</groupId>
+    <artifactId>jami-picr</artifactId>
+    <version>1.1.1</version>
+
+    <name>PSI :: JAMI - PICR</name>
+    <description>Jami PICR client module</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>jaxws-maven-plugin</artifactId>
+                    <version>1.12</version>
+
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>wsimport</goal>
+                            </goals>
+                            <configuration>
+                                <verbose>true</verbose>
+                                <wsdlUrls>
+                                    <wsdlUrl>${basedir}/src/main/wsdl/PicrService.wsdl</wsdlUrl>
+                                </wsdlUrls>
+                                <packageName>psidev.psi.mi.jami.bridges.picr</packageName>
+                            </configuration>
+                        </execution>
+                    </executions>
+
+                    <dependencies>
+                        <dependency>
+                            <groupId>javax.xml</groupId>
+                            <artifactId>webservices-api</artifactId>
+                            <version>1.4</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.sun.xml.bind</groupId>
+                            <artifactId>jaxb-xjc</artifactId>
+                            <version>2.1.12</version>
+                        </dependency>
+                        <dependency>
+                            <groupId>com.sun.xml.ws</groupId>
+                            <artifactId>jaxws-rt</artifactId>
+                            <version>2.1.4</version>
+                        </dependency>
+                    </dependencies>
+
+                </plugin>
+            </plugins>
+        </pluginManagement>
+        <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+            </plugin>
+            <!-- Conversion of XML Schema into Java source code using JAXB-XJC -->
+            <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.9.1</version>
+                <configuration>
+                    <schemaDirectory>src/main/resources</schemaDirectory>
+                    <generatePackage>psidev.psi.mi.jami.bridges.picr.jaxb</generatePackage>
+                    <strict>false</strict>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+
+        <!-- bridges core -->
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>bridges-core</artifactId>
+            <version>${pom.version}</version>
+        </dependency>
+
+        <!-- uniprot kraken dependency-->
+        <dependency>
+            <groupId>uk.ac.ebi.uniprot.kraken</groupId>
+            <artifactId>uniprotjapi</artifactId>
+            <version>2015.02</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.10</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <repositories>
+        <repository>
+            <id>intact.nexus</id>
+            <name>IntAct Nexus</name>
+            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
+        </repository>
+    </repositories>
+</project>
