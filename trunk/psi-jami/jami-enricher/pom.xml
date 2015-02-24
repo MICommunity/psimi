@@ -8,7 +8,7 @@
     </parent>
 
     <artifactId>jami-enricher</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2-SNAPSHOT</version>
 
     <name>jami-enricher</name>
     <properties>
@@ -16,9 +16,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-enricher-1.1.1</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-enricher-1.1.1</developerConnection>
-        <url>http://psimi.googlecode.com/svn/tags/jami-enricher-1.1.1</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-enricher</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-enricher</developerConnection>
+        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-enricher</url>
     </scm>
 
     <dependencies>
