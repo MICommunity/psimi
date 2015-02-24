@@ -4,7 +4,7 @@
   <parent>
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>psi-jami</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
 
   <groupId>psidev.psi.mi.jami</groupId>
@@ -29,14 +29,14 @@
       <dependency>
           <groupId>psidev.psi.mi.jami</groupId>
           <artifactId>jami-core</artifactId>
-          <version>1.2.1</version>
+          <version>${jami.core.version}</version>
       </dependency>
 
       <!--JAMI ols -->
       <dependency>
           <groupId>psidev.psi.mi.jami.bridges</groupId>
           <artifactId>bridges-core</artifactId>
-          <version>1.1.1</version>
+          <version>${jami.bridges.version}</version>
       </dependency>
 
       <!-- Simple java library to work with json -->
