@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>psidev.psi.mi.jami.enricher.impl</OriginalElement>
+  <nodes>
+    <node x="-51.51823825592001" y="-201.51490463996703">psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMaximum</node>
+    <node x="-387.6235045742434" y="333.4958167174914">psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceUpdaterMaximum</node>
+    <node x="959.6065368676204" y="752.369145359293">psidev.psi.mi.jami.enricher.impl.organism.AbstractOrganismEnricher</node>
+    <node x="1998.1466885604823" y="64.91133004926104">psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum</node>
+    <node x="2290.126671358198" y="-177.32606145906647">psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceEnricherMaximum</node>
+    <node x="2134.031783161102" y="-137.19984652138302">psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionEnricherMaximum</node>
+    <node x="1588.7795761982954" y="-163.93158182813355">psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceEnricherMinimum</node>
+    <node x="571.6328876378137" y="-26.836578309484878">psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum</node>
+    <node x="1136.2647587770741" y="840.8522949409647">psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum</node>
+    <node x="407.17911410719773" y="-134.53611064102589">psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionUpdaterMinimum</node>
+    <node x="1317.1223707873955" y="-14.546485260771021">psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum</node>
+    <node x="-367.5981703026039" y="14.478849010868657">psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMaximum</node>
+    <node x="-94.28806005160686" y="306.0833528813823">psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMaximum</node>
+    <node x="1674.66353897881" y="556.5865196653373">psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum</node>
+    <node x="167.57506592961818" y="719.8613155101508">psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMaximum</node>
+    <node x="397.2404410039877" y="413.43779810774896">psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureUpdaterMinimum</node>
+    <node x="-237.03432673801848" y="-119.49256891059653">psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionUpdaterMaximum</node>
+    <node x="-226.99796700289298" y="376.47048244585187">psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureUpdaterMaximum</node>
+    <node x="1303.7984060114904" y="-184.49022155312093">psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMinimum</node>
+    <node x="1496.811244037845" y="61.73625772147943">psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMinimum</node>
+    <node x="1059.5938697318009" y="442.7932598326686">psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum</node>
+    <node x="889.3101102509969" y="-36.004300570803025">psidev.psi.mi.jami.enricher.impl.participant.AbstractParticipantEnricher</node>
+    <node x="-371.54625743704094" y="-162.33264924824653">psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceUpdaterMaximum</node>
+    <node x="-49.73753373900064" y="-14.374239175036394">psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum</node>
+    <node x="283.7689420595824" y="368.9019469856909">psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceUpdaterMinimum</node>
+    <node x="259.07803581202614" y="571.4251309719288">psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum</node>
+    <node x="952.7869262647587" y="331.55485182578786">psidev.psi.mi.jami.enricher.impl.cvterm.AbstractCvTermEnricher</node>
+    <node x="753.9419813902571" y="832.4071467667527">psidev.psi.mi.jami.enricher.impl.organism.OrganismUpdaterMinimum</node>
+    <node x="265.2204238017046" y="12.38181249511291">psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMinimum</node>
+    <node x="1636.5021502854015" y="16.04738447102966">psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMinimum</node>
+    <node x="2171.7405582922825" y="109.24677457189773">psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMaximum</node>
+    <node x="759.7637702108013" y="705.3523239418796">psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMinimum</node>
+    <node x="833.367112362186" y="449.2900930487135">psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum</node>
+    <node x="2321.830244741575" y="75.1624051919618">psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMaximum</node>
+    <node x="1330.786926264759" y="315.5801860974276">psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum</node>
+    <node x="1136.1487215575885" y="694.0390179060131">psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum</node>
+    <node x="414.1370709203223" y="50.749941355852684">psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMinimum</node>
+    <node x="-217.60413607843202" y="101.02222108992453">psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMaximum</node>
+    <node x="1494.591836734694" y="-118.48111658456489">psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionEnricherMinimum</node>
+    <node x="2033.159355696302" y="328.9673156618971">psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMaximum</node>
+    <node x="264.8394291528567" y="-166.2060380291467">psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceUpdaterMinimum</node>
+    <node x="925.3681288607395" y="116.05801860974276">psidev.psi.mi.jami.enricher.impl.feature.AbstractFeatureEnricher</node>
+    <node x="922.3744624286496" y="643.5685354601611">psidev.psi.mi.jami.enricher.impl.protein.AbstractProteinEnricher</node>
+    <node x="2205.7785596997423" y="422.0253342716396">psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMaximum</node>
+    <node x="1810.7859097662056" y="715.3227773868167">psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMaximum</node>
+    <node x="599.4821306047962" y="-200.95773428709185">psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMinimum</node>
+    <node x="1996.3334115255284" y="-190.00961764015958">psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMaximum</node>
+    <node x="1651.0570021111891" y="391.8449448745017">psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMinimum</node>
+    <node x="2349.6298381421543" y="379.83759480803803">psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMaximum</node>
+    <node x="1509.901946985691" y="432.36609586363295">psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMinimum</node>
+    <node x="1810.7405582922825" y="833.0136836343736">psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum</node>
+    <node x="172.3174603174603" y="826.8522949409647">psidev.psi.mi.jami.enricher.impl.organism.OrganismUpdaterMaximum</node>
+    <node x="533.7879427633123" y="324.96098209398724">psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMinimum</node>
+    <node x="897.1760065642337" y="-202.71596242418192">psidev.psi.mi.jami.enricher.impl.interaction.AbstractInteractionEnricher</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.interaction.AbstractInteractionEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.AbstractFeatureEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.organism.OrganismUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.organism.OrganismUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.protein.AbstractProteinEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.interaction.AbstractInteractionEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.organism.AbstractOrganismEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.organism.OrganismUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.organism.OrganismUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.organism.AbstractOrganismEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.organism.OrganismUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.AbstractParticipantEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.cvterm.AbstractCvTermEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.cvterm.AbstractCvTermEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.protein.AbstractProteinEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.cvterm.CvTermUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.ModelledFeatureUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.ModelledInteractionEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ModelledParticipantEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEvidenceEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.protein.ProteinEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.organism.OrganismEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.participant.AbstractParticipantEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEvidenceEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.protein.ProteinUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureUpdaterMinimum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureEvidenceEnricherMaximum" target="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.feature.FeatureEnricherMinimum" target="psidev.psi.mi.jami.enricher.impl.feature.AbstractFeatureEnricher">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+    <edge source="psidev.psi.mi.jami.enricher.impl.interaction.InteractionUpdaterMaximum" target="psidev.psi.mi.jami.enricher.impl.participant.ParticipantUpdaterMaximum">
+      <point x="0.0" y="0.0" />
+      <point x="0.0" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.5805265546981389" x="374.5507858315741" y="387.4167644069122" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
