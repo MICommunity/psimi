@@ -4,7 +4,7 @@
   <parent>
     <groupId>psidev.psi.mi.jami</groupId>
     <artifactId>psi-jami</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
 
   <groupId>psidev.psi.mi.jami</groupId>
@@ -30,13 +30,13 @@
       <dependency>
           <groupId>psidev.psi.mi.jami.bridges</groupId>
           <artifactId>jami-imexcentral</artifactId>
-          <version>1.1.1</version>
+          <version>${jami.bridges.version}</version>
       </dependency>
 
       <dependency>
           <groupId>psidev.psi.mi.jami</groupId>
           <artifactId>jami-enricher</artifactId>
-          <version>1.1.1</version>
+          <version>${jami.enricher.version}</version>
       </dependency>
 
     <dependency>
