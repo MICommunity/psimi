@@ -4,12 +4,12 @@
     <parent>
         <groupId>psidev.psi.mi.jami.bridges</groupId>
         <artifactId>jami-bridges</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
+        <version>1.1.1</version>
     </parent>
 
     <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>uniprot-mapping</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
 
     <name>PSI :: JAMI - uniprot-mapping</name>
     <description>JAMI module to map proteins to uniprot</description>

@@ -4,11 +4,11 @@
     <parent>
         <groupId>psidev.psi.mi.jami.bridges</groupId>
         <artifactId>jami-bridges</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
+        <version>1.1.1</version>
     </parent>
     <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>jami-imexcentral</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <name>PSI :: JAMI - IMEx central</name>
     <description>Module to connect JAMI to IMEx central</description>
 

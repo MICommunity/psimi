@@ -3,13 +3,13 @@
     <parent>
         <groupId>psidev.psi.mi.jami.bridges</groupId>
         <artifactId>jami-bridges</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
+        <version>1.1.1</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>jami-chebi</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <name>PSI :: JAMI - CHEBI</name>
     <description>JAMI-CHEBI bridge</description>
 

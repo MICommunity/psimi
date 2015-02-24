@@ -4,11 +4,11 @@
     <parent>
         <groupId>psidev.psi.mi.jami.bridges</groupId>
         <artifactId>jami-bridges</artifactId>
-        <version>1.1.1-SNAPSHOT</version>
+        <version>1.1.1</version>
     </parent>
 
     <artifactId>jami-ols</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <name>PSI :: JAMI - OLS</name>
     <description>JAMI-OLS bridge</description>
 
