@@ -11,7 +11,7 @@
 
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-schema-validator-cli</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.1</version>
 
     <name>PSI :: Schema Validator CLI :: PSI-MI Extension</name>
 
@@ -21,9 +21,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator-cli/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/validator/psimi-schema-validator-cli/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/trunk/validator/psimi-schema-validator-cli</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-schema-validator-cli-3.0.1</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/psimi-schema-validator-cli-3.0.1</developerConnection>
+        <url>http://code.google.com/p/psimi/source/browse/tags/psimi-schema-validator-cli-3.0.1</url>
     </scm>
 
     <profiles>
