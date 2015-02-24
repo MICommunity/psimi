@@ -4,12 +4,12 @@
     <parent>
         <artifactId>jami-bridges</artifactId>
         <groupId>psidev.psi.mi.jami.bridges</groupId>
-        <version>1.1.1-SNAPSHOT</version>
+        <version>1.1.1</version>
     </parent>
 
     <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>jami-europubmedcentral</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <name>PSI :: JAMI - EuroPubmedCentral</name>
     <description>JAMI-EuroPubmedCentral bridge</description>
 

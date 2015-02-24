@@ -9,7 +9,7 @@
 
     <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>jami-bridges</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.1.1</version>
     <packaging>pom</packaging>
     <name>PSI :: JAMI - Bridges</name>
     <description>Bridges master module based on JAMI core interfaces</description>
@@ -19,9 +19,9 @@
     </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-bridges</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-bridges</developerConnection>
-        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-bridges</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-bridges-1.1.1</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-bridges-1.1.1</developerConnection>
+        <url>http://psimi.googlecode.com/svn/tags/jami-bridges-1.1.1</url>
     </scm>
 
     <dependencies>
