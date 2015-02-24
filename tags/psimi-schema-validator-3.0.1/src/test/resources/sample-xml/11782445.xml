@@ -1,0 +1,564 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrySet level="2" minorVersion="4" version="5"
+          xmlns="http://psi.hupo.org/mi/mif" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd">
+
+	<entry>
+		<experimentList>
+			<experimentDescription id="1">
+				<names>
+					<shortLabel>dominski_z-2002-1</shortLabel>
+					<fullName>A novel zinc finger protein is associated with U7 snRNP and interacts with the stem-loop binding protein in the histone pre-mRNP to stimulate 3&apos;-end processing</fullName>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef id="11782445" db="pubmed" dbAc="MI:0446" refType="primary-reference" refTypeAc="MI:0358"/>
+					</xref>
+				</bibref>
+				<hostOrganismList>
+					<hostOrganism ncbiTaxId="4932">
+						<names>
+							<shortLabel>yeast</shortLabel>
+							<fullName>Saccharomyces cerevisiae</fullName>
+						</names>
+					</hostOrganism>
+				</hostOrganismList>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>Three hybrid system</shortLabel>
+						<fullName>rna tri hybrid</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0438" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionDetectionMethod>
+				<participantIdentificationMethod>
+					<names>
+						<shortLabel>nucleotide sequence</shortLabel>
+						<fullName>nucleotide sequence identification</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0078" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</participantIdentificationMethod>
+				<attributeList>
+					<attribute name="author-list" nameAc="MI:0636">Zbigniew Dominski, Judith A. Erkmann, Xiaocui Yang, Ricardo Sanchez, William F. Marzluff</attribute>
+					<attribute name="journal" nameAc="MI:0885">Genes Dev</attribute>
+					<attribute name="publication year" nameAc="MI:0886">2002</attribute>
+					<attribute name="contact-email" nameAc="MI:0634">marzluff@med.unc.edu</attribute>
+				</attributeList>
+			</experimentDescription>
+			<experimentDescription id="2">
+				<names>
+					<shortLabel>dominski_z-2002-2</shortLabel>
+					<fullName>A novel zinc finger protein is associated with U7 snRNP and interacts with the stem-loop binding protein in the histone pre-mRNP to stimulate 3&apos;-end processing</fullName>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef id="11782445" db="pubmed" dbAc="MI:0446" refType="primary-reference" refTypeAc="MI:0358"/>
+					</xref>
+				</bibref>
+				<hostOrganismList>
+					<hostOrganism ncbiTaxId="9606">
+						<names>
+							<shortLabel>human</shortLabel>
+							<fullName>Homo sapiens</fullName>
+						</names>
+						<cellType>
+							<names>
+								<shortLabel>HELA</shortLabel>
+								<fullName>HELA</fullName>
+							</names>
+							<xref>
+								<primaryRef id="ACC 57" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</cellType>
+					</hostOrganism>
+				</hostOrganismList>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>anti bait coip</shortLabel>
+						<fullName>anti bait coimmunoprecipitation</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0006" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionDetectionMethod>
+				<participantIdentificationMethod>
+					<names>
+						<shortLabel>northen</shortLabel>
+						<fullName>northern blot</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0929" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</participantIdentificationMethod>
+				<attributeList>
+					<attribute name="author-list" nameAc="MI:0636">Zbigniew Dominski, Judith A. Erkmann, Xiaocui Yang, Ricardo Sanchez, William F. Marzluff</attribute>
+					<attribute name="journal" nameAc="MI:0885">Genes Dev</attribute>
+					<attribute name="publication year" nameAc="MI:0886">2002</attribute>
+					<attribute name="contact-email" nameAc="MI:0634">marzluff@med.unc.edu</attribute>
+				</attributeList>
+			</experimentDescription>
+			<experimentDescription id="3">
+				<names>
+					<shortLabel>dominski_z-2002-3</shortLabel>
+					<fullName>A novel zinc finger protein is associated with U7 snRNP and interacts with the stem-loop binding protein in the histone pre-mRNP to stimulate 3&apos;-end processing</fullName>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef id="11782445" db="pubmed" dbAc="MI:0446" refType="primary-reference" refTypeAc="MI:0358"/>
+					</xref>
+				</bibref>
+				<hostOrganismList>
+					<hostOrganism ncbiTaxId="9606">
+						<names>
+							<shortLabel>human</shortLabel>
+							<fullName>Homo sapiens</fullName>
+						</names>
+						<cellType>
+							<names>
+								<shortLabel>HELA</shortLabel>
+								<fullName>HELA</fullName>
+							</names>
+							<xref>
+								<primaryRef id="ACC 57" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</cellType>
+					</hostOrganism>
+				</hostOrganismList>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>anti bait coip</shortLabel>
+						<fullName>anti bait coimmunoprecipitation</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0006" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionDetectionMethod>
+				<participantIdentificationMethod>
+					<names>
+						<shortLabel>Immuno blot</shortLabel>
+						<fullName>western blot</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0113" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</participantIdentificationMethod>
+				<attributeList>
+					<attribute name="author-list" nameAc="MI:0636">Zbigniew Dominski, Judith A. Erkmann, Xiaocui Yang, Ricardo Sanchez, William F. Marzluff</attribute>
+					<attribute name="journal" nameAc="MI:0885">Genes Dev</attribute>
+					<attribute name="publication year" nameAc="MI:0886">2002</attribute>
+					<attribute name="contact-email" nameAc="MI:0634">marzluff@med.unc.edu</attribute>
+				</attributeList>
+			</experimentDescription>
+		</experimentList>
+		<interactorList>
+			<interactor id="4">
+				<names>
+					<shortLabel>SLBP_HUMAN</shortLabel>
+					<fullName>Histone RNA hairpin-binding protein</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">Histone stem-loop-binding protein</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">HBP</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q14493" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="7884" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>ribonucleoprot compl</shortLabel>
+						<fullName>ribonucleoprotein complex</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0316" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MACRPRSPPRHQSRCDGDASPPSPARWSLGRKRRADGRRWRPEDAEEAEHRGAERRPESFTTPEGPKPRSRCSDWASAVEEDEMRTRVNKEMARYKRKLLINDFGRERKSSSGSSDSKESMSTVPADFETDESVLMRRQKQINYGKNTIAYDRYIKEVPRHLRQPGIHPKTPNKFKKYSRRSWDQQIKLWKVALHFWDPPAEEGCDLQEIHPVDLESAESSSEPQTSSQDDFDVYSGTPTKVRHMDSQVEDEFDLEACLTEPLRDFSAMS</sequence>
+			</interactor>
+			<interactor id="5">
+				<names>
+					<shortLabel>ZN473_HUMAN</shortLabel>
+					<fullName>Zinc finger protein 473</fullName>
+				</names>
+				<xref>
+					<primaryRef id="Q8WTR7" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="25888" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+						<alias type="gene name synonym" typeAc="MI:0302">Zinc finger protein 100 homolog</alias>
+						<alias type="gene name synonym" typeAc="MI:0302">Zfp-100</alias>
+						<alias type="gene name synonym" typeAc="MI:0302">KIAA1141</alias>
+						<alias type="gene name synonym" typeAc="MI:0302">ZFP100</alias>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MAEEFVTLKDVGMDFTLGDWEQLGLEQGDTFWDTALDNCQDLFLLDPPRPNLTSHPDGSEDLEPLAGGSPEATSPDVTETKNSPLMEDFFEEGFSQEIIEMLSKDGFWNSNFGEACIEDTWLDSLLGDPESLLRSDIATNGESPTECKSHELKRGLSPVSTVSTGEDSMVHNVSEKTLTPAKSKEYRGEFFSYSDHSQQDSVQEGEKPYQCSECGKSFSGSYRLTQHWITHTREKPTVHQECEQGFDRNASLSVYPKTHTGYKFYVCNEYGTTFSQSTYLWHQKTHTGEKPCKSQDSDHPPSHDTQPGEHQKTHTDSKSYNCNECGKAFTRIFHLTRHQKIHTRKRYECSKCQATFNLRKHLIQHQKTHAAKTTSECQECGKIFRHSSLLIEHQALHAGEEPYKCNERGKSFRHNSTLKIHQRVHSGEKPYKCSECGKAFHRHTHLNEHRRIHTGYRPHKCQECVRSFSRPSHLMRHQAIHTAEKPYSCAECKETFSDNNRLVQHQKMHTVKTPYECQECGERFICGSTLKCHESVHAREKQGFFVSGKILDQNPEQKEKCFKCNKCEKTFSCSKYLTQHERIHTRGVKPFECDQCGKAFGQSTRLIHHQRIHSRVRLYKWGEQGKAISSASLIKLQSFHTKEHPFKCNECGKTFSHSAHLSKHQLIHAGENPFKCSKCDRVFTQRNYLVQHERTHARKKPLVCNECGKTFRQSSCLSKHQRIHSGEKPYVCDYCGKAFGLSAELVRHQRIHTGEKPYVCQECGKAFTQSSCLSIHRRVHTGEKPYRCGECGKAFAQKANLTQHQRIHTGEKPYSCNVCGKAFVLSAHLNQHLRVHTQETLYQCQRCQKAFRCHSSLSRHQRVHNKQQYCL</sequence>
+			</interactor>
+			<interactor id="6">
+				<names>
+					<shortLabel>SLBP1_XENLA</shortLabel>
+					<fullName>Histone RNA hairpin-binding protein</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">Histone stem-loop-binding protein 1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">hbp</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">slbp</alias>
+				</names>
+				<xref>
+					<primaryRef id="P79943" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="398073" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>ribonucleoprot compl</shortLabel>
+						<fullName>ribonucleoprotein complex</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0316" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="8355">
+					<names>
+						<shortLabel>clawed frog</shortLabel>
+						<fullName>Xenopus laevis</fullName>
+					</names>
+				</organism>
+				<sequence>MSDHWRTISEEHRPHAPSRWSQGRKRCSDGKLRRHDDTDSTVFDTKPSEEPQARPDSFTTPESHKPVARCKDWGSAVEEDEQLREKVDQDIARYRRKLLINEFGRRERRSSSGSSDSKDSSTHGEMETDPAVITRRQKQINYGKNTIAYDRYIKAVPRHLREPNVHPRTPNKFKKYSRRSWDQQIRLWRIALHQWDPPAAEGSDLQPFMEEDMVCTETSSQENLFTGTPTKVRKVEADDAFDLEPCFIEEELLS</sequence>
+			</interactor>
+			<interactor id="7">
+				<names>
+					<shortLabel>RNU7</shortLabel>
+					<fullName>RNA, U7 small nuclear</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">U7.1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">RNU7-1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">RNU7</alias>
+				</names>
+				<xref>
+					<primaryRef id="100147744  " db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>ribonucleic acid</shortLabel>
+						<fullName>ribonucleic acid</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0320" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+			</interactor>
+		</interactorList>
+		<interactionList>
+			<interaction id="8">
+				<names>
+					<shortLabel>slbp-zfp100-1</shortLabel>
+					<fullName>To select for proteins that bound to the SLBP/RNA complex rather than free SLBP, the yeast two-hybrid system was modified by introduction of a hybrid RNA containing the stem–loop structure</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="9">
+						<interactorRef>4</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="10">
+								<names>
+									<shortLabel>certain</shortLabel>
+									<fullName>certain sequence position</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="199"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" refType="identity" refTypeAc="MI:0356" dbAc="MI:0488"/>
+											</xref>
+										</endStatus>
+										<end position="270"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="11">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="12">
+								<names>
+									<shortLabel>certain</shortLabel>
+									<fullName>certain sequence position</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="312"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" refType="identity" refTypeAc="MI:0356" dbAc="MI:0488"/>
+											</xref>
+										</endStatus>
+										<end position="552"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0915" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2B</attribute>
+					<attribute name="complex-properties" nameAc="MI:0629">SLBP in complex with stem loop RNA</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="13">
+				<names>
+					<shortLabel>zfp100-U7-1</shortLabel>
+					<fullName>Increasing amounts of the anti-hZFP100 precipitated increasing amounts of U7 snRNA from hela nuclear extract</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="14">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="15">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0915" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 6B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="16">
+				<names>
+					<shortLabel>Slbp1-zfp100-1</shortLabel>
+					<fullName>hZFP100 interacts with the complex formed between the SL RNA and xSLBP1, using the yeast two-hybrid system</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="17">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="18">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0915" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 9A</attribute>
+					<attribute name="complex-properties" nameAc="MI:0629">SLBP in complex with stem loop RNA</attribute>
+					<attribute name="data-processing" nameAc="MI:0633">Species of xenopus not mentioned in the article.Since SLBP1 is present in only Xenopus laevis, this species has been taken</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="19">
+				<names>
+					<shortLabel>U7-zfp100-2</shortLabel>
+					<fullName>Increasing amounts of the anti-hZFP100 precipitated increasing amounts of U7 snRNA from hela nuclear extract</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>3</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="20">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="21">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0915" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 7A</attribute>
+				</attributeList>
+			</interaction>
+		</interactionList>
+	</entry>
+</entrySet>

@@ -1,0 +1,6 @@
+#CROSS REFERENCE MI	CROSS REFERENCE NAME	INCLUDE CHILDREN	REF TYPE MI	REF TYPE NAME	INCLUDE CHILDREN	MESSAGE LEVEL
+MI:0446	pubmed	FALSE	MI:0361	see-also	FALSE	REQUIRED
+MI:0448	gene ontology	FALSE	MI:0354	gene ontology for cellular component	FALSE	REQUIRED
+MI:0448	gene ontology	FALSE	MI:0355	gene ontology for cellular function	FALSE	REQUIRED
+MI:0448	gene ontology	FALSE	MI:0359	gene ontology for cellular process	FALSE	REQUIRED
+MI:0805	wwpdb	FALSE	MI:0356	identical object	FALSE	REQUIRED

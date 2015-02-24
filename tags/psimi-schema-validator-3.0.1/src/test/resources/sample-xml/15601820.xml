@@ -1,0 +1,4467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entrySet level="2" minorVersion="4" version="5"
+          xmlns="http://psi.hupo.org/mi/mif" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://psi.hupo.org/mi/mif http://psidev.sourceforge.net/mi/rel25/src/MIF254.xsd">
+
+	<entry>
+		<source releaseDate="2010-05-14">
+			<names>
+				<fullName>Molecular Connecions Pvt. Ltd.</fullName>
+			</names>
+			<attributeList>
+				<attribute name="url">www.molecularconnections.com</attribute>
+				<attribute name="postal address">2/2, Kariappa Road, Basavanagudi, Bangalore -560 004</attribute>
+			</attributeList>
+		</source>
+		<experimentList>
+			<experimentDescription id="1">
+				<names>
+					<shortLabel>kamura_t-2004-1</shortLabel>
+					<fullName>VHL-box and SOCS-box domains determine binding specificity for Cul2-Rbx1 and Cul5-Rbx2 modules of ubiquitin ligases</fullName>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef id="15601820" db="pubmed" dbAc="MI:0446" refType="primary-reference" refTypeAc="MI:0358"/>
+					</xref>
+				</bibref>
+				<hostOrganismList>
+					<hostOrganism ncbiTaxId="9606">
+						<names>
+							<shortLabel>human</shortLabel>
+							<fullName>Homo sapiens</fullName>
+						</names>
+						<cellType>
+							<names>
+								<shortLabel>293T</shortLabel>
+								<fullName>293T</fullName>
+							</names>
+							<xref>
+								<primaryRef id="ACC 635" db="CABRI" dbAc="MI:0246" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</cellType>
+					</hostOrganism>
+				</hostOrganismList>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>anti tag coip</shortLabel>
+						<fullName>anti tag coimmunoprecipitation</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0007" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionDetectionMethod>
+				<participantIdentificationMethod>
+					<names>
+						<shortLabel>ms participant</shortLabel>
+						<fullName>Identification by mass spectrometry</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0427" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</participantIdentificationMethod>
+				<attributeList>
+					<attribute name="author-list" nameAc="MI:0636">Takumi Kamura, Katsumi Maenaka, Shuhei Kotoshiba, Masaki Matsumoto, Daisuke Kohda, Ronald C. Conaway, Joan Weliky Conaway, Keiichi I. Nakayama</attribute>
+					<attribute name="journal" nameAc="MI:0885">Genes Dev</attribute>
+					<attribute name="publication year" nameAc="MI:0886">2004</attribute>
+					<attribute name="contact-email" nameAc="MI:0634">nakayak1@bioreg.kyushu-u.ac.jp</attribute>
+				</attributeList>
+			</experimentDescription>
+			<experimentDescription id="2">
+				<names>
+					<shortLabel>kamura_t-2004-2</shortLabel>
+					<fullName>VHL-box and SOCS-box domains determine binding specificity for Cul2-Rbx1 and Cul5-Rbx2 modules of ubiquitin ligases</fullName>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef id="15601820" db="pubmed" dbAc="MI:0446" refType="primary-reference" refTypeAc="MI:0358"/>
+					</xref>
+				</bibref>
+				<hostOrganismList>
+					<hostOrganism ncbiTaxId="9606">
+						<names>
+							<shortLabel>human</shortLabel>
+							<fullName>Homo sapiens</fullName>
+						</names>
+						<cellType>
+							<names>
+								<shortLabel>293T</shortLabel>
+								<fullName>293T</fullName>
+							</names>
+							<xref>
+								<primaryRef id="ACC 635" db="CABRI" dbAc="MI:0246" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</cellType>
+					</hostOrganism>
+				</hostOrganismList>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>anti tag coip</shortLabel>
+						<fullName>anti tag coimmunoprecipitation</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0007" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionDetectionMethod>
+				<participantIdentificationMethod>
+					<names>
+						<shortLabel>Immuno blot</shortLabel>
+						<fullName>western blot</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0113" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</participantIdentificationMethod>
+				<attributeList>
+					<attribute name="author-list" nameAc="MI:0636">Takumi Kamura, Katsumi Maenaka, Shuhei Kotoshiba, Masaki Matsumoto, Daisuke Kohda, Ronald C. Conaway, Joan Weliky Conaway, Keiichi I. Nakayama</attribute>
+					<attribute name="journal" nameAc="MI:0885">Genes Dev</attribute>
+					<attribute name="publication year" nameAc="MI:0886">2004</attribute>
+					<attribute name="contact-email" nameAc="MI:0634">nakayak1@bioreg.kyushu-u.ac.jp</attribute>
+				</attributeList>
+			</experimentDescription>
+			<experimentDescription id="3">
+				<names>
+					<shortLabel>kamura_t-2004-3</shortLabel>
+					<fullName>VHL-box and SOCS-box domains determine binding specificity for Cul2-Rbx1 and Cul5-Rbx2 modules of ubiquitin ligases</fullName>
+				</names>
+				<bibref>
+					<xref>
+						<primaryRef id="15601820" db="pubmed" dbAc="MI:0446" refType="primary-reference" refTypeAc="MI:0358"/>
+					</xref>
+				</bibref>
+				<hostOrganismList>
+					<hostOrganism ncbiTaxId="10090">
+						<names>
+							<shortLabel>mouse</shortLabel>
+							<fullName>Mus musculus</fullName>
+						</names>
+						<cellType>
+							<names>
+								<shortLabel>RAW 264.7</shortLabel>
+								<fullName>RAW 264.7</fullName>
+							</names>
+							<xref>
+								<primaryRef id="ICLC ATL02001" db="CABRI" dbAc="MI:0246" refType="identity" refTypeAc="MI:0356"/>
+							</xref>
+						</cellType>
+					</hostOrganism>
+				</hostOrganismList>
+				<interactionDetectionMethod>
+					<names>
+						<shortLabel>anti bait coip</shortLabel>
+						<fullName>anti bait coimmunoprecipitation</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0006" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionDetectionMethod>
+				<participantIdentificationMethod>
+					<names>
+						<shortLabel>Immuno blot</shortLabel>
+						<fullName>western blot</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0113" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</participantIdentificationMethod>
+				<attributeList>
+					<attribute name="author-list" nameAc="MI:0636">Takumi Kamura, Katsumi Maenaka, Shuhei Kotoshiba, Masaki Matsumoto, Daisuke Kohda, Ronald C. Conaway, Joan Weliky Conaway, Keiichi I. Nakayama</attribute>
+					<attribute name="journal" nameAc="MI:0885">Genes Dev</attribute>
+					<attribute name="publication year" nameAc="MI:0886">2004</attribute>
+					<attribute name="contact-email" nameAc="MI:0634">nakayak1@bioreg.kyushu-u.ac.jp</attribute>
+				</attributeList>
+			</experimentDescription>
+		</experimentList>
+		<interactorList>
+			<interactor id="4">
+				<names>
+					<shortLabel>VHL_HUMAN</shortLabel>
+					<fullName>Von Hippel-Lindau disease tumor suppressor</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">pVHL</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Protein G7</alias>
+				</names>
+				<xref>
+					<primaryRef id="P40337" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MPRRAENWDEAEVGAEEAGVEEYGPEEDGGEESGAEESGPEESGPEELGAEEEMEAGRPRPVLRSVNSREPSQVIFCNRSPRVVLPVWLNFDGEPQPYPTLPPGTGRRIHSYRGHLWLFRDAGTHDGLLVNQTELFVPSLNVDGQPIFANITLPVYTLKERCLQVVRSLVKPENYRRLDIVRSLYEDLEDHPNVQKDLERLTQERIAHQRMGD</sequence>
+			</interactor>
+			<interactor id="5">
+				<names>
+					<shortLabel>ELOB_HUMAN</shortLabel>
+					<fullName>Transcription elongation factor B polypeptide 2</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">Elongin-B</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">18 kDa subunit</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">RNA polymerase II transcription factor SIII subunit B</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SIII p18</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">TCEB2</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q15370" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="6923" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MDVFLMIRRHKTTIFTDAKESSTVFELKRIVEGILKRPPDEQRLYKDDQLLDDGKTLGECGFTSQTARPQAPATVGLAFRADDTFEALCIEPFSSPPELPDVMKPQDSGSSANEQAVQ</sequence>
+			</interactor>
+			<interactor id="6">
+				<names>
+					<shortLabel>ELOC_HUMAN</shortLabel>
+					<fullName>Transcription elongation factor B polypeptide 1</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">RNA polymerase II transcription factor SIII subunit C</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SIII p15</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Elongin 15 kDa subunit</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Elongin-C</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">TCEB1</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q15369" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="6921" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MDGEEKTYGGCEGPDAMYVKLISSDGHEFIVKREHALTSGTIKAMLSGPGQFAENETNEVNFREIPSHVLSKVCMYFTYKVRYTNSSTEIPEFPIAPEIALELLMAANFLDC</sequence>
+			</interactor>
+			<interactor id="7">
+				<names>
+					<shortLabel>CUL2_HUMAN</shortLabel>
+					<fullName>Cullin-2</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">CUL-2</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q13617" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="8453" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MSLKPRVVDFDETWNKLLTTIKAVVMLEYVERATWNDRFSDIYALCVAYPEPLGERLYTETKIFLENHVRHLHKRVLESEEQVLVMYHRYWEEYSKGADYMDCLYRYLNTQFIKKNKLTEADLQYGYGGVDMNEPLMEIGELALDMWRKLMVEPLQAILIRMLLREIKNDRGGEDPNQKVIHGVINSFVHVEQYKKKFPLKFYQEIFESPFLTETGEYYKQEASNLLQESNCSQYMEKVLGRLKDEEIRCRKYLHPSSYTKVIHECQQRMVADHLQFLHAECHNIIRQEKKNDMANMYVLLRAVSTGLPHMIQELQNHIHDEGLRATSNLTQENMPTLFVESVLEVHGKFVQLINTVLNGDQHFMSALDKALTSVVNYREPKSVCKAPELLAKYCDNLLKKSAKGMTENEVEDRLTSFITVFKYIDDKDVFQKFYARMLAKRLIHGLSMSMDSEEAMINKLKQACGYEFTSKLHRMYTDMSVSADLNNKFNNFIKNQDTVIDLGISFQIYVLQAGAWPLTQAPSSTFAIPQELEKSVQMFELFYSQHFSGRKLTWLHYLCTGEVKMNYLGKPYVAMVTTYQMAVLLAFNNSETVSYKELQDSTQMNEKELTKTIKSLLDVKMINHDSEKEDIDAESSFSLNMNFSSKRTKFKITTSMQKDTPQEMEQTRSAVDEDRKMYLQAAIVRIMKARKVLRHNALIQEVISQSRARFNPSISMIKKCIEVLIDKQYIERSQASADEYSYVA</sequence>
+			</interactor>
+			<interactor id="8">
+				<names>
+					<shortLabel>RBX1_HUMAN</shortLabel>
+					<fullName>RING-box protein 1</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">Regulator of cullins 1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">RING finger protein 75</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Protein ZYP</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">RNF75</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">ROC1</alias>
+				</names>
+				<xref>
+					<primaryRef id="P62877" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="9978" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MAAAMDVDTPSGTNSGAGKKRFEVKKWNAVALWAWDIVVDNCAICRNHIMDLCIECQANQASATSEECTVAWGVCNHAFHFHCISRWLKTRQVCPLDNREWEFQKYGH</sequence>
+			</interactor>
+			<interactor id="9">
+				<names>
+					<shortLabel>SOCS3_HUMAN</shortLabel>
+					<fullName>Suppressor of cytokine signaling 3</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">SOCS-3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Cytokine-inducible SH2 protein 3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">CIS-3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">STAT-induced STAT inhibitor 3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SSI-3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">CIS3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SSI3</alias>
+				</names>
+				<xref>
+					<primaryRef id="O14543" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="9021" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MVTHSKFPAAGMSRPLDTSLRLKTFSSKSEYQLVVNAVRKLQESGFYWSAVTGGEANLLLSAEPAGTFLIRDSSDQRHFFTLSVKTQSGTKNLRIQCEGGSFSLQSDPRSTQPVPRFDCVLKLVHHYMPPPGAPSFPSPPTEPSSEVPEQPSAQPLPGSPPRRAYYIYSGGEKIPLVLSRPLSSNVATLQHLCRKTVNGHLDSYEKVTQLPGPIREFLDQYDAPL</sequence>
+			</interactor>
+			<interactor id="10">
+				<names>
+					<shortLabel>CUL5_HUMAN</shortLabel>
+					<fullName>Cullin-5</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">CUL-5</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Vasopressin-activated calcium-mobilizing receptor 1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">VACM-1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">VACM1</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q93034" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="8065" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MATSNLLKNKGSLQFEDKWDFMRPIVLKLLRQESVTKQQWFDLFSDVHAVCLWDDKGPAKIHQALKEDILEFIKQAQARVLSHQDDTALLKAYIVEWRKFFTQCDILPKPFCQLEITLMGKQGSNKKSNVEDSIVRKLMLDTWNESIFSNIKNRLQDSAMKLVHAERLGEAFDSQLVIGVRESYVNLCSNPEDKLQIYRDNFEKAYLDSTERFYRTQAPSYLQQNGVQNYMKYADAKLKEEEKRALRYLETRRECNSVEALMECCVNALVTSFKETILAECQGMIKRNETEKLHLMFSLMDKVPNGIEPMLKDLEEHIISAGLADMVAAAETITTDSEKYVEQLLTLFNRFSKLVKEAFQDDPRFLTARDKAYKAVVNDATIFKLELPLKQKGVGLKTQPESKCPELLANYCDMLLRKTPLSKKLTSEEIEAKLKEVLLVLKYVQNKDVFMRYHKAHLTRRLILDISADSEIEENMVEWLREVGMPADYVNKLARMFQDIKVSEDLNQAFKEMHKNNKLALPADSVNIKILNAGAWSRSSEKVFVSLPTELEDLIPEVEEFYKKNHSGRKLHWHHLMSNGIITFKNEVGQYDLEVTTFQLAVLFAWNQRPREKISFENLKLATELPDAELRRTLWSLVAFPKLKRQVLLYEPQVNSPKDFTEGTLFSVNQEFSLIKNAKVQKRGKINLIGRLQLTTERMREEENEGIVQLRILRTQEAIIQIMKMRKKISNAQLQTELVEILKNMFLPQKKMIKEQIEWLIEHKYIRRDESDINTFIYMA</sequence>
+			</interactor>
+			<interactor id="11">
+				<names>
+					<shortLabel>RBX2_HUMAN</shortLabel>
+					<fullName>RING-box protein 2</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">RING finger protein 7</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Regulator of cullins 2</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">CKII beta-binding protein 1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">CKBBP1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Sensitive to apoptosis gene protein</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">RNF7</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">ROC2</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SAG</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q9UBF6" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="9616" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MADVEDGEETCALASHSGSSGSKSGGDKMFSLKKWNAVAMWSWDVECDTCAICRVQVMDACLRCQAENKQEDCVVVWGECNHSFHNCCMSLWVKQNNRCPLCQQDWVVQRIGK</sequence>
+			</interactor>
+			<interactor id="12">
+				<names>
+					<shortLabel>SPSB1_HUMAN</shortLabel>
+					<fullName>SPRY domain-containing SOCS box protein 1</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">SSB-1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SSB1</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q96BD6" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="80176" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MGQKVTGGIKTVDMRDPTYRPLKQELQGLDYCKPTRLDLLLDMPPVSYDVQLLHSWNNNDRSLNVFVKEDDKLIFHRHPVAQSTDAIRGKVGYTRGLHVWQITWAMRQRGTHAVVGVATADAPLHSVGYTTLVGNNHESWGWDLGRNRLYHDGKNQPSKTYPAFLEPDETFIVPDSFLVALDMDDGTLSFIVDGQYMGVAFRGLKGKKLYPVVSAVWGHCEIRMRYLNGLDPEPLPLMDLCRRSVRLALGRERLGEIHTLPLPASLKAYLLYQ</sequence>
+			</interactor>
+			<interactor id="13">
+				<names>
+					<shortLabel>SPSB2_HUMAN</shortLabel>
+					<fullName>SPRY domain-containing SOCS box protein 2</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">SSB-2</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Gene-rich cluster protein C9</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">GRCC9</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SSB2</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q99619" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="84727" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MGQTALAGGSSSTPTPQALYPDLSCPEGLEELLSAPPPDLGAQRRHGWNPKDCSENIEVKEGGLYFERRPVAQSTDGARGKRGYSRGLHAWEISWPLEQRGTHAVVGVATALAPLQTDHYAALLGSNSESWGWDIGRGKLYHQSKGPGAPQYPAGTQGEQLEVPERLLVVLDMEEGTLGYAIGGTYLGPAFRGLKGRTLYPAVSAVWGQCQVRIRYLGERRAEPHSLLHLSRLCVRHNLGDTRLGQVSALPLPPAMKRYLLYQ</sequence>
+			</interactor>
+			<interactor id="14">
+				<names>
+					<shortLabel>RB40C_HUMAN</shortLabel>
+					<fullName>Ras-related protein Rab-40C</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">SOCS box-containing protein RAR3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Rar-like protein</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Ras-like protein family member 8C</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">RASL8C</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">RARL</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q96S21" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="57799" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MGSQGSPVKSYDYLLKFLLVGDSDVGKGEILESLQDGAAESPYAYSNGIDYKTTTILLDGRRVKLELWDTSGQGRFCTIFRSYSRGAQGILLVYDITNRWSFDGIDRWIKEIDEHAPGVPRILVGNRLHLAFKRQVPTEQARAYAEKNCMTFFEVSPLCNFNVIESFTELSRIVLMRHGMEKIWRPNRVFSLQDLCCRAIVSCTPVHLIDKLPLPVTIKSHLKSFSMANGMNAVMMHGRSYSLASGAGGGGSKGNSLKRSKSIRPPQSPPQNCSRSNCKIS</sequence>
+			</interactor>
+			<interactor id="15">
+				<names>
+					<shortLabel>WSB1_MOUSE</shortLabel>
+					<fullName>WD repeat and SOCS box-containing protein 1</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">WD repeat and SOCS box-containing protein 1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">WSB-1</alias>
+				</names>
+				<xref>
+					<primaryRef id="O54927" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="78889" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MASFPPRVNEKEIVRSRTIGELLAPAAPFDKKCGGENWTVAFAPDGSYFAWSQGYRIVKLVPWSQCRKNFLLHGSKNVTNSSCLKLARQNSNGGQKNKPPEHVIDCGDIVWSLAFGSSVPEKQSRCVNIEWHRFRFGQDQLLLATGLNNGRIKIWDVYTGKLLLNLVDHIEMVRDLTFAPDGSLLLVSASRDKTLRVWDLKDDGNMVKVLRAHQNWVYSCAFSPDCSMLCSVGASKAVFLWNMDKYTMIRKLEGHHHDVVACDFSPDGALLATASYDTRVYVWDPHNGDLLMEFGHLFPSPTPIFAGGANDRWVRAVSFSHDGLHVASLADDKMVRFWRIDEDCPVQVAPLSNGLCCAFSTDGSVLAAGTHDGSVYFWATPRQVPSLQHICRMSIRRVMSTQEVQKLPVPSKILAFLSYRG</sequence>
+			</interactor>
+			<interactor id="16">
+				<names>
+					<shortLabel>LRC41_MOUSE</shortLabel>
+					<fullName>Leucine-rich repeat-containing protein 41</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">Protein Muf1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Lrrc41</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Muf1</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q8K1C9" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="230654" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MAAPEAWRARSCWFCEVAAATTMEATSREAAPAKSSASGPSAPPALFELCGRAVSAHMGVLESGVWALPGPILQSILPLLNIYYLERIEETALKKGLSTQAIWRRLWDELMKTRPSSLESVTCWRAKFMEAFFSHVLRGTIDVSSDKRLCDQRFSPLLHSSRHVRQLTICNMLQGATELVAEPNRRVLETLASSLHTLKFRHLLFSDVAAQQSLRQLLHQLIHHGAVSQVSLYSWPVPESALFILILTMSAGFWQPGPGSLPCRLCGEASRGRAPSRDEGSLLLGSRRPRRDAAERCAAALMATRRKSEVKQMPRAVPPTRVTRRSTQESLAIGGTDSKLYLPATSYEASGTKQPSAPAAASASSSTSSKRAPASSASQPKPLKRFKRAAGKKGPRTRQGSGAESEDLYDFVFIVAGEKEDGEEMEIGEVACGALDGSDPSCLGLPALEASQRFRSISTLELFTVPLSTEAALTLCHLLSSWVSLESLTLSYNGLGSNIFRLLDSLRALSGQAGCRLRALHLSDLFSPLPILELTRAIVRALPLLRVLSIRVDHPSQRDNPAVPENAGPPGHIVGDEEIPENCLEQLEMGFPRGAQPAPLLCSVLKASGSLQQLSLDSATFASPQDFGLVLQTLKEHNLSLKRLSFHDMNLADCQSEVLFLLKNLTLQEITFSFCRLFEKRPVQFLPEMVAAMKGNSTLKGLRLPGNRLGNAGLLALADVFSEDSSSSLCQLDISSNCIKPDGLLEFAKRLERWGRGAFGHLRLFQNWLDQDAVTAREAIRRLRATCHVVSDSWDSTQAFADYVSTM</sequence>
+			</interactor>
+			<interactor id="17">
+				<names>
+					<shortLabel>VHL_MOUSE</shortLabel>
+					<fullName>Von Hippel-Lindau disease tumor suppressor</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">pVHL</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Vhlh</alias>
+				</names>
+				<xref>
+					<primaryRef id="P40338" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="22346" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MPRKAASPEEAAGEPGPEEMEAGRPRPVLRSVNSREPSQVIFCNRSPRVVLPLWLNFDGEPQPYPILPPGTGRRIHSYRGHLWLFRDAGTHDGLLVNQTELFVPSLNVDGQPIFANITLPVYTLKERCLQVVRSLVKPENYRRLDIVRSLYEDLEDYPSVRKDIQRLSQEHLESQHLEEEP</sequence>
+			</interactor>
+			<interactor id="18">
+				<names>
+					<shortLabel>ELOC_MOUSE</shortLabel>
+					<fullName>Transcription elongation factor B polypeptide 1</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">RNA polymerase II transcription factor SIII subunit C</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SIII p15</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Elongin 15 kDa subunit</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Elongin-C</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Stromal membrane-associated protein SMAP1B homolog</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Tceb1</alias>
+				</names>
+				<xref>
+					<primaryRef id="P83940" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="67923" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MDGEEKTYGGCEGPDAMYVKLISSDGHEFIVKREHALTSGTIKAMLSGPGQFAENETNEVNFREIPSHVLSKVCMYFTYKVRYTNSSTEIPEFPIAPEIALELLMAANFLDC</sequence>
+			</interactor>
+			<interactor id="19">
+				<names>
+					<shortLabel>ELOB_MOUSE</shortLabel>
+					<fullName>Transcription elongation factor B polypeptide 2</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">RNA polymerase II transcription factor SIII subunit B</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SIII p18</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Elongin-B</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Elongin 18 kDa subunit</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Tceb2</alias>
+				</names>
+				<xref>
+					<primaryRef id="P62869" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="67673" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MDVFLMIRRHKTTIFTDAKESSTVFELKRIVEGILKRPPEEQRLYKDDQLLDDGKTLGECGFTSQTARPQAPATVGLAFRADDTFEALRIEPFSSPPELPDVMKPQDSGGSANEQAVQ</sequence>
+			</interactor>
+			<interactor id="20">
+				<names>
+					<shortLabel>CUL5_MOUSE</shortLabel>
+					<fullName>Cullin-5</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">CUL-5</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q9D5V5" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="75717" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MATSNLLKNKGSLQFEDKWDFMHPIVLKLLRQESVTKQQWFDLFSDVHAVCLWDDKGSSKIHQALKEDILEFIKQAQARVLSHQDDTALLKAYIVEWRKFFTQCDILPKPFCQLEVTLLGKQSSNKKSNMEDSIVRKLMLDTWNESIFSNIKNRLQDSAMKLVHAERLGEAFDSQLVIGVRESYVNLCSNPEDKLQIYRDNFEKAYLDSTERFYRTQAPSYLQQNGVQNYMKYADAKLKEEEKRALRYLETRRECNSVEALMECCVNALVTSFKETILAECQGMIKRNETEKLHLMFSLMDKVPNGIEPMLKDLEEHIISAGLADMVAAAETITTDSEKYVEQLLTLFNRFSKLVKEAFQDDPRFLTARDKAYKAVVNDATIFKLELPLKQKGVGLKTQPESKCPELLANYCDMLLRKTPLSKKLTSEEIEAKLKEVLLVLKYVQNKDVFMRYHKAHLTRRLILDISADSEIEENMVEWLREVGMPADYVNKLARMFQDIKVSEDLNQAFKEMHKNNKLALPADSVNIKILNAGAWSRSSEKVFVSLPTELEDLIPEVEEFYKKNHSGRKLHWHHLMSNGIITFKNEVGQYDLEVTTFQLAVLFAWNQRPREKISFENLKLATELPDAELRRTLWSLVAFPKLKRQVLLYDPQVNSPKDFTEGTLFSVNQDFSLIKNAKVQKRGKINLIGRLQLTTERMREEENEGIVQLRILRTQEAIIQIMKMRKKISNAQLQTELVEILKNMFLPQKKMIKEQMEWLIEHRYIRRDEADINTFIYMA</sequence>
+			</interactor>
+			<interactor id="21">
+				<names>
+					<shortLabel>RBX2_MOUSE</shortLabel>
+					<fullName>RING-box protein 2</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">RING finger protein 7</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Sensitive to apoptosis gene protein</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Rnf7</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Rbx2</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Sag</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q9WTZ1" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="19823" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MADVEDGEEPCVLSSHSGSAGSKSGGDKMFSLKKWNAVAMWSWDVECDTCAICRVQVMDACLRCQAENKQEDCVVVWGECNHSFHNCCMSLWVKQNNRCPLCQQDWVVQRIGK</sequence>
+			</interactor>
+			<interactor id="22">
+				<names>
+					<shortLabel>SOCS3_MOUSE</shortLabel>
+					<fullName>Suppressor of cytokine signaling 3</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">SOCS-3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Cytokine-inducible SH2 protein 3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">CIS-3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Protein EF-10</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Cis3</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Cish3</alias>
+				</names>
+				<xref>
+					<primaryRef id="O35718" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="12702" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MVTHSKFPAAGMSRPLDTSLRLKTFSSKSEYQLVVNAVRKLQESGFYWSAVTGGEANLLLSAEPAGTFLIRDSSDQRHFFTLSVKTQSGTKNLRIQCEGGSFSLQSDPRSTQPVPRFDCVLKLVHHYMPPPGTPSFSLPPTEPSSEVPEQPPAQALPGSTPKRAYYIYSGGEKIPLVLSRPLSSNVATLQHLCRKTVNGHLDSYEKVTQLPGPIREFLDQYDAPL</sequence>
+			</interactor>
+			<interactor id="23">
+				<names>
+					<shortLabel>SOCS1_MOUSE</shortLabel>
+					<fullName>Suppressor of cytokine signaling 1</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">SOCS-1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">JAK-binding protein</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SSI-1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">JAB</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">STAT-induced STAT inhibitor 1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Cish1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Ssi1</alias>
+				</names>
+				<xref>
+					<primaryRef id="O35716" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="12703" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MVARNQVAADNAISPAAEPRRRSEPSSSSSSSSPAAPVRPRPCPAVPAPAPGDTHFRTFRSHSDYRRITRTSALLDACGFYWGPLSVHGAHERLRAEPVGTFLVRDSRQRNCFFALSVKMASGPTSIRVHFQAGRFHLDGSRETFDCLFELLEHYVAAPRRMLGAPLRQRRVRPLQELCRQRIVAAVGRENLARIPLNPVLRDYLSSFPFQI</sequence>
+			</interactor>
+			<interactor id="24">
+				<names>
+					<shortLabel>CUL2_MOUSE</shortLabel>
+					<fullName>Cullin-2</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">Cul2</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q9D4H8" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="71745" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MSLKPRVVDFDETWNKLLTTIKAVVMLEYVERATWNDRFSDIYALCVAYPEPLGERLYAE
+TKIFLESHVRHLYKRVLESEEQVLVMYHRYWEEYSKGADYMDCLYRYLNTQYIKKNKLTE
+ADIQYGYGGVDMNEPLMEIGELALDMWRKLMVEPLQNILIRMLLREIKNDRGGEDPNQKV
+IHGVINSFVHVEQYKKKFPLKFYQGIFVSPFLTETGEYYKQEASNLLQESNCSQYMEKVL
+GRLKDEEIRCRKYLHPSSYTKVIHECQQRMVADHLQFLHSECHSIIQQERKNDMANMYVL
+LRAVSSGLPHMIEELQKHIHDEGLRATSNLTQEHMPTLFVESVLEVHGKFVQLINTVLNG
+DQHFMSALDKALTSVVNYREPKSVCKAPELLAKYCDNLLKKSAKGMTENEVEDKLTSFIT
+VFKYIDDKDVFQKFYARMLAKRLIHGLSMSMDSEEAMINKLKQACGYEFTSKLHRMYTDM
+SVSADLNNKFNNFIRNQDTVIDLGISFQIYVLQAGAWPLTQAPSSTFAIPQELEKSVQMF
+ELFYSQHFSGRKLTWLHYLCTGEVKMNYLGKPYVAMVTTYQMAVLLAFNNSETVSYKELQ
+DSTQMNEKELTKTIKSLLDVKMINHDSEKEDIDAESSFSLNMSFSSKRTKFKITTSMQKD
+TPQELEQTRSAVDEDRKMYLQAAIVRIMKARKVLRHNALIQEVISQSRARFNPSISMIKK
+CIEVLIDKQYIERSQASADEYSYVA</sequence>
+			</interactor>
+			<interactor id="25">
+				<names>
+					<shortLabel>LLR1_HUMAN</shortLabel>
+					<fullName>Peptidylprolyl isomerase-like 5</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">LRR-repeat protein 1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">LRR-1</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">4-1BB-mediated-signaling molecule</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">4-1BBlrr</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">PPIL5</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q96L50" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="122769" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MKLHCEVEVISRHLPALGLRNRGKGVRAVLSLCQQTSRSQPPVRAFLLISTLKDKRGTRYELRENIEQFFTKFVDEGKATVRLKEPPVDICLSKAISSSLKGFLSAMRLAHRGCNVDTPVSTLTPVKTSEFENFKTKMVITSKKDYPLSKNFPYSLEHLQTSYCGLVRVDMRMLCLKSLRKLDLSHNHIKKLPATIGDLIHLQELNLNDNHLESFSVALCHSTLQKSLRSLDLSKNKIKALPVQFCQLQELKNLKLDDNELIQFPCKIGQLINLRFLSAARNKLPFLPSEFRNLSLEYLDLFGNTFEQPKVLPVIKLQAPLTLLESSARTILHNRIPYGSHIIPFHLCQDLDTAKICVCGRFCLNSFIQGTTTMNLHSVAHTVVLVDNLGGTEAPIISYFCSLGCYVNSSDMLK</sequence>
+			</interactor>
+			<interactor id="26">
+				<names>
+					<shortLabel>FEM1B_HUMAN</shortLabel>
+					<fullName>Protein fem-1 homolog B</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">FEM1-beta</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">Fem-1-like death receptor-binding protein alpha</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">KIAA0396</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">F1AA</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q9UK73" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="10116" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MEGLAGYVYKAASEGKVLTLAALLLNRSESDIRYLLGYVSQQGGQRSTPLIIAARNGHAKVVRLLLEHYRVQTQQTGTVRFDGYVIDGATALWCAAGAGHFEVVKLLVSHGANVNHTTVTNSTPLRAACFDGRLDIVKYLVENNANISIANKYDNTCLMIAAYKGHTDVVRYLLEQRADPNAKAHCGATALHFAAEAGHIDIVKELIKWRAAIVVNGHGMTPLKVAAESCKADVVELLLSHADCDRRSRIEALELLGASFANDRENYDIIKTYHYLYLAMLERFQDGDNILEKEVLPPIHAYGNRTECRNPQELESIRQDRDALHMEGLIVRERILGADNIDVSHPIIYRGAVYADNMEFEQCIKLWLHALHLRQKGNRNTHKDLLRFAQVFSQMIHLNETVKAPDIECVLRCSVLEIEQSMNRVKNISDADVHNAMDNYECNLYTFLYLVCISTKTQCSEEDQCKINKQIYNLIHLDPRTREGFTLLHLAVNSNTPVDDFHTNDVCSFPNALVTKLLLDCGAEVNAVDNEGNSALHIIVQYNRPISDFLTLHSIIISLVEAGAHTDMTNKQNKTPLDKSTTGVSEILLKTQMKMSLKCLAARAVRANDINYQDQIPRTLEEFVGFH</sequence>
+			</interactor>
+			<interactor id="27">
+				<names>
+					<shortLabel>SPSB4_HUMAN</shortLabel>
+					<fullName>SPRY domain-containing SOCS box protein 4</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">SSB-4</alias>
+					<alias type="gene name synonym" typeAc="MI:0302">SSB4</alias>
+				</names>
+				<xref>
+					<primaryRef id="Q96A44" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="92369" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="9606">
+					<names>
+						<shortLabel>human</shortLabel>
+						<fullName>Homo sapiens</fullName>
+					</names>
+				</organism>
+				<sequence>MGQKLSGSLKSVEVREPALRPAKRELRGAEPGRPARLDQLLDMPAAGLAVQLRHAWNPEDRSLNVFVKDDDRLTFHRHPVAQSTDGIRGKVGHARGLHAWQINWPARQRGTHAVVGVATARAPLHSVGYTALVGSDAESWGWDLGRSRLYHDGKNQPGVAYPAFLGPDEAFALPDSLLVVLDMDEGTLSFIVDGQYLGVAFRGLKGKKLYPVVSAVWGHCEVTMRYINGLDPEPLPLMDLCRRSIRSALGRQRLQDISSLPLPQSLKNYLQYQ</sequence>
+			</interactor>
+			<interactor id="28">
+				<names>
+					<shortLabel>RBX1_MOUSE</shortLabel>
+					<fullName>RING-box protein 1</fullName>
+					<alias type="gene name synonym" typeAc="MI:0302">Rbx1</alias>
+				</names>
+				<xref>
+					<primaryRef id="P62878" db="uniprotkb" dbAc="MI:0486" refType="identity" refTypeAc="MI:0356"/>
+					<secondaryRef id="56438" db="entrez gene/locuslink" dbAc="MI:0477" refType="identity" refTypeAc="MI:0356"/>
+				</xref>
+				<interactorType>
+					<names>
+						<shortLabel>protein</shortLabel>
+						<fullName>protein</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0326" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactorType>
+				<organism ncbiTaxId="10090 ">
+					<names>
+						<shortLabel>mouse</shortLabel>
+						<fullName>Mus musculus</fullName>
+					</names>
+				</organism>
+				<sequence>MAAAMDVDTPSGTNSGAGKKRFEVKKWNAVALWAWDIVVDNCAICRNHIMDLCIECQANQ
+ASATSEECTVAWGVCNHAFHFHCISRWLKTRQVCPLDNREWEFQKYGH
+</sequence>
+			</interactor>
+		</interactorList>
+		<interactionList>
+			<interaction id="29">
+				<names>
+					<shortLabel>vhl-elongin b-1
+</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with VHL-Flag tagged construct showed association with Cul2, Rbx1, Elongin B and Elongin C; region 178–181 (LDIV) is necessary for binding Cul2 and Rbx1 and not Elongin B and C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="30">
+						<interactorRef>4</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="31">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="32">
+								<names>
+									<shortLabel>Binding site for cul2
+ and rbx1</shortLabel>
+									<fullName>Binding site for cul2
+ and rbx1</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="178"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="181"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="33">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="34">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="35">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="36">
+						<interactorRef>8</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2A and Fig 5E
+</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="37">
+				<names>
+					<shortLabel>vhl-elongin b-2
+</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with VHL-Flag tagged construct showed association with Cul2, Rbx1, Elongin B and Elongin C; region 178–181 (LDIV) is necessary for binding Cul2 and Rbx1 and not Elongin B and C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="38">
+						<interactorRef>4</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="39">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="40">
+								<names>
+									<shortLabel>Binding site for cul2
+ and rbx1</shortLabel>
+									<fullName>Binding site for cul2
+ and rbx1</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="178"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="181"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="41">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="42">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="43">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="44">
+						<interactorRef>8</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2C. Fig 4B and Fig 5F</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="45">
+				<names>
+					<shortLabel>socs3-elongin b-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with SOCS3-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="46">
+						<interactorRef>9</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="47">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="48">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="49">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="50">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="51">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="52">
+				<names>
+					<shortLabel>socs3-elongin b-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with SOCS3-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="53">
+						<interactorRef>9</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="54">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="55">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="56">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="57">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="58">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2c
+</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="59">
+				<names>
+					<shortLabel>ssb1-elongin b-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with SSB1-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="60">
+						<interactorRef>12</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="61">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="62">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="63">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="64">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="65">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2c</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="66">
+				<names>
+					<shortLabel>ssb1-elongin b-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with SSB1-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C; 212LPLP215-AAAA mutation disrupted interaction with Cul5 and Rbx2 and not Elongin B or C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="67">
+						<interactorRef>12</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="68">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="69">
+								<names>
+									<shortLabel>binding site for cul5
+and rbx2</shortLabel>
+									<fullName>binding site for cul5
+and rbx2</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="212"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="215"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="70">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="71">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="72">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="73">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2C and Fig 3B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="74">
+				<names>
+					<shortLabel>ssb2-elongin b-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with SSB2-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="75">
+						<interactorRef>13</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="76">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="77">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="78">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="79">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="80">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="81">
+				<names>
+					<shortLabel>ssb2-elongin b-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with SSB2-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="82">
+						<interactorRef>13</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="83">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="84">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="85">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="86">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="87">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2C and Fig 3B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="88">
+				<names>
+					<shortLabel>rar3-elongin b-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with RAR3-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="89">
+						<interactorRef>14</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="90">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="91">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="92">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="93">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="94">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="95">
+				<names>
+					<shortLabel>rar3-elongin b-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with RAR3-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C; 212LPLP215-AAAA mutation disrupted interaction with Cul5 and Rbx2 and not Elongin B or C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="96">
+						<interactorRef>14</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="97">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="98">
+								<names>
+									<shortLabel>binding site for cul5 and rbx2</shortLabel>
+									<fullName>binding site for cul5 and rbx2</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="212"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="215"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="99">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="100">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="101">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="102">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2C</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="103">
+				<names>
+					<shortLabel>wsb1-elongin b-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Wsb1-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="104">
+						<interactorRef>15</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="105">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="106">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="107">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="108">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="109">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="110">
+				<names>
+					<shortLabel>wsb1-elongin b-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Wsb1-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="111">
+						<interactorRef>15</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="112">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="113">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="114">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="115">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="116">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2C
+</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="117">
+				<names>
+					<shortLabel>muf1-elongin b-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Muf1-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="118">
+						<interactorRef>16</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="119">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="120">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="121">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="122">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="123">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="124">
+				<names>
+					<shortLabel>muf1-elongin b-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Muf1-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="125">
+						<interactorRef>16</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="126">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="127">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="128">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="129">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="130">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2C</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="131">
+				<names>
+					<shortLabel>vhl-elongin b-3</shortLabel>
+					<fullName>RAW264.7 cells extract was subjected to immunoprecipitation with anti-VHL</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>3</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="132">
+						<interactorRef>17</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="133">
+						<interactorRef>19</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="134">
+						<interactorRef>18</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="135">
+						<interactorRef>24</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="136">
+						<interactorRef>28</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2D</attribute>
+					<attribute name="stimulation" nameAc="MI:0624L">Lipopolysaccharide</attribute>
+					<attribute name="stimulation" nameAc="MI:0624L">MG132</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="137">
+				<names>
+					<shortLabel>socs3-elongin b-1</shortLabel>
+					<fullName>RAW264.7 cells extract was subjected to immunoprecipitation with anti-SOCS3</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>3</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="138">
+						<interactorRef>22</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="139">
+						<interactorRef>19</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="140">
+						<interactorRef>18</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="141">
+						<interactorRef>20</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="142">
+						<interactorRef>21</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 2D</attribute>
+					<attribute name="stimulation" nameAc="MI:0624L">Lipopolysaccharide</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="143">
+				<names>
+					<shortLabel>socs1-elongin b-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Socs1-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C; socs1 195IPLN198-LPLN mutation disrupt interaction with Cul5 and Rbx2 and not Elongin B or C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="144">
+						<interactorRef>23</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="145">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="146">
+								<names>
+									<shortLabel>binding site for cul5 and rbx2</shortLabel>
+									<fullName>binding site for cul5 and rbx2</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="195"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="198"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="147">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="148">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="149">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="150">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 3F</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="151">
+				<names>
+					<shortLabel>socs1-elongin b-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Socs1-Flag tagged construct showed association with Cul5, Rbx2, Elongin B and Elongin C; socs1 195IPLN198-LPLN mutation disrupt interaction with Cul5 and Rbx2 and not Elongin B or C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="152">
+						<interactorRef>23</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="153">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminal</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="154">
+								<names>
+									<shortLabel>binding site for cul5 and rbx2</shortLabel>
+									<fullName>binding site for cul5 and rbx2</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="195"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="198"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="155">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="156">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="157">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="158">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 3G</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="159">
+				<names>
+					<shortLabel>cul2-vhl-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Cul2-Flag tagged</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="160">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="161">
+								<names>
+									<shortLabel>c-term</shortLabel>
+									<fullName>C-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>c-terminal</shortLabel>
+												<fullName>c-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0334" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>c-terminal</shortLabel>
+												<fullName>c-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0334" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="162">
+						<interactorRef>4</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="163">
+						<interactorRef>25</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="164">
+						<interactorRef>26</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="165">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="166">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="167">
+						<interactorRef>8</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 5A</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="168">
+				<names>
+					<shortLabel>lrr1-cul2-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with LRR1-Flag tagged construct;  341HIIP344-AAAA mutation disrupt interaction with Cul2 and Rbx1 and not Elongin B or C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="169">
+						<interactorRef>25</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="170">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="171">
+								<names>
+									<shortLabel>binding site</shortLabel>
+									<fullName>binding site</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="341"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="344"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="172">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="173">
+						<interactorRef>8</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="174">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="175">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 5C, Fig 5E and Fig 5F</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="176">
+				<names>
+					<shortLabel>lrr1-cul2-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with LRR1-Flag tagged construct;  341HIIP344-AAAA mutation disrupt interaction with Cul2 and Rbx1 and not Elongin B or C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="177">
+						<interactorRef>25</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="178">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="179">
+								<names>
+									<shortLabel>binding site</shortLabel>
+									<fullName>binding site</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="341"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="344"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="180">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="181">
+						<interactorRef>8</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="182">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="183">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 5C, Fig 5E and Fig 5F</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="184">
+				<names>
+					<shortLabel>Fem1b-cul2-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Fem1B-Flag tagged construct</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>1</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="185">
+						<interactorRef>26</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="186">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="187">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="188">
+						<interactorRef>8</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="189">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="190">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 5B</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="191">
+				<names>
+					<shortLabel>Fem1b-cul2-2</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with Fem1B-Flag tagged construct</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="192">
+						<interactorRef>26</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="193">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="194">
+						<interactorRef>7</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="195">
+						<interactorRef>8</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="196">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="197">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 5E</attribute>
+				</attributeList>
+			</interaction>
+			<interaction id="198">
+				<names>
+					<shortLabel>ssb4-elongin b-1</shortLabel>
+					<fullName>Coimmunoprecipitation of HEK293T cells stably transfected with SSb4-Flag tagged construct;  246–273 mutation disrupt interaction with Cul5 and Rbx2 and not Elongin B or C</fullName>
+				</names>
+				<experimentList>
+					<experimentRef>2</experimentRef>
+				</experimentList>
+				<participantList>
+					<participant id="199">
+						<interactorRef>27</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>bait</shortLabel>
+									<fullName>bait</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0496" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+						<featureList>
+							<feature id="200">
+								<names>
+									<shortLabel>n-term</shortLabel>
+									<fullName>n-terminal</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>FLAG</shortLabel>
+										<fullName>flag tag</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0518" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="0"/>
+										<endStatus>
+											<names>
+												<shortLabel>n-terminus</shortLabel>
+												<fullName>n-terminal position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0340" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="0"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+							<feature id="201">
+								<names>
+									<shortLabel>Binding site for cul5 and rbx2</shortLabel>
+									<fullName>Binding site for cul5 and rbx2</fullName>
+								</names>
+								<featureType>
+									<names>
+										<shortLabel>required to bind</shortLabel>
+										<fullName>necessary binding site</fullName>
+									</names>
+									<xref>
+										<primaryRef id="MI:0429" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+									</xref>
+								</featureType>
+								<featureRangeList>
+									<featureRange>
+										<startStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</startStatus>
+										<begin position="246"/>
+										<endStatus>
+											<names>
+												<shortLabel>certain</shortLabel>
+												<fullName>certain sequence position</fullName>
+											</names>
+											<xref>
+												<primaryRef id="MI:0335" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+											</xref>
+										</endStatus>
+										<end position="273"/>
+									</featureRange>
+								</featureRangeList>
+							</feature>
+						</featureList>
+					</participant>
+					<participant id="202">
+						<interactorRef>5</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="203">
+						<interactorRef>6</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="204">
+						<interactorRef>10</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+					<participant id="205">
+						<interactorRef>11</interactorRef>
+						<experimentalRoleList>
+							<experimentalRole>
+								<names>
+									<shortLabel>prey</shortLabel>
+									<fullName>prey</fullName>
+								</names>
+								<xref>
+									<primaryRef id="MI:0498" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+								</xref>
+							</experimentalRole>
+						</experimentalRoleList>
+					</participant>
+				</participantList>
+				<interactionType>
+					<names>
+						<shortLabel>physical association</shortLabel>
+						<fullName>physical association</fullName>
+					</names>
+					<xref>
+						<primaryRef id="MI:0407" db="psi-mi" dbAc="MI:0488" refType="identity" refTypeAc="MI:0356"/>
+					</xref>
+				</interactionType>
+				<attributeList>
+					<attribute name="figure legend" nameAc="MI:0599">Fig 5E</attribute>
+				</attributeList>
+			</interaction>
+		</interactionList>
+	</entry>
+</entrySet>
