@@ -86,7 +86,7 @@ public class EuroPubmedCentralFetcher
         }
 
         try {
-            ResponseWrapper wrapper = getPort().searchPublications(query, DATA_SET , RESULT_TYPE, 0, false, EMAIL);
+            ResponseWrapper wrapper = getPort().searchPublications(query, RESULT_TYPE, 0, false, EMAIL);
             if(wrapper.getResultList() != null)
                 results = wrapper.getResultList().getResult();
         } catch (QueryException_Exception e) {
