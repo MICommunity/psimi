@@ -4,7 +4,7 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.5</version>
+        <version>1.8.6-SNAPSHOT</version>
     </parent>
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-enricher</artifactId>
