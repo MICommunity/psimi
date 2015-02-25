@@ -33,6 +33,13 @@
             <version>${jami.commons.version}</version>
         </dependency>
 
+        <!-- jami interaction viewer -->
+        <dependency>
+            <groupId>psidev.psi.mi.jami</groupId>
+            <artifactId>jami-interactionviewer-json</artifactId>
+            <version>${jami.interactionViewer.version}</version>
+        </dependency>
+
         <!-- jami bridges -->
         <!-- chebi -->
         <dependency>
