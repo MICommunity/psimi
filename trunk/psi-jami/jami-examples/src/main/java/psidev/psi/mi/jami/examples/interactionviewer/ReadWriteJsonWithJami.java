@@ -96,7 +96,7 @@ public class ReadWriteJsonWithJami {
                         // process the modelled interaction
                     }
 
-                    // write the interaction in MITAB and XML
+                    // write the interaction in Json
                     jsonInteractionWriter.write(interaction);
                 }
 
