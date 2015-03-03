@@ -678,9 +678,6 @@ public abstract class AbstractXmlWriter<T extends Interaction> implements Intera
         if (file == null){
             throw new IllegalArgumentException("The file cannot be null.");
         }
-        else if (!file.canWrite()){
-            throw new IllegalArgumentException("Does not have the permissions to write in file "+file.getAbsolutePath());
-        }
 
         XMLOutputFactory outputFactory = XMLOutputFactory2.newInstance();
         this.streamWriter = new IndentingXMLStreamWriter(outputFactory.createXMLStreamWriter(new FileOutputStream(file), "UTF-8"));
