@@ -77,9 +77,9 @@ public class MIJsonBinaryWriter extends AbstractMIJsonBinaryWriter<BinaryInterac
     @Override
     public void close() throws MIIOException {
         try{
+            this.modelledBinaryWriter.clear();
+            this.binaryEvidenceWriter.clear();
             super.close();
-            this.modelledBinaryWriter.close();
-            this.binaryEvidenceWriter.close();
         }
         finally {
             this.modelledBinaryWriter = null;
@@ -90,9 +90,9 @@ public class MIJsonBinaryWriter extends AbstractMIJsonBinaryWriter<BinaryInterac
     @Override
     public void reset() throws MIIOException {
         try{
+            this.modelledBinaryWriter.clear();
+            this.binaryEvidenceWriter.clear();
             super.reset();
-            this.modelledBinaryWriter.reset();
-            this.binaryEvidenceWriter.reset();
         }
         finally {
             this.modelledBinaryWriter = null;
@@ -112,8 +112,6 @@ public class MIJsonBinaryWriter extends AbstractMIJsonBinaryWriter<BinaryInterac
     @Override
     public void flush() throws MIIOException {
         super.flush();
-        this.modelledBinaryWriter.flush();
-        this.binaryEvidenceWriter.flush();
     }
 
     @Override
