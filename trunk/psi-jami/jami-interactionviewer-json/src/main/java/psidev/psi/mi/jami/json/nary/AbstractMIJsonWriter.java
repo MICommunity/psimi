@@ -254,10 +254,15 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
 
     public void clear(){
         if (isInitialised){
+            isInitialised = false;
+            writer = null;
             processedInteractors.clear();
             processedFeatures.clear();
             processedParticipants.clear();
+            interactionWriter = null;
+            interactorWriter = null;
             idGenerator = new IncrementalIdGenerator();
+            this.fetcher = null;
         }
     }
 
