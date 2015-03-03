@@ -29,14 +29,14 @@
       <dependency>
           <groupId>psidev.psi.mi.jami</groupId>
           <artifactId>jami-core</artifactId>
-          <version>${jami.core.version}</version>
+          <version>1.2.1</version>
       </dependency>
 
       <!--JAMI ols -->
       <dependency>
           <groupId>psidev.psi.mi.jami.bridges</groupId>
           <artifactId>bridges-core</artifactId>
-          <version>${jami.bridges.version}</version>
+          <version>1.1.1</version>
       </dependency>
 
       <!-- Simple java library to work with json -->
