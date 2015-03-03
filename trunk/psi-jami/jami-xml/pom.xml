@@ -4,7 +4,7 @@
     <parent>
         <groupId>psidev.psi.mi.jami</groupId>
         <artifactId>psi-jami</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
 
     <groupId>psidev.psi.mi.jami</groupId>
@@ -46,7 +46,7 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-core</artifactId>
-            <version>${jami.core.version}</version>
+            <version>1.2.1</version>
         </dependency>
 
         <!-- JAXB -->
