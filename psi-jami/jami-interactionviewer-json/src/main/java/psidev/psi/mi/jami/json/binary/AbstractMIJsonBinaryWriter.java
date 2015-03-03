@@ -68,7 +68,7 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> ex
     public void close() throws MIIOException{
         expansionId = null;
         if(this.complexWriter != null){
-           this.complexWriter.close();
+           this.complexWriter.clear();
         }
         super.close();
     }
@@ -76,7 +76,7 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> ex
     public void reset() throws MIIOException {
         expansionId = null;
         if(this.complexWriter != null){
-            this.complexWriter.reset();
+            this.complexWriter.clear();
         }
         super.reset();
     }
@@ -91,9 +91,6 @@ public abstract class AbstractMIJsonBinaryWriter<I extends BinaryInteraction> ex
 
     @Override
     public void flush() throws MIIOException {
-        if(this.complexWriter != null){
-            this.complexWriter.flush();
-        }
         super.flush();
     }
 

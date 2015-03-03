@@ -58,9 +58,9 @@ public class MIJsonWriter extends AbstractMIJsonWriter<Interaction> {
     @Override
     public void close() throws MIIOException {
         try{
+            this.modelledWriter.clear();
+            this.evidenceWriter.clear();
             super.close();
-            this.modelledWriter.close();
-            this.evidenceWriter.close();
         }
         finally {
             this.modelledWriter = null;
@@ -71,9 +71,9 @@ public class MIJsonWriter extends AbstractMIJsonWriter<Interaction> {
     @Override
     public void reset() throws MIIOException {
         try{
+            this.modelledWriter.clear();
+            this.evidenceWriter.clear();
             super.reset();
-            this.modelledWriter.reset();
-            this.evidenceWriter.reset();
         }
         finally {
             this.modelledWriter = null;
@@ -84,8 +84,6 @@ public class MIJsonWriter extends AbstractMIJsonWriter<Interaction> {
     @Override
     public void flush() throws MIIOException {
         super.flush();
-        this.modelledWriter.flush();
-        this.evidenceWriter.flush();
     }
 
     @Override

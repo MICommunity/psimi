@@ -252,6 +252,15 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         }
     }
 
+    public void clear(){
+        if (isInitialised){
+            processedInteractors.clear();
+            processedFeatures.clear();
+            processedParticipants.clear();
+            idGenerator = new IncrementalIdGenerator();
+        }
+    }
+
     public void reset() throws MIIOException {
         if (isInitialised){
 
