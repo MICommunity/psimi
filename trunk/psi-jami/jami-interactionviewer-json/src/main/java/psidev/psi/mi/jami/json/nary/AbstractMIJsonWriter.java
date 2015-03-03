@@ -349,9 +349,6 @@ public abstract class AbstractMIJsonWriter<I extends Interaction> implements Int
         if (file == null){
             throw new IllegalArgumentException("The file cannot be null.");
         }
-        else if (!file.canWrite()){
-            throw new IllegalArgumentException("Does not have the permissions to write in file "+file.getAbsolutePath());
-        }
 
         this.writer = new BufferedWriter(new FileWriter(file));
         isInitialised = true;
