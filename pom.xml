@@ -49,7 +49,7 @@
         <jami.enricher.version>1.1.2-SNAPSHOT</jami.enricher.version>
         <jami.examples.version>1.1.2-SNAPSHOT</jami.examples.version>
         <jami.html.version>1.1.1-SNAPSHOT</jami.html.version>
-        <jami.interactionViewer.version>2.0.1-SNAPSHOT</jami.interactionViewer.version>
+        <jami.interactionViewer.version>2.0.2-SNAPSHOT</jami.interactionViewer.version>
         <jami.imex.version>1.1.2-SNAPSHOT</jami.imex.version>
         <calimocho.version>2.5.2-SNAPSHOT</calimocho.version>
         <validator.version>3.0.2-SNAPSHOT</validator.version>
