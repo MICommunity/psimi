@@ -987,9 +987,6 @@ public abstract class AbstractMIHtmlWriter<T extends Interaction, P extends Part
         if (file == null){
             throw new IllegalArgumentException("The file cannot be null.");
         }
-        else if (!file.canWrite()){
-            throw new IllegalArgumentException("Does not have the permissions to write in file "+file.getAbsolutePath());
-        }
 
         this.writer = new BufferedWriter(new FileWriter(file));
         if (this.complexWriter != null){
