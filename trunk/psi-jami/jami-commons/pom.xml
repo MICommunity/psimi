@@ -9,7 +9,7 @@
 
   <groupId>psidev.psi.mi.jami</groupId>
   <artifactId>jami-commons</artifactId>
-  <version>1.1.2-SNAPSHOT</version>
+  <version>1.1.2</version>
     <name>PSI :: JAMI - commons</name>
     <description>JAMI commons</description>
 
@@ -18,9 +18,9 @@
   </properties>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-commons</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi-jami/jami-commons</developerConnection>
-        <url>http://psimi.googlecode.com/svn/trunk/psi-jami/jami-commons</url>
+        <connection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-commons-1.1.2</connection>
+        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/tags/jami-commons-1.1.2</developerConnection>
+        <url>http://psimi.googlecode.com/svn/tags/jami-commons-1.1.2</url>
     </scm>
 
 
