@@ -4,11 +4,11 @@
     <parent>
         <groupId>psidev.psi.mi.jami.bridges</groupId>
         <artifactId>jami-bridges</artifactId>
-        <version>1.1.3</version>
+        <version>1.1.2</version>
     </parent>
     <groupId>psidev.psi.mi.jami.bridges</groupId>
     <artifactId>jami-picr</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.2</version>
     <name>PSI :: JAMI - PICR</name>
     <description>Jami PICR client module</description>
 
@@ -100,7 +100,7 @@
         <dependency>
             <groupId>uk.ac.ebi.uniprot.kraken</groupId>
             <artifactId>uniprotjapi</artifactId>
-            <version>2015.02</version>
+            <version>2015.06</version>
         </dependency>
 
         <dependency>
