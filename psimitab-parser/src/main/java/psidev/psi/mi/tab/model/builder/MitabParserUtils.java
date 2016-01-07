@@ -34,6 +34,19 @@ public final class MitabParserUtils {
 
     private static final Log log = LogFactory.getLog(MitabParserUtils.class);
 
+    
+    private final static Map<Character, Character> closableDelimiters;
+    	
+    static {
+         Map<Character, Character> aMap = new HashMap<Character, Character>();
+         aMap.put('(', ')');
+         aMap.put('[', ']');
+         closableDelimiters = Collections.unmodifiableMap(aMap);
+    }
+    
+    
+    
+    
     /**
      * <p>Processes an String and splits using a set of delimiters.
      * If the delimiter is in a group surrounded by quotes, don't split that group.
@@ -76,11 +89,16 @@ public final class MitabParserUtils {
         boolean withinQuotes = false;
         boolean previousCharIsEscape = false;
 
+
+        int isOpenedBrackets = 0;
+        Character openedBracket = null;
+        
         for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
 
             boolean markedAsEscape = false;
 
+            
             if (c == '"') {
                 if (withinQuotes) {
                     if (previousCharIsEscape) {
@@ -99,7 +117,18 @@ public final class MitabParserUtils {
                     currGroup.append(c);
                 }
 
-            } else if (arrayContains(delimiters, c)) {
+            } else if (arrayContains(delimiters, c) && (isOpenedBrackets == 0 || (isOpenedBrackets == 1 && c == closableDelimiters.get(openedBracket)))) {
+            	
+            	if (isOpenedBrackets == 0) {            		
+            		if (closableDelimiters.containsKey(c)) {
+                		openedBracket = c;
+                		isOpenedBrackets ++;                		
+            		}
+            	} else {
+            		openedBracket = null;
+            		isOpenedBrackets = 0;
+            	}
+            	
                 if (currGroup.length() > 0) {
                     if (!withinQuotes) {
                         groups.add(currGroup.toString());
@@ -110,7 +139,7 @@ public final class MitabParserUtils {
                     }
                 } else if (withinQuotes) {
                     currGroup.append(c);
-                }
+                } 
             } else if (c == '\\') {
                 if (withinQuotes) {
                     previousCharIsEscape = true;
@@ -119,6 +148,11 @@ public final class MitabParserUtils {
                     currGroup.append(c);
                 }
             } else {
+            	if (openedBracket != null && c == closableDelimiters.get(openedBracket)) {
+            		isOpenedBrackets --;
+            	} else if ( openedBracket != null && c == openedBracket) {
+            		isOpenedBrackets ++;
+            	}
                 currGroup.append(c);
             }
 
