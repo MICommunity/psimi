@@ -35,13 +35,17 @@ public final class MitabParserUtils {
     private static final Log log = LogFactory.getLog(MitabParserUtils.class);
 
     
-    private final static Map<Character, Character> closableDelimiters;
+    /**
+     * Separators like parenthesis and other brackets, that need to be closed.
+     * key: the separator (open), value: the closing character.
+     */
+    private final static Map<Character, Character> brackets;
     	
     static {
          Map<Character, Character> aMap = new HashMap<Character, Character>();
          aMap.put('(', ')');
          aMap.put('[', ']');
-         closableDelimiters = Collections.unmodifiableMap(aMap);
+         brackets = Collections.unmodifiableMap(aMap);
     }
     
     
@@ -89,9 +93,13 @@ public final class MitabParserUtils {
         boolean withinQuotes = false;
         boolean previousCharIsEscape = false;
 
-
-        int isOpenedBrackets = 0;
+        // If the separator is a parenthesis or other bracket, 
+        // remember which one until it is closed
         Character openedBracket = null;
+        
+        // Number of opened brackets
+        int openedBracketDepth = 0;
+        
         
         for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
@@ -117,16 +125,16 @@ public final class MitabParserUtils {
                     currGroup.append(c);
                 }
 
-            } else if (arrayContains(delimiters, c) && (isOpenedBrackets == 0 || (isOpenedBrackets == 1 && c == closableDelimiters.get(openedBracket)))) {
+            } else if (arrayContains(delimiters, c) && (openedBracketDepth == 0 || (openedBracketDepth == 1 && c == brackets.get(openedBracket)))) {
             	
-            	if (isOpenedBrackets == 0) {            		
-            		if (closableDelimiters.containsKey(c)) {
+            	if (openedBracketDepth == 0) {            		
+            		if (brackets.containsKey(c)) {
                 		openedBracket = c;
-                		isOpenedBrackets ++;                		
+                		openedBracketDepth ++;                		
             		}
             	} else {
             		openedBracket = null;
-            		isOpenedBrackets = 0;
+            		openedBracketDepth = 0;
             	}
             	
                 if (currGroup.length() > 0) {
@@ -148,10 +156,10 @@ public final class MitabParserUtils {
                     currGroup.append(c);
                 }
             } else {
-            	if (openedBracket != null && c == closableDelimiters.get(openedBracket)) {
-            		isOpenedBrackets --;
+            	if (openedBracket != null && c == brackets.get(openedBracket)) {
+            		openedBracketDepth --;
             	} else if ( openedBracket != null && c == openedBracket) {
-            		isOpenedBrackets ++;
+            		openedBracketDepth ++;
             	}
                 currGroup.append(c);
             }
