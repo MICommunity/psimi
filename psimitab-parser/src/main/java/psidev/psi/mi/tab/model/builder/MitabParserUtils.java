@@ -34,6 +34,23 @@ public final class MitabParserUtils {
 
     private static final Log log = LogFactory.getLog(MitabParserUtils.class);
 
+    
+    /**
+     * Separators like parenthesis and other brackets, that need to be closed.
+     * key: the separator (open), value: the closing character.
+     */
+    private final static Map<Character, Character> brackets;
+    	
+    static {
+         Map<Character, Character> aMap = new HashMap<Character, Character>();
+         aMap.put('(', ')');
+         aMap.put('[', ']');
+         brackets = Collections.unmodifiableMap(aMap);
+    }
+    
+    
+    
+    
     /**
      * <p>Processes an String and splits using a set of delimiters.
      * If the delimiter is in a group surrounded by quotes, don't split that group.
@@ -76,11 +93,20 @@ public final class MitabParserUtils {
         boolean withinQuotes = false;
         boolean previousCharIsEscape = false;
 
+        // If the separator is a parenthesis or other bracket, 
+        // remember which one until it is closed
+        Character openedBracket = null;
+        
+        // Number of opened brackets
+        int openedBracketDepth = 0;
+        
+        
         for (int i = 0; i < chars.length; i++) {
             char c = chars[i];
 
             boolean markedAsEscape = false;
 
+            
             if (c == '"') {
                 if (withinQuotes) {
                     if (previousCharIsEscape) {
@@ -99,7 +125,18 @@ public final class MitabParserUtils {
                     currGroup.append(c);
                 }
 
-            } else if (arrayContains(delimiters, c)) {
+            } else if (arrayContains(delimiters, c) && (openedBracketDepth == 0 || (openedBracketDepth == 1 && c == brackets.get(openedBracket)))) {
+            	
+            	if (openedBracketDepth == 0) {            		
+            		if (brackets.containsKey(c)) {
+                		openedBracket = c;
+                		openedBracketDepth ++;                		
+            		}
+            	} else {
+            		openedBracket = null;
+            		openedBracketDepth = 0;
+            	}
+            	
                 if (currGroup.length() > 0) {
                     if (!withinQuotes) {
                         groups.add(currGroup.toString());
@@ -110,7 +147,7 @@ public final class MitabParserUtils {
                     }
                 } else if (withinQuotes) {
                     currGroup.append(c);
-                }
+                } 
             } else if (c == '\\') {
                 if (withinQuotes) {
                     previousCharIsEscape = true;
@@ -119,6 +156,11 @@ public final class MitabParserUtils {
                     currGroup.append(c);
                 }
             } else {
+            	if (openedBracket != null && c == brackets.get(openedBracket)) {
+            		openedBracketDepth --;
+            	} else if ( openedBracket != null && c == openedBracket) {
+            		openedBracketDepth ++;
+            	}
                 currGroup.append(c);
             }
 
