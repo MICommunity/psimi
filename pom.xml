@@ -112,6 +112,14 @@
             <timezone>0</timezone>
         </developer>
 
+        <developer>
+            <id>arnaudceol</id>
+            <name>Arnaud Ceol</name>
+            <email></email>
+            <organization>Center for Genomic Science, Istituto Italiano di Tecnologia (IIT)</organization>
+            <timezone>0</timezone>
+        </developer>
+
     </developers>
 
     <licenses>
