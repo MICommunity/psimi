@@ -70,7 +70,7 @@
         <module>jami-ols</module>
         <module>jami-uniprot-taxonomy</module>
         <module>jami-obo</module>
-        <module>jami-europubmedcentral</module>
+        <!--<module>jami-europubmedcentral</module>-->
         <module>uniprot-mapping</module>
     <module>jami-unisave</module>
     <module>jami-picr</module>
