@@ -46,13 +46,22 @@ public class VariableParameterValueComparator implements Comparator<VariablePara
                 String desc1= variableParameterValue1.getVariableParameter().getDescription();
                 String desc2= variableParameterValue2.getVariableParameter().getDescription();
 
-                int compDesc;
-                compDesc = desc1.toLowerCase().trim().compareTo(desc2.toLowerCase().trim());
-                if(compDesc!=0){
-                    return compDesc;
+                if (desc1 == null && desc2 == null){
+                    return EQUAL;
                 }
-
-            }
+                else if (desc1 == null){
+                    return AFTER;
+                }
+                else if (desc2 == null){
+                    return BEFORE;
+                }else{
+                    int compDesc;
+                    compDesc = desc1.toLowerCase().trim().compareTo(desc2.toLowerCase().trim());
+                    if(compDesc!=0){
+                        return compDesc;
+                    }
+                }
+             }
 
 
 
