@@ -5,7 +5,7 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-master</artifactId>
     <packaging>pom</packaging>
-    <version>1.8.6-SNAPSHOT</version>
+    <version>1.8.7</version>
 
     <name>PSI</name>
     <description>Base build file</description>
@@ -38,11 +38,11 @@
         <psimi.version>${pom.version}</psimi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jami.version>1.0.1-SNAPSHOT</jami.version>
+        <jami.version>1.0.2</jami.version>
         <jami.commons.version>1.1.3-SNAPSHOT</jami.commons.version>
         <jami.core.version>1.2.2-SNAPSHOT</jami.core.version>
         <jami.xml.version>1.1.3-SNAPSHOT</jami.xml.version>
-        <jami.mitab.version>1.1.2-SNAPSHOT</jami.mitab.version>
+        <jami.mitab.version>1.1.3</jami.mitab.version>
         <jami.batch.version>1.1.1-SNAPSHOT</jami.batch.version>
         <jami.bridges.version>1.1.2-SNAPSHOT</jami.bridges.version>
         <jami.crosslink.version>1.1.1-SNAPSHOT</jami.crosslink.version>
@@ -109,6 +109,14 @@
             <name>Rafael Jimenez</name>
             <email>rafael@ebi.ac.uk</email>
             <organization>EBI</organization>
+            <timezone>0</timezone>
+        </developer>
+
+        <developer>
+            <id>arnaudceol</id>
+            <name>Arnaud Ceol</name>
+            <email></email>
+            <organization>Center for Genomic Science, Istituto Italiano di Tecnologia (IIT)</organization>
             <timezone>0</timezone>
         </developer>
 
