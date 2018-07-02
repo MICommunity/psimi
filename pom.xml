@@ -28,14 +28,12 @@
         <module>calimocho-xgmml</module>
         <module>calimocho-solr</module>
         <module>psimitab-search</module>
-        <module>psi-jami</module>
-        <module>validator</module>
         <module>psimi-enricher</module>
   </modules>
 
     <properties>
         <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
-        <psimi.version>${pom.version}</psimi.version>
+        <psimi.version>${project.version}</psimi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jami.version>1.0.1-SNAPSHOT</jami.version>
@@ -129,8 +127,8 @@
                 <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.2</version>
-                <configuration>--&gt;
-                <finalName>${artifactId}-${version}</finalName>
+                <configuration>
+                <finalName>${project.artifactId}-${project.version}</finalName>
                 <outputDirectory>${assembly.outputDirectory}</outputDirectory>
                 </configuration>
                 </plugin>

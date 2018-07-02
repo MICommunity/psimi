@@ -98,9 +98,9 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
-                        <Bundle-Version>${pom.version}</Bundle-Version>
+                        <Bundle-Version>${project.version}</Bundle-Version>
                         <Export-Package>
-                            !${bundle.namespace}.internal.*,${bundle.namespace}.*;version="${pom.version}"
+                            !${bundle.namespace}.internal.*,${bundle.namespace}.*;version="${project.version}"
                         </Export-Package>
                         <Private-Package>${bundle.namespace}.internal.*</Private-Package>
                         <_include>-osgi.bnd</_include>
@@ -115,7 +115,7 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>psimitab</artifactId>
-            <version>${pom.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi</groupId>
