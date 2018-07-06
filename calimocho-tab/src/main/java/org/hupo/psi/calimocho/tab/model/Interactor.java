@@ -38,6 +38,10 @@ public class Interactor {
     private List<Field> annotations;
     private List<Field> parameters;
     private Field checksum;
+    private List<Field> features;
+    private Field stoichiometry;
+    private List<Field> participantIdentificationMethods;
+    private List<Field> biologicalEffects;
 
     public Interactor() {
         identifiers = new ArrayList<Field>();
@@ -48,6 +52,9 @@ public class Interactor {
         xrefs = new ArrayList<Field>();
         annotations = new ArrayList<Field>();
         parameters = new ArrayList<Field>();
+        features = new ArrayList<Field>();
+        participantIdentificationMethods = new ArrayList<Field>();
+        biologicalEffects = new ArrayList<Field>();
     }
 
     public List<Field> getIdentifiers() {
@@ -137,4 +144,20 @@ public class Interactor {
     public void setChecksum(Field checksum) {
         this.checksum = checksum;
     }
+
+    public List<Field> getFeatures() { return features; }
+
+    public void setFeatures(List<Field> features) { this.features = features; }
+
+    public Field getStoichiometry() { return stoichiometry; }
+
+    public void setStoichiometry(Field stoichiometry) { this.stoichiometry = stoichiometry; }
+
+    public List<Field> getParticipantIdentificationMethods() { return participantIdentificationMethods; }
+
+    public void setParticipantIdentificationMethods(List<Field> participantIdentificationMethods) { this.participantIdentificationMethods = participantIdentificationMethods; }
+
+    public List<Field> getBiologicalEffects() { return biologicalEffects; }
+
+    public void setBiologicalEffects(List<Field> biologicalEffects) { this.biologicalEffects = biologicalEffects; }
 }
