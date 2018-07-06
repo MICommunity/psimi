@@ -35,9 +35,8 @@ public class Converter {
 
     protected void initializeKeyMap() {
         XrefFieldConverter xrefConverter = new XrefFieldConverter();
-        XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
         TextFieldConverter textConverter = new TextFieldConverter();
-        XrefFieldFormatter textFormatter = new XrefFieldFormatter();
+        XrefFieldFormatter xrefFormatter = new XrefFieldFormatter();
         DateFieldConverter dateConverter = new DateFieldConverter();
         DateFieldFormatter dateFormatter = new DateFieldFormatter("yyyy/MM/dd");
         AnnotationFieldConverter annotConverter = new AnnotationFieldConverter();
@@ -46,7 +45,7 @@ public class Converter {
         TextToBooleanFieldConverter textToBoolConverter = new TextToBooleanFieldConverter();
         BooleanFieldFormatter boolFormatter = new BooleanFieldFormatter();
         LiteralFieldFormatter literalFormatter = new LiteralFieldFormatter();
-        boolean storeOnly = true; //if false, add fn + fn_s + fn_o (fields in MIQL2.7), else only fn_o
+        boolean storeOnly = true; //if false, add fn + fn_s + fn_o (fields in MIQL2.8), else only fn_o
 
         keyMap.put(SolrFieldName.idA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A), xrefConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.idB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_B), xrefConverter, xrefFormatter, !storeOnly));
@@ -56,18 +55,18 @@ public class Converter {
         keyMap.put(SolrFieldName.aliasB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ALIAS_B), xrefConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.pubid, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PUBID), xrefConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.pubauth, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PUBAUTH), textConverter, literalFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.taxidA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_TAXID_A), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.taxidB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_TAXID_B), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.taxidHost, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_HOST_ORGANISM), textConverter, textFormatter, storeOnly));
-        keyMap.put(SolrFieldName.type, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTION_TYPE), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.detmethod, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_DETMETHOD),textConverter, textFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.taxidA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_TAXID_A), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.taxidB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_TAXID_B), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.taxidHost, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_HOST_ORGANISM), textConverter, xrefFormatter, storeOnly));
+        keyMap.put(SolrFieldName.type, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTION_TYPE), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.detmethod, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_DETMETHOD),textConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.interaction_id, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTION_ID), xrefConverter, xrefFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.pbioroleA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIOROLE_A), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.pbioroleB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIOROLE_B), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.pexproleA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_EXPROLE_A), textConverter, textFormatter, storeOnly));
-        keyMap.put(SolrFieldName.pexproleB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_EXPROLE_B), textConverter, textFormatter, storeOnly));
-        keyMap.put(SolrFieldName.ptypeA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.ptypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_B), textConverter, textFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.pbioroleA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIOROLE_A), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.pbioroleB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIOROLE_B), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.pexproleA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_EXPROLE_A), textConverter, xrefFormatter, storeOnly));
+        keyMap.put(SolrFieldName.pexproleB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_EXPROLE_B), textConverter, xrefFormatter, storeOnly));
+        keyMap.put(SolrFieldName.ptypeA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_A), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.ptypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_INTERACTOR_TYPE_B), textConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.pxrefA, new SolrFieldUnit(Arrays.asList(/*InteractionKeys.KEY_ID_A, */InteractionKeys.KEY_XREFS_A), textConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.pxrefB, new SolrFieldUnit(Arrays.asList(/*InteractionKeys.KEY_ID_B, */InteractionKeys.KEY_XREFS_B), textConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.xref, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_XREFS_I/*, InteractionKeys.KEY_INTERACTION_ID*/), textConverter, xrefFormatter, !storeOnly));
@@ -77,19 +76,24 @@ public class Converter {
         keyMap.put(SolrFieldName.udate, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_UPDATE_DATE), dateConverter, dateFormatter, !storeOnly));
         keyMap.put(SolrFieldName.cdate, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CREATION_DATE), dateConverter, dateFormatter, storeOnly));
         keyMap.put(SolrFieldName.negative, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_NEGATIVE), boolConverter, boolFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.complex, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_EXPANSION), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.ftypeA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_A), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.ftypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_B), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.pmethodA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_A), textConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.pmethodB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_B), textConverter, textFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.complex, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_EXPANSION), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.ftypeA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_A), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.ftypeB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_FEATURE_B), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.pmethodA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_A), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.pmethodB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PART_IDENT_METHOD_B), textConverter, xrefFormatter, !storeOnly));
         keyMap.put(SolrFieldName.stcA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_A), boolConverter, boolFormatter, storeOnly));
         keyMap.put(SolrFieldName.stcB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_STOICHIOMETRY_B), boolConverter, boolFormatter, storeOnly));
-        keyMap.put(SolrFieldName.param, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), textToBoolConverter, textFormatter, !storeOnly));
-        keyMap.put(SolrFieldName.confidence,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CONFIDENCE), textConverter, textFormatter, storeOnly));
-        keyMap.put(SolrFieldName.source,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_SOURCE), textConverter, textFormatter, storeOnly));
-        keyMap.put(SolrFieldName.checksumA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_A), textConverter, textFormatter, storeOnly));
-        keyMap.put(SolrFieldName.checksumB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_B), textConverter, textFormatter, storeOnly));
-        keyMap.put(SolrFieldName.checksumI, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_I), textConverter, textFormatter, storeOnly));
+        keyMap.put(SolrFieldName.param, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_PARAMETERS_I), textToBoolConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.confidence,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CONFIDENCE), textConverter, xrefFormatter, storeOnly));
+        keyMap.put(SolrFieldName.source,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_SOURCE), textConverter, xrefFormatter, storeOnly));
+        keyMap.put(SolrFieldName.checksumA,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_A), textConverter, xrefFormatter, storeOnly));
+        keyMap.put(SolrFieldName.checksumB,  new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_B), textConverter, xrefFormatter, storeOnly));
+        keyMap.put(SolrFieldName.checksumI, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CHECKSUM_I), textConverter, xrefFormatter, storeOnly));
+        keyMap.put(SolrFieldName.bioeffectA, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIO_EFFECT_A), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.bioeffectB, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_BIO_EFFECT_B), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.causalmechanism, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CAUSAL_REG_MECHANISM), textConverter, xrefFormatter, !storeOnly));
+        keyMap.put(SolrFieldName.causalstatement, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_CAUSAL_STAT), textConverter, xrefFormatter, !storeOnly));
+
 
  // we originally created composite fields, but they are now handled in the solr schema
         //keyMap.put(SolrFieldName.id, new SolrFieldUnit(Arrays.asList(InteractionKeys.KEY_ID_A, InteractionKeys.KEY_ALTID_A, InteractionKeys.KEY_ID_B, InteractionKeys.KEY_ALTID_B), xrefConverter, xrefFormatter, !storeOnly));
