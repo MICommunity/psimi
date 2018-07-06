@@ -27,6 +27,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.SolrInputField;
 import org.hupo.psi.calimocho.key.InteractionKeys;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
@@ -40,8 +41,8 @@ import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
  */
 public class DateFieldConverterTest extends TestCase {
 
-    List<Row> rowList_mitab27, rowList_mitab26, rowList_mitab25;
-    Converter converter;
+    private List<Row> rowList_mitab26, rowList_mitab27, rowList_mitab28;
+    private Converter converter;
     
     public DateFieldConverterTest(String testName) {
         super(testName);
@@ -58,22 +59,43 @@ public class DateFieldConverterTest extends TestCase {
 
         converter = new Converter();
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
-        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
-        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
-
         ColumnBasedDocumentDefinition documentDefinition_mitab26 = MitabDocumentDefinitionFactory.mitab26();
         DefaultRowReader rowReader_mitab26 = new DefaultRowReader( documentDefinition_mitab26 );
         rowList_mitab26 = rowReader_mitab26.read(File.class.getResourceAsStream("/samples/sampleFileMitab26.txt"));
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
-        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
-        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
+        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
+        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
+        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
+
+        ColumnBasedDocumentDefinition documentDefinition_mitab28 = MitabDocumentDefinitionFactory.mitab28();
+        DefaultRowReader rowReader_mitab28 = new DefaultRowReader( documentDefinition_mitab28 );
+        rowList_mitab28 = rowReader_mitab28.read(File.class.getResourceAsStream("/samples/sampleFileMitab28.txt"));
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    //no Date fields in MITAB 2.5
+
+    public void testIndexFieldValues_date_mitab26() throws Exception {
+        System.out.println("DateField: indexFieldValues - date - mitab2.6");
+
+        Assert.assertNotNull(rowList_mitab26);
+
+        for (Row row:rowList_mitab26) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_CREATION_DATE);
+            SolrFieldName fName = SolrFieldName.cdate;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_UPDATE_DATE);
+            fName = SolrFieldName.udate;
+
+            testIndexFieldValues(fName, fields, row);
+        }
     }
 
     public void testIndexFieldValues_date_mitab27() throws Exception {
@@ -95,31 +117,12 @@ public class DateFieldConverterTest extends TestCase {
         }
     }
 
-    public void testIndexFieldValues_date_mitab26() throws Exception {
-        System.out.println("DateField: indexFieldValues - date - mitab2.6");
+    public void testIndexFieldValues_date_mitab28() throws Exception {
+        System.out.println("DateField: indexFieldValues - date - mitab2.8");
 
-        Assert.assertNotNull(rowList_mitab26);
+        Assert.assertNotNull(rowList_mitab28);
 
-        for (Row row:rowList_mitab26) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_CREATION_DATE);
-            SolrFieldName fName = SolrFieldName.cdate;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = row.getFields(InteractionKeys.KEY_UPDATE_DATE);
-            fName = SolrFieldName.udate;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_date_mitab25() throws Exception {
-        System.out.println("DateField: indexFieldValues - date - mitab2.5");
-
-        Assert.assertNotNull(rowList_mitab25);
-
-        for (Row row:rowList_mitab25) {
+        for (Row row:rowList_mitab28) {
 
             Collection<Field> fields = row.getFields(InteractionKeys.KEY_CREATION_DATE);
             SolrFieldName fName = SolrFieldName.cdate;
@@ -136,19 +139,22 @@ public class DateFieldConverterTest extends TestCase {
     private void testIndexFieldValues(SolrFieldName fName, Collection<Field> fields, Row row) throws Exception {
 
         Assert.assertNotNull(row);
-//        System.out.println("row: "+row.keySet().toString());
+//      System.out.println("row: "+row.keySet().toString());
 
         SolrInputDocument origSolrDoc = converter.toSolrDocument(row);
         Assert.assertNotNull(origSolrDoc);
 
-        if (origSolrDoc.getField(fName.toString()) != null) {
+        SolrInputField origSolrDocFieldName = origSolrDoc.getField(fName.toString());
+        SolrInputField origSolrDocFieldName_o = origSolrDoc.getField(fName.toString() + "_o");
+
+        if (origSolrDocFieldName != null) {
 
 //            System.out.println("\torigSolrDoc-field-name: " + fName);
-//            System.out.println("\torigSolrDoc-field: " + origSolrDoc.getField(fName.toString()).toString());
+//            System.out.println("\torigSolrDoc-field: " + origSolrDocFieldName.toString());
 //            System.out.println("\torigSolrDoc-stored: " + origSolrDoc.getField(fName.toString() + "_s").toString());
 //            System.out.println("\torigSolrDoc-original: " + origSolrDoc.getField(fName.toString() + "_o").toString());
 
-            Assert.assertNotNull(origSolrDoc.getField(fName.toString()));
+            Assert.assertNotNull(origSolrDocFieldName);
             Assert.assertNotNull(origSolrDoc.getField(fName.toString() + "_s"));
             Assert.assertNotNull(origSolrDoc.getField(fName.toString() + "_o"));
 
@@ -165,7 +171,7 @@ public class DateFieldConverterTest extends TestCase {
 //                System.out.println("\tsolrDoc-stored: " + solrDoc.getField(fName.toString() + "_s").toString());
 
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));
-                String s1 = origSolrDoc.getField(fName.toString()).getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                String s1 = origSolrDocFieldName.getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
                 String s2 = solrDoc.getField(fName.toString()).getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
                 Assert.assertTrue(s1.contains(s2));
                 Assert.assertNotNull(solrDoc.getField(fName.toString() + "_s"));
@@ -174,8 +180,12 @@ public class DateFieldConverterTest extends TestCase {
                 Assert.assertTrue(s1.contains(s2));
                 Assert.assertNull(solrDoc.getField(fName.toString() + "_o")); //indexFieldValues-method doesn't write _o
             }
-        } else {
-            System.err.println("\tField "+fName.toString()+" not found!");
+        }   else if (origSolrDocFieldName_o != null) {
+            // CASE OF cdate_o
+            Assert.assertEquals(origSolrDocFieldName_o.getName(), "cdate_o");
+        }   else {
+            // The sample files have the date fields filled
+            Assert.fail("\tFields " + fName.toString() + "," + fName.toString() + "_o" + " not found!");
         }
     }
 

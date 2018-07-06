@@ -40,8 +40,8 @@ import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
  */
 public class SingleBooleanFieldConverterTest extends TestCase {
 
-    List<Row> rowList_mitab27, rowList_mitab26, rowList_mitab25;
-    Converter converter;
+    private List<Row> rowList_mitab26, rowList_mitab27, rowList_mitab28;
+    private Converter converter;
 
     public SingleBooleanFieldConverterTest(String testName) {
         super(testName);
@@ -58,17 +58,17 @@ public class SingleBooleanFieldConverterTest extends TestCase {
 
         converter = new Converter();
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
-        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
-        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
-
         ColumnBasedDocumentDefinition documentDefinition_mitab26 = MitabDocumentDefinitionFactory.mitab26();
         DefaultRowReader rowReader_mitab26 = new DefaultRowReader( documentDefinition_mitab26 );
         rowList_mitab26 = rowReader_mitab26.read(File.class.getResourceAsStream("/samples/sampleFileMitab26.txt"));
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
-        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
-        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
+        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
+        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
+        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
+
+        ColumnBasedDocumentDefinition documentDefinition_mitab28 = MitabDocumentDefinitionFactory.mitab28();
+        DefaultRowReader rowReader_mitab28 = new DefaultRowReader( documentDefinition_mitab28 );
+        rowList_mitab28 = rowReader_mitab28.read(File.class.getResourceAsStream("/samples/sampleFileMitab28.txt"));
     }
 
     @Override
@@ -76,10 +76,41 @@ public class SingleBooleanFieldConverterTest extends TestCase {
         super.tearDown();
     }
 
+    //no negative or stoichiometry fields (boolean values) in mitab2.5
+    //no stoichiometry fields in mitab2.6 either
+
+    public void testIndexFieldValues_negative_mitab26() throws Exception {
+        System.out.println("SingleBooleanField: indexFieldValues - negative - mitab2.6");
+
+        Assert.assertNotNull(rowList_mitab26);
+
+        for (Row row:rowList_mitab26) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_NEGATIVE);
+            SolrFieldName fName = SolrFieldName.negative;
+
+            testIndexFieldValues(fName, fields, row);
+        }
+    }
+
     public void testIndexFieldValues_negative_mitab27() throws Exception {
         System.out.println("SingleBooleanField: indexFieldValues - negative - mitab2.7");
 
         Assert.assertNotNull(rowList_mitab27);
+
+        for (Row row:rowList_mitab27) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_NEGATIVE);
+            SolrFieldName fName = SolrFieldName.negative;
+
+            testIndexFieldValues(fName, fields, row);
+        }
+    }
+
+    public void testIndexFieldValues_negative_mitab28() throws Exception {
+        System.out.println("SingleBooleanField: indexFieldValues - negative - mitab2.8");
+
+        Assert.assertNotNull(rowList_mitab28);
 
         for (Row row:rowList_mitab27) {
 
@@ -102,7 +133,6 @@ public class SingleBooleanFieldConverterTest extends TestCase {
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_B);
             fName = SolrFieldName.stcB;
 
@@ -110,67 +140,18 @@ public class SingleBooleanFieldConverterTest extends TestCase {
         }
     }
 
-    public void testIndexFieldValues_negative_mitab26() throws Exception {
-        System.out.println("SingleBooleanField: indexFieldValues - negative - mitab2.6");
+    public void testIndexFieldValues_stc_mitab28() throws Exception {
+        System.out.println("SingleBooleanField: indexFieldValues - stcA and stcB - mitab2.8");
 
-        Assert.assertNotNull(rowList_mitab26);
+        Assert.assertNotNull(rowList_mitab28);
 
-        for (Row row:rowList_mitab26) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_NEGATIVE);
-            SolrFieldName fName = SolrFieldName.negative;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_stc_mitab26() throws Exception {
-        System.out.println("SingleBooleanField: indexFieldValues - stcA and stcB - mitab2.6");
-
-        Assert.assertNotNull(rowList_mitab26);
-
-        for (Row row:rowList_mitab26) {
+        for (Row row:rowList_mitab28) {
 
             Collection<Field> fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_A);
             SolrFieldName fName = SolrFieldName.stcA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_B);
-            fName = SolrFieldName.stcB;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_negative_mitab25() throws Exception {
-        System.out.println("SingleBooleanField: indexFieldValues - negative - mitab2.5");
-
-        Assert.assertNotNull(rowList_mitab25);
-
-        for (Row row:rowList_mitab25) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_NEGATIVE);
-            SolrFieldName fName = SolrFieldName.negative;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_stc_mitab25() throws Exception {
-        System.out.println("SingleBooleanField: indexFieldValues - stcA and stcB - mitab2.5");
-
-        Assert.assertNotNull(rowList_mitab25);
-
-        for (Row row:rowList_mitab25) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_A);
-            SolrFieldName fName = SolrFieldName.stcA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_STOICHIOMETRY_B);
             fName = SolrFieldName.stcB;
 
@@ -181,7 +162,7 @@ public class SingleBooleanFieldConverterTest extends TestCase {
     private void testIndexFieldValues(SolrFieldName fName, Collection<Field> fields, Row row) throws Exception {
 
         Assert.assertNotNull(row);
-//        System.out.println("row: "+row.keySet().toString());
+//      System.out.println("row: " + row.keySet().toString());
 
         SolrInputDocument origSolrDoc = converter.toSolrDocument(row);
         Assert.assertNotNull(origSolrDoc);
@@ -232,10 +213,9 @@ public class SingleBooleanFieldConverterTest extends TestCase {
             } else {
                 Assert.assertTrue(origSolrDoc.getField(SolrFieldName.stcA.toString() + "_o") == null && origSolrDoc.getField(SolrFieldName.stcB.toString() + "_o") == null);
             }
-
             
         } else {
-            System.err.println("\tField "+fName.toString()+" not found!");
+            Assert.fail("\tField "+fName.toString()+" not found!");
         }
     }
 }
