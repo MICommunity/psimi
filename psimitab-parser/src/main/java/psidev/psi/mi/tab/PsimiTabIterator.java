@@ -55,7 +55,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 	/**
 	 * indicate if the line that has been read was already consumed by the user via the next() nethod.
 	 */
-	private boolean lineConsummed = false;
+	private boolean lineConsumed = false;
 
 	private PsimiTabReader mReader;
 
@@ -104,7 +104,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 
 	public boolean hasNext() {
 		try {
-			if (interactionStreamReader != null && lineConsummed) {
+			if (interactionStreamReader != null && lineConsumed) {
                 String line = interactionStreamReader.readLine();
 				nextLine = line != null ? mReader.readLine(line) : null;
 				if (nextLine == null) {
@@ -112,7 +112,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 					interactionStreamReader = null;
 				} else {
 					lineIndex++;
-					lineConsummed = false;
+					lineConsumed = false;
 				}
 			}
 		} catch (Exception e) {
@@ -131,7 +131,7 @@ public class PsimiTabIterator implements psidev.psi.mi.tab.io.PsimiTabIterator {
 		BinaryInteraction interaction = nextLine;
 
 		interactionsProcessedCount++;
-		lineConsummed = true;
+		lineConsumed = true;
 		nextLine = null;
 
 		return interaction;

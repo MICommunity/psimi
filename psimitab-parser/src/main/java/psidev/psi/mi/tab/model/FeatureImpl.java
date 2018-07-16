@@ -25,7 +25,7 @@ public class FeatureImpl implements Feature {
     private String featureType;
 
     /**
-     * List of Range where appears of the feature.
+     * List of ranges where the feature appears.
      */
     private List<String> range;
 
