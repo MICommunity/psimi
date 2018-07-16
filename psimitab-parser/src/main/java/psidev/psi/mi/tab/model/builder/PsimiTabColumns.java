@@ -10,7 +10,6 @@ package psidev.psi.mi.tab.model.builder;
 public enum PsimiTabColumns {
 
     //MITAB 2.5
-
     ID_INTERACTOR_A("ID(s) interactor A"), // 1
     ID_INTERACTOR_B("ID(s) interactor B"), // 2
     ALTID_INTERACTOR_A("Alt. ID(s) interactor A"), // 3
@@ -26,6 +25,7 @@ public enum PsimiTabColumns {
     SOURCE("Source database(s)"), // 13
     INTERACTION_ID("Interaction identifier(s)"),// 14
     CONFIDENCE("Confidence value(s)"), // 15
+
     //MITAB 2.6
     COMPLEX_EXPANSION("Expansion method(s)"), // 16
     BIOROLE_A("Biological role(s) interactor A"), // 17
@@ -48,6 +48,7 @@ public enum PsimiTabColumns {
     CHECKSUM_B("Checksum(s) interactor B"), // 34
     CHECKSUM_I("Interaction Checksum(s)"), // 35
     NEGATIVE("Negative"), //36
+
     // MITAB 2.7
     FEATURES_A("Feature(s) interactor A"), //37
     FEATURES_B("Feature(s) interactor B"), //38
@@ -55,8 +56,14 @@ public enum PsimiTabColumns {
     STOICHIOMETRY_B("Stoichiometry(s) interactor B"), //40
     PARTICIPANT_IDENT_MED_A("Identification method participant A"), //41
     PARTICIPANT_IDENT_MED_B("Identification method participant B"), //42
-    MITAB_LENGTH("length");
 
+    // MITAB 2.8
+    BIO_EFFECT_A("Biological effect(s) interactor A"), //43
+    BIO_EFFECT_B("Biological effect(s) interactor B"), //44
+    CAUSAL_REG_MECHANISM("Causal regulatory mechanism"), //45
+    CAUSAL_STATEMENT("Causal statement"), //46
+
+    MITAB_LENGTH("length");
 
     /////////////////////////////////
     // Constructor

@@ -68,10 +68,21 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
         target.getComplexExpansion().addAll(source.getComplexExpansion());
         target.getCreationDate().addAll(source.getCreationDate());
         target.getParameters().addAll(source.getParameters());
+        target.getUpdateDate().addAll(source.getUpdateDate());
+        target.getXrefs().addAll(source.getXrefs());
+        target.getCausalRegulatoryMechanism().addAll(source.getCausalRegulatoryMechanism());
+        target.getCausalStatement().addAll(source.getCausalStatement());
+
+        if (source.isNegativeInteraction()) {
+            target.setNegativeInteraction(true);
+        } else {
+            target.setNegativeInteraction(false);
+        }
 
         if (target.getHostOrganism() == null){
             target.setHostOrganism(source.getHostOrganism());
         }
+
         else if (source.getHostOrganism() != null){
             target.getHostOrganism().getIdentifiers().addAll(source.getHostOrganism().getIdentifiers());
         }
@@ -134,6 +145,8 @@ public abstract class AbstractBinaryInteractionHandler<T extends BinaryInteracti
             target.getParticipantIdentificationMethods().addAll(source.getParticipantIdentificationMethods());
             target.getStoichiometry().addAll(source.getStoichiometry());
             target.getXrefs().addAll(source.getXrefs());
+            target.getExperimentalRoles().addAll(source.getExperimentalRoles());
+            target.getBiologicalEffects().addAll(source.getBiologicalEffects());
         }
     }
 }

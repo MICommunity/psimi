@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Representation of a binary interaction as in the MITAB25 format.
+ * Representation of a binary interaction as in the MITAB28 format.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$
@@ -134,14 +134,30 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 			= new ArrayList<Checksum>();
 
 	/**
-	 * Boolean value ti distinguish positive interactions and
+	 * Boolean value that distinguishes positive interactions and
 	 * negative interactions.
 	 */
 	private boolean negativeInteraction;
 
 	/**
-	 * MITAB 2.7
+	 * MITAB 2.7 - no interaction fields added
 	 */
+
+	/**
+	 * MITAB 2.8
+	 */
+
+	/**
+	 * The causal regulatory mechanism of the interaction.
+	 */
+	private List<CrossReference> causalRegulatoryMechanism
+			= new ArrayList<CrossReference>();
+
+	/**
+	 * The causal statement of the interaction.
+	 */
+	private List<CrossReference> causalStatement
+			= new ArrayList<CrossReference>();
 
 	///////////////////////
 	// Constructors
@@ -297,10 +313,6 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 	}
 
 	/**
-	 * MITAB 2.6
-	 */
-
-	/**
 	 * {@inheritDoc}
 	 */
 	public List<CrossReference> getComplexExpansion() {
@@ -434,6 +446,25 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 		this.negativeInteraction = negativeInteraction;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<CrossReference> getCausalRegulatoryMechanism() { return causalRegulatoryMechanism; }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setCausalRegulatoryMechanism(List<CrossReference> causalRegulatoryMechanism) { this.causalRegulatoryMechanism = causalRegulatoryMechanism; }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<CrossReference> getCausalStatement() { return causalStatement; }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setCausalStatement(List<CrossReference> causalStatement) { this.causalStatement = causalStatement; }
 
 	/////////////////////////
 	// Object's override
@@ -465,6 +496,8 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 		sb.append(", updateDate=").append(updateDate);
 		sb.append(", checksums=").append(interactionChecksums);
 		sb.append(", negative=").append(negativeInteraction);
+		sb.append(", causalmechanism=").append(causalRegulatoryMechanism);
+		sb.append(", causalstatement=").append(causalStatement);
 		sb.append('}');
 		return sb.toString();
 	}
@@ -582,6 +615,14 @@ public abstract class AbstractBinaryInteraction<T extends Interactor> implements
 		}
 
 		if (interactionChecksums != null ? !CollectionUtils.isEqualCollection(interactionChecksums, that.interactionChecksums) : that.interactionChecksums != null) {
+			return false;
+		}
+
+		if (causalRegulatoryMechanism != null ? !causalRegulatoryMechanism.equals(that.causalRegulatoryMechanism) : that.causalRegulatoryMechanism != null) {
+			return false;
+		}
+
+		if (causalStatement != null ? !causalStatement.equals(that.causalStatement) : that.causalStatement != null) {
 			return false;
 		}
 

@@ -56,11 +56,18 @@ public class ParameterImpl implements Parameter {
      */
     private Double uncertainty = 0.0;
 
+    /**
+     * This variable will be set to true if the exponent is explicitly set in setValue(value)
+     */
+    private boolean userDefinedExponent = false;
+
+    /**
+     * This variable will be set to true if the base is explicitly set in setValue(value)
+     */
+    private boolean userDefinedBase = false;
+
     //////////////////////
     // Constructors
-
-
-    //TODO Review the behaviour
 
     /**
      * Builds a parameter.
@@ -72,13 +79,6 @@ public class ParameterImpl implements Parameter {
         this.type = type;
 
         setValue(value);
-
-//        // value using scientific notation
-//        try {
-//            this.factor = Double.parseDouble(value);
-//        } catch (NumberFormatException e) {
-//            this.factor = Double.NaN;
-//        }
     }
 
     /**
@@ -94,14 +94,6 @@ public class ParameterImpl implements Parameter {
         this.unit = unit;
 
         setValue(value);
-
-// value using scientific notation
-//		try {
-//			this.factor = Double.parseDouble(value);
-//		} catch (NumberFormatException e) {
-//			this.factor = Double.NaN;
-//		}
-
     }
 
     /**
@@ -120,6 +112,9 @@ public class ParameterImpl implements Parameter {
         this.exponent = exponent;
         this.unit = unit;
         this.uncertainty = uncertainty;
+
+        this.userDefinedExponent = true;
+        this.userDefinedBase = true;
 
         this.value = getValue();
     }
@@ -186,9 +181,16 @@ public class ParameterImpl implements Parameter {
     public String getValue() {
         this.value = String.valueOf(factor);
 
-		if (exponent != 0 || base != 10) {
-			value = factor + "x" + base + "^" + exponent;
-		}
+        if (base == 1 || (!userDefinedExponent && !userDefinedBase)) {
+            value = factor + "";
+        } else {
+            if ((!userDefinedExponent) || (exponent == 1)) {
+                value = factor + "x" + base;
+            } else if (exponent != 0) {
+                value = factor + "x" + base + "^" + exponent;
+            }
+        }
+
 		if (uncertainty != 0.0) {
             value = value + " ~" + uncertainty;
         }
@@ -199,7 +201,7 @@ public class ParameterImpl implements Parameter {
     /**
      * {@inheritDoc}
      */
-    public void setValue(String value) {
+    public void setValue(String value) throws IllegalArgumentException{
         this.value = value;
 
         value = value.replaceAll(" ", "");
@@ -217,10 +219,13 @@ public class ParameterImpl implements Parameter {
                     case 3:
                         if (!matcher.group(3).isEmpty()) {
                             exponent = Integer.parseInt(matcher.group(3));
+                            userDefinedExponent = true;
                         }
                     case 2:
                         if (!matcher.group(2).isEmpty()) {
                             base = Integer.parseInt(matcher.group(2));
+                            userDefinedBase = true;
+                            if (base == 0) throw new IllegalArgumentException("No point in setting base to zero");
                         }
                     case 1:
                         if (!matcher.group(1).isEmpty()) {
