@@ -5,11 +5,14 @@ import org.junit.Test;
 import psidev.psi.mi.tab.model.BinaryInteraction;
 import psidev.psi.mi.tab.model.ConfidenceImpl;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Iterator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * PsimiTabReader Tester.
@@ -21,26 +24,27 @@ import static org.junit.Assert.assertEquals;
 public class PsimiTabReaderTest {
 
 	@Test
-	public void readFileNoHeader() throws PsimiTabException, IOException {
+	public void readStringNoHeader() throws PsimiTabException, IOException {
 
-		psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
+		PsimiTabReader reader = new PsimiTabReader();
 		Collection<BinaryInteraction> interactions = reader.read(TestHelper.TAB_11585365);
 
 		assertEquals(4, interactions.size());
 	}
 
 	@Test
-	public void readFileWithHeader() throws PsimiTabException, IOException {
+	public void readStringWithHeader() throws PsimiTabException, IOException {
 
-		psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
+		PsimiTabReader reader = new PsimiTabReader();
 		Collection<BinaryInteraction> interactions = reader.read(TestHelper.TXT_11585365);
 
 		assertEquals(4, interactions.size());
 	}
 
 	@Test
-	public void iterate_withHeader() throws Exception {
-		psidev.psi.mi.tab.io.PsimiTabReader reader = new PsimiTabReader();
+	public void iterateStringWithHeader() throws Exception {
+
+		PsimiTabReader reader = new PsimiTabReader();
 		Iterator<BinaryInteraction> iterator = reader.iterate(TestHelper.TXT_11585365);
 
 		int count = 0;
@@ -57,65 +61,343 @@ public class PsimiTabReaderTest {
 	}
 
 	@Test
-	public void read_file() throws PsimiTabException, IOException {
-		psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
-		Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.TXT_11585365);
-		int count = 0;
-		for (BinaryInteraction interaction : interactions) {
-			count++;
-		}
-		assertEquals(4, count);
-	}
+	public void readMitab25String() throws PsimiTabException, IOException {
 
-	@Test
-	public void iterate_file() throws PsimiTabException, IOException {
-		psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
-		Iterator<BinaryInteraction> ii = mitabReader.iterate(TestHelper.TXT_11585365);
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.MITAB25_2LINES_HEADER);
 
-		int count = 0;
-		while (ii.hasNext()) {
-			ii.next();
-			count++;
-		}
-
-		assertEquals(4, count);
-	}
-
-	public static final String MITAB_2_LINE_WITH_HEADER =
-			"#ID interactor A\tID interactor B\tAlt. ID interactor A\tAlt. ID interactor B\tAliases interactor A\tAliases interactor B\tinteraction detection method(s)\tpublication(s) 1st author(s) surname\tPublication ID\ttaxid interactor A\ttaxid interactor B\tInteraction types\tSource databases and identifiers\tInteraction ID\tConfidenceImpl\n" +
-					"uniprotkb:P23367\tuniprotkb:P06722\tinterpro:IPR003594|interpro:IPR002099|go:GO:0005515|intact:EBI-554913\tinterpro:IPR004230|uniprotkb:Q9R2X2|uniprotkb:Q9R3A8|uniprotkb:Q9R411|uniprotkb:Q9S6P5|uniprotkb:Q9S6P6|uniprotkb:Q9S6P7|go:GO:0005515|intact:EBI-545170\tgene name:mutL|locus name:b4170\tgene name:mutH|gene name synonym:mutR|gene name synonym:prv|locus name:b2831\tadenylate cyclase:MI:0014\t-\tpubmed:11585365\ttaxid:562\ttaxid:562\tphysical interaction:MI:0218\t-\t-\t-\n" +
-					"uniprotkb:P23367\tuniprotkb:P06722\t-\t-\t-\t-\t-\t-\t-\ttaxid:562\ttaxid:562\t-\t-\t-\t-\t-";
-
-	@Test
-	public void read_String() throws PsimiTabException, IOException {
-
-		psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
-		Collection<BinaryInteraction> interactions = mitabReader.read(MITAB_2_LINE_WITH_HEADER);
 		int count = 0;
 		for (BinaryInteraction interaction : interactions) {
 			assertEquals("P23367", interaction.getInteractorA().getIdentifiers().iterator().next().getIdentifier());
 			assertEquals("P06722", interaction.getInteractorB().getIdentifiers().iterator().next().getIdentifier());
 			count++;
 		}
+
 		assertEquals(2, count);
+		assertEquals(2, interactions.size());
 	}
 
 	@Test
-	public void iterate_String() throws PsimiTabException, IOException {
-		psidev.psi.mi.tab.io.PsimiTabReader mitabReader = new PsimiTabReader();
-		Iterator<BinaryInteraction> ii = mitabReader.iterate(MITAB_2_LINE_WITH_HEADER);
+	public void iterateMitab25String() throws IOException {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		Iterator<BinaryInteraction> iterator = mitabReader.iterate(TestHelper.MITAB25_2LINES_HEADER);
+		PsimiTabIterator mitabIterator = (PsimiTabIterator) iterator;
 
 		int count = 0;
-		while (ii.hasNext()) {
-			BinaryInteraction interaction = ii.next();
-
+		while (mitabIterator.hasNext()) {
+			BinaryInteraction<?> interaction = mitabIterator.next();
 			assertEquals("P23367", interaction.getInteractorA().getIdentifiers().iterator().next().getIdentifier());
 			assertEquals("P06722", interaction.getInteractorB().getIdentifiers().iterator().next().getIdentifier());
-
 			count++;
 		}
 
 		assertEquals(2, count);
+		assertEquals(2,mitabIterator.getInteractionsProcessedCount());
+	}
+
+	@Test
+	public void readMitab25File() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		File file = TestHelper.getFileByResources("/mitab-samples/14726512.txt", PsimiTabReader.class);
+		Collection<BinaryInteraction> interactions = mitabReader.read(file);
+
+		assertEquals(8, interactions.size());
+
+		BinaryInteraction<?> firstBinaryInteraction = interactions.iterator().next();
+
+		// test idB
+		assertEquals("uniprotkb", firstBinaryInteraction.getInteractorB().getIdentifiers().get(0).getDatabase());
+		assertEquals("Q9Y584", firstBinaryInteraction.getInteractorB().getIdentifiers().get(0).getIdentifier());
+
+		// test AltIdA
+		assertEquals("uniprotkb", firstBinaryInteraction.getInteractorA().getAlternativeIdentifiers().get(0).getDatabase());
+		assertEquals("TIMM9", firstBinaryInteraction.getInteractorA().getAlternativeIdentifiers().get(0).getIdentifier());
+
+		// test pubauth
+		assertTrue(firstBinaryInteraction.getAuthors().isEmpty());
+
+		// test pubid
+		assertEquals("pubmed", firstBinaryInteraction.getPublications().get(0).getDatabase());
+		assertEquals("14726512", firstBinaryInteraction.getPublications().get(0).getIdentifier());
+
+		// test interaction type
+		assertEquals("MI", firstBinaryInteraction.getInteractionTypes().get(0).getDatabase());
+		assertEquals("0218", firstBinaryInteraction.getInteractionTypes().get(0).getIdentifier());
+		assertEquals("physical interaction", firstBinaryInteraction.getInteractionTypes().get(0).getText());
+
+		// test confidence score
+		assertTrue(firstBinaryInteraction.getConfidenceValues().isEmpty());
+	}
+
+	@Test
+	public void iterateMitab25File() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		File file = TestHelper.getFileByResources("/mitab-samples/14726512.txt", PsimiTabReader.class);
+
+		Iterator<BinaryInteraction> iterator = mitabReader.iterate(file);
+		PsimiTabIterator mitabIterator = (PsimiTabIterator) iterator;
+
+		while (mitabIterator.hasNext()) {
+			BinaryInteraction<?> interaction = mitabIterator.next();
+			assertTrue(interaction.getConfidenceValues().isEmpty());
+		}
+
+		assertEquals(8, mitabIterator.getInteractionsProcessedCount());
+	}
+
+	@Test
+	public void readMitab27String() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.MITAB27_LINE_HEADER);
+
+		assertEquals(1,interactions.size());
+
+		BinaryInteraction<?> firstBinaryInteraction = interactions.iterator().next();
+
+		// test biological role A
+		Assert.assertEquals("psi-mi", firstBinaryInteraction.getInteractorA().getBiologicalRoles().get(0).getDatabase());
+		Assert.assertEquals("MI:0499", firstBinaryInteraction.getInteractorA().getBiologicalRoles().get(0).getIdentifier());
+		Assert.assertEquals("unspecified role", firstBinaryInteraction.getInteractorA().getBiologicalRoles().get(0).getText());
+
+		// test interactor type B
+		Assert.assertEquals("psi-mi", firstBinaryInteraction.getInteractorB().getInteractorTypes().get(0).getDatabase());
+		Assert.assertEquals("MI:0326", firstBinaryInteraction.getInteractorB().getInteractorTypes().get(0).getIdentifier());
+		Assert.assertEquals("protein", firstBinaryInteraction.getInteractorB().getInteractorTypes().get(0).getText());
+
+		// test xref for interaction
+		Assert.assertEquals("go", firstBinaryInteraction.getXrefs().get(0).getDatabase());
+		Assert.assertEquals("GO:xxxxx", firstBinaryInteraction.getXrefs().get(0).getIdentifier());
+
+		// test parameters of the interaction
+		Assert.assertEquals("kd", firstBinaryInteraction.getParameters().get(0).getType());
+		Assert.assertEquals("2.0", firstBinaryInteraction.getParameters().get(0).getValue());
+
+		// test update date
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy/MM/dd");
+		Assert.assertEquals("2010/03/30", simpleDateFormat.format(firstBinaryInteraction.getUpdateDate().get(0)));
+
+		// test checksumB
+		Assert.assertEquals("seguid", firstBinaryInteraction.getInteractorB().getChecksums().get(0).getMethodName());
+		Assert.assertEquals("checksumB", firstBinaryInteraction.getInteractorB().getChecksums().get(0).getChecksum());
+
+		// test negative
+		Assert.assertFalse(firstBinaryInteraction.isNegativeInteraction());
+
+		// test features
+		Assert.assertEquals("tag", firstBinaryInteraction.getInteractorA().getFeatures().get(0).getFeatureType());
+		Assert.assertEquals("?-?", firstBinaryInteraction.getInteractorA().getFeatures().get(0).getRanges().get(0));
+		Assert.assertTrue(firstBinaryInteraction.getInteractorB().getFeatures().isEmpty());
+
+		// test stoichiometries
+		Assert.assertTrue(firstBinaryInteraction.getInteractorA().getStoichiometry().isEmpty());
+		Assert.assertTrue(firstBinaryInteraction.getInteractorB().getStoichiometry().isEmpty());
+
+		// test participant identification methods
+		Assert.assertEquals("psi-mi", firstBinaryInteraction.getInteractorA().getParticipantIdentificationMethods().get(0).getDatabase());
+		Assert.assertEquals("MI:0102", firstBinaryInteraction.getInteractorA().getParticipantIdentificationMethods().get(0).getIdentifier());
+		Assert.assertEquals("sequence tag identification", firstBinaryInteraction.getInteractorA().getParticipantIdentificationMethods().get(0).getText());
+		Assert.assertEquals("psi-mi", firstBinaryInteraction.getInteractorB().getParticipantIdentificationMethods().get(0).getDatabase());
+		Assert.assertEquals("MI:0102", firstBinaryInteraction.getInteractorB().getParticipantIdentificationMethods().get(0).getIdentifier());
+		Assert.assertEquals("sequence tag identification", firstBinaryInteraction.getInteractorB().getParticipantIdentificationMethods().get(0).getText());
+	}
+
+	@Test
+	public void iterateMitab27String() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		Iterator<BinaryInteraction> iterator = mitabReader.iterate(TestHelper.MITAB27_LINE_HEADER);
+		PsimiTabIterator mitabIterator = (PsimiTabIterator) iterator;
+
+		while (mitabIterator.hasNext()) {
+			BinaryInteraction<?> firstBinaryInteraction = mitabIterator.next();
+
+			// test interactor type B
+			Assert.assertEquals("psi-mi", firstBinaryInteraction.getInteractorB().getInteractorTypes().get(0).getDatabase());
+			Assert.assertEquals("MI:0326", firstBinaryInteraction.getInteractorB().getInteractorTypes().get(0).getIdentifier());
+			Assert.assertEquals("protein", firstBinaryInteraction.getInteractorB().getInteractorTypes().get(0).getText());
+
+			// test checksumB
+			Assert.assertEquals("seguid", firstBinaryInteraction.getInteractorB().getChecksums().get(0).getMethodName());
+			Assert.assertEquals("checksumB", firstBinaryInteraction.getInteractorB().getChecksums().get(0).getChecksum());
+
+			// test negative
+			Assert.assertFalse(firstBinaryInteraction.isNegativeInteraction());
+
+			// test features
+			Assert.assertEquals("tag", firstBinaryInteraction.getInteractorA().getFeatures().get(0).getFeatureType());
+			Assert.assertEquals("?-?", firstBinaryInteraction.getInteractorA().getFeatures().get(0).getRanges().get(0));
+			Assert.assertTrue(firstBinaryInteraction.getInteractorB().getFeatures().isEmpty());
+		}
+
+		assertEquals(1, mitabIterator.getInteractionsProcessedCount());
+	}
+
+	@Test
+	public void readMitab27File() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		File file = TestHelper.getFileByResources("/mitab-samples/mitab_27_example.txt", PsimiTabReader.class);
+		Collection<BinaryInteraction> interactions = mitabReader.read(file);
+
+		assertEquals(14, interactions.size());
+
+		BinaryInteraction<?> firstBinaryInteraction = interactions.iterator().next();
+
+		// test IdA
+		assertEquals("innatedb", firstBinaryInteraction.getInteractorA().getIdentifiers().get(0).getDatabase());
+		assertEquals("IDBG-82738", firstBinaryInteraction.getInteractorA().getIdentifiers().get(0).getIdentifier());
+
+		// test pubauth
+		assertEquals("Shimazu et al. (1999)", firstBinaryInteraction.getAuthors().get(0).getName());
+
+		// test confidence scores
+		assertEquals("lpr", firstBinaryInteraction.getConfidenceValues().get(0).getType());
+		assertEquals("2", firstBinaryInteraction.getConfidenceValues().get(0).getValue());
+		assertEquals("hpr", firstBinaryInteraction.getConfidenceValues().get(1).getType());
+		assertEquals("2", firstBinaryInteraction.getConfidenceValues().get(1).getValue());
+		assertEquals("np", firstBinaryInteraction.getConfidenceValues().get(2).getType());
+		assertEquals("1", firstBinaryInteraction.getConfidenceValues().get(2).getValue());
+
+		// test parameters of the interaction
+		assertTrue(firstBinaryInteraction.getParameters().isEmpty());
+
+		// test negative
+		Assert.assertFalse(firstBinaryInteraction.isNegativeInteraction());
+
+		// test participant identification methods
+		assertEquals("psi-mi", firstBinaryInteraction.getInteractorA().getParticipantIdentificationMethods().get(0).getDatabase());
+		assertEquals("MI:0363", firstBinaryInteraction.getInteractorA().getParticipantIdentificationMethods().get(0).getIdentifier());
+		assertEquals("inferred by author", firstBinaryInteraction.getInteractorA().getParticipantIdentificationMethods().get(0).getText());
+		assertEquals("psi-mi", firstBinaryInteraction.getInteractorB().getParticipantIdentificationMethods().get(0).getDatabase());
+		assertEquals("MI:0363", firstBinaryInteraction.getInteractorB().getParticipantIdentificationMethods().get(0).getIdentifier());
+		assertEquals("inferred by author", firstBinaryInteraction.getInteractorB().getParticipantIdentificationMethods().get(0).getText());
+	}
+
+	@Test
+	public void iterateMitab27File() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		File file = TestHelper.getFileByResources("/mitab-samples/mitab_27_example.txt", PsimiTabReader.class);
+
+		Iterator<BinaryInteraction> iterator = mitabReader.iterate(file);
+		PsimiTabIterator mitabIterator = (PsimiTabIterator) iterator;
+
+		while (mitabIterator.hasNext()) {
+			BinaryInteraction<?> interaction = mitabIterator.next();
+			assertEquals("psi-mi", interaction.getInteractorA().getParticipantIdentificationMethods().get(0).getDatabase());
+			assertEquals("MI:0363", interaction.getInteractorA().getParticipantIdentificationMethods().get(0).getIdentifier());
+			assertEquals("inferred by author", interaction.getInteractorA().getParticipantIdentificationMethods().get(0).getText());
+		}
+
+		assertEquals(14, mitabIterator.getInteractionsProcessedCount());
+	}
+
+	@Test
+	public void readMitab28String() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.MITAB28_LINE_HEADER);
+
+		assertEquals(1,interactions.size());
+
+		BinaryInteraction<?> firstBinaryInteraction = interactions.iterator().next();
+
+		// test biological effects
+		assertTrue(firstBinaryInteraction.getInteractorA().getBiologicalEffects().isEmpty());
+		assertTrue(firstBinaryInteraction.getInteractorB().getBiologicalEffects().isEmpty());
+
+		// test causal regulatory mechanism
+		assertEquals("psi-mi", firstBinaryInteraction.getCausalRegulatoryMechanism().get(0).getDatabase());
+		assertEquals("MI:2247", firstBinaryInteraction.getCausalRegulatoryMechanism().get(0).getIdentifier());
+		assertEquals("transcriptional regulation", firstBinaryInteraction.getCausalRegulatoryMechanism().get(0).getText());
+
+		// test causal statement
+		assertEquals("psi-mi", firstBinaryInteraction.getCausalStatement().get(0).getDatabase());
+		assertEquals("MI:2236", firstBinaryInteraction.getCausalStatement().get(0).getIdentifier());
+		assertEquals("up-regulates activity", firstBinaryInteraction.getCausalStatement().get(0).getText());
+	}
+
+	@Test
+	public void iterateMitab28String() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		Iterator<BinaryInteraction> iterator = mitabReader.iterate(TestHelper.MITAB28_LINE_HEADER);
+		PsimiTabIterator mitabIterator = (PsimiTabIterator) iterator;
+
+		while (mitabIterator.hasNext()) {
+			BinaryInteraction<?> interaction = mitabIterator.next();
+
+			// test biological effects
+			assertTrue(interaction.getInteractorA().getBiologicalEffects().isEmpty());
+			assertTrue(interaction.getInteractorB().getBiologicalEffects().isEmpty());
+
+			// test causal regulatory mechanism
+			assertEquals("psi-mi", interaction.getCausalRegulatoryMechanism().get(0).getDatabase());
+			assertEquals("MI:2247", interaction.getCausalRegulatoryMechanism().get(0).getIdentifier());
+			assertEquals("transcriptional regulation", interaction.getCausalRegulatoryMechanism().get(0).getText());
+
+			// test causal statement
+			assertEquals("psi-mi", interaction.getCausalStatement().get(0).getDatabase());
+			assertEquals("MI:2236", interaction.getCausalStatement().get(0).getIdentifier());
+			assertEquals("up-regulates activity", interaction.getCausalStatement().get(0).getText());
+		}
+
+		assertEquals(1, mitabIterator.getInteractionsProcessedCount());
+	}
+
+	@Test
+	public void readMitab28File() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		File file = TestHelper.getFileByResources("/mitab-samples/sampleFileMitab28.txt", PsimiTabReader.class);
+		Collection<BinaryInteraction> interactions = mitabReader.read(file);
+
+		assertEquals(4, interactions.size());
+
+		BinaryInteraction<?> firstBinaryInteraction = interactions.iterator().next();
+
+		// test biological effects
+		assertEquals("go", firstBinaryInteraction.getInteractorA().getBiologicalEffects().get(0).getDatabase());
+		assertEquals("GO:0016301", firstBinaryInteraction.getInteractorA().getBiologicalEffects().get(0).getIdentifier());
+		assertEquals("kinase activity", firstBinaryInteraction.getInteractorA().getBiologicalEffects().get(0).getText());
+		assertEquals("go", firstBinaryInteraction.getInteractorB().getBiologicalEffects().get(0).getDatabase());
+		assertEquals("GO:0016301", firstBinaryInteraction.getInteractorB().getBiologicalEffects().get(0).getIdentifier());
+		assertEquals("kinase activity", firstBinaryInteraction.getInteractorB().getBiologicalEffects().get(0).getText());
+
+		// test causal regulatory mechanism
+		assertEquals("psi-mi", firstBinaryInteraction.getCausalRegulatoryMechanism().get(0).getDatabase());
+		assertEquals("MI:2249", firstBinaryInteraction.getCausalRegulatoryMechanism().get(0).getIdentifier());
+		assertEquals("post transcriptional regulation", firstBinaryInteraction.getCausalRegulatoryMechanism().get(0).getText());
+
+		// test causal statement
+		assertEquals("psi-mi", firstBinaryInteraction.getCausalStatement().get(0).getDatabase());
+		assertEquals("MI:2235", firstBinaryInteraction.getCausalStatement().get(0).getIdentifier());
+		assertEquals("up regulates", firstBinaryInteraction.getCausalStatement().get(0).getText());
+	}
+
+	@Test
+	public void iterateMitab28File() throws Exception {
+
+		PsimiTabReader mitabReader = new PsimiTabReader();
+		File file = TestHelper.getFileByResources("/mitab-samples/sampleFileMitab28.txt", PsimiTabReader.class);
+
+		Iterator<BinaryInteraction> iterator = mitabReader.iterate(file);
+		PsimiTabIterator mitabIterator = (PsimiTabIterator) iterator;
+
+		while (mitabIterator.hasNext()) {
+			BinaryInteraction<?> interaction = mitabIterator.next();
+
+			// test causal regulatory mechanism
+			assertEquals("psi-mi", interaction.getCausalRegulatoryMechanism().get(0).getDatabase());
+			assertEquals("MI:2249", interaction.getCausalRegulatoryMechanism().get(0).getIdentifier());
+			assertEquals("post transcriptional regulation", interaction.getCausalRegulatoryMechanism().get(0).getText());
+		}
+
+		assertEquals(4, mitabIterator.getInteractionsProcessedCount());
 	}
 
 	@Test

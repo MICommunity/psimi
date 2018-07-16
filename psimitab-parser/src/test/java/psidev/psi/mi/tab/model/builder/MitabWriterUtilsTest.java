@@ -25,7 +25,6 @@ public class MitabWriterUtilsTest {
     public void testBuildHeaderException() throws Exception {
 
         MitabWriterUtils.buildHeader(null);
-
     }
 
 
@@ -39,6 +38,9 @@ public class MitabWriterUtilsTest {
 
         String result3 = MitabWriterUtils.buildLine(buildInteraction(), PsimiTabVersion.v2_7);
         Assert.assertEquals(result3, MitabWriterUtils.createMitabLine(line27, PsimiTabVersion.v2_7));
+
+        String result4 = MitabWriterUtils.buildLine(buildInteraction(), PsimiTabVersion.v2_8);
+        Assert.assertEquals(result4, MitabWriterUtils.createMitabLine(line28, PsimiTabVersion.v2_8));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -48,12 +50,11 @@ public class MitabWriterUtilsTest {
 
 	@Test
 	public void testIntraIterMoleculeInteractionLine() throws Exception {
-		String result1 = MitabWriterUtils.buildLine(buildIntraIterMoleculeAInteraction(), PsimiTabVersion.v2_7);
-		Assert.assertEquals(result1, MitabWriterUtils.createMitabLine(interactorBNull, PsimiTabVersion.v2_7));
+		String result1 = MitabWriterUtils.buildLine(buildIntraIterMoleculeAInteraction(), PsimiTabVersion.v2_8);
+		Assert.assertEquals(result1, MitabWriterUtils.createMitabLine(interactorBNull, PsimiTabVersion.v2_8));
 
-		String result2 = MitabWriterUtils.buildLine(buildIntraIterMoleculeBInteraction(), PsimiTabVersion.v2_7);
-		Assert.assertEquals(result2, MitabWriterUtils.createMitabLine(interactorANull, PsimiTabVersion.v2_7));
-
+		String result2 = MitabWriterUtils.buildLine(buildIntraIterMoleculeBInteraction(), PsimiTabVersion.v2_8);
+		Assert.assertEquals(result2, MitabWriterUtils.createMitabLine(interactorANull, PsimiTabVersion.v2_8));
 	}
 
 
@@ -91,26 +92,26 @@ public class MitabWriterUtilsTest {
 			"psi-mi:\"MI:0974\"(innatedb)",
 			"innatedb:IDB-113260",
 			"lpr:2|hpr:2|np:1",
-			"-",
+			"psi-mi:\"MI:1060\"(spoke expansion)",
 			"psi-mi:\"MI:0499\"(unspecified role)",
 			"psi-mi:\"MI:0499\"(unspecified role)",
 			"psi-mi:\"MI:0498\"(prey)",
 			"psi-mi:\"MI:0496\"(bait)",
 			"psi-mi:\"MI:0326\"(protein)",
 			"psi-mi:\"MI:0326\"(protein)",
+			"uniprotkb:D3DRX9(secondary-ac)",
+			"refseq:NP_001447.2",
+			"intact:EBI-5627041(see-also)|imex:IM-17229-3(imex-primary)",
 			"-",
 			"-",
-			"-",
-			"-",
-			"-",
-			"-",
+			"curation depth:imex curation",
 			"taxid:9606",
-			"-",
+			"kd:1.36x10^-6(molar)",
 			"2008/03/30",
 			"2008/03/30",
-			"-",
-			"-",
-			"-",
+			"crc64:6C1A07041DF50142",
+			"crc64:2F6FEFCDF2C80457",
+			"intact-crc:08C4486B755C70C0",
 			"false"
 	};
 
@@ -130,35 +131,85 @@ public class MitabWriterUtilsTest {
 			"psi-mi:\"MI:0974\"(innatedb)",
 			"innatedb:IDB-113260",
 			"lpr:2|hpr:2|np:1",
-			"-",
+			"psi-mi:\"MI:1060\"(spoke expansion)",
 			"psi-mi:\"MI:0499\"(unspecified role)",
 			"psi-mi:\"MI:0499\"(unspecified role)",
 			"psi-mi:\"MI:0498\"(prey)",
 			"psi-mi:\"MI:0496\"(bait)",
 			"psi-mi:\"MI:0326\"(protein)",
 			"psi-mi:\"MI:0326\"(protein)",
+			"uniprotkb:D3DRX9(secondary-ac)",
+			"refseq:NP_001447.2",
+			"intact:EBI-5627041(see-also)|imex:IM-17229-3(imex-primary)",
 			"-",
 			"-",
-			"-",
-			"-",
-			"-",
-			"-",
+			"curation depth:imex curation",
 			"taxid:9606",
-			"-",
+			"kd:1.36x10^-6(molar)",
 			"2008/03/30",
 			"2008/03/30",
-			"-",
-			"-",
-			"-",
+			"crc64:6C1A07041DF50142",
+			"crc64:2F6FEFCDF2C80457",
+			"intact-crc:08C4486B755C70C0",
 			"false",
-			"-",
-			"-",
+			"necessary binding region:2171-2647",
+			"necessary binding region:757-800",
 			"-",
 			"-",
 			"psi-mi:\"MI:0363\"(inferred by author)",
-			"psi-mi:\"MI:0363\"(inferred by author)"};
+			"psi-mi:\"MI:0363\"(inferred by author)"
+	};
 
-	String[] interactorANull ={
+	private String[] line28 = {
+			"innatedb:IDBG-40102",
+			"innatedb:IDBG-4279",
+			"ensembl:ENSG00000175104",
+			"ensembl:ENSG00000141655",
+			"uniprotkb:Q9Y4K3|uniprotkb:TRAF6_HUMAN|refseq:NM_145803|refseq:NM_004620|refseq:NP_004611|refseq:NP_665802|hgnc:TNFRSF11A(display_short)",
+			"uniprotkb:Q9Y6Q6|uniprotkb:TNR11_HUMAN|refseq:NM_003839|refseq:NP_003830|hgnc:TNFRSF11A(display_short)",
+			"psi-mi:\"MI:0007\"(anti tag coimmunoprecipitation)",
+			"Arron et al. (2001)",
+			"pubmed:11406619",
+			"taxid:9606(Human)",
+			"taxid:9606(Human)",
+			"psi-mi:\"MI:0915\"(physical association)",
+			"psi-mi:\"MI:0974\"(innatedb)",
+			"innatedb:IDB-113260",
+			"lpr:2|hpr:2|np:1",
+			"psi-mi:\"MI:1060\"(spoke expansion)",
+			"psi-mi:\"MI:0499\"(unspecified role)",
+			"psi-mi:\"MI:0499\"(unspecified role)",
+			"psi-mi:\"MI:0498\"(prey)",
+			"psi-mi:\"MI:0496\"(bait)",
+			"psi-mi:\"MI:0326\"(protein)",
+			"psi-mi:\"MI:0326\"(protein)",
+			"uniprotkb:D3DRX9(secondary-ac)",
+			"refseq:NP_001447.2",
+			"intact:EBI-5627041(see-also)|imex:IM-17229-3(imex-primary)",
+			"-",
+			"-",
+			"curation depth:imex curation",
+			"taxid:9606",
+			"kd:1.36x10^-6(molar)",
+			"2008/03/30",
+			"2008/03/30",
+			"crc64:6C1A07041DF50142",
+			"crc64:2F6FEFCDF2C80457",
+			"intact-crc:08C4486B755C70C0",
+			"false",
+			"necessary binding region:2171-2647",
+			"necessary binding region:757-800",
+			"-",
+			"-",
+			"psi-mi:\"MI:0363\"(inferred by author)",
+			"psi-mi:\"MI:0363\"(inferred by author)",
+			"go:\"GO:0016301\"(kinase activity)",
+			"go:\"GO:0016301\"(kinase activity)",
+			"psi-mi:\"MI:2249\"(post transcriptional regulation)",
+			"psi-mi:\"MI:2240\"(down regulates)"
+	};
+
+	private String[] interactorANull = {
 			"-",
 			"innatedb:IDBG-4279",
 			"-",
@@ -174,7 +225,7 @@ public class MitabWriterUtilsTest {
 			"psi-mi:\"MI:0974\"(innatedb)",
 			"innatedb:IDB-113260",
 			"lpr:2|hpr:2|np:1",
-			"-",
+			"psi-mi:\"MI:1060\"(spoke expansion)",
 			"-",
 			"psi-mi:\"MI:0499\"(unspecified role)",
 			"-",
@@ -182,27 +233,32 @@ public class MitabWriterUtilsTest {
 			"-",
 			"psi-mi:\"MI:0326\"(protein)",
 			"-",
+			"refseq:NP_001447.2",
+			"intact:EBI-5627041(see-also)|imex:IM-17229-3(imex-primary)",
 			"-",
 			"-",
-			"-",
-			"-",
-			"-",
+			"curation depth:imex curation",
 			"taxid:9606",
-			"-",
+			"kd:1.36x10^-6(molar)",
 			"2008/03/30",
 			"2008/03/30",
 			"-",
-			"-",
-			"-",
+			"crc64:2F6FEFCDF2C80457",
+			"intact-crc:08C4486B755C70C0",
 			"false",
 			"-",
-			"-",
+			"necessary binding region:757-800",
 			"-",
 			"2",
 			"-",
-			"psi-mi:\"MI:0363\"(inferred by author)"};
+			"psi-mi:\"MI:0363\"(inferred by author)",
+			"-",
+			"go:\"GO:0016301\"(kinase activity)",
+			"psi-mi:\"MI:2249\"(post transcriptional regulation)",
+			"psi-mi:\"MI:2240\"(down regulates)"
+	};
 
-	String[] interactorBNull = {
+	private String[] interactorBNull = {
 			"innatedb:IDBG-40102",
 			"-",
 			"ensembl:ENSG00000175104",
@@ -218,43 +274,48 @@ public class MitabWriterUtilsTest {
 			"psi-mi:\"MI:0974\"(innatedb)",
 			"innatedb:IDB-113260",
 			"lpr:2|hpr:2|np:1",
-			"-",
+			"psi-mi:\"MI:1060\"(spoke expansion)",
 			"psi-mi:\"MI:0499\"(unspecified role)",
 			"-",
 			"psi-mi:\"MI:0498\"(prey)",
 			"-",
 			"psi-mi:\"MI:0326\"(protein)",
 			"-",
+			"uniprotkb:D3DRX9(secondary-ac)",
+			"-",
+			"intact:EBI-5627041(see-also)|imex:IM-17229-3(imex-primary)",
 			"-",
 			"-",
-			"-",
-			"-",
-			"-",
-			"-",
+			"curation depth:imex curation",
 			"taxid:9606",
-			"-",
+			"kd:1.36x10^-6(molar)",
 			"2008/03/30",
 			"2008/03/30",
+			"crc64:6C1A07041DF50142",
 			"-",
-			"-",
-			"-",
+			"intact-crc:08C4486B755C70C0",
 			"false",
-			"-",
+			"necessary binding region:2171-2647",
 			"-",
 			"2",
 			"-",
 			"psi-mi:\"MI:0363\"(inferred by author)",
-			"-"};
+			"-",
+			"go:\"GO:0016301\"(kinase activity)",
+			"-",
+			"psi-mi:\"MI:2249\"(post transcriptional regulation)",
+			"psi-mi:\"MI:2240\"(down regulates)"
+	};
 
 
-	BinaryInteraction<Interactor> buildInteraction() {
+	private BinaryInteraction<Interactor> buildInteraction() {
 
 		Interactor A = new Interactor();
 		Interactor B = new Interactor();
 
 		BinaryInteraction<Interactor> interactionToCompare = new BinaryInteractionImpl(A, B);
 
-
+		// MITAB 2.5
 		A.setIdentifiers(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("innatedb", "IDBG-40102"))));
 		B.setIdentifiers(new ArrayList<CrossReference>(
@@ -315,7 +376,9 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setConfidenceValues(confidences);
 
-//        interactionToCompare.setComplexExpansion();
+		// MITAB 2.6
+		interactionToCompare.setComplexExpansion(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:1060", "spoke expansion"))));
 
 		A.setBiologicalRoles(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0499", "unspecified role"))));
@@ -330,12 +393,19 @@ public class MitabWriterUtilsTest {
 		B.setInteractorTypes(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0326", "protein"))));
 
-//        A.setXrefs();
-//        B.setXrefs();
-//        interactionToCompare.setXrefs();
-//        A.setAnnotations();
-//        B.setAnnotations();
-//        interactionToCompare.setAnnotations();
+		A.setXrefs(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("uniprotkb", "D3DRX9", "secondary-ac"))));
+		B.setXrefs(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("refseq", "NP_001447.2"))));
+		ArrayList<CrossReference> xrefs = new ArrayList<CrossReference>();
+		xrefs.add(new CrossReferenceImpl("intact", "EBI-5627041", "see-also"));
+		xrefs.add(new CrossReferenceImpl("imex", "IM-17229-3", "imex-primary"));
+		interactionToCompare.setXrefs(xrefs);
+
+		List<Annotation> annotations = new ArrayList<Annotation>() {{
+			add(new AnnotationImpl("curation depth", "imex curation"));
+		}};
+		interactionToCompare.setAnnotations(annotations);
 
 		Organism hostOrganism = new OrganismImpl();
 		hostOrganism.setIdentifiers(new ArrayList<CrossReference>(
@@ -343,7 +413,10 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setHostOrganism(hostOrganism);
 
-//        interactionToCompare.setParameters();
+		List<Parameter> parameters = new ArrayList<Parameter>() {{
+			add(new ParameterImpl("kd", "1.36x10^-6", "molar"));
+		}};
+		interactionToCompare.setParameters(parameters);
 
 		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = null;
@@ -358,33 +431,51 @@ public class MitabWriterUtilsTest {
 		interactionToCompare.setUpdateDate(new ArrayList<Date>(
 				Collections.singletonList(date)));
 
-//        A.setChecksums();
-//        B.setChecksums();
-//        interactionToCompare.setChecksums();
+		A.setChecksums(new ArrayList<Checksum>(
+				Collections.singletonList(new ChecksumImpl("crc64", "6C1A07041DF50142"))));
+		B.setChecksums(new ArrayList<Checksum>(
+				Collections.singletonList(new ChecksumImpl("crc64", "2F6FEFCDF2C80457"))));
+		interactionToCompare.setChecksums(new ArrayList<Checksum>(
+				Collections.singletonList(new ChecksumImpl("intact-crc", "08C4486B755C70C0"))));
 
 		interactionToCompare.setNegativeInteraction(false);
 
-//        A.setFeatures();
-//        B.setFeatures();
-//        A.setStoichiometry();
-//        B.setStoichiometry();
-
+		// MITAB 2.7
+		ArrayList<String> rangesA = new ArrayList<String>();
+		rangesA.add("2171-2647");
+		ArrayList<String> rangesB = new ArrayList<String>();
+		rangesB.add("757-800");
+		A.setFeatures(new ArrayList<Feature>(
+				Collections.singletonList(new FeatureImpl("necessary binding region", rangesA))));
+		B.setFeatures(new ArrayList<Feature>(
+				Collections.singletonList(new FeatureImpl("necessary binding region", rangesB))));
 
 		A.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0363", "inferred by author"))));
 		B.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0363", "inferred by author"))));
 
+		// MITAB 2.8
+		A.setBiologicalEffects(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("go", "GO:0016301", "kinase activity"))));
+		B.setBiologicalEffects(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("go", "GO:0016301", "kinase activity"))));
+
+		interactionToCompare.setCausalRegulatoryMechanism(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:2249", "post transcriptional regulation"))));
+		interactionToCompare.setCausalStatement(new ArrayList<CrossReference>(
+				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:2240", "down regulates"))));
+
 		return interactionToCompare;
 	}
 
-	BinaryInteraction<Interactor> buildIntraIterMoleculeAInteraction() {
+	private BinaryInteraction<Interactor> buildIntraIterMoleculeAInteraction() {
 
 		Interactor A = new Interactor();
 
 		BinaryInteraction<Interactor> interactionToCompare = new BinaryInteractionImpl(A, null);
 
-
+		// MITAB 2.5
 		A.setIdentifiers(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("innatedb", "IDBG-40102"))));
 		A.setAlternativeIdentifiers(new ArrayList<CrossReference>(
@@ -424,7 +515,9 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setConfidenceValues(confidences);
 
-//        interactionToCompare.setComplexExpansion();
+        // MITAB 2.6
+        interactionToCompare.setComplexExpansion(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:1060", "spoke expansion"))));
 
 		A.setBiologicalRoles(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0499", "unspecified role"))));
@@ -433,10 +526,18 @@ public class MitabWriterUtilsTest {
 		A.setInteractorTypes(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0326", "protein"))));
 
-//        A.setXrefs();
-//        interactionToCompare.setXrefs();
-//        A.setAnnotations();
-//        interactionToCompare.setAnnotations();
+        A.setXrefs(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("uniprotkb", "D3DRX9", "secondary-ac"))));
+
+        ArrayList<CrossReference> xrefs = new ArrayList<CrossReference>();
+        xrefs.add(new CrossReferenceImpl("intact", "EBI-5627041", "see-also"));
+        xrefs.add(new CrossReferenceImpl("imex", "IM-17229-3", "imex-primary"));
+        interactionToCompare.setXrefs(xrefs);
+
+        List<Annotation> annotations = new ArrayList<Annotation>() {{
+            add(new AnnotationImpl("curation depth", "imex curation"));
+        }};
+        interactionToCompare.setAnnotations(annotations);
 
 		Organism hostOrganism = new OrganismImpl();
 		hostOrganism.setIdentifiers(new ArrayList<CrossReference>(
@@ -444,7 +545,10 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setHostOrganism(hostOrganism);
 
-//        interactionToCompare.setParameters();
+        List<Parameter> parameters = new ArrayList<Parameter>() {{
+            add(new ParameterImpl("kd", "1.36x10^-6", "molar"));
+        }};
+        interactionToCompare.setParameters(parameters);
 
 		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = null;
@@ -459,12 +563,18 @@ public class MitabWriterUtilsTest {
 		interactionToCompare.setUpdateDate(new ArrayList<Date>(
 				Collections.singletonList(date)));
 
-//        A.setChecksums();
-//        interactionToCompare.setChecksums();
+        A.setChecksums(new ArrayList<Checksum>(
+                Collections.singletonList(new ChecksumImpl("crc64", "6C1A07041DF50142"))));
+        interactionToCompare.setChecksums(new ArrayList<Checksum>(
+                Collections.singletonList(new ChecksumImpl("intact-crc", "08C4486B755C70C0"))));
 
 		interactionToCompare.setNegativeInteraction(false);
 
-//        A.setFeatures();
+        // MITAB 2.7
+        ArrayList<String> rangesA = new ArrayList<String>();
+        rangesA.add("2171-2647");
+        A.setFeatures(new ArrayList<Feature>(
+                Collections.singletonList(new FeatureImpl("necessary binding region", rangesA))));
 
 		A.setStoichiometry(new ArrayList<Integer>(
 				Collections.singletonList(new Integer("2"))));
@@ -472,15 +582,25 @@ public class MitabWriterUtilsTest {
 		A.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0363", "inferred by author"))));
 
+        // MITAB 2.8
+        A.setBiologicalEffects(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("go", "GO:0016301", "kinase activity"))));
+
+        interactionToCompare.setCausalRegulatoryMechanism(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:2249", "post transcriptional regulation"))));
+        interactionToCompare.setCausalStatement(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:2240", "down regulates"))));
+
 		return interactionToCompare;
 	}
 
-	BinaryInteraction<Interactor> buildIntraIterMoleculeBInteraction() {
+	private BinaryInteraction<Interactor> buildIntraIterMoleculeBInteraction() {
 
 		Interactor B = new Interactor();
 
 		BinaryInteraction<Interactor> interactionToCompare = new BinaryInteractionImpl(null, B);
 
+		// MITAB 2.5
 		B.setIdentifiers(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("innatedb", "IDBG-4279"))));
 		B.setAlternativeIdentifiers(new ArrayList<CrossReference>(
@@ -521,7 +641,9 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setConfidenceValues(confidences);
 
-//        interactionToCompare.setComplexExpansion();
+        // MITAB 2.6
+        interactionToCompare.setComplexExpansion(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:1060", "spoke expansion"))));
 
 		B.setBiologicalRoles(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0499", "unspecified role"))));
@@ -530,11 +652,18 @@ public class MitabWriterUtilsTest {
 		B.setInteractorTypes(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0326", "protein"))));
 
+        B.setXrefs(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("refseq", "NP_001447.2"))));
+        ArrayList<CrossReference> xrefs = new ArrayList<CrossReference>();
 
-//        B.setXrefs();
-//        interactionToCompare.setXrefs();
-//        B.setAnnotations();
-//        interactionToCompare.setAnnotations();
+        xrefs.add(new CrossReferenceImpl("intact", "EBI-5627041", "see-also"));
+        xrefs.add(new CrossReferenceImpl("imex", "IM-17229-3", "imex-primary"));
+        interactionToCompare.setXrefs(xrefs);
+
+        List<Annotation> annotations = new ArrayList<Annotation>() {{
+            add(new AnnotationImpl("curation depth", "imex curation"));
+        }};
+        interactionToCompare.setAnnotations(annotations);
 
 		Organism hostOrganism = new OrganismImpl();
 		hostOrganism.setIdentifiers(new ArrayList<CrossReference>(
@@ -542,7 +671,10 @@ public class MitabWriterUtilsTest {
 
 		interactionToCompare.setHostOrganism(hostOrganism);
 
-//        interactionToCompare.setParameters();
+        List<Parameter> parameters = new ArrayList<Parameter>() {{
+            add(new ParameterImpl("kd", "1.36x10^-6", "molar"));
+        }};
+        interactionToCompare.setParameters(parameters);
 
 		DateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 		Date date = null;
@@ -557,19 +689,33 @@ public class MitabWriterUtilsTest {
 		interactionToCompare.setUpdateDate(new ArrayList<Date>(
 				Collections.singletonList(date)));
 
-//        B.setChecksums();
-//        interactionToCompare.setChecksums();
+        B.setChecksums(new ArrayList<Checksum>(
+                Collections.singletonList(new ChecksumImpl("crc64", "2F6FEFCDF2C80457"))));
+        interactionToCompare.setChecksums(new ArrayList<Checksum>(
+                Collections.singletonList(new ChecksumImpl("intact-crc", "08C4486B755C70C0"))));
 
 		interactionToCompare.setNegativeInteraction(false);
 
-
-//        B.setFeatures();
+        // MITAB 2.7
+        ArrayList<String> rangesB = new ArrayList<String>();
+        rangesB.add("757-800");
+        B.setFeatures(new ArrayList<Feature>(
+                Collections.singletonList(new FeatureImpl("necessary binding region", rangesB))));
 
         B.setStoichiometry(new ArrayList<Integer>(
 				Collections.singletonList(new Integer("2"))));
 
 		B.setParticipantIdentificationMethods(new ArrayList<CrossReference>(
 				Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:0363", "inferred by author"))));
+
+        // MITAB 2.8
+        B.setBiologicalEffects(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("go", "GO:0016301", "kinase activity"))));
+
+        interactionToCompare.setCausalRegulatoryMechanism(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:2249", "post transcriptional regulation"))));
+        interactionToCompare.setCausalStatement(new ArrayList<CrossReference>(
+                Collections.singletonList(new CrossReferenceImpl("psi-mi", "MI:2240", "down regulates"))));
 
 		return interactionToCompare;
 	}

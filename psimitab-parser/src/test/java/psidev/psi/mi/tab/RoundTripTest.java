@@ -1,9 +1,8 @@
 package psidev.psi.mi.tab;
 
 import org.junit.Test;
-import psidev.psi.mi.tab.io.PsimiTabReader;
-import psidev.psi.mi.tab.io.PsimiTabWriter;
 import psidev.psi.mi.tab.model.BinaryInteraction;
+import psidev.psi.mi.tab.model.builder.PsimiTabVersion;
 
 import java.io.BufferedWriter;
 import java.io.StringWriter;
@@ -21,24 +20,16 @@ import static org.junit.Assert.assertNotNull;
  */
 public class RoundTripTest {
 
-    public static final String NEW_LINE = System.getProperty("line.separator");
-
-    public static final String MITAB_2_LINE_WITH_HEADER =
-            "#ID(s) interactor A\tID(s) interactor B\tAlt. ID(s) interactor A\tAlt. ID(s) interactor B\tAlias(es) interactor A\tAlias(es) interactor B\tInteraction detection method(s)\tPublication 1st author(s)\tPublication Identifier(s)\tTaxid interactor A\tTaxid interactor B\tInteraction type(s)\tSource database(s)\tInteraction identifier(s)\tConfidence value(s)" + NEW_LINE +
-                    "uniprotkb:Q8I0U6|intact:EBI-825868\tuniprotkb:Q8I0U6|intact:EBI-825868\tuniprotkb:PFA0110w(gene name)\tuniprotkb:PFA0110w(gene name)\tintact:MAL1P1.13\tintact:MAL1P1.13\tpsi-mi:\"MI:0398\"(two hybrid pooling)\tLacount et al. (2005)\tpubmed:16267556\ttaxid:36329(plaf7)\ttaxid:36329(plaf7)\tpsi-mi:\"MI:0218\"(physical interaction)\tpsi-mi:\"MI:0469\"(intact)\tintact:EBI-840450\t-" + NEW_LINE +
-                    "uniprotkb:P23367\tuniprotkb:P06722\t-\t-\t-\t-\t-\t-\t-\ttaxid:562\ttaxid:562\t-\t-\t-\t-" + NEW_LINE;
-
-
     @Test
-    public void roundTrip() throws Exception {
+    public void roundTripMitab25() throws Exception {
 
-        PsimiTabReader mitabReader = new psidev.psi.mi.tab.PsimiTabReader();
-        Collection<BinaryInteraction> interactions = mitabReader.read(MITAB_2_LINE_WITH_HEADER);
+        PsimiTabReader mitabReader = new PsimiTabReader();
+        Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.MITAB25_2LINES_HEADER);
         assertEquals(2, interactions.size());
 
         // convert it back to a String
 
-        PsimiTabWriter mitabWriter = new psidev.psi.mi.tab.PsimiTabWriter();
+        PsimiTabWriter mitabWriter = new PsimiTabWriter();
         StringWriter stringWriter = new StringWriter();
 
         BufferedWriter bw = new BufferedWriter(stringWriter);
@@ -47,7 +38,73 @@ public class RoundTripTest {
 
         assertNotNull(bw);
 
-        assertEquals(MITAB_2_LINE_WITH_HEADER, stringWriter.getBuffer().toString());
+        assertEquals(TestHelper.MITAB25_2LINES_HEADER, stringWriter.getBuffer().toString());
+
+        bw.close();
+    }
+
+    @Test
+    public void roundTripMitab26() throws Exception {
+        PsimiTabReader mitabReader = new PsimiTabReader();
+        Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.MITAB26_LINE_HEADER);
+        assertEquals(1, interactions.size());
+
+        // convert it back to a String
+
+        PsimiTabWriter mitabWriter = new PsimiTabWriter(PsimiTabVersion.v2_6);
+        StringWriter stringWriter = new StringWriter();
+
+        BufferedWriter bw = new BufferedWriter(stringWriter);
+        mitabWriter.writeMitabHeader(bw);
+        mitabWriter.write(interactions, bw);
+
+        assertNotNull(bw);
+
+        assertEquals(TestHelper.MITAB26_LINE_HEADER, stringWriter.getBuffer().toString());
+
+        bw.close();
+    }
+
+    @Test
+    public void roundTripMitab27() throws Exception {
+        PsimiTabReader mitabReader = new PsimiTabReader();
+        Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.MITAB27_LINE_HEADER);
+        assertEquals(1, interactions.size());
+
+        // convert it back to a String
+
+        PsimiTabWriter mitabWriter = new PsimiTabWriter(PsimiTabVersion.v2_7);
+        StringWriter stringWriter = new StringWriter();
+
+        BufferedWriter bw = new BufferedWriter(stringWriter);
+        mitabWriter.writeMitabHeader(bw);
+        mitabWriter.write(interactions, bw);
+
+        assertNotNull(bw);
+
+        assertEquals(TestHelper.MITAB27_LINE_HEADER, stringWriter.getBuffer().toString());
+
+        bw.close();
+    }
+
+    @Test
+    public void roundTripMitab28() throws Exception {
+        PsimiTabReader mitabReader = new PsimiTabReader();
+        Collection<BinaryInteraction> interactions = mitabReader.read(TestHelper.MITAB28_LINE_HEADER);
+        assertEquals(1, interactions.size());
+
+        // convert it back to a String
+
+        PsimiTabWriter mitabWriter = new PsimiTabWriter(PsimiTabVersion.v2_8);
+        StringWriter stringWriter = new StringWriter();
+
+        BufferedWriter bw = new BufferedWriter(stringWriter);
+        mitabWriter.writeMitabHeader(bw);
+        mitabWriter.write(interactions, bw);
+
+        assertNotNull(bw);
+
+        assertEquals(TestHelper.MITAB28_LINE_HEADER, stringWriter.getBuffer().toString());
 
         bw.close();
     }
