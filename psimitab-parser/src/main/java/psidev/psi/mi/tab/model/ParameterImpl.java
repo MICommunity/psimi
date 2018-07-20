@@ -225,7 +225,7 @@ public class ParameterImpl implements Parameter {
                         if (!matcher.group(2).isEmpty()) {
                             base = Integer.parseInt(matcher.group(2));
                             userDefinedBase = true;
-                            if (base == 0) throw new IllegalArgumentException("No point in setting base to zero");
+                            if (base == 0) throw new IllegalArgumentException("Zero is not allowed as a value for base");
                         }
                     case 1:
                         if (!matcher.group(1).isEmpty()) {

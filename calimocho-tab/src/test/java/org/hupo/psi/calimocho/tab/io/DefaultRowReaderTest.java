@@ -336,7 +336,7 @@ public class DefaultRowReaderTest extends AbstractCalimochoTabTest {
     }
 
     @Test
-    public void reamMitab28Stream() throws Exception {
+    public void readMitab28Stream() throws Exception {
         InputStream is = DefaultRowReaderTest.class.getResourceAsStream( "/META-INF/mitab28/mitab28_example.txt" );
 
         XrefFieldParser xrefParser = new XrefFieldParser();

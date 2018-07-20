@@ -125,7 +125,7 @@ public class ParameterImplTest {
     }
 
     @Test
-    public void testbaseEqualTo1() throws Exception {
+    public void testBaseEqualTo1() throws Exception {
 
         Parameter parameter = new ParameterImpl("Kd", "4.5x1^13 ~-0.2", "molar");
 
@@ -139,7 +139,7 @@ public class ParameterImplTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testbaseEqualTo0() throws Exception {
+    public void testBaseEqualTo0() throws Exception {
         new ParameterImpl("Kd", "4.5x0^13 ~-0.2", "molar");
     }
 

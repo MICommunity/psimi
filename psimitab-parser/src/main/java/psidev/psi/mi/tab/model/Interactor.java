@@ -389,7 +389,7 @@ public class Interactor implements Serializable {
 	}
 
 	public boolean isEmpty() {
-		//We don't not want to have a empty interactor, we prefer a null interactor
+		//We don't want to have a empty interactor, we prefer a null interactor
 		return
 			(this.getIdentifiers() == null || this.getIdentifiers().isEmpty()) &&
 			(this.getAlternativeIdentifiers() == null || this.getAlternativeIdentifiers().isEmpty()) &&

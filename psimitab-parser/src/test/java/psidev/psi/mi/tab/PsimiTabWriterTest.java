@@ -44,7 +44,7 @@ public class PsimiTabWriterTest {
         return count;
     }
 
-    private void printlines(File file) throws IOException {
+    private void printLines(File file) throws IOException {
 
         BufferedReader in = new BufferedReader(new FileReader(file));
         String line;
@@ -272,7 +272,7 @@ public class PsimiTabWriterTest {
     }
 
     @Test
-    public void compareTwoMITAB27() throws ConverterException, IOException {
+    public void compareTwoMitab27() throws ConverterException, IOException {
 
         File inputFile = TestHelper.getFileByResources("/mitab-samples/mitab_27_example.txt", PsimiTabReader.class);
         File outputFile = new File(inputFile.getAbsolutePath() + ".csv");
@@ -330,13 +330,13 @@ public class PsimiTabWriterTest {
         assertEquals(4, mitabIterator.getInteractionsProcessedCount());
         assertEquals(5, lineCount(outputFile)); // +1 for the header we wrote
 
-        // printlines(outputFile);
+        // printLines(outputFile);
 
         outputFile.deleteOnExit();
     }
 
     @Test
-    public void compareTwoMITAB28() throws IOException {
+    public void compareTwoMitab28() throws IOException {
 
         File inputFile = TestHelper.getFileByResources("/mitab-samples/sampleFileMitab28.txt", PsimiTabReader.class);
         File outputFile = new File(inputFile.getAbsolutePath() + ".txt");
