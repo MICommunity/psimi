@@ -40,8 +40,8 @@ import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
  */
 public class XrefFieldConverterTest extends TestCase {
 
-    List<Row> rowList_mitab27, rowList_mitab26, rowList_mitab25;
-    Converter converter;
+    private List<Row> rowList_mitab25, rowList_mitab26, rowList_mitab27, rowList_mitab28;
+    private Converter converter;
     
     public XrefFieldConverterTest(String testName) {
         super(testName);
@@ -58,78 +58,74 @@ public class XrefFieldConverterTest extends TestCase {
 
         converter = new Converter();
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
-        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
-        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
+        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
+        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
+        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
 
         ColumnBasedDocumentDefinition documentDefinition_mitab26 = MitabDocumentDefinitionFactory.mitab26();
         DefaultRowReader rowReader_mitab26 = new DefaultRowReader( documentDefinition_mitab26 );
         rowList_mitab26 = rowReader_mitab26.read(File.class.getResourceAsStream("/samples/sampleFileMitab26.txt"));
+        
+        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
+        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
+        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
-        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
-        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
+        ColumnBasedDocumentDefinition documentDefinition_mitab28 = MitabDocumentDefinitionFactory.mitab28();
+        DefaultRowReader rowReader_mitab28 = new DefaultRowReader( documentDefinition_mitab28 );
+        rowList_mitab28 = rowReader_mitab28.read(File.class.getResourceAsStream("/samples/sampleFileMitab28.txt"));
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
     }
-    
-    public void testIndexFieldValues_id_mitab27() throws Exception {
-        System.out.println("XrefField: indexFieldValues - ids - mitab2.7");
 
-        Assert.assertNotNull(rowList_mitab27);
+    public void testIndexFieldValues_id_mitab25() throws Exception {
+        System.out.println("XrefField: indexFieldValues - ids - mitab2.5");
 
-        for (Row row:rowList_mitab27) {
+        Assert.assertNotNull(rowList_mitab25);
+
+        for (Row row:rowList_mitab25) {
 
             Collection<Field> fields = row.getFields(InteractionKeys.KEY_ID_A);
             SolrFieldName fName = SolrFieldName.idA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ID_B);
             fName = SolrFieldName.idB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALIAS_A);
             fName = SolrFieldName.aliasA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALIAS_B);
             fName = SolrFieldName.aliasB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALTID_A);
             fName = SolrFieldName.altidA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALTID_B);
             fName = SolrFieldName.altidB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_INTERACTION_ID);
             fName = SolrFieldName.interaction_id;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_PUBID);
             fName = SolrFieldName.pubid;
 
             testIndexFieldValues(fName, fields, row);
-
         }
     }
 
@@ -145,43 +141,36 @@ public class XrefFieldConverterTest extends TestCase {
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ID_B);
             fName = SolrFieldName.idB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALIAS_A);
             fName = SolrFieldName.aliasA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALIAS_B);
             fName = SolrFieldName.aliasB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALTID_A);
             fName = SolrFieldName.altidA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALTID_B);
             fName = SolrFieldName.altidB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_INTERACTION_ID);
             fName = SolrFieldName.interaction_id;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_PUBID);
             fName = SolrFieldName.pubid;
 
@@ -189,56 +178,49 @@ public class XrefFieldConverterTest extends TestCase {
 
         }
     }
+    
+    public void testIndexFieldValues_id_mitab27() throws Exception {
+        System.out.println("XrefField: indexFieldValues - ids - mitab2.7");
 
-    public void testIndexFieldValues_id_mitab25() throws Exception {
-        System.out.println("XrefField: indexFieldValues - ids - mitab2.5");
+        Assert.assertNotNull(rowList_mitab27);
 
-        Assert.assertNotNull(rowList_mitab25);
-
-        for (Row row:rowList_mitab25) {
+        for (Row row:rowList_mitab27) {
 
             Collection<Field> fields = row.getFields(InteractionKeys.KEY_ID_A);
             SolrFieldName fName = SolrFieldName.idA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ID_B);
             fName = SolrFieldName.idB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALIAS_A);
             fName = SolrFieldName.aliasA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALIAS_B);
             fName = SolrFieldName.aliasB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALTID_A);
             fName = SolrFieldName.altidA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_ALTID_B);
             fName = SolrFieldName.altidB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_INTERACTION_ID);
             fName = SolrFieldName.interaction_id;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_PUBID);
             fName = SolrFieldName.pubid;
 
@@ -247,6 +229,56 @@ public class XrefFieldConverterTest extends TestCase {
         }
     }
 
+    public void testIndexFieldValues_id_mitab28() throws Exception {
+        System.out.println("XrefField: indexFieldValues - ids - mitab2.8");
+
+        Assert.assertNotNull(rowList_mitab28);
+
+        for (Row row:rowList_mitab28) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_ID_A);
+            SolrFieldName fName = SolrFieldName.idA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_ID_B);
+            fName = SolrFieldName.idB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_ALIAS_A);
+            fName = SolrFieldName.aliasA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_ALIAS_B);
+            fName = SolrFieldName.aliasB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_ALTID_A);
+            fName = SolrFieldName.altidA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_ALTID_B);
+            fName = SolrFieldName.altidB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_INTERACTION_ID);
+            fName = SolrFieldName.interaction_id;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_PUBID);
+            fName = SolrFieldName.pubid;
+
+            testIndexFieldValues(fName, fields, row);
+
+        }
+    }
+    
     public void testIndexFieldValues(SolrFieldName fName, Collection<Field> fields, Row row) throws Exception {
 
         Assert.assertNotNull(row);
@@ -290,7 +322,7 @@ public class XrefFieldConverterTest extends TestCase {
                 Assert.assertNull(solrDoc.getField(fName.toString() + "_o")); //indexFieldValues-method doesn't write _o
             }
         } else {
-            System.err.println("\tField "+fName.toString()+" not found!");
+            System.out.println("\tField " + fName.toString() + " not found - it is empty (a dash) in the sample file!");
         }
     }
 

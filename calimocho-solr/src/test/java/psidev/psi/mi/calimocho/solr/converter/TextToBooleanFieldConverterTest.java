@@ -40,8 +40,8 @@ import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
  */
 public class TextToBooleanFieldConverterTest extends TestCase {
 
-    List<Row> rowList_mitab27, rowList_mitab26, rowList_mitab25;
-    Converter converter;
+    private List<Row> rowList_mitab26, rowList_mitab27, rowList_mitab28;
+    private Converter converter;
     
     public TextToBooleanFieldConverterTest(String testName) {
         super(testName);
@@ -58,22 +58,38 @@ public class TextToBooleanFieldConverterTest extends TestCase {
 
         converter = new Converter();
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
-        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
-        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
-
         ColumnBasedDocumentDefinition documentDefinition_mitab26 = MitabDocumentDefinitionFactory.mitab26();
         DefaultRowReader rowReader_mitab26 = new DefaultRowReader( documentDefinition_mitab26 );
         rowList_mitab26 = rowReader_mitab26.read(File.class.getResourceAsStream("/samples/sampleFileMitab26.txt"));
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
-        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
-        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
+        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
+        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
+        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
+
+        ColumnBasedDocumentDefinition documentDefinition_mitab28 = MitabDocumentDefinitionFactory.mitab28();
+        DefaultRowReader rowReader_mitab28 = new DefaultRowReader( documentDefinition_mitab28 );
+        rowList_mitab28 = rowReader_mitab28.read(File.class.getResourceAsStream("/samples/sampleFileMitab28.txt"));
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    //no interaction parameters field in mitab2.5
+
+    public void testIndexFieldValues_param_mitab26() throws Exception {
+        System.out.println("TextField: indexFieldValues - param - mitab2.6");
+
+        Assert.assertNotNull(rowList_mitab26);
+
+        for (Row row:rowList_mitab26) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_PARAMETERS_I);
+            SolrFieldName fName = SolrFieldName.param;
+
+            testIndexFieldValues(fName, fields, row);
+        }
     }
 
     public void testIndexFieldValues_param_mitab27() throws Exception {
@@ -90,26 +106,12 @@ public class TextToBooleanFieldConverterTest extends TestCase {
         }
     }
 
-    public void testIndexFieldValues_param_mitab26() throws Exception {
-        System.out.println("TextField: indexFieldValues - param - mitab2.6");
+    public void testIndexFieldValues_param_mitab28() throws Exception {
+        System.out.println("TextField: indexFieldValues - param - mitab2.8");
 
-        Assert.assertNotNull(rowList_mitab26);
+        Assert.assertNotNull(rowList_mitab28);
 
-        for (Row row:rowList_mitab26) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_PARAMETERS_I);
-            SolrFieldName fName = SolrFieldName.param;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_param_mitab25() throws Exception {
-        System.out.println("TextField: indexFieldValues - param - mitab2.5");
-
-        Assert.assertNotNull(rowList_mitab25);
-
-        for (Row row:rowList_mitab25) {
+        for (Row row:rowList_mitab28) {
 
             Collection<Field> fields = row.getFields(InteractionKeys.KEY_PARAMETERS_I);
             SolrFieldName fName = SolrFieldName.param;
@@ -160,7 +162,7 @@ public class TextToBooleanFieldConverterTest extends TestCase {
                 Assert.assertNull(solrDoc.getField(fName.toString() + "_o")); //indexFieldValues-method doesn't write _o
             }
         } else {
-            System.err.println("\tField "+fName.toString()+" not found!");
+            System.out.println("\tField " + fName.toString() + " not found - it is empty (a dash) in the sample file!");
         }
     }
 

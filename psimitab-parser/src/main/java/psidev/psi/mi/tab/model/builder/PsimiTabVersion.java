@@ -11,8 +11,8 @@ public enum PsimiTabVersion {
 
     v2_5(15),
     v2_6(36),
-    v2_7(42);
-
+    v2_7(42),
+    v2_8(46);
 
     /////////////////////////////////
     // Constructor

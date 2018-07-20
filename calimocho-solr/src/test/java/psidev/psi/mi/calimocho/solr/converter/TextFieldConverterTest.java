@@ -27,6 +27,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.apache.solr.common.SolrInputDocument;
+import org.apache.solr.common.SolrInputField;
 import org.hupo.psi.calimocho.key.InteractionKeys;
 import org.hupo.psi.calimocho.model.Field;
 import org.hupo.psi.calimocho.model.Row;
@@ -40,8 +41,8 @@ import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
  */
 public class TextFieldConverterTest extends TestCase {
 
-    List<Row> rowList_mitab27, rowList_mitab26, rowList_mitab25;
-    Converter converter;
+    private List<Row> rowList_mitab25, rowList_mitab26, rowList_mitab27, rowList_mitab28;
+    private Converter converter;
     
     public TextFieldConverterTest(String testName) {
         super(testName);
@@ -58,22 +59,149 @@ public class TextFieldConverterTest extends TestCase {
 
         converter = new Converter();
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
-        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
-        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
+        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
+        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
+        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
 
         ColumnBasedDocumentDefinition documentDefinition_mitab26 = MitabDocumentDefinitionFactory.mitab26();
         DefaultRowReader rowReader_mitab26 = new DefaultRowReader( documentDefinition_mitab26 );
         rowList_mitab26 = rowReader_mitab26.read(File.class.getResourceAsStream("/samples/sampleFileMitab26.txt"));
+        
+        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
+        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
+        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
-        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
-        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
+        ColumnBasedDocumentDefinition documentDefinition_mitab28 = MitabDocumentDefinitionFactory.mitab28();
+        DefaultRowReader rowReader_mitab28 = new DefaultRowReader( documentDefinition_mitab28 );
+        rowList_mitab28 = rowReader_mitab28.read(File.class.getResourceAsStream("/samples/sampleFileMitab28.txt"));
     }
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
+    }
+
+    public void testIndexFieldValues_mitab25() throws Exception {
+        System.out.println("TextField: indexFieldValues - mitab2.5");
+
+        Assert.assertNotNull(rowList_mitab25);
+
+        for (Row row:rowList_mitab25) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_TAXID_A);
+            SolrFieldName fName = SolrFieldName.taxidA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_TAXID_B);
+            fName = SolrFieldName.taxidB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_INTERACTION_TYPE);
+            fName = SolrFieldName.type;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_DETMETHOD);
+            fName = SolrFieldName.detmethod;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_SOURCE);
+            fName = SolrFieldName.source;
+
+            testIndexFieldValues(fName, fields, row);
+        }
+    }
+
+    public void testIndexFieldValues_mitab26() throws Exception {
+        System.out.println("TextField: indexFieldValues - mitab2.6");
+
+        Assert.assertNotNull(rowList_mitab26);
+
+        for (Row row:rowList_mitab26) {
+
+            Collection<Field> fields = row.getFields(InteractionKeys.KEY_TAXID_A);
+            SolrFieldName fName = SolrFieldName.taxidA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_TAXID_B);
+            fName = SolrFieldName.taxidB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_INTERACTION_TYPE);
+            fName = SolrFieldName.type;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_DETMETHOD);
+            fName = SolrFieldName.detmethod;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_BIOROLE_A);
+            fName = SolrFieldName.pbioroleA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_BIOROLE_B);
+            fName = SolrFieldName.pbioroleB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_EXPROLE_A);
+            fName = SolrFieldName.pexproleA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_EXPROLE_B);
+            fName = SolrFieldName.pexproleB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_A);
+            fName = SolrFieldName.ptypeA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B);
+            fName = SolrFieldName.ptypeB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_XREFS_A);
+            fName = SolrFieldName.pxrefA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_XREFS_B);
+            fName = SolrFieldName.pxrefB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_XREFS_I);
+            fName = SolrFieldName.xref;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_A);
+            fName = SolrFieldName.checksumA;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_B);
+            fName = SolrFieldName.checksumB;
+
+            testIndexFieldValues(fName, fields, row);
+
+            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_I);
+            fName = SolrFieldName.checksumI;
+
+            testIndexFieldValues(fName, fields, row);
+        }
     }
 
     public void testIndexFieldValues_mitab27() throws Exception {
@@ -87,146 +215,112 @@ public class TextFieldConverterTest extends TestCase {
             SolrFieldName fName = SolrFieldName.pubauth;
 
             testIndexFieldValues(fName, fields, row);
-
-            fields = null;
+            
             fields = row.getFields(InteractionKeys.KEY_TAXID_A);
             fName = SolrFieldName.taxidA;
 
             testIndexFieldValues(fName, fields, row);
             
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_TAXID_B);
             fName = SolrFieldName.taxidB;
 
             testIndexFieldValues(fName, fields, row);
-
-            fields = null;
+            
             fields = row.getFields(InteractionKeys.KEY_HOST_ORGANISM);
-            fName = SolrFieldName.species;
+            fName = SolrFieldName.taxidHost;
 
             testIndexFieldValues(fName, fields, row);
-
-            fields = null;
+            
             fields = row.getFields(InteractionKeys.KEY_INTERACTION_TYPE);
             fName = SolrFieldName.type;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_DETMETHOD);
             fName = SolrFieldName.detmethod;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_BIOROLE_A);
             fName = SolrFieldName.pbioroleA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_BIOROLE_B);
             fName = SolrFieldName.pbioroleB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_EXPROLE_A);
             fName = SolrFieldName.pexproleA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_EXPROLE_B);
             fName = SolrFieldName.pexproleB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_A);
             fName = SolrFieldName.ptypeA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B);
             fName = SolrFieldName.ptypeB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_XREFS_A);
             fName = SolrFieldName.pxrefA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_XREFS_B);
             fName = SolrFieldName.pxrefB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_XREFS_I);
             fName = SolrFieldName.xref;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_EXPANSION);
-            fName = SolrFieldName.complex;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_FEATURE_A);
             fName = SolrFieldName.ftypeA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_FEATURE_B);
             fName = SolrFieldName.ftypeB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_A);
             fName = SolrFieldName.pmethodA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_B);
             fName = SolrFieldName.pmethodB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CONFIDENCE);
-            fName = SolrFieldName.confidence;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_SOURCE);
             fName = SolrFieldName.source;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_CHECKSUM_A);
             fName = SolrFieldName.checksumA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_CHECKSUM_B);
             fName = SolrFieldName.checksumB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
             fields = row.getFields(InteractionKeys.KEY_CHECKSUM_I);
             fName = SolrFieldName.checksumI;
 
@@ -234,317 +328,35 @@ public class TextFieldConverterTest extends TestCase {
         }
     }
 
-    public void testIndexFieldValues_mitab26() throws Exception {
-        System.out.println("TextField: indexFieldValues - mitab2.6");
+    public void testIndexFieldValues_mitab28() throws Exception {
+        System.out.println("TextField: indexFieldValues - mitab2.8");
 
-        Assert.assertNotNull(rowList_mitab26);
+        Assert.assertNotNull(rowList_mitab28);
 
-        for (Row row:rowList_mitab26) {
-
-            Collection<Field> fields = row.getFields(InteractionKeys.KEY_PUBAUTH);
-            SolrFieldName fName = SolrFieldName.pubauth;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_TAXID_A);
-            fName = SolrFieldName.taxidA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_TAXID_B);
-            fName = SolrFieldName.taxidB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_HOST_ORGANISM);
-            fName = SolrFieldName.species;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_INTERACTION_TYPE);
-            fName = SolrFieldName.type;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_DETMETHOD);
-            fName = SolrFieldName.detmethod;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_BIOROLE_A);
-            fName = SolrFieldName.pbioroleA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_BIOROLE_B);
-            fName = SolrFieldName.pbioroleB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_EXPROLE_A);
-            fName = SolrFieldName.pexproleA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_EXPROLE_B);
-            fName = SolrFieldName.pexproleB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_A);
-            fName = SolrFieldName.ptypeA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B);
-            fName = SolrFieldName.ptypeB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_XREFS_A);
-            fName = SolrFieldName.pxrefA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_XREFS_B);
-            fName = SolrFieldName.pxrefB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_XREFS_I);
-            fName = SolrFieldName.xref;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_EXPANSION);
-            fName = SolrFieldName.complex;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_FEATURE_A);
-            fName = SolrFieldName.ftypeA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_FEATURE_B);
-            fName = SolrFieldName.ftypeB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_A);
-            fName = SolrFieldName.pmethodA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_B);
-            fName = SolrFieldName.pmethodB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CONFIDENCE);
-            fName = SolrFieldName.confidence;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_SOURCE);
-            fName = SolrFieldName.source;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_A);
-            fName = SolrFieldName.checksumA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_B);
-            fName = SolrFieldName.checksumB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_I);
-            fName = SolrFieldName.checksumI;
-
-            testIndexFieldValues(fName, fields, row);
-        }
-    }
-
-    public void testIndexFieldValues_mitab25() throws Exception {
-        System.out.println("TextField: indexFieldValues - mitab2.5");
-
-        Assert.assertNotNull(rowList_mitab25);
-
-        for (Row row:rowList_mitab25) {
+        for (Row row:rowList_mitab28) {
 
             Collection<Field> fields = row.getFields(InteractionKeys.KEY_PUBAUTH);
             SolrFieldName fName = SolrFieldName.pubauth;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_TAXID_A);
-            fName = SolrFieldName.taxidA;
+            fields = row.getFields(InteractionKeys.KEY_BIO_EFFECT_A);
+            fName = SolrFieldName.bioeffectA;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_TAXID_B);
-            fName = SolrFieldName.taxidB;
+            fields = row.getFields(InteractionKeys.KEY_BIO_EFFECT_B);
+            fName = SolrFieldName.bioeffectB;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_HOST_ORGANISM);
-            fName = SolrFieldName.species;
+            fields = row.getFields(InteractionKeys.KEY_CAUSAL_REG_MECHANISM);
+            fName = SolrFieldName.causalmechanism;
 
             testIndexFieldValues(fName, fields, row);
 
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_INTERACTION_TYPE);
-            fName = SolrFieldName.type;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_DETMETHOD);
-            fName = SolrFieldName.detmethod;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_BIOROLE_A);
-            fName = SolrFieldName.pbioroleA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_BIOROLE_B);
-            fName = SolrFieldName.pbioroleB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_EXPROLE_A);
-            fName = SolrFieldName.pexproleA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_EXPROLE_B);
-            fName = SolrFieldName.pexproleB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_A);
-            fName = SolrFieldName.ptypeA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_INTERACTOR_TYPE_B);
-            fName = SolrFieldName.ptypeB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_XREFS_A);
-            fName = SolrFieldName.pxrefA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_XREFS_B);
-            fName = SolrFieldName.pxrefB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_XREFS_I);
-            fName = SolrFieldName.xref;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_EXPANSION);
-            fName = SolrFieldName.complex;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_FEATURE_A);
-            fName = SolrFieldName.ftypeA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_FEATURE_B);
-            fName = SolrFieldName.ftypeB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_A);
-            fName = SolrFieldName.pmethodA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_PART_IDENT_METHOD_B);
-            fName = SolrFieldName.pmethodB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CONFIDENCE);
-            fName = SolrFieldName.confidence;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_SOURCE);
-            fName = SolrFieldName.source;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_A);
-            fName = SolrFieldName.checksumA;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_B);
-            fName = SolrFieldName.checksumB;
-
-            testIndexFieldValues(fName, fields, row);
-
-            fields = null;
-            fields = row.getFields(InteractionKeys.KEY_CHECKSUM_I);
-            fName = SolrFieldName.checksumI;
+            fields = row.getFields(InteractionKeys.KEY_CAUSAL_STAT);
+            fName = SolrFieldName.causalstatement;
 
             testIndexFieldValues(fName, fields, row);
         }
@@ -553,19 +365,24 @@ public class TextFieldConverterTest extends TestCase {
     private void testIndexFieldValues(SolrFieldName fName, Collection<Field> fields, Row row) throws Exception {
 
         Assert.assertNotNull(row);
-//        System.out.println("row: "+row.keySet().toString());
+        //System.out.println("row: "+row.keySet().toString());
+        //System.out.println("Field " + fName.toString());
 
         SolrInputDocument origSolrDoc = converter.toSolrDocument(row);
         Assert.assertNotNull(origSolrDoc);
 
-        if (origSolrDoc.getField(fName.toString()) != null) {
+        //System.out.println(origSolrDoc.getFieldNames());
+        SolrInputField origSolrDocFieldName = origSolrDoc.getField(fName.toString());
+        SolrInputField origSolrDocFieldName_o = origSolrDoc.getField(fName.toString() + "_o");
+
+        if (origSolrDocFieldName != null) {
 
 //            System.out.println("\torigSolrDoc-field-name: " + fName);
-//            System.out.println("\torigSolrDoc-field: " + origSolrDoc.getField(fName.toString()).toString());
+//            System.out.println("\torigSolrDoc-field: " + origSolrDocFieldName.toString());
 //            System.out.println("\torigSolrDoc-stored: " + origSolrDoc.getField(fName.toString() + "_s").toString());
 //            System.out.println("\torigSolrDoc-original: " + origSolrDoc.getField(fName.toString() + "_o").toString());
 
-            Assert.assertNotNull(origSolrDoc.getField(fName.toString()));
+            Assert.assertNotNull(origSolrDocFieldName);
             if (!fName.toString().toLowerCase().contains("pubauth") && !fName.toString().toLowerCase().contains("ftype")) {
                 Assert.assertNotNull(origSolrDoc.getField(fName.toString() + "_s"));
                 Assert.assertTrue(origSolrDoc.getField(fName.toString() + "_s").toString().contains(":"));
@@ -585,7 +402,7 @@ public class TextFieldConverterTest extends TestCase {
 //                System.out.println("\tsolrDoc-stored: " + solrDoc.getField(fName.toString() + "_s").toString());
 
                 Assert.assertNotNull(solrDoc.getField(fName.toString()));
-                String s1 = origSolrDoc.getField(fName.toString()).getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
+                String s1 = origSolrDocFieldName.getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
                 String s2 = solrDoc.getField(fName.toString()).getValue().toString().replaceAll("\\[", "").replaceAll("\\]", "");
                 Assert.assertTrue(s1.contains(s2));
                 if (!fName.toString().toLowerCase().contains("pubauth") && !fName.toString().toLowerCase().contains("ftype")) {
@@ -597,8 +414,11 @@ public class TextFieldConverterTest extends TestCase {
                 }
                 Assert.assertNull(solrDoc.getField(fName.toString() + "_o")); //indexFieldValues-method doesn't write _o
             }
-        } else {
-            System.err.println("\tField "+fName.toString()+" not found!");
+        } else if (origSolrDocFieldName_o != null) {
+            System.out.println("Found: " + origSolrDocFieldName_o.getName());
+        }
+        else {
+            Assert.fail("\tField " + fName.toString() + " not found!");
         }
     }
 

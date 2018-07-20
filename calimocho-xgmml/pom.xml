@@ -102,12 +102,12 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>calimocho</artifactId>
-            <version>${pom.version}</version>
+            <version>${project.version}</version>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>calimocho-tab</artifactId>
-            <version>${pom.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

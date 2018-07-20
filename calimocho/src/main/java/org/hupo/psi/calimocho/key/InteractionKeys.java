@@ -21,6 +21,7 @@ package org.hupo.psi.calimocho.key;
  */
 public interface InteractionKeys {
 
+    // MITAB 2.5 keys
     String KEY_ID_A = "idA";
     String KEY_ID_B = "idB";
     String KEY_ALTID_A = "altidA";
@@ -37,8 +38,10 @@ public interface InteractionKeys {
     String KEY_INTERACTION_ID = "interaction_id";
     String KEY_CONFIDENCE = "confidence";
 
+    // MITAB 2.5 Intact extra key
     String KEY_DATASET = "dataset";
 
+    // MITAB 2.6 keys
     String KEY_EXPANSION = "complex";
     String KEY_BIOROLE_A = "pbioroleA";
     String KEY_BIOROLE_B = "pbioroleB";
@@ -62,10 +65,18 @@ public interface InteractionKeys {
     String KEY_CHECKSUM_B = "checksumB";
     String KEY_CHECKSUM_I = "checksumI";
     String KEY_NEGATIVE = "negative";
+
+    // MITAB 2.7 keys
     String KEY_FEATURE_A = "ftypeA";
     String KEY_FEATURE_B = "ftypeB";
     String KEY_STOICHIOMETRY_A = "stcA";
     String KEY_STOICHIOMETRY_B = "stcB";
     String KEY_PART_IDENT_METHOD_A = "pmethodA";
     String KEY_PART_IDENT_METHOD_B = "pmethodB";
+
+    // MITAB 2.8 keys
+    String KEY_BIO_EFFECT_A = "bioeffectA";
+    String KEY_BIO_EFFECT_B = "bioeffectB";
+    String KEY_CAUSAL_REG_MECHANISM = "causalmechanism";
+    String KEY_CAUSAL_STAT = "causalstatement";
 }

@@ -36,6 +36,9 @@ public class PsimiTabMockBuilder{
     private static List<CrossReference> sourceDatabases = new ArrayList<CrossReference>();
     private static List<CrossReference> interactionTypes = new ArrayList<CrossReference>();
     private static List<CrossReference> interactionDetectionMethods = new ArrayList<CrossReference>();
+    private static List<CrossReference> biologicalEffects = new ArrayList<CrossReference>();
+    private static List<CrossReference> causalMechanisms = new ArrayList<CrossReference>();
+    private static List<CrossReference> causalStatements = new ArrayList<CrossReference>();
     private static List<String> confidenceTypes = new ArrayList<String>();
     private static List<Organism> organisms = new ArrayList<Organism>();
 
@@ -58,6 +61,21 @@ public class PsimiTabMockBuilder{
         interactionDetectionMethods.add( new CrossReferenceImpl( "psi-mi", "MI:0027", "cosedimentation" ) );
         interactionDetectionMethods.add( new CrossReferenceImpl( "psi-mi", "MI:0397", "two hybrid array" ) );
 
+        // Biological effects
+        biologicalEffects.add ( new CrossReferenceImpl("go", "GO:0016301", "kinase activity") );
+        biologicalEffects.add ( new CrossReferenceImpl("go", "GO:0016209", "antioxidant activity") );
+        biologicalEffects.add ( new CrossReferenceImpl("go", "GO:0140104", "molecular carrier activity"));
+
+        // casual regulatory mechanisms
+        causalMechanisms.add ( new CrossReferenceImpl("psi-mi", "MI:2245", "indirect causal regulation") );
+        causalMechanisms.add ( new CrossReferenceImpl("psi-mi", "MI:2247", "transcriptional regulation") );
+        causalMechanisms.add ( new CrossReferenceImpl("psi-mi", "MI:2249", "post transcriptional regulation"));
+
+        // casual statements
+        causalStatements.add ( new CrossReferenceImpl("psi-mi", "MI:2235", "up regulates") );
+        causalStatements.add ( new CrossReferenceImpl("psi-mi", "MI:2238", "up-regulates quantity by expression") );
+        causalStatements.add ( new CrossReferenceImpl("psi-mi", "MI:2240", "down regulates"));
+
         confidenceTypes.add( "intact confidence" );
         confidenceTypes.add( "psi-score" );
 
@@ -76,7 +94,7 @@ public class PsimiTabMockBuilder{
 
     // interactor
 
-    protected Interactor buildInteractor() {
+    private Interactor buildInteractor() {
         return new Interactor();
     }
 
@@ -93,18 +111,17 @@ public class PsimiTabMockBuilder{
         return createInteractor( taxid, db, id, null );
     }
 
-    public Interactor createProteinInteractorRandom() {
+    private Interactor createProteinInteractorRandom() {
         final Interactor interactor = buildInteractor();
         interactor.setAliases( createAliasRandom( boundRandom( 1, 4 ), "uniprotkb" ) );
         interactor.setAlternativeIdentifiers( createUniprotCrossReferenceList( boundRandom( 0, 4 ) ) );
         interactor.setIdentifiers( createList( createCrossReference( "uniprotkb", randomUniprotAc() ) ) );
         interactor.setOrganism( ( Organism ) pickRandom( organisms ) );
+        interactor.setBiologicalEffects( createList ( createBiologicalEffectRandom() ) );
         return interactor;
     }
 
-    // alias
-
-    public List<Alias> createAliasRandom( int aliasCount, String db ) {
+    private List<Alias> createAliasRandom( int aliasCount, String db ) {
         List<Alias> aliases = new ArrayList<Alias>( aliasCount );
         for ( int i = 0; i < aliasCount; i++ ) {
             aliases.add( new AliasImpl( db, randomString() ) );
@@ -112,15 +129,12 @@ public class PsimiTabMockBuilder{
         return aliases;
     }
 
-    // organism
-
     public Organism createOrganismRandom() {
         return new OrganismImpl( nextInt(), randomString() );
     }
 
-    // interaction
 
-    protected BinaryInteraction buildInteraction(Interactor a, Interactor b) {
+    private BinaryInteraction buildInteraction(Interactor a, Interactor b) {
         return new BinaryInteractionImpl( a, b );
     }
 
@@ -143,56 +157,70 @@ public class PsimiTabMockBuilder{
         bi.setInteractionTypes( createList( createInteractionTypeRandom() ) );
         bi.setPublications( createList( createCrossReference( "pubmed", String.valueOf( boundRandom( 100000, 999999 ) ) ) ) );
         bi.setSourceDatabases( createList( source ) );
+        bi.setCausalRegulatoryMechanism( createList( createCausalRegMechanismRandom() ) );
+        bi.setCausalStatement( createList( createCausalStatementRandom() ) );
 
         return bi;
     }
 
-    // interaction type
-
-    public CrossReference createInteractionTypeRandom() {
+    private CrossReference createInteractionTypeRandom() {
         return pickRandom( interactionTypes );
     }
 
-    // interaction detection method
-
-    public CrossReference createInteractionDetectionMethodRandom() {
+    private CrossReference createInteractionDetectionMethodRandom() {
         return pickRandom( interactionDetectionMethods );
     }
 
-    // Condifence
+    private CrossReference createBiologicalEffectRandom() {
+        return pickRandom( biologicalEffects );
+    }
 
-    public Confidence createConfidenceRandom() {
+    private CrossReference createCausalRegMechanismRandom() {
+        return pickRandom(causalMechanisms);
+    }
+
+    private CrossReference createCausalStatementRandom() {
+        return pickRandom(causalStatements);
+    }
+
+    private Confidence createConfidenceRandom() {
         String confidenceType = pickRandom( confidenceTypes );
         return new ConfidenceImpl( confidenceType, String.valueOf( boundRandomDouble( 0d, 1d ) ) );
     }
 
-    // Author
-
-    public Author createAuthorRandom() {
+        private Author createAuthorRandom() {
         int year = 2000 + new Random().nextInt( 8 );
         return new AuthorImpl( randomString( boundRandom( 5, 10 ) ) + " et al." + " (" + year + ")" );
     }
 
-    // Xrefs
-
-    public List<CrossReference> createUniprotCrossReferenceList( int crossRefCount ) {
+    private List<CrossReference> createUniprotCrossReferenceList( int crossRefCount ) {
         List<CrossReference> references = new ArrayList<CrossReference>( crossRefCount );
         for ( int i = 0; i < crossRefCount; i++ ) {
             references.add( createCrossReference( "uniprotkb", randomUniprotAc() ) );
         }
-        return null;
+        return references;
     }
 
-    public CrossReference createCrossReference( String db, String id, String text ) {
+    private CrossReference createCrossReference( String db, String id, String text ) {
         return new CrossReferenceImpl( db, id, text );
     }
 
-    public CrossReference createCrossReference( String db, String id ) {
+    private CrossReference createCrossReference( String db, String id ) {
         return new CrossReferenceImpl( db, id );
     }
 
     public CrossReference createUniprotCrossReference( String id ) {
         return new CrossReferenceImpl( "uniprotkb", id );
+    }
+
+    private String randomUniprotAc() {
+        StringBuilder sb = new StringBuilder( 5 );
+        sb.append( randomChar( "OPQ" ) );
+        sb.append( randomChar( INTEGERS ) );
+        sb.append( randomChar( ALPHABET ) );
+        sb.append( randomChar( INTEGERS ) );
+        sb.append( randomChar( INTEGERS ) );
+        return sb.toString();
     }
 
     ///////////////////
@@ -208,21 +236,21 @@ public class PsimiTabMockBuilder{
         return prefix + "_" + randomString();
     }
 
-    protected int nextInt() {
+    private int nextInt() {
         return new Random().nextInt( 10000 );
     }
 
-    protected int nextId() {
+    private int nextId() {
         return ++sequence;
     }
 
-    protected int boundRandom( int min, int max ) {
+    private int boundRandom( int min, int max ) {
         if ( min == max ) return max;
 
         return new Random().nextInt( max - min ) + min;
     }
 
-    protected double boundRandomDouble( double min, double max ) {
+    private double boundRandomDouble( double min, double max ) {
         if ( min == max ) return max;
         final double random = new Random().nextDouble();
         double x = random * max;
@@ -232,15 +260,15 @@ public class PsimiTabMockBuilder{
         return x;
     }
 
-    public String randomString() {
+    private String randomString() {
         return randomString( boundRandom( 4, 10 ) );
     }
 
-    public char randomChar( String alphabet ) {
+    private char randomChar( String alphabet ) {
         return alphabet.charAt( ( int ) ( Math.random() * alphabet.length() ) );
     }
 
-    public String randomString( int returnLength ) {
+    private String randomString( int returnLength ) {
 
         StringBuilder random = new StringBuilder( returnLength );
         final Random rdm = new Random( System.currentTimeMillis() );
@@ -261,21 +289,11 @@ public class PsimiTabMockBuilder{
         return randomString() + "-" + year + "-" + ( new Random().nextInt( 7 ) + 1 );
     }
 
-    public String randomUniprotAc() {
-        StringBuilder sb = new StringBuilder( 5 );
-        sb.append( randomChar( "OPQ" ) );
-        sb.append( randomChar( INTEGERS ) );
-        sb.append( randomChar( ALPHABET ) );
-        sb.append( randomChar( INTEGERS ) );
-        sb.append( randomChar( INTEGERS ) );
-        return sb.toString();
-    }
-
-    protected <T> T pickRandom( List<T> list ) {
+    private <T> T pickRandom( List<T> list ) {
         return list.get( boundRandom( 0, list.size() - 1 ) );
     }
 
-    protected <T> List<T> createList( T... objects ) {
+    private <T> List<T> createList( T... objects ) {
         List<T> result = new ArrayList<T>( objects.length );
         for ( T object : objects ) {
             result.add( object );

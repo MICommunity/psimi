@@ -269,14 +269,45 @@ public interface BinaryInteraction<T extends Interactor> extends Flippable, Seri
     boolean isNegativeInteraction();
 
     /**
-     * Sets if the interaction is negative (true) or
-     * postive (false)
+     * Sets the interaction to negative (true) or
+     * positive (false)
      *
-     * @param negativeInteraction true if it is negative or false if it is true.
+     * @param negativeInteraction true if it is negative or false if it is positive.
      */
     void setNegativeInteraction(Boolean negativeInteraction);
 
-    //MITAB 2.7
+    //MITAB 2.7 - no interaction fields added
 
+    //MITAB 2.8
+
+    /**
+     * Returns the causal regulatory mechanism of the interaction.
+     *
+     * @return the causal regulatory mechanism of the interaction.
+     */
+    List<CrossReference> getCausalRegulatoryMechanism();
+
+    /**
+     * Sets the causal regulatory mechanism of the interaction.
+     *
+     * @param causalRegulatoryMechanism the causal regulatory mechanism of the interaction.
+     *
+     **/
+    void setCausalRegulatoryMechanism(List<CrossReference> causalRegulatoryMechanism);
+
+    /**
+     * Returns the causal statement of the interaction.
+     *
+     * @return the causal statement of the interaction.
+     */
+    List<CrossReference> getCausalStatement();
+
+    /**
+     * Sets the causal statement of the interaction.
+     *
+     * @param causalRegulatoryMechanism the causal statement of the interaction.
+     *
+     **/
+    void setCausalStatement(List<CrossReference> causalRegulatoryMechanism);
 
 }

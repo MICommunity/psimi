@@ -19,6 +19,7 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import psidev.psi.mi.tab.model.*;
+import psidev.psi.mi.xml.model.Interaction;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,7 +53,7 @@ public final class MitabParserUtils {
     
     
     /**
-     * <p>Processes an String and splits using a set of delimiters.
+     * <p>Processes a String and splits using a set of delimiters.
      * If the delimiter is in a group surrounded by quotes, don't split that group.
      * Quotes in the String must be escaped using a backlash if that quote does not delimit a group.</p>
      * <p/>
@@ -64,7 +65,7 @@ public final class MitabParserUtils {
      *
      * @param str                   The string to split
      * @param delimiters            The delimiters to use
-     * @param removeUnescapedQuotes remove unsecaped quotes.
+     * @param removeUnescapedQuotes remove unescaped quotes.
      * @return An array containing the groups after splitting
      */
     public static String[] quoteAwareSplit(String str, char[] delimiters, boolean removeUnescapedQuotes) {
@@ -228,7 +229,6 @@ public final class MitabParserUtils {
         interaction.setInteractionAcs(splitCrossReferences(line[PsimiTabColumns.INTERACTION_ID.ordinal()]));
         interaction.setConfidenceValues(splitConfidences(line[PsimiTabColumns.CONFIDENCE.ordinal()]));
 
-
         //MITAB 2.6
         interactorA.setBiologicalRoles(splitCrossReferences(line[PsimiTabColumns.BIOROLE_A.ordinal()]));
         interactorA.setExperimentalRoles(splitCrossReferences(line[PsimiTabColumns.EXPROLE_A.ordinal()]));
@@ -261,11 +261,18 @@ public final class MitabParserUtils {
         interactorA.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_A.ordinal()]));
         interactorA.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_A.ordinal()]));
 
-
         //MITAB 2.7
         interactorB.setFeatures(splitFeatures(line[PsimiTabColumns.FEATURES_B.ordinal()]));
         interactorB.setStoichiometry(splitStoichiometries(line[PsimiTabColumns.STOICHIOMETRY_B.ordinal()]));
         interactorB.setParticipantIdentificationMethods(splitCrossReferences(line[PsimiTabColumns.PARTICIPANT_IDENT_MED_B.ordinal()]));
+
+        //MITAB 2.8
+        interactorA.setBiologicalEffects(splitCrossReferences(line[PsimiTabColumns.BIO_EFFECT_A.ordinal()]));
+        interactorB.setBiologicalEffects(splitCrossReferences(line[PsimiTabColumns.BIO_EFFECT_B.ordinal()]));
+
+        //MITAB 2.8
+        interaction.setCausalRegulatoryMechanism(splitCrossReferences(line[PsimiTabColumns.CAUSAL_REG_MECHANISM.ordinal()]));
+        interaction.setCausalStatement(splitCrossReferences(line[PsimiTabColumns.CAUSAL_STATEMENT.ordinal()]));
 
 		//We check some consistency in the interactors
 

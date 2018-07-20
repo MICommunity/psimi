@@ -7,7 +7,7 @@ package psidev.psi.mi.tab.model;
 
 
 /**
- * Representation of a binary interaction as in the MITAB25 format.
+ * Representation of a binary interaction as in the MITAB28 format.
  *
  * @author Samuel Kerrien (skerrien@ebi.ac.uk)
  * @version $Id$

@@ -25,7 +25,7 @@ public class XrefFieldFormatterTest {
        fieldFormatter = new XrefFieldFormatter();
     }
 
-    public Field getField(){
+    public Field getUniprotField(){
         Field field = new DefaultField();
         field.set( CalimochoKeys.KEY, "idA" );
         field.set( CalimochoKeys.DB, "uniprot");
@@ -33,9 +33,25 @@ public class XrefFieldFormatterTest {
         return field;
     }
 
+    public Field getPsiMiField() {
+        Field field = new DefaultField();
+        field.set( CalimochoKeys.KEY, "psi-mi" );
+        field.set( CalimochoKeys.DB, "MI");
+        field.set( CalimochoKeys.VALUE, "0914" );
+        return field;
+    }
+
+    public Field getGoField() {
+        Field field = new DefaultField();
+        field.set( CalimochoKeys.KEY, "go" );
+        field.set( CalimochoKeys.DB, "GO");
+        field.set( CalimochoKeys.VALUE, "0003824" );
+        return field;
+    }
+
     @Test
     public void format_withoutText() throws Exception {
-        Field field = getField();
+        Field field = getUniprotField();
 
         String fieldText = fieldFormatter.format( field );
         String expected = "uniprot:P12345";
@@ -43,8 +59,8 @@ public class XrefFieldFormatterTest {
     }
 
     @Test
-    public void format_withText() throws Exception {
-        Field field = getField();
+    public void format_uniprotField_withText() throws Exception {
+        Field field = getUniprotField();
         field.set( CalimochoKeys.TEXT, "testText");
 
         String fieldText = fieldFormatter.format( field );
@@ -53,8 +69,28 @@ public class XrefFieldFormatterTest {
     }
 
     @Test
+    public void format_psiMiField_withText() throws Exception {
+        Field field = getPsiMiField();
+        field.set( CalimochoKeys.TEXT, "association");
+
+        String fieldText = fieldFormatter.format( field );
+        String expected = "MI:0914(association)";
+        Assert.assertEquals(expected, fieldText);
+    }
+
+    @Test
+    public void format_goField_withText() throws Exception {
+        Field field = getGoField();
+        field.set( CalimochoKeys.TEXT, "catalytic activity");
+
+        String fieldText = fieldFormatter.format( field );
+        String expected = "GO:0003824(catalytic activity)";
+        Assert.assertEquals(expected, fieldText);
+    }
+
+    @Test
     public void format_escaping_withText() throws Exception {
-        Field field = getField();
+        Field field = getUniprotField();
         field.set( CalimochoKeys.TEXT, "test)Text");
         field.set( CalimochoKeys.DB, "uni:prot" );
         field.set( CalimochoKeys.VALUE, "P|12345");
@@ -81,4 +117,5 @@ public class XrefFieldFormatterTest {
         fieldFormatter.format( field );
 
     }
+    
 }
