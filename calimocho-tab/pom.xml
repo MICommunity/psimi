@@ -13,12 +13,6 @@
     <version>2.5.3-SNAPSHOT</version>
 
     <name>PSI :: Calimocho TAB</name>
-    <url>http://psimi.googlecode.com</url>
-
-    <properties>
-        <bundle.namespace>psidev.psi.mi.calimocho.tab</bundle.namespace>
-        <bundle.symbolicName>psidev.psi.mi.calimocho.tab</bundle.symbolicName>
-    </properties>
 
     <build>
         <plugins>
@@ -76,12 +70,4 @@
 
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
-        </repository>
-
-    </repositories>
 </project>

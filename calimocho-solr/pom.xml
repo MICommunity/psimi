@@ -6,9 +6,11 @@
         <groupId>psidev.psi.mi</groupId>
         <version>1.8.6-SNAPSHOT</version>
     </parent>
-    <groupId>psidev.psi.mi</groupId>
+
     <artifactId>calimocho-solr</artifactId>
+    <packaging>jar</packaging>
     <version>2.5.3-SNAPSHOT</version>
+
     <name>PSI :: Calimocho Solr</name>
 
     <build>
@@ -81,13 +83,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
-    <repositories>
-        <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
 
 </project>

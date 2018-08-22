@@ -10,16 +10,9 @@
 
     <artifactId>psi25-xml-rdf</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.6-SNAPSHOT</version>
+    <version>${parent.version}</version>
 
     <name>PSI :: RDF converter</name>
-    <url>http://psimi.googlecode.com</url>
-
-    <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi25-xml-rdf/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psi25-xml-rdf/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psi25-xml-rdf</url>
-    </scm>
 
     <build>
         <plugins>
@@ -102,6 +95,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>org.biopax</groupId>
+            <artifactId>miriam-lib</artifactId>
+            <version>3.0.4</version>
+        </dependency>
 
         <!-- RDF -->
         <dependency>
@@ -118,6 +116,9 @@
             <name>IntAct Nexus</name>
             <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
         </repository>
-
+        <repository>
+            <id>biopax-release</id>
+            <url>http://www.biopax.org/m2repo/releases/</url>
+        </repository>
     </repositories>
 </project>
