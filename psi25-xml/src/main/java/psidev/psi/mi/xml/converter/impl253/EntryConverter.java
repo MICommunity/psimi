@@ -97,7 +97,9 @@ public class EntryConverter {
         // 1. set encapsulated objects
 
         // source
-        mEntry.setSource( sourceConverter.fromJaxb( jEntry.getSource() ) );
+        if ( jEntry.getSource() != null ) {
+            mEntry.setSource(sourceConverter.fromJaxb(jEntry.getSource()));
+        }
 
         // availabilities
         if ( jEntry.getAvailabilityList() != null ) {

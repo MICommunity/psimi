@@ -11,8 +11,8 @@ import psidev.psi.mi.xml.converter.ConverterException;
 import psidev.psi.mi.xml.dao.DAOFactory;
 import psidev.psi.mi.xml254.jaxb.*;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Converts an entry between Jaxb and the model.
@@ -96,7 +96,9 @@ public class EntryConverter {
         // 1. set encapsulated objects
 
         // source
-        mEntry.setSource( sourceConverter.fromJaxb( jEntry.getSource() ) );
+        if (jEntry.getSource() != null) {
+            mEntry.setSource( sourceConverter.fromJaxb( jEntry.getSource() ) );
+        }
 
         // availabilities
         if ( jEntry.getAvailabilityList() != null ) {
