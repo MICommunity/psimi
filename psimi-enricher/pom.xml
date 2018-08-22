@@ -16,11 +16,6 @@
         <mi.output>${miOutput}</mi.output>
     </properties>
 
-    <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimi-enricher/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimi-enricher/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/trunk/psimi-enricher</url>
-    </scm>
 
     <build>
         <resources>
@@ -241,11 +236,4 @@
 
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
 </project>

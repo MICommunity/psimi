@@ -13,13 +13,6 @@
     <version>2.5.3-SNAPSHOT</version>
 
     <name>PSI :: Calimocho XGMML</name>
-    <url>http://psimi.googlecode.com</url>
-
-    <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/calimocho-xgmml/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/calimocho-xgmml/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/calimocho-xgmml</url>
-    </scm>
 
     <build>
         <plugins>
