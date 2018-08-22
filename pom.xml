@@ -5,7 +5,7 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-master</artifactId>
     <packaging>pom</packaging>
-    <version>1.8.6-SNAPSHOT</version>
+    <version>1.8.6</version>
 
     <name>PSI</name>
     <description>Base build file</description>
