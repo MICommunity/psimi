@@ -10,7 +10,7 @@
 
     <artifactId>psimitab-organism</artifactId>
     <packaging>jar</packaging>
-    <version>${parent.version}</version>
+    <version>1.8.6-SNAPSHOT</version>
 
     <name>PSI :: Computation of organism tree from MITAB25</name>
 
