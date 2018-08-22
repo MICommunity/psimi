@@ -3,14 +3,14 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.6</version>
+        <version>1.8.7-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimitab-search</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.6</version>
+    <version>1.8.7-SNAPSHOT</version>
 
     <name>PSI :: PSI-MI TABular Search</name>
 
@@ -77,7 +77,7 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>calimocho-tab</artifactId>
-            <version>2.5.3</version>
+            <version>2.5.4-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.solr</groupId>
