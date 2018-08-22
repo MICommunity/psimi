@@ -3,15 +3,14 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.6-SNAPSHOT</version>
+        <version>1.8.6</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psi25-xml</artifactId>
     <packaging>jar</packaging>
-
-    <version>1.8.6-SNAPSHOT</version>
+    <version>1.8.6</version>
 
     <name>PSI :: PSI-MI XML 2.5 Library</name>
     <description>
@@ -30,46 +29,8 @@
         <plugins>
             <!--assembly-->
             <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-source</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/descriptor.xml</descriptor>
-                    </descriptors>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -109,16 +70,16 @@
                 <configuration>
                     <instructions>
                         <Bundle-SymbolicName>${bundle.symbolicName}</Bundle-SymbolicName>
-                        <Bundle-Version>${pom.version}</Bundle-Version>
+                        <Bundle-Version>${project.version}</Bundle-Version>
                         <!--
                          | assume public classes are in the top package, and private classes are under ".internal"
                         -->
                         <Export-Package>
                             !${bundle.namespace}.internal.*,
 
-                            ${bundle.namespace}.*;version=${pom.version},
-                            psidev.psi.mi.xml254.jaxb;version=${pom.version},
-                            psidev.psi.mi.xml253.jaxb;version=${pom.version}"
+                            ${bundle.namespace}.*;version=${project.version},
+                            psidev.psi.mi.xml254.jaxb;version=${project.version},
+                            psidev.psi.mi.xml253.jaxb;version=${project.version}"
                         </Export-Package>
                         <Private-Package>${bundle.namespace}.internal.*</Private-Package>
                         <Import-Package>*</Import-Package>

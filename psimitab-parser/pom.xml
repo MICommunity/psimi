@@ -3,24 +3,17 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.6-SNAPSHOT</version>
+        <version>1.8.6</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimitab</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.6-SNAPSHOT</version>
+    <version>1.8.6</version>
 
     <name>PSI :: PSI-MI TABular format tools</name>
     <url>http://psidev.sf.net</url>
-
-    <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/psimitab-parser
-        </developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/#svn/trunk/psimitab-search</url>
-    </scm>
 
     <properties>
         <bundle.namespace>psidev.psi.mi.tab</bundle.namespace>
@@ -29,47 +22,10 @@
 
     <build>
         <plugins>
-            <plugin>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-source</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+            <!--assembly-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.7</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.3</version>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <descriptors>
-                        <descriptor>src/main/assembly/descriptor.xml</descriptor>
-                    </descriptors>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -168,7 +124,7 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>psi25-xml</artifactId>
-            <version>${pom.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <dependency>

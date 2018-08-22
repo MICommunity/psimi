@@ -35,7 +35,7 @@ import org.hupo.psi.calimocho.tab.util.MitabDocumentDefinitionFactory;
  */
 public class ConverterTest extends TestCase {
 
-    List<Row> rowList_mitab27, rowList_mitab26, rowList_mitab25;
+    private List<Row> rowList_mitab25, rowList_mitab26, rowList_mitab27, rowList_mitab28;
     
     public ConverterTest(String testName) {
         super(testName);
@@ -50,18 +50,21 @@ public class ConverterTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
-        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
-        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
+        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
+        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
+        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
 
         ColumnBasedDocumentDefinition documentDefinition_mitab26 = MitabDocumentDefinitionFactory.mitab26();
         DefaultRowReader rowReader_mitab26 = new DefaultRowReader( documentDefinition_mitab26 );
         rowList_mitab26 = rowReader_mitab26.read(File.class.getResourceAsStream("/samples/sampleFileMitab26.txt"));
 
-        ColumnBasedDocumentDefinition documentDefinition_mitab25 = MitabDocumentDefinitionFactory.mitab25();
-        DefaultRowReader rowReader_mitab25 = new DefaultRowReader( documentDefinition_mitab25 );
-        rowList_mitab25 = rowReader_mitab25.read(File.class.getResourceAsStream("/samples/sampleFileMitab25.txt"));
-        
+        ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
+        DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
+        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
+
+        ColumnBasedDocumentDefinition documentDefinition_mitab28 = MitabDocumentDefinitionFactory.mitab28();
+        DefaultRowReader rowReader_mitab28 = new DefaultRowReader( documentDefinition_mitab28 );
+        rowList_mitab28 = rowReader_mitab28.read(File.class.getResourceAsStream("/samples/sampleFileMitab28.txt"));
     }
 
     @Override
@@ -69,59 +72,67 @@ public class ConverterTest extends TestCase {
         super.tearDown();
     }
 
-    public void testToSolrDocument_27() throws Exception {
-        System.out.println("Indexing MITAB 2.7");
-
-        Assert.assertNotNull(rowList_mitab27);
-        
-        for (Row row:rowList_mitab27) {
-            Assert.assertNotNull(row);
-            System.out.println("MITAB 2.7 row - key set:"+row.keySet());
-            Assert.assertEquals(42-7, row.keySet().size());
-
-            Converter converter = new Converter();
-            SolrInputDocument solrDoc = converter.toSolrDocument(row);
-            Assert.assertNotNull(solrDoc);
-
-            
-        }
-    }
-
-    public void testToSolrDocument_26() throws Exception {
-        System.out.println("Indexing MITAB 2.6");
-
-        Assert.assertNotNull(rowList_mitab26);
-
-        for (Row row:rowList_mitab26) {
-            Assert.assertNotNull(row);
-            System.out.println("MITAB 2.6 row - key set:"+row.keySet());
-            Assert.assertEquals(36-8, row.keySet().size());
-            System.out.println("MITAB 2.6 row - key set:"+row.keySet());
-
-            Converter instance = new Converter();
-            SolrInputDocument solrDoc = instance.toSolrDocument(row);
-            Assert.assertNotNull(solrDoc);
-
-            
-        }
-    }
-
     public void testToSolrDocument_25() throws Exception {
-        System.out.println("Indexing MITAB 2.5");
+        System.out.println("Indexing MITAB 2.5 sample file");
 
         Assert.assertNotNull(rowList_mitab25);
 
         for (Row row:rowList_mitab25) {
             Assert.assertNotNull(row);
-            System.out.println("MITAB 2.5 row - key set:"+row.keySet());
-            Assert.assertEquals(15-2, row.keySet().size());
+            System.out.println("MITAB 2.5 row - key set:" + row.keySet());
+            Assert.assertEquals(15 - 2, row.keySet().size()); // 2 empty (dashed) columns
 
             Converter instance = new Converter();
             SolrInputDocument solrDoc = instance.toSolrDocument(row);
             Assert.assertNotNull(solrDoc);
-
-            
         }
     }
 
+    public void testToSolrDocument_26() throws Exception {
+        System.out.println("Indexing MITAB 2.6 sample file");
+
+        Assert.assertNotNull(rowList_mitab26);
+
+        for (Row row:rowList_mitab26) {
+            Assert.assertNotNull(row);
+            System.out.println("MITAB 2.6 row - key set:" + row.keySet());
+            Assert.assertEquals(36 - 6, row.keySet().size()); // 6 empty (dashed) columns
+
+            Converter instance = new Converter();
+            SolrInputDocument solrDoc = instance.toSolrDocument(row);
+            Assert.assertNotNull(solrDoc);
+        }
+    }
+
+    public void testToSolrDocument_27() throws Exception {
+        System.out.println("Indexing MITAB 2.7 sample file");
+
+        Assert.assertNotNull(rowList_mitab27);
+
+        for (Row row:rowList_mitab27) {
+            Assert.assertNotNull(row);
+            System.out.println("MITAB 2.7 row - key set:" + row.keySet());
+            Assert.assertEquals(42 - 6, row.keySet().size()); // 6 empty (dashed) columns
+
+            Converter converter = new Converter();
+            SolrInputDocument solrDoc = converter.toSolrDocument(row);
+            Assert.assertNotNull(solrDoc);
+        }
+    }
+
+    public void testToSolrDocument_28() throws Exception {
+        System.out.println("Indexing MITAB 2.8 sample file");
+
+        Assert.assertNotNull(rowList_mitab28);
+
+        for (Row row:rowList_mitab28) {
+            Assert.assertNotNull(row);
+            System.out.println("MITAB 2.8 row - key set:" + row.keySet());
+            Assert.assertEquals(46 - 3, row.keySet().size()); // 3 empty (dashed) columns
+
+            Converter converter = new Converter();
+            SolrInputDocument solrDoc = converter.toSolrDocument(row);
+            Assert.assertNotNull(solrDoc);
+        }
+    }
 }

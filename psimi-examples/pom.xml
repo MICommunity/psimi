@@ -4,22 +4,22 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.6-SNAPSHOT</version>
+        <version>1.8.6</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimi-examples</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.6-SNAPSHOT</version>
+    <version>1.8.6</version>
 
     <name>PSI :: PSI-MI Examples</name>
 
     <dependencies>
         <dependency>
-            <groupId>${pom.groupId}</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>psi25-xml</artifactId>
-            <version>${pom.version}</version>
+            <version>${project.version}</version>
         </dependency>
 
         <!-- Google collections -->

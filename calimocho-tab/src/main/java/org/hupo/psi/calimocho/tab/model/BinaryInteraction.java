@@ -45,6 +45,8 @@ public class BinaryInteraction {
     private Date updateDate;
     private Field checksum;
     private boolean negative;
+    private Field causalRegulatoryMechanism;
+    private Field causalStatement;
 
     public BinaryInteraction() {
         detectionMethods = new ArrayList<Field>();
@@ -208,4 +210,12 @@ public class BinaryInteraction {
     public void setNegative(boolean negative) {
         this.negative = negative;
     }
+
+    public Field getCausalRegulatoryMechanism() { return causalRegulatoryMechanism; }
+
+    public void setCausalRegulatoryMechanism(Field causalRegulatoryMechanism) { this.causalRegulatoryMechanism = causalRegulatoryMechanism; }
+
+    public Field getCausalStatement() { return causalStatement; }
+
+    public void setCausalStatement(Field causalStatement) { this.causalStatement = causalStatement; }
 }

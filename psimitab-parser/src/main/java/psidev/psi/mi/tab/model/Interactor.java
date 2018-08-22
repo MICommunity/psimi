@@ -106,6 +106,11 @@ public class Interactor implements Serializable {
 	private List<CrossReference> participantIdentificationMethods
 			= new ArrayList<CrossReference>();
 
+	/**
+	 * Biological effect(s) of the interactor.
+	 */
+	private List<CrossReference> biologicalEffects
+			= new ArrayList<CrossReference>();
 
 	///////////////////////////
 	// Constructor
@@ -349,9 +354,9 @@ public class Interactor implements Serializable {
 	}
 
 	/**
-	 * Getter fot property 'participants'.
+	 * Getter fot property 'participant'.
 	 *
-	 * @return Value for property 'participants'.
+	 * @return Value for property 'participant'.
 	 */
 	public List<CrossReference> getParticipantIdentificationMethods() {
 		return participantIdentificationMethods;
@@ -367,9 +372,24 @@ public class Interactor implements Serializable {
 		this.participantIdentificationMethods = participantIdentificationMethods;
 	}
 
+	/**
+	 * Getter fot property 'biological effect(s)'.
+	 *
+	 * @return Value for property 'biological effect(s)'.
+	 */
+	public List<CrossReference> getBiologicalEffects() { return biologicalEffects; }
+
+	/**
+	 * Setter fot property 'biological effect(s)'.
+	 *
+	 * @return Value for property 'biological effect(s)'.
+	 */
+	public void setBiologicalEffects(List<CrossReference> biologicalEffects) {
+		this.biologicalEffects = biologicalEffects;
+	}
 
 	public boolean isEmpty() {
-		//We don not want to have a empty interactor, we prefer a null interactor
+		//We don't want to have a empty interactor, we prefer a null interactor
 		return
 			(this.getIdentifiers() == null || this.getIdentifiers().isEmpty()) &&
 			(this.getAlternativeIdentifiers() == null || this.getAlternativeIdentifiers().isEmpty()) &&
@@ -384,7 +404,8 @@ public class Interactor implements Serializable {
 			(this.getChecksums() == null || this.getChecksums().isEmpty()) &&
 			(this.getFeatures() == null || this.getFeatures().isEmpty()) &&
 			(this.getStoichiometry() == null || this.getStoichiometry().isEmpty()) &&
-			(this.getParticipantIdentificationMethods() == null || this.getParticipantIdentificationMethods().isEmpty());
+			(this.getParticipantIdentificationMethods() == null || this.getParticipantIdentificationMethods().isEmpty()) &&
+			(this.getBiologicalEffects() == null || this.getBiologicalEffects().isEmpty());
 	}
 	/////////////////////////////
 	// Object's override
@@ -411,6 +432,7 @@ public class Interactor implements Serializable {
 		sb.append(", features=").append(features);
 		sb.append(", stoichiometry=").append(stoichiometry);
 		sb.append(", participantIdentificationMethods=").append(participantIdentificationMethods);
+		sb.append(", biologicalEffects=").append(biologicalEffects);
 		sb.append('}');
 		return sb.toString();
 	}
@@ -451,6 +473,8 @@ public class Interactor implements Serializable {
 			return false;
 		if (participantIdentificationMethods != null ? !CollectionUtils.isEqualCollection(participantIdentificationMethods, that.participantIdentificationMethods) : that.participantIdentificationMethods != null)
 			return false;
+		if (biologicalEffects != null ? !CollectionUtils.isEqualCollection(biologicalEffects, that.biologicalEffects) : that.biologicalEffects != null)
+			return false;
 
 		return true;
 	}
@@ -474,7 +498,7 @@ public class Interactor implements Serializable {
 		result = 31 * result + (features != null ? features.hashCode() : 0);
 		result = 31 * result + (stoichiometry != null ? stoichiometry.hashCode() : 0);
 		result = 31 * result + (participantIdentificationMethods != null ? participantIdentificationMethods.hashCode() : 0);
-
+		result = 31 * result + (biologicalEffects != null ? biologicalEffects.hashCode() : 0);
 
 		return result;
 	}

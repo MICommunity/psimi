@@ -5,40 +5,40 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-master</artifactId>
     <packaging>pom</packaging>
-    <version>1.8.6-SNAPSHOT</version>
+    <version>1.8.6</version>
 
     <name>PSI</name>
     <description>Base build file</description>
 
     <scm>
-        <connection>scm:svn:https://psimi.googlecode.com/svn/trunk/</connection>
-        <developerConnection>scm:svn:https://psimi.googlecode.com/svn/trunk/</developerConnection>
-        <url>http://code.google.com/p/psimi/source/browse/trunk/</url>
+        <connection>scm:svn:https://github.com/MICommunity/psimi</connection>
+        <developerConnection>scm:svn:https://github.com/MICommunity/psimi</developerConnection>
+        <url>https://github.com/MICommunity/psimi</url>
     </scm>
 
     <modules>
+        <module>calimocho</module>
+        <module>calimocho-solr</module>
+        <module>calimocho-tab</module>
+        <module>calimocho-xgmml</module>
+        <module>calimocho-xml</module>
         <module>psi25-xml</module>
         <module>psi25-xml-rdf</module>
-        <module>psimitab-parser</module>
-        <module>psimitab-organism</module>
-        <module>psimi-examples</module>
-        <module>calimocho</module>
-        <module>calimocho-tab</module>
-        <module>calimocho-xml</module>
-        <module>calimocho-xgmml</module>
-        <module>calimocho-solr</module>
-        <module>psimitab-search</module>
         <module>psimi-enricher</module>
+        <module>psimi-examples</module>
+        <module>psimitab-organism</module>
+        <module>psimitab-parser</module>
+        <module>psimitab-search</module>
   </modules>
 
     <properties>
-        <assembly.outputDirectory>target/assembly/out</assembly.outputDirectory>
-        <psimi.version>${pom.version}</psimi.version>
+        <assembly.outputDirectory>../target/assembly/out</assembly.outputDirectory>
+        <psimi.version>${project.version}</psimi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jami.version>3.0.12</jami.version>
-        <calimocho.version>2.5.2-SNAPSHOT</calimocho.version>
-        <validator.version>3.0.2-SNAPSHOT</validator.version>
+        <jami.version>3.1.0</jami.version>
+        <calimocho.version>2.5.3-SNAPSHOT</calimocho.version>
+        <validator.version>3.1.4</validator.version>
     </properties>
 
     <developers>
@@ -98,6 +98,14 @@
             <timezone>0</timezone>
         </developer>
 
+        <developer>
+            <id>john</id>
+            <name>John Zobolas</name>
+            <email>john.zobolas@ntnu.no</email>
+            <organization>NTNU</organization>
+            <timezone>0</timezone>
+        </developer>
+
     </developers>
 
     <licenses>
@@ -113,12 +121,26 @@
         <pluginManagement>
             <plugins>
                 <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2</version>
-                <configuration>
-                <finalName>${artifactId}-${version}</finalName>
-                <outputDirectory>${assembly.outputDirectory}</outputDirectory>
-                </configuration>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>2.3</version>
+                    <executions>
+                        <execution>
+                            <id>make-assembly</id>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <finalName>${project.artifactId}-${project.version}</finalName>
+                        <outputDirectory>${assembly.outputDirectory}</outputDirectory>
+                        <attach>false</attach>
+                        <descriptors>
+                            <descriptor>src/main/assembly/descriptor.xml</descriptor>
+                        </descriptors>
+                    </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
@@ -144,6 +166,34 @@
 
         <plugins>
             <plugin>
+                <!--mvn jgitflow:release-start -Dgit.user=xxxx -Dgit.password=xxxx-->
+                <!--mvn jgitflow:release-finish -Dmaven.javadoc.skip=true -Dgit.user=xxxx -Dgit.password=xxxx-->
+                <groupId>external.atlassian.jgitflow</groupId>
+                <artifactId>jgitflow-maven-plugin</artifactId>
+                <version>1.0-m5.1</version>
+                <configuration>
+                    <flowInitContext>
+                        <masterBranchName>master</masterBranchName>
+                        <developBranchName>develop</developBranchName>
+                        <featureBranchPrefix>feature-</featureBranchPrefix>
+                        <releaseBranchPrefix>release-</releaseBranchPrefix>
+                        <hotfixBranchPrefix>hotfix-</hotfixBranchPrefix>
+                        <versionTagPrefix>${project.artifactId}-</versionTagPrefix>
+                    </flowInitContext>
+                    <!-- see goals wiki page for configuration options -->
+                    <!--Whether to allow untracked files when checking if the working tree is clean.-->
+                    <allowUntracked>true</allowUntracked>
+                    <noDeploy>false</noDeploy>
+                    <username>${git.user}</username>
+                    <password>${git.password}</password>
+                    <pullMaster>true</pullMaster>
+                    <pullDevelop>true</pullDevelop>
+                    <pushReleases>true</pushReleases>
+                    <pushHotfixes>true</pushHotfixes>
+                    <pushFeatures>true</pushFeatures>
+                </configuration>
+            </plugin>
+            <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
@@ -154,7 +204,6 @@
                     </excludes>
                 </configuration>
             </plugin>
-
             <plugin>
                 <artifactId>maven-source-plugin</artifactId>
                 <version>2.1.2</version>
@@ -167,8 +216,33 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.7</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>disable-java8-doclint</id>
+            <activation>
+                <jdk>[1.8,)</jdk>
+            </activation>
+            <properties>
+                <additionalparam>-Xdoclint:none</additionalparam>
+            </properties>
+        </profile>
+    </profiles>
 
     <dependencies>
         <dependency>
