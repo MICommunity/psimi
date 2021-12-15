@@ -3,7 +3,7 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.6</version>
+        <version>1.9.6-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -23,7 +23,7 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>psi25-xml</artifactId>
-            <version>1.8.6</version>
+            <version>1.9.6-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
