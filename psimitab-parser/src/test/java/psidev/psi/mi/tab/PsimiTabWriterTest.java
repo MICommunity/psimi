@@ -105,6 +105,9 @@ public class PsimiTabWriterTest {
     public void appendOrWrite() throws Exception {
         File file = TestHelper.getFileByResources("/mitab-testset/chen.txt", Xml2TabTest.class);
         File outputFile = new File(file.getAbsolutePath() + ".tab");
+        if (outputFile.exists()) {
+            outputFile.delete();
+        }
 
         //read binary interactions
         PsimiTabReader reader = new psidev.psi.mi.tab.PsimiTabReader();
