@@ -15,13 +15,13 @@
  */
 package org.hupo.psi.mi.rdf;
 
-import org.apache.commons.lang3.StringUtils;
-import org.biopax.paxtools.io.SimpleIOHandler;
+import org.apache.commons.lang.StringUtils;
+import org.biopax.paxtools.io.jena.JenaIOHandler;
 import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.model.Model;
 import org.biopax.paxtools.model.level3.SimplePhysicalEntity;
 import org.biopax.paxtools.model.level3.Xref;
-import org.biopax.paxtools.normalizer.Normalizer;
+import org.biopax.validator.utils.Normalizer;
 
 import java.io.*;
 import java.util.HashMap;
@@ -57,7 +57,7 @@ public class BioPaxUriFixer {
 
         OutputStream baos = new ByteArrayOutputStream();
 
-        new SimpleIOHandler(this.biopaxLevel).convertToOWL(model, baos);
+        new JenaIOHandler(this.biopaxLevel).convertToOWL(model, baos);
 
         fixURIs(idMappings, new StringReader(baos.toString()), writer);
         
@@ -106,7 +106,7 @@ public class BioPaxUriFixer {
         final Set<SimplePhysicalEntity> proteins = model.getObjects(SimplePhysicalEntity.class);
 
         for (SimplePhysicalEntity protein : proteins) {
-            final String protRefId = protein.getEntityReference().getUri();
+            final String protRefId = protein.getEntityReference().getRDFId();
 
             for (Xref xref : protein.getXref()) {
                 if ("uniprotkb".equals(xref.getDb())) {
