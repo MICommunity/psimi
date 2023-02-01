@@ -4,14 +4,14 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.7-SNAPSHOT</version>
+        <version>1.9.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimi-examples</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.7-SNAPSHOT</version>
+    <version>1.9.0</version>
 
     <name>PSI :: PSI-MI Examples</name>
 
@@ -44,14 +44,5 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
-
-
-    <repositories>
-        <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
 
 </project>

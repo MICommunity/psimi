@@ -3,17 +3,16 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.7-SNAPSHOT</version>
+        <version>1.9.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimitab-search</artifactId>
     <packaging>jar</packaging>
-    <version>1.8.7-SNAPSHOT</version>
+    <version>1.9.0</version>
 
     <name>PSI :: PSI-MI TABular Search</name>
-
 
     <properties>
         <bundle.namespace>psidev.psi.mi.search</bundle.namespace>
@@ -77,7 +76,7 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>calimocho-tab</artifactId>
-            <version>2.5.4-SNAPSHOT</version>
+            <version>${calimocho.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.solr</groupId>
@@ -118,12 +117,4 @@
 
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
-        </repository>
-
-    </repositories>
 </project>

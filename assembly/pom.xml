@@ -285,7 +285,7 @@
         <dependency>
             <groupId>psidev.psi.mi</groupId>
             <artifactId>psimi-enricher</artifactId>
-            <version>${jami.version}</version>
+            <version>${enricher.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
