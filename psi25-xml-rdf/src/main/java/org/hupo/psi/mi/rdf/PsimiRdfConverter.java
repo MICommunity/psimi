@@ -186,6 +186,9 @@ public class PsimiRdfConverter {
         os.close();
 
         if (!biopaxOutput.isEmpty()) {
+            // SimpleIOHandler does not deal well with new lines so we get rid of them before calling convertFromOWL.
+            biopaxOutput = biopaxOutput.replaceAll("\n", "");
+
             ByteArrayInputStream byteInputStream = new ByteArrayInputStream(biopaxOutput.getBytes());
             // fix the biopax non-dereferenciable URIs
             Model model = new SimpleIOHandler(biopaxLevel).convertFromOWL(byteInputStream);
