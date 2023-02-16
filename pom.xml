@@ -36,10 +36,10 @@
         <psimi.version>${project.version}</psimi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jami.version>3.3.0</jami.version>
+        <jami.version>3.3.1-SNAPSHOT</jami.version>
         <calimocho.version>2.6.1-SNAPSHOT</calimocho.version>
         <enricher.version>1.2.1-SNAPSHOT</enricher.version>
-        <validator.version>3.2.0</validator.version>
+        <validator.version>3.2.1-SNAPSHOT</validator.version>
     </properties>
 
     <developers>
