@@ -3,14 +3,14 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.9.0</version>
+        <version>1.10.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psimitab</artifactId>
     <packaging>jar</packaging>
-    <version>1.9.0</version>
+    <version>1.10.0</version>
 
     <name>PSI :: PSI-MI TABular format tools</name>
     <url>http://psidev.sf.net</url>
@@ -128,32 +128,16 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>com.springsource.org.apache.commons.collections</artifactId>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
             <version>3.2.1</version>
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>com.springsource.org.apache.commons.lang</artifactId>
-            <version>2.4.0</version>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>2.6</version>
         </dependency>
-
-        <!-- Logging -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>com.springsource.org.apache.commons.logging</artifactId>
-            <version>1.1.1</version>
-            <optional>true</optional>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.log4j</groupId>
-            <artifactId>com.springsource.org.apache.log4j</artifactId>
-            <version>1.2.15</version>
-            <optional>true</optional>
-        </dependency>
-
 
         <!-- OSGi -->
         <dependency>

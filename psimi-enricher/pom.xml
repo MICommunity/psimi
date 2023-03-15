@@ -4,11 +4,11 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.9.0</version>
+        <version>1.10.0</version>
     </parent>
 
     <artifactId>psimi-enricher</artifactId>
-    <version>1.2.0</version>
+    <version>${enricher.version}</version>
     <name>PSI :: Enricher</name>
 
     <properties>
@@ -120,12 +120,6 @@
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-uniprot</artifactId>
             <version>${jami.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.springframework</groupId>
-                    <artifactId>spring-web</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -156,18 +150,6 @@
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-commons</artifactId>
             <version>${jami.version}</version>
-        </dependency>
-
-        <!-- slf4j -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.6.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.6.1</version>
         </dependency>
 
         <dependency>

@@ -21,11 +21,11 @@ import com.hp.hpl.jena.rdf.arp.JenaReader;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.rdf.model.RDFReader;
 import com.hp.hpl.jena.rdf.model.RDFWriter;
-import org.biopax.paxtools.controller.PropertyEditor;
-import org.biopax.paxtools.io.jena.JenaIOHandler;
+import org.biopax.paxtools.controller.AbstractPropertyEditor;
+import org.biopax.paxtools.converter.psi.PsiToBiopax3Converter;
+import org.biopax.paxtools.io.SimpleIOHandler;
 import org.biopax.paxtools.model.BioPAXLevel;
 import org.biopax.paxtools.model.Model;
-import org.mskcc.psibiopax.converter.PSIMIBioPAXConverter;
 import psidev.psi.mi.xml.PsimiXmlReader;
 import psidev.psi.mi.xml.PsimiXmlReaderException;
 import psidev.psi.mi.xml.converter.ConverterContext;
@@ -33,8 +33,9 @@ import psidev.psi.mi.xml.model.Entry;
 import psidev.psi.mi.xml.model.EntrySet;
 
 import java.io.*;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * @author Bruno Aranda (baranda@ebi.ac.uk)
@@ -135,7 +136,7 @@ public class PsimiRdfConverter {
         try {
             convertToBioPAXAndFixURIs(entrySet, biopaxLevel, sw);
 
-            Model model = new JenaIOHandler(biopaxLevel).convertFromOWL(new ByteArrayInputStream(sw.toString().getBytes()));
+            Model model = new SimpleIOHandler(biopaxLevel).convertFromOWL(new ByteArrayInputStream(sw.toString().getBytes()));
 
             //close writer
             sw.close();
@@ -165,7 +166,9 @@ public class PsimiRdfConverter {
                 originalEntry.getInteractions().addAll(newEntry.getInteractions());
             }
 
-            return new EntrySet(Arrays.asList(originalEntry), entrySet.getLevel(), entrySet.getVersion(), entrySet.getMinorVersion());
+            List<Entry> newEntries = new ArrayList<>();
+            newEntries.add(originalEntry);
+            return new EntrySet(newEntries, entrySet.getLevel(), entrySet.getVersion(), entrySet.getMinorVersion());
         }
 
         return entrySet;
@@ -174,8 +177,8 @@ public class PsimiRdfConverter {
     private void convertToBioPAXAndFixURIs(EntrySet entrySet, BioPAXLevel biopaxLevel, Writer writer) throws IOException {
         OutputStream os = new ByteArrayOutputStream();
 
-        PSIMIBioPAXConverter biopaxConverter = new PSIMIBioPAXConverter(biopaxLevel);
-        biopaxConverter.convert(mergeEntriesIfNecessary(entrySet), os);
+        PsiToBiopax3Converter biopaxConverter = new PsiToBiopax3Converter();
+        biopaxConverter.convert(mergeEntriesIfNecessary(entrySet), os, false);
 
         String biopaxOutput = os.toString();
 
@@ -183,9 +186,12 @@ public class PsimiRdfConverter {
         os.close();
 
         if (!biopaxOutput.isEmpty()) {
+            // SimpleIOHandler does not deal well with new lines so we get rid of them before calling convertFromOWL.
+            biopaxOutput = biopaxOutput.replaceAll("\n", "");
+
             ByteArrayInputStream byteInputStream = new ByteArrayInputStream(biopaxOutput.getBytes());
             // fix the biopax non-dereferenciable URIs
-            Model model = new JenaIOHandler(biopaxLevel).convertFromOWL(byteInputStream);
+            Model model = new SimpleIOHandler(biopaxLevel).convertFromOWL(byteInputStream);
 
             BioPaxUriFixer fixer = new BioPaxUriFixer(biopaxLevel);
 
@@ -206,7 +212,7 @@ public class PsimiRdfConverter {
 
     public void close(){
         // remove current value for threadlocal
-        PropertyEditor.checkRestrictions.remove();
+        AbstractPropertyEditor.checkRestrictions.remove();
         // removed current value for xml converterContext
         ConverterContext.remove();
     }

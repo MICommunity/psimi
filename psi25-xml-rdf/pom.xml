@@ -3,14 +3,14 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.9.0</version>
+        <version>1.10.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>psi25-xml-rdf</artifactId>
     <packaging>jar</packaging>
-    <version>1.9.0</version>
+    <version>1.10.0</version>
 
     <name>PSI :: RDF converter</name>
 
@@ -35,33 +35,28 @@
         <dependency>
             <groupId>org.biopax.paxtools</groupId>
             <artifactId>psimi-converter</artifactId>
-            <version>4.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.biopax.paxtools</groupId>
-            <artifactId>paxtools-core</artifactId>
-            <version>4.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.biopax.paxtools</groupId>
-            <artifactId>paxtools-jena-io</artifactId>
-            <version>4.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.biopax.validator</groupId>
-            <artifactId>biopax-validator-core</artifactId>
-            <version>2.0.0</version>
+            <version>5.1.0</version>
             <exclusions>
                 <exclusion>
-                    <artifactId>lucene</artifactId>
-                    <groupId>lucene</groupId>
+                    <groupId>psidev.psi.mi</groupId>
+                    <artifactId>psimitab</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>org.biopax</groupId>
-            <artifactId>miriam-lib</artifactId>
-            <version>3.0.4</version>
+            <groupId>psidev.psi.mi</groupId>
+            <artifactId>psimitab</artifactId>
+            <version>1.10.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.biopax.paxtools</groupId>
+            <artifactId>paxtools-core</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.biopax.paxtools</groupId>
+            <artifactId>normalizer</artifactId>
+            <version>5.1.0</version>
         </dependency>
 
         <!-- RDF -->
