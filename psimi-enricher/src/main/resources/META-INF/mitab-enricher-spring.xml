@@ -67,9 +67,18 @@
 
     <bean id="mitabGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalGeneEnricher">
         <constructor-arg ref="geneFetcher"/>
+        <property name="ensemblFetcher" ref="ensemblGeneFetcher"/>
         <property name="organismEnricher" ref="mockOrganismEnricher"/>
         <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
         <property name="listener" ref="geneListener"/>
+    </bean>
+
+    <bean id="mitabNucleicAcidEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalNucleicAcidEnricher">
+        <constructor-arg ref="nucleicAcidFetcher"/>
+        <property name="ensemblFetcher" ref="ensemblNucleicAcidFetcher"/>
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="listener" ref="nucleicAcidListener"/>
     </bean>
 
     <bean id="mitabBasicInteractorEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseEnricher">

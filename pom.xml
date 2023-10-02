@@ -36,7 +36,7 @@
         <psimi.version>${project.version}</psimi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jami.version>3.3.1</jami.version>
+        <jami.version>3.3.2-SNAPSHOT</jami.version>
         <calimocho.version>2.6.1</calimocho.version>
         <enricher.version>1.2.1</enricher.version>
         <validator.version>3.2.1</validator.version>

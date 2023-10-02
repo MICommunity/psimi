@@ -158,6 +158,18 @@
             <version>${jami.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-ensembl</artifactId>
+            <version>${jami.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>psidev.psi.mi.jami.bridges</groupId>
+            <artifactId>jami-rna-central</artifactId>
+            <version>${jami.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

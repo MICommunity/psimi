@@ -103,6 +103,10 @@
         <constructor-arg index="0" value="${gene.logFile}"/>
     </bean>
 
+    <bean id="nucleicAcidListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.NucleicAcidEnricherStatisticsWriter">
+        <constructor-arg index="0" value="${nucleicacid.logFile}"/>
+    </bean>
+
     <bean id="interactorListener" class="psidev.psi.mi.jami.enricher.listener.impl.writer.InteractorEnricherStatisticsWriter">
         <constructor-arg index="0" value="${interactor.logFile}"/>
     </bean>
@@ -169,9 +173,15 @@
     <bean id="proteinFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotProteinFetcher"/>
     <bean id="bioactiveEntityFetcher" class="psidev.psi.mi.jami.bridges.chebi.CachedChebiFetcher"/>
     <bean id="geneFetcher" class="psidev.psi.mi.jami.bridges.uniprot.CachedUniprotGeneFetcher"/>
+    <bean id="nucleicAcidFetcher" class="psidev.psi.mi.jami.bridges.rna.central.RNACentralFetcher"/>
     <bean id="publicationFetcher" class="psidev.psi.mi.jami.bridges.europubmedcentral.CachedEuroPubmedCentralFetcher"/>
     <bean id="organismFetcher" class="psidev.psi.mi.jami.bridges.uniprot.taxonomy.CachedUniprotTaxonomyFetcher"/>
     <bean id="mockOrganismFetcher" class="psidev.psi.mi.jami.bridges.fetcher.mock.MockOrganismFetcher"/>
+
+    <!--  additional fetchers  -->
+
+    <bean id="ensemblGeneFetcher" class="psidev.psi.mi.jami.bridges.ensembl.EnsemblGeneFetcher"/>
+    <bean id="ensemblNucleicAcidFetcher" class="psidev.psi.mi.jami.bridges.ensembl.EnsemblNucleicAcidFetcher"/>
 
     <!-- interaction writer -->
     <bean id="miFileOutput" class="org.springframework.core.io.FileSystemResource">

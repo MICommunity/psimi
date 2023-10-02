@@ -68,9 +68,18 @@
 
     <bean id="xmlGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.full.FullGeneEnricher">
         <constructor-arg ref="geneFetcher"/>
+        <property name="ensemblFetcher" ref="ensemblGeneFetcher"/>
         <property name="organismEnricher" ref="mockOrganismEnricher"/>
         <property name="cvTermEnricher" ref="xmlCvTermEnricher" />
         <property name="listener" ref="geneListener"/>
+    </bean>
+
+    <bean id="xmlNucleicAcidEnricher" class="psidev.psi.mi.jami.enricher.impl.full.FullNucleicAcidUpdater">
+        <constructor-arg ref="nucleicAcidFetcher"/>
+        <property name="ensemblFetcher" ref="ensemblNucleicAcidFetcher"/>
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="xmlCvTermEnricher" />
+        <property name="listener" ref="nucleicAcidListener"/>
     </bean>
 
     <bean id="xmlBasicInteractorEnricher" class="psidev.psi.mi.jami.enricher.impl.full.FullInteractorBaseEnricher">
