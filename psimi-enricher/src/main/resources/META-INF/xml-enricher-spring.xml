@@ -99,6 +99,7 @@
         <property name="proteinEnricher" ref="xmlProteinEnricher"/>
         <property name="polymerBaseEnricher" ref="xmlPolymerEnricher" />
         <property name="geneEnricher" ref="xmlGeneEnricher"/>
+        <property name="nucleicAcidEnricher" ref="xmlNucleicAcidEnricher"/>
         <property name="bioactiveEntityEnricher" ref="xmlBioactiveEntityEnricher"/>
         <property name="complexEnricher" ref="xmlComplexEnricher"/>
     </bean>

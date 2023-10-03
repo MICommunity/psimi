@@ -98,6 +98,7 @@
         <property name="proteinEnricher" ref="mitabProteinEnricher"/>
         <property name="polymerBaseEnricher" ref="mitabPolymerEnricher" />
         <property name="geneEnricher" ref="mitabGeneEnricher"/>
+        <property name="nucleicAcidEnricher" ref="mitabNucleicAcidEnricher"/>
         <property name="bioactiveEntityEnricher" ref="mitabBioactiveEntityEnricher"/>
         <property name="complexEnricher" ref="mitabComplexEnricher"/>
     </bean>
