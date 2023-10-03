@@ -40,9 +40,7 @@ public interface RowReader {
      * Reads a line of text, creating a Row.
      * @param line the line to transform
      * @return the Row for the line
-     * @throws IOException thrown if there are problems reaching the read content
      * @throws IllegalRowException thrown if there are inconsistencies creating the Row object
-     * @throws org.hupo.psi.calimocho.io.IllegalColumnException thrown if there is a problem understanding the column structure
      */
     Row readLine( String line ) throws IllegalRowException, IllegalColumnException, IllegalFieldException;
 }

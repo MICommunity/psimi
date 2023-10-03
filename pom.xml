@@ -29,6 +29,7 @@
         <module>psimitab-organism</module>
         <module>psimitab-parser</module>
         <module>psimitab-search</module>
+        <module>assembly</module>
   </modules>
 
     <properties>

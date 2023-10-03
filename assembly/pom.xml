@@ -5,7 +5,7 @@
     <parent>
         <artifactId>psimi-master</artifactId>
         <groupId>psidev.psi.mi</groupId>
-        <version>1.8.6-SNAPSHOT</version>
+        <version>1.10.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -117,146 +117,132 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-core</artifactId>
-            <version>${jami.core.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>bridges-core</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-chebi</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-enricher</artifactId>
-            <version>${jami.enricher.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-europubmedcentral</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-obo</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-ols</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-imexcentral</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-uniprot</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-uniprot-taxonomy</artifactId>
-            <version>${jami.bridges.version}}</version>
-            <type>zip</type>
-            <classifier>distribution</classifier>
-        </dependency>
-        <dependency>
-            <groupId>psidev.psi.mi.jami.bridges</groupId>
-            <artifactId>jami-picr</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-ontology-manager</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
             <artifactId>jami-unisave</artifactId>
-            <version>${jami.bridges.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami.bridges</groupId>
-            <artifactId>uniprot-mapping</artifactId>
-            <version>${jami.bridges.version}</version>
+            <artifactId>jami-uniprot</artifactId>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-batch</artifactId>
-            <version>${jami.batch.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-interactionviewer-json</artifactId>
-            <version>${jami.interactionViewer.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-crosslink-csv</artifactId>
-            <version>${jami.crosslink.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-imex-updater</artifactId>
-            <version>${jami.imex.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-examples</artifactId>
-            <version>${jami.examples.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-html</artifactId>
-            <version>${jami.html.version}</version>
-            <type>zip</type>
-            <classifier>distribution</classifier>
-        </dependency>
-        <dependency>
-            <groupId>psidev.psi.mi.jami</groupId>
-            <artifactId>crosslink-uploader-app</artifactId>
             <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
@@ -264,21 +250,21 @@
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-mitab</artifactId>
-            <version>${jami.mitab.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
         <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-xml</artifactId>
-            <version>${jami.xml.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
        <dependency>
             <groupId>psidev.psi.mi.jami</groupId>
             <artifactId>jami-commons</artifactId>
-            <version>${jami.commons.version}</version>
+            <version>${jami.version}</version>
             <type>zip</type>
             <classifier>distribution</classifier>
         </dependency>
