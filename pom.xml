@@ -39,7 +39,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <jami.version>3.3.2-SNAPSHOT</jami.version>
         <calimocho.version>2.6.1</calimocho.version>
-        <enricher.version>1.2.1</enricher.version>
+        <enricher.version>1.2.2-SNAPSHOT</enricher.version>
         <validator.version>3.2.1</validator.version>
     </properties>
 
