@@ -17,7 +17,6 @@
 
 package psidev.psi.mi.calimocho.solr.converter;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -60,15 +59,15 @@ public class TextToBooleanFieldConverterTest extends TestCase {
 
         ColumnBasedDocumentDefinition documentDefinition_mitab26 = MitabDocumentDefinitionFactory.mitab26();
         DefaultRowReader rowReader_mitab26 = new DefaultRowReader( documentDefinition_mitab26 );
-        rowList_mitab26 = rowReader_mitab26.read(File.class.getResourceAsStream("/samples/sampleFileMitab26.txt"));
+        rowList_mitab26 = rowReader_mitab26.read(this.getClass().getResourceAsStream("/samples/sampleFileMitab26.txt"));
 
         ColumnBasedDocumentDefinition documentDefinition_mitab27 = MitabDocumentDefinitionFactory.mitab27();
         DefaultRowReader rowReader_mitab27 = new DefaultRowReader( documentDefinition_mitab27 );
-        rowList_mitab27 = rowReader_mitab27.read(File.class.getResourceAsStream("/samples/sampleFileMitab27.txt"));
+        rowList_mitab27 = rowReader_mitab27.read(this.getClass().getResourceAsStream("/samples/sampleFileMitab27.txt"));
 
         ColumnBasedDocumentDefinition documentDefinition_mitab28 = MitabDocumentDefinitionFactory.mitab28();
         DefaultRowReader rowReader_mitab28 = new DefaultRowReader( documentDefinition_mitab28 );
-        rowList_mitab28 = rowReader_mitab28.read(File.class.getResourceAsStream("/samples/sampleFileMitab28.txt"));
+        rowList_mitab28 = rowReader_mitab28.read(this.getClass().getResourceAsStream("/samples/sampleFileMitab28.txt"));
     }
 
     @Override

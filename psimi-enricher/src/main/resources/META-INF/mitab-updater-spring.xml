@@ -67,9 +67,18 @@
 
     <bean id="mitabGeneEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalGeneUpdater">
         <constructor-arg ref="geneFetcher"/>
+        <property name="ensemblFetcher" ref="ensemblGeneFetcher"/>
         <property name="organismEnricher" ref="mockOrganismEnricher"/>
         <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
         <property name="listener" ref="geneListener"/>
+    </bean>
+
+    <bean id="mitabNucleicAcidEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalNucleicAcidUpdater">
+        <constructor-arg ref="nucleicAcidFetcher"/>
+        <property name="ensemblFetcher" ref="ensemblNucleicAcidFetcher"/>
+        <property name="organismEnricher" ref="mockOrganismEnricher"/>
+        <property name="cvTermEnricher" ref="mitabCvTermEnricher" />
+        <property name="listener" ref="nucleicAcidListener"/>
     </bean>
 
     <bean id="mitabBasicInteractorEnricher" class="psidev.psi.mi.jami.enricher.impl.minimal.MinimalInteractorBaseUpdater">
@@ -89,6 +98,7 @@
         <property name="proteinEnricher" ref="mitabProteinEnricher"/>
         <property name="polymerBaseEnricher" ref="mitabPolymerEnricher" />
         <property name="geneEnricher" ref="mitabGeneEnricher"/>
+        <property name="nucleicAcidEnricher" ref="mitabNucleicAcidEnricher"/>
         <property name="bioactiveEntityEnricher" ref="mitabBioactiveEntityEnricher"/>
         <property name="complexEnricher" ref="mitabComplexEnricher"/>
     </bean>

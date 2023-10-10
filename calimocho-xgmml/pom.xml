@@ -3,14 +3,14 @@
     <parent>
         <groupId>psidev.psi.mi</groupId>
         <artifactId>psimi-master</artifactId>
-        <version>1.8.6</version>
+        <version>1.10.0</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>calimocho-xgmml</artifactId>
     <packaging>jar</packaging>
-    <version>2.5.3</version>
+    <version>${calimocho.version}</version>
 
     <name>PSI :: Calimocho XGMML</name>
 
@@ -26,7 +26,7 @@
             <plugin>
                 <groupId>org.jvnet.jaxb2.maven2</groupId>
                 <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.8.2</version>
+                <version>0.15.1</version>
                 <configuration>
                     <schemaDirectory>${project.basedir}/src/main/resources/META-INF/schema</schemaDirectory>
                     <bindingDirectory>${project.basedir}/src/main/resources/META-INF/schema</bindingDirectory>
@@ -66,20 +66,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.servicemix.specs</groupId>
-            <artifactId>org.apache.servicemix.specs.jaxb-api-2.2</artifactId>
-            <version>2.1.0</version>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-ri</artifactId>
+            <version>2.3.3</version>
+            <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>org.apache.servicemix.bundles</groupId>
-            <artifactId>org.apache.servicemix.bundles.jaxb-impl</artifactId>
-            <version>2.2.4_2</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
+            <groupId>javax.xml.ws</groupId>
+            <artifactId>jaxws-api</artifactId>
+            <version>2.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
@@ -90,12 +85,4 @@
 
     </dependencies>
 
-    <repositories>
-        <repository>
-            <id>intact.nexus</id>
-            <name>IntAct Nexus</name>
-            <url>http://www.ebi.ac.uk/intact/maven/nexus/content/groups/public/</url>
-        </repository>
-
-    </repositories>
 </project>
