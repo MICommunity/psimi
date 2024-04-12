@@ -40,7 +40,7 @@
         <jami.version>3.5.1-SNAPSHOT</jami.version>
         <calimocho.version>2.6.3-SNAPSHOT</calimocho.version>
         <enricher.version>1.2.3-SNAPSHOT</enricher.version>
-        <validator.version>3.2.2</validator.version>
+        <validator.version>3.2.3-SNAPSHOT</validator.version>
     </properties>
 
     <developers>
