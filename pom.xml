@@ -5,7 +5,7 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-master</artifactId>
     <packaging>pom</packaging>
-    <version>1.10.1</version>
+    <version>1.10.2</version>
 
     <name>PSI</name>
     <description>Base build file</description>
@@ -37,10 +37,10 @@
         <psimi.version>${project.version}</psimi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jami.version>3.5.0</jami.version>
-        <calimocho.version>2.6.2</calimocho.version>
+        <jami.version>3.6.0</jami.version>
+        <calimocho.version>2.6.3</calimocho.version>
         <enricher.version>1.2.3</enricher.version>
-        <validator.version>3.2.2</validator.version>
+        <validator.version>3.2.3</validator.version>
     </properties>
 
     <developers>
