@@ -4,7 +4,7 @@
     <parent>
         <artifactId>psimi-master</artifactId>
         <groupId>psidev.psi.mi</groupId>
-        <version>1.10.2</version>
+        <version>1.11.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>calimocho-solr</artifactId>
@@ -28,8 +28,7 @@
         <dependency>
             <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>
-            <version>3.6.2</version>
-            <type>jar</type>
+            <version>5.5.0</version>
             <scope>compile</scope>
         </dependency>
 
