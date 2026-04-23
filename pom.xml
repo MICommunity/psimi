@@ -5,7 +5,7 @@
     <groupId>psidev.psi.mi</groupId>
     <artifactId>psimi-master</artifactId>
     <packaging>pom</packaging>
-    <version>1.11.0-SNAPSHOT</version>
+    <version>1.11.1</version>
 
     <name>PSI</name>
     <description>Base build file</description>
@@ -29,7 +29,6 @@
         <module>psimitab-organism</module>
         <module>psimitab-parser</module>
         <module>psimitab-search</module>
-        <module>assembly</module>
   </modules>
 
     <properties>
@@ -37,10 +36,10 @@
         <psimi.version>${project.version}</psimi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <jami.version>3.10.0-SNAPSHOT</jami.version>
-        <calimocho.version>2.7.0-SNAPSHOT</calimocho.version>
-        <enricher.version>1.3.0-SNAPSHOT</enricher.version>
-        <validator.version>3.3.0-SNAPSHOT</validator.version>
+        <jami.version>3.9.3</jami.version>
+        <calimocho.version>2.7.1</calimocho.version>
+        <enricher.version>1.3.1</enricher.version>
+        <validator.version>3.3.1</validator.version>
     </properties>
 
     <developers>
